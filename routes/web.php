@@ -18,7 +18,29 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('articles', 'ArticleController');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// ===============================================
+// ADMIN SECTION =================================
+// ===============================================
+Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
+{
+    // main page for the admin section (app/views/admin/dashboard.blade.php)
+    Route::get('/', function()
+    {
+        return View::make('admin.dashboard');
+    });
+
+    // subpage for the posts found at /admin/posts (app/views/admin/posts.blade.php)
+    Route::get('articles', function()
+    {
+        return View::make('admin.articles');
+    });
+
+    // subpage to create a post found at /admin/posts/create (app/views/admin/posts-create.blade.php)
+    Route::get('articles/create', function()
+    {
+        return View::make('admin.articles-create');
+    });
+});

@@ -8,7 +8,10 @@ class Article extends Model {
     public function tags() {
         return $this->belongsToMany('App\Tag', 'article_tag', 'id_article', 'id_tag');
     }
-    
+//    public function tags() {
+//        return $this->belongsToMany(Tag::class);
+//    }
+
     public function elements() {
         return $this->belongsToMany('App\Element', 'article_element', 'id_article', 'id_element');
     }
