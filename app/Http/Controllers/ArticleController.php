@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Article;
+use App\Tag;
+use App\Constants\TagType;
+use App\Constants\ArticleStatus;
+use Validator;
+
 
 class ArticleController extends Controller
 {
@@ -16,7 +21,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        return 'index';
     }
 
     /**
@@ -26,7 +31,9 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        $tags = Tag::all();
+        $status = ArticleStatus::populateStatus();
+        return view('article-create', ['tags' => $tags, 'status' => $status]);
     }
 
     /**
@@ -34,9 +41,17 @@ class ArticleController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        //
+        $validator = $this->makeArticleValidator($request);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $article = new Article;
+        $article->saveArticle($request);
+
+        return redirect('/admin/articles');
     }
 
     /**
@@ -58,7 +73,16 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article = Article::findOrFail($id);
+
+        //one parent
+        //$allCategorySubcategories = Tag::where('id_parent', '=', $article->category->id)->get();
+        //more parents
+        $allCategorySubcategories = $article->category->children;
+
+        $tags = Tag::all();
+        $status = ArticleStatus::populateStatus();
+        return view('article-edit', ['article' => $article, 'tags' => $tags, 'subcategories' => $allCategorySubcategories, 'status' => $status]);
     }
 
     /**
@@ -67,9 +91,17 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update($id, Request $request)
     {
-        //
+        $validator = $this->makeArticleValidator($request);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $article = Article::find($id);
+        $article->saveArticle($request);
+
+        return redirect('/admin/articles');
     }
 
     /**
@@ -81,5 +113,14 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function makeArticleValidator($request) {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:255',
+            'type' => 'required',
+            'category' => 'required'
+        ]);
+        return $validator;
     }
 }

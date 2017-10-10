@@ -5,27 +5,25 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Article;
+use App\Tag;
 
 class Tag extends Model {
 
     use SoftDeletes;
 
     public function articles() {
-    	return $this->belongsToMany('App\Article', 'article_tag', 'id_tag', 'id_article');
-    }
-
-    public function children() {
-        return $this->hasMany('App\Tag', 'id_parent', 'id');
+        return $this->belongsToMany(Article::class, 'article_tag', 'id_tag', 'id_article');
+		//return $this->belongsToMany('App\Article', 'article_tag', 'id_tag', 'id_article');
     }
     
-    public function parentTag() {
-        return $this->belongsTo('App\Tag', 'id_parent');
+    public function children() {
+        return $this->belongsToMany(Tag::class, 'tag_parent', 'id_parent', 'id_tag');
+        //return $this->belongsToMany('App\Tag', 'tag_parent', 'id_parent', 'id_tag');
     }
 
-// check
-//    public function articles() {
-//        return $this->belongsToMany(Article::class)->latest();
-//    }
-
-
+    public function parents() {
+        return $this->belongsToMany(Tag::class, 'tag_parent', 'id_tag', 'id_parent');
+        //return $this->belongsToMany('App\Tag', 'tag_parent', 'id_tag', 'id_parent');
+    }
 }

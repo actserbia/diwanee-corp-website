@@ -18,7 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('articles', 'ArticleController');
+
+Route::resource('articles', 'ArticleController', ['only' => ['index', 'show']]);
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function(){
@@ -33,7 +34,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin
 
 });
 
-Route::group(['prefix' => 'admin','namespace' => 'Auth'],function(){
+Route::group(['prefix' => 'admin', 'namespace' => 'Auth'],function(){
     // Authentication Routes...
     Route::get('login', 'LoginController@showLoginForm')->name('login');
     Route::post('login', 'LoginController@login');
@@ -44,4 +45,9 @@ Route::group(['prefix' => 'admin','namespace' => 'Auth'],function(){
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
     Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.token');
     Route::post('password/reset', 'ResetPasswordController@reset');
+});
+
+
+Route::group(['prefix' => 'ajax'], function() {
+    Route::get('/subcategories/{category_id?}', 'AjaxController@subcategories')->name('subcategories');
 });
