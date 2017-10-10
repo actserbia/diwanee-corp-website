@@ -19,6 +19,7 @@ class CreateArticlesTable extends Migration
             $table->tinyInteger('status');
             $table->unsignedInteger('id_author');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('articles', function($table) {

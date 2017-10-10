@@ -18,6 +18,7 @@ class CreateTagsTable extends Migration
             $table->enum('type', ['publication', 'brand', 'type', 'category', 'subcategory']);
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
