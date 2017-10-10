@@ -21,26 +21,27 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('articles', 'ArticleController');
 
 
-// ===============================================
-// ADMIN SECTION =================================
-// ===============================================
-Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
-{
-    // main page for the admin section (app/views/admin/dashboard.blade.php)
-    Route::get('/', function()
-    {
-        return View::make('admin.dashboard');
-    });
+Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function(){
+//    Route::get('/', function() {
+//      return View::make('admin.dashboard');
+//    });
+    Route::get('/', 'DashboardController@index');
 
-    // subpage for the posts found at /admin/posts (app/views/admin/posts.blade.php)
-    Route::get('articles', function()
-    {
-        return View::make('admin.articles');
-    });
+    Route::resource('tags', 'TagsController');
+    Route::resource('articles', 'ArticlesController');
+    Route::resource('users', 'UsersController');
 
-    // subpage to create a post found at /admin/posts/create (app/views/admin/posts-create.blade.php)
-    Route::get('articles/create', function()
-    {
-        return View::make('admin.articles-create');
-    });
+});
+
+Route::group(['prefix' => 'admin','namespace' => 'Auth'],function(){
+    // Authentication Routes...
+    Route::get('login', 'LoginController@showLoginForm')->name('login');
+    Route::post('login', 'LoginController@login');
+    Route::post('logout', 'LoginController@logout')->name('logout');
+
+    // Password Reset Routes...
+    Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+    Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.token');
+    Route::post('password/reset', 'ResetPasswordController@reset');
 });
