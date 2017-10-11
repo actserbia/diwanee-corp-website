@@ -27,7 +27,7 @@ $(document).ready(function() {
     });
 
     $('#subcategory').change(function() {
-        $('#selected-subcategories').append('<div class="subcategory">' + $(this).find('option:selected').text() + '<a href="#" class="subcategory-remove" data-id="' + $(this).val() + '">x</a></div>');
+        $('#selected-subcategories').append('<div class="subcategory">' + $(this).find('option:selected').text() + ' <a href="#" class="subcategory-remove" data-id="' + $(this).val() + '">x</a></div>');
         $('option[value="' + $(this).val() + '"]', this).attr('disabled', 'disabled');
 
         $(this).val('');
@@ -35,7 +35,7 @@ $(document).ready(function() {
         addRemoveSubcategoryEvents();
     });
 
-    $('.btn-default').click(function() {
+    $('.btn-success').click(function() {
         $('.subcategory-remove').each(function(index, value) {
             $('#selected-subcategories-hidden').append('<input type="hidden" name="subcategories[]" value="' + $(this).data('id') + '"/>');
         });

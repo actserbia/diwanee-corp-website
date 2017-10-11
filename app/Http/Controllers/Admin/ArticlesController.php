@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Article;
+use App\Tag;
+use App\Constants\ArticleStatus;
+use Validator;
+use Auth;
 
 class ArticlesController extends Controller
 {
@@ -26,7 +30,10 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        return view('admin.articles.articles_create');
+        $tags = Tag::all();
+        $status = ArticleStatus::populateStatus();
+
+        return view('admin.articles.articles_create', ['tags' => $tags, 'status' => $status]);
     }
 
     /**
@@ -37,6 +44,17 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->all();
+
+        $validator = $this->validator($data);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $article = new Article;
+        $data['id_author'] = Auth::id();
+        $article->saveArticle($data);
+
         return redirect()->route('articles.index')->with('success', "The article <strong>article name</strong> has successfully been created.");
     }
 
@@ -59,7 +77,12 @@ class ArticlesController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.articles.articles_edit');
+        $article = Article::findOrFail($id);
+
+        $tags = Tag::all();
+        $status = ArticleStatus::populateStatus();
+
+        return view('admin.articles.articles_edit', ['article' => $article, 'tags' => $tags, 'subcategories' => $article->category->children, 'status' => $status]);
     }
 
     /**
@@ -71,6 +94,16 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $data = $request->all();
+
+        $validator = $this->validator($data);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $article = Article::find($id);
+        $article->saveArticle($data);
+
         return redirect()->route('articles.index')->with('success', "The article <strong>article name</strong> has successfully been updated.");
     }
 
@@ -83,5 +116,13 @@ class ArticlesController extends Controller
     public function destroy($id)
     {
         return redirect()->route('articles.index')->with('success', "The article <strong>article name</strong> has successfully been archived.");
+    }
+
+    private function validator(array $data) {
+        return Validator::make($data, [
+            'title' => 'required|max:255',
+            'type' => 'required',
+            'category' => 'required'
+        ]);
     }
 }

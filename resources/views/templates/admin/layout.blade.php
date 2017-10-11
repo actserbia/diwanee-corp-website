@@ -256,6 +256,7 @@
             TableManageButtons.init();
         });
     </script>
+    @stack('scripts')
     <!-- /Datatables -->
 </body>
 </html>

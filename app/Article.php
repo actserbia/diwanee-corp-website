@@ -6,14 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-use Illuminate\Http\Request;
 use App\Constants\ElementType;
 use App\Constants\TagType;
 use App\Element;
 use App\Tag;
 use App\User;
 use DB;
-use Auth;
 
 class Article extends Model {
 
@@ -69,18 +67,18 @@ class Article extends Model {
     }
 
 
-    public function saveArticle(Request $request) {
+    public function saveArticle(array $data) {
         DB::beginTransaction();
         try {
-            $this->status = $request->status;
-            if(empty($this->id_author)) {
-                $this->id_author = Auth::id();
+            $this->status = $data['status'];
+            if(!$this->id_author) {
+                $this->id_author = $data['id_author'];
             }
-            $this->title = $request->title;
+            $this->title = $data['title'];
             $this->save();
 
-            $this->saveElements($request);
-            $this->saveTags($request);
+            $this->saveElements($data);
+            $this->saveTags($data);
 
             DB::commit();
         } catch(Exception $e) {
@@ -88,10 +86,10 @@ class Article extends Model {
         }
     }
 
-    private function saveElements(Request $request) {
-        if(!empty($request->content)) {
+    private function saveElements(array $data) {
+        if(!empty($data['content'])) {
             $element = count($this->elements) ? $this->elements[0] : new Element;
-            $element->content = $request->content;
+            $element->content = $data['content'];
             $element->type = ElementType::Text;
 
             if($element->id) {
@@ -103,13 +101,13 @@ class Article extends Model {
     }
 
 
-    private function saveTags(Request $request) {
-        $this->changeTag($this->publication, $request->publication);
-        $this->changeTag($this->type, $request->type);
-        $this->changeTag($this->brand, $request->brand);
-        $this->changeTag($this->category, $request->category);
+    private function saveTags(array $data) {
+        $this->changeTag($this->publication, $data['publication']);
+        $this->changeTag($this->type, $data['type']);
+        $this->changeTag($this->brand, $data['brand']);
+        $this->changeTag($this->category, $data['category']);
 
-        $newSubcategories = isset($request->subcategories) ? $request->subcategories : array();
+        $newSubcategories = isset($data['subcategories']) ? $data['subcategories'] : array();
         $this->changeTags($this->subcategories, $newSubcategories);
 
         $this->save();
@@ -137,14 +135,14 @@ class Article extends Model {
             }
         }
     }
-    /*private function saveTags(Request $request) {
+    /*private function saveTags(array $data) {
         $this->tags()->detach();
-        $this->tags()->attach($request->publication);
-        $this->tags()->attach($request->type);
-        $this->tags()->attach($request->brand);
-        $this->tags()->attach($request->category);
-        if(isset($request->subcategories)) {
-            foreach($request->subcategories as $subcategory) {
+        $this->tags()->attach($data['publication']);
+        $this->tags()->attach($data['type']);
+        $this->tags()->attach($data['brand']);
+        $this->tags()->attach($data['category']);
+        if(isset($data['subcategories'])) {
+            foreach($data['subcategories'] as $subcategory) {
                 $this->tags()->attach($subcategory);
             }
         }
