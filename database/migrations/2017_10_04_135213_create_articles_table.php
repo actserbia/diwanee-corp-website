@@ -18,6 +18,11 @@ class CreateArticlesTable extends Migration
             $table->string('title');
             $table->tinyInteger('status');
             $table->unsignedInteger('id_author');
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
+            $table->string('meta_keywords')->nullable();
+            $table->string('content_description')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });
