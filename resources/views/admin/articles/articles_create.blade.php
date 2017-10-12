@@ -13,15 +13,7 @@
                 <div class="x_content">
                     <br />
                     <form method="post" action="{{ route('articles.store') }}" data-parsley-validate class="form-horizontal form-label-left">
-                        <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Title <span class="required">*</span></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" value="{{ Request::old('title') ?: '' }}" id="title" name="title" class="form-control col-md-7 col-xs-12" required>
-                                @if ($errors->has('title'))
-                                    <span class="help-block">{{ $errors->first('title') }}</span>
-                                @endif
-                            </div>
-                        </div>
+                        @include('blocks.form_input', ['name' => 'title', 'label' => 'Title', 'value' => Request::old('title') ?: '', 'required' => true])
 
                         <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
@@ -33,15 +25,15 @@
                             </div>
                         </div>
 
-                        @include('blocks.tags', ['name' => 'publication', 'title' => 'Publication', 'tags' => $tags, 'selected' => Request::old('publication') ?: ''])
+                        @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => Request::old('publication') ?: ''])
 
-                        @include('blocks.tags', ['name' => 'brand', 'title' => 'Brand', 'tags' => $tags, 'selected' => old('brand')])
+                        @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => old('brand')])
 
-                        @include('blocks.tags', ['name' => 'type', 'title' => 'Type', 'tags' => $tags, 'selected' => old('type')])
+                        @include('blocks.tags', ['name' => 'type', 'label' => 'Type', 'tags' => $tags, 'selected' => old('type')])
 
-                        @include('blocks.tags', ['name' => 'category', 'title' => 'Category', 'tags' => $tags, 'selected' => old('category'), 'required' => true])
+                        @include('blocks.tags', ['name' => 'category', 'label' => 'Category', 'tags' => $tags, 'selected' => old('category'), 'required' => true])
 
-                        @include('blocks.tags', ['name' => 'subcategory', 'title' => 'Subcategory', 'tags' => []])
+                        @include('blocks.tags', ['name' => 'subcategory', 'label' => 'Subcategory', 'tags' => []])
 
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
@@ -56,7 +48,7 @@
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <select id="status" name="status" class="form-control col-md-7 col-xs-12">
                                     @foreach ($status as $id => $name)
-                                        <option value="{{ $id }}" {{ Request::old('status') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                        <option value="{{ $id }}" @if (Request::old('status') == $id) selected @endif>{{ $name }}</option>
                                     @endforeach
                                 </select>
                                 @if ($errors->has('status'))
@@ -70,7 +62,6 @@
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <input type="hidden" name="_token" value="{{ Session::token() }}">
-                                <input type="hidden" name="api_token" value="{{ $user->api_token }}">
                                 <button type="submit" class="btn btn-success">Create article</button>
                             </div>
                         </div>

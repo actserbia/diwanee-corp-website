@@ -20,6 +20,7 @@ class ArticlesController extends Controller
     public function index()
     {
         //Article::withTrashed()->restore();
+
         $articles = Article::all()->toArray();
         return view('admin.articles.articles_list', compact('articles'));
     }
@@ -33,9 +34,8 @@ class ArticlesController extends Controller
     {
         $tags = Tag::all()->toArray();
         $status = ArticleStatus::populateStatus();
-        $user =  Auth::user();
 
-        return view('admin.articles.articles_create', ['tags' => $tags, 'status' => $status, 'user' => $user]);
+        return view('admin.articles.articles_create', ['tags' => $tags, 'status' => $status]);
     }
 
     /**
