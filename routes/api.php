@@ -1,9 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-Use App\Article;
-Use App\User;
-Use App\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,5 +25,5 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('articles/{id}', 'ArticleController@show');
     Route::post('articles', 'ArticleController@store');
     Route::put('articles/{id}', 'ArticleController@update');
-    Route::delete('articles/{id}', 'ArticleController@destroy');
+    Route::delete('articles/{article}', 'ArticleController@destroy');
 });

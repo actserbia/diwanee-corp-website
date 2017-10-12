@@ -19,7 +19,8 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        $articles = Article::get()->toArray();
+        //Article::withTrashed()->restore();
+        $articles = Article::all()->toArray();
         return view('admin.articles.articles_list', compact('articles'));
     }
 
@@ -30,10 +31,11 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        $tags = Tag::all();
+        $tags = Tag::all()->toArray();
         $status = ArticleStatus::populateStatus();
+        $user =  Auth::user();
 
-        return view('admin.articles.articles_create', ['tags' => $tags, 'status' => $status]);
+        return view('admin.articles.articles_create', ['tags' => $tags, 'status' => $status, 'user' => $user]);
     }
 
     /**
@@ -55,7 +57,7 @@ class ArticlesController extends Controller
         $data['id_author'] = Auth::id();
         $article->saveArticle($data);
 
-        return redirect()->route('articles.index')->with('success', "The article <strong>article name</strong> has successfully been created.");
+        return redirect()->route('articles.index')->with('success', "The article <strong>" . $article->title . "</strong> has successfully been created.");
     }
 
     /**
@@ -66,7 +68,8 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
-        return view('admin.articles.articles_delete');
+        $article = Article::findOrFail($id)->toArray();
+        return view('admin.articles.articles_delete', ['article' => $article]);
     }
 
     /**
@@ -79,10 +82,10 @@ class ArticlesController extends Controller
     {
         $article = Article::findOrFail($id);
 
-        $tags = Tag::all();
+        $tags = Tag::all()->toArray();
         $status = ArticleStatus::populateStatus();
 
-        return view('admin.articles.articles_edit', ['article' => $article, 'tags' => $tags, 'subcategories' => $article->category->children, 'status' => $status]);
+        return view('admin.articles.articles_edit', ['article' => $article, 'tags' => $tags, 'status' => $status]);
     }
 
     /**
@@ -104,7 +107,7 @@ class ArticlesController extends Controller
         $article = Article::find($id);
         $article->saveArticle($data);
 
-        return redirect()->route('articles.index')->with('success', "The article <strong>article name</strong> has successfully been updated.");
+        return redirect()->route('articles.index')->with('success', "The article <strong>" . $article->title . "</strong> has successfully been updated.");
     }
 
     /**
@@ -115,13 +118,14 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        return redirect()->route('articles.index')->with('success', "The article <strong>article name</strong> has successfully been archived.");
+        $article = Article::find($id);
+        $article->delete();
+        return redirect()->route('articles.index')->with('success', "The article <strong>" . $article->title . "</strong> has successfully been archived.");
     }
 
     private function validator(array $data) {
         return Validator::make($data, [
             'title' => 'required|max:255',
-            'type' => 'required',
             'category' => 'required'
         ]);
     }

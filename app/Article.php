@@ -81,8 +81,11 @@ class Article extends Model {
             $this->saveTags($data);
 
             DB::commit();
+            return true;
+
         } catch(Exception $e) {
             DB::rollBack();
+            return false;
         }
     }
 

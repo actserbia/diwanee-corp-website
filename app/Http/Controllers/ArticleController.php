@@ -9,6 +9,7 @@ use Luracast\Restler\RestException;
 use App\Http\Controllers\Controller;
 use App\Article;
 use Auth;
+use Validator;
 
 
 class ArticleController extends Controller
@@ -20,18 +21,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //print_r(Auth::guard('api')->id());
         return Article::with('elements', 'tags')->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-
     }
 
     /**
@@ -41,7 +31,19 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->all();
 
+        $validator = $this->validator($data);
+        if ($validator->fails()) {
+            $data = array('errors' => $validator->errors()->all());
+            return response()->json($data, 400);
+        }
+
+        $article = new Article;
+        $data['id_author'] = Auth::guard('api')->id();
+        $article->saveArticle($data);
+
+        return response()->json($article, 201);
     }
 
     /**
@@ -56,17 +58,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
@@ -74,17 +65,37 @@ class ArticleController extends Controller
      */
     public function update($id, Request $request)
     {
+        $data = $request->all();
 
+        $validator = $this->validator($data);
+        if ($validator->fails()) {
+            $data = array('errors' => $validator->errors()->all());
+            return response()->json($data, 400);
+        }
+
+        $article = Article::find($id);
+        $article->saveArticle($data);
+
+        return response()->json($article, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Article  $article
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-      
+        $article->delete();
+
+        return response()->json(null, 204);
+    }
+
+    private function validator(array $data) {
+        return Validator::make($data, [
+            'title' => 'required|max:255',
+            'category' => 'required'
+        ]);
     }
 }

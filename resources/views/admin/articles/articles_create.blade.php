@@ -37,7 +37,7 @@
 
                         @include('blocks.tags', ['name' => 'brand', 'title' => 'Brand', 'tags' => $tags, 'selected' => old('brand')])
 
-                        @include('blocks.tags', ['name' => 'type', 'title' => 'Type', 'tags' => $tags, 'selected' => old('type'), 'required' => true])
+                        @include('blocks.tags', ['name' => 'type', 'title' => 'Type', 'tags' => $tags, 'selected' => old('type')])
 
                         @include('blocks.tags', ['name' => 'category', 'title' => 'Category', 'tags' => $tags, 'selected' => old('category'), 'required' => true])
 
@@ -70,6 +70,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <input type="hidden" name="_token" value="{{ Session::token() }}">
+                                <input type="hidden" name="api_token" value="{{ $user->api_token }}">
                                 <button type="submit" class="btn btn-success">Create article</button>
                             </div>
                         </div>

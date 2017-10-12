@@ -37,11 +37,11 @@
 
                         @include('blocks.tags', ['name' => 'brand', 'title' => 'Brand', 'tags' => $tags, 'selected' => !empty($article->brand) ? $article->brand->id : ''])
 
-                        @include('blocks.tags', ['name' => 'type', 'title' => 'Type', 'tags' => $tags, 'selected' => !empty($article->type) ? $article->type->id : '', 'required' => true])
+                        @include('blocks.tags', ['name' => 'type', 'title' => 'Type', 'tags' => $tags, 'selected' => !empty($article->type) ? $article->type->id : ''])
 
                         @include('blocks.tags', ['name' => 'category', 'title' => 'Category', 'tags' => $tags, 'selected' => !empty($article->category) ? $article->category->id : '', 'required' => true])
 
-                        @include('blocks.tags', ['name' => 'subcategory', 'title' => 'Subcategory', 'tags' => $subcategories])
+                        @include('blocks.tags', ['name' => 'subcategory', 'title' => 'Subcategory', 'tags' => $article->category->children])
 
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
@@ -49,7 +49,7 @@
                                 <div id="selected-subcategories">
                                     @if (!empty($article->subcategories))
                                         @foreach ($article->subcategories as $tag)
-                                            <div class="subcategory">{{ $tag->name }}<a href="#" class="subcategory-remove" data-id="{{ $tag->id }}">x</a></div>
+                                            <div class="subcategory">{{ $tag->name }} <a href="#" class="subcategory-remove" data-id="{{ $tag->id }}">x</a></div>
                                         @endforeach
                                     @endif
                                 </div>
