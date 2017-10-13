@@ -12,19 +12,10 @@
                 </div>
                 <div class="x_content">
                     <br />
-                    <form method="post" action="{{ route('articles.update', ['id' => $article->id]) }}" data-parsley-validate class="form-horizontal form-label-left">
+                    <form method="post" action="{{ route('articles.update', ['id' => $article->id]) }}" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data">
                         @include('blocks.form_input', ['name' => 'title', 'label' => 'Title', 'value' => $article->title, 'required' => true])
 
-                        <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <textarea id="content" name="content" class="form-control col-md-7 col-xs-12" name="content">{{ !$article->elements->isEmpty() ? $article->elements[0]->content : '' }}</textarea>
-                                @if ($errors->has('content'))
-                                    <span class="help-block">{{ $errors->first('content') }}</span>
-                                @endif
-                            </div>
-                        </div>
-
+                        
                         @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => !empty($article->publication) ? $article->publication->id : ''])
 
                         @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => !empty($article->brand) ? $article->brand->id : ''])
@@ -60,6 +51,30 @@
                                 @if ($errors->has('status'))
                                     <span class="help-block">{{ $errors->first('status') }}</span>
                                 @endif
+                            </div>
+                        </div>
+                            
+                        <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <textarea id="content" name="content" class="form-control col-md-7 col-xs-12" name="content">{{ $article->content }}</textarea>
+                                @if ($errors->has('content'))
+                                    <span class="help-block">{{ $errors->first('content') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="image">Image</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @if (!empty($article->image))
+                                    <img src="/images/{{ $article->image }}" width="200px" />
+                                @endif
+                                <input type="file" id="image" name="image">
+                                @if ($errors->has('image'))
+                                    <span class="help-block">{{ $errors->first('image') }}</span>
+                                @endif
+                                <input type="hidden" name="_token" value="{{ $article->image }}">
                             </div>
                         </div>
 

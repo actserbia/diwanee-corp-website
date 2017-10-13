@@ -65,8 +65,31 @@ class Article extends Model {
 
         return $selectedTags;
     }
-
-
+    
+    
+    
+    
+    
+    public function getContentAttribute() {
+        return $this->getElementContent(ElementType::Text);
+    }
+    
+    public function getImageAttribute() {
+        return $this->getElementContent(ElementType::Image);
+    }
+    
+    private function getElementContent($elementType) {
+        $content = '';
+        foreach($this->elements as $element) {
+            if($element->type === $elementType) {
+                $content = $element->content;
+            }
+        }
+        return $content;
+    }   
+    
+    
+    
     public function saveArticle(array $data) {
         DB::beginTransaction();
         try {
@@ -90,16 +113,39 @@ class Article extends Model {
     }
 
     private function saveElements(array $data) {
+        $index = 0;
+        if(!empty($data['image'])) {
+            $this->saveElement($index, ElementType::Image, $data['image']->name);
+            $index++;
+        }
+        
+        if(!empty($data['image_old'])) {
+            $this->saveElement($index, ElementType::Image, $data['image_old']);
+            $index++;
+        }
+        
         if(!empty($data['content'])) {
-            $element = count($this->elements) ? $this->elements[0] : new Element;
-            $element->content = $data['content'];
-            $element->type = ElementType::Text;
+            $this->saveElement($index, ElementType::Text, $data['content']);
+            $index++;
+        }
+        
+        while($index < count($this->elements)) {
+            $this->elements()->detach($this->elements[$index]->id);
+            Element::find($this->elements[$index]->id)->delete();
+            $index++;
+        }
+    }
+    
+    private function saveElement($index, $type, $content, $options = array()) {
+        $element = count($this->elements) > $index ? $this->elements[$index] : new Element;
+        $element->content = $content;
+        $element->options = json_encode($options);
+        $element->type = $type;
 
-            if($element->id) {
-                $element->save();
-            } else {
-                $this->elements()->save($element, ['ordinal_number' => 1]);
-            }
+        if($element->id) {
+            $element->save();
+        } else {
+            $this->elements()->save($element, ['ordinal_number' => $index + 1]);
         }
     }
 

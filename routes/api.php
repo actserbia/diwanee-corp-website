@@ -19,10 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/', 'ArticleController@index');
 
-Route::group(['middleware' => 'auth:api'], function() {
+Route::get('articles', 'ArticleController@index');
+Route::get('articles/{id}', 'ArticleController@show');
 
-    Route::get('articles', 'ArticleController@index');
-    Route::get('articles/{id}', 'ArticleController@show');
+Route::group(['middleware' => 'auth:api'], function() {
     Route::post('articles', 'ArticleController@store');
     Route::put('articles/{id}', 'ArticleController@update');
     Route::delete('articles/{article}', 'ArticleController@destroy');

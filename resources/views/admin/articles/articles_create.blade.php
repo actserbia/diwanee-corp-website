@@ -12,19 +12,10 @@
                 </div>
                 <div class="x_content">
                     <br />
-                    <form method="post" action="{{ route('articles.store') }}" data-parsley-validate class="form-horizontal form-label-left">
+                    <form method="post" action="{{ route('articles.store') }}" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data">
                         @include('blocks.form_input', ['name' => 'title', 'label' => 'Title', 'value' => Request::old('title') ?: '', 'required' => true])
 
-                        <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <textarea id="content" name="content" class="form-control col-md-7 col-xs-12" name="content">{{ Request::old('content') ?: '' }}</textarea>
-                                @if ($errors->has('content'))
-                                    <span class="help-block">{{ $errors->first('content') }}</span>
-                                @endif
-                            </div>
-                        </div>
-
+                        
                         @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => Request::old('publication') ?: ''])
 
                         @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => old('brand')])
@@ -53,6 +44,26 @@
                                 </select>
                                 @if ($errors->has('status'))
                                     <span class="help-block">{{ $errors->first('status') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <textarea id="content" name="content" class="form-control col-md-7 col-xs-12" name="content">{{ Request::old('content') ?: '' }}</textarea>
+                                @if ($errors->has('content'))
+                                    <span class="help-block">{{ $errors->first('content') }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="image">Image</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="file" id="image" name="image">
+                                @if ($errors->has('image'))
+                                    <span class="help-block">{{ $errors->first('image') }}</span>
                                 @endif
                             </div>
                         </div>
