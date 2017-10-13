@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Luracast\Restler\RestException;
-
 use App\Http\Controllers\Controller;
 use App\Article;
 use Auth;
@@ -19,9 +17,20 @@ class ArticleController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Article::with('elements', 'tags')->get();
+        $params = $request->all();
+        
+        $articles = Article::with('elements', 'tags');
+        if(isset($params['tags'])) {
+            $tags = explode(",", $params['tags']);
+            foreach($tags as $tag) {
+                $articles = $articles->whereHas('tags', function($q) use($tag) {
+                    $q->where('id_tag', '=', $tag);
+                });
+            }
+        }
+        return $articles->get();
     }
 
     /**

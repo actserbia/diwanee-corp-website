@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Tag;
+use App\Constants\TagType;
+use Validator;
 
 class TagController extends Controller
 {
@@ -13,9 +16,21 @@ class TagController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $params = $request->all();
+        
+        $validator = $this->validator($params);
+        if ($validator->fails()) {
+            $data = array('errors' => $validator->errors()->all());
+            return response()->json($data, 400);
+        }
+        
+        $tags = Tag::with('parents', 'children');
+        if(isset($params['type'])) {
+            $tags = $tags->where('type', '=', $params['type']);
+        }
+        return $tags->get();
     }
 
     /**
@@ -46,7 +61,7 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        //
+        return Tag::with('parent', 'children')->find($id);
     }
 
     /**
@@ -80,5 +95,12 @@ class TagController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    private function validator(array $data) {
+        $typesList = array(TagType::Publication, TagType::Type, TagType::Brand, TagType::Category, TagType::Subcategory);
+        return Validator::make($data, [
+            'type' => 'in:' . implode(',', $typesList)
+        ]);
     }
 }

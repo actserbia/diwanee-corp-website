@@ -21,6 +21,8 @@ Route::get('/', 'ArticleController@index');
 
 Route::get('articles', 'ArticleController@index');
 Route::get('articles/{id}', 'ArticleController@show');
+Route::get('tags/{type?}', 'TagController@index');
+Route::get('tags/{id}', 'TagController@show');
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::post('articles', 'ArticleController@store');
