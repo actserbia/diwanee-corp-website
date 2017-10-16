@@ -20,11 +20,19 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $params = $request->all();
+        if(isset($params['tags'])) {
+            $params['tags'] = explode(',', $params['tags']);
+        }
+        
+        $validator = $this->tagsValidator($params);
+        if ($validator->fails()) {
+            $data = array('errors' => $validator->errors()->all());
+            return response()->json($data, 400);
+        }
         
         $articles = Article::with('elements', 'tags');
         if(isset($params['tags'])) {
-            $tags = explode(",", $params['tags']);
-            foreach($tags as $tag) {
+            foreach($params['tags'] as $tag) {
                 $articles = $articles->whereHas('tags', function($q) use($tag) {
                     $q->where('id_tag', '=', $tag);
                 });
@@ -94,8 +102,7 @@ class ArticleController extends Controller
      * @param  Article  $article
      * @return Response
      */
-    public function destroy(Article $article)
-    {
+    public function destroy(Article $article) {
         $article->delete();
 
         return response()->json(null, 204);
@@ -106,5 +113,13 @@ class ArticleController extends Controller
             'title' => 'required|max:255',
             'category' => 'required'
         ]);
+    }
+    
+    private function tagsValidator(array $data) {
+        $rules = [];
+        foreach($data['tags'] as $index => $tag) {
+            $rules['tags.' . $index] = 'exists:tags,id';
+}
+        return Validator::make($data, $rules);
     }
 }

@@ -95,6 +95,10 @@ class Article extends Model {
                 $this->id_author = $data['id_author'];
             }
             $this->title = $data['title'];
+            $this->meta_title = $data['meta_title'];
+            $this->meta_description = $data['meta_description'];
+            $this->meta_keywords = $data['meta_keywords'];
+            $this->content_description = $data['content_description'];
             $this->save();
 
             $this->saveElements($data);

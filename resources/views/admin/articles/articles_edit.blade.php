@@ -16,6 +16,15 @@
                         @include('blocks.form_input', ['name' => 'title', 'label' => 'Title', 'value' => $article->title, 'required' => true])
 
                         
+                        @include('blocks.form_input', ['name' => 'meta_title', 'label' => 'Meta Title', 'value' => $article->meta_title])
+                        
+                        @include('blocks.form_input', ['name' => 'meta_description', 'label' => 'Meta Description', 'value' => $article->meta_description])
+                        
+                        @include('blocks.form_input', ['name' => 'meta_keywords', 'label' => 'Meta Keywords', 'value' => $article->meta_keywords])
+                        
+                        @include('blocks.form_input', ['name' => 'content_description', 'label' => 'Content Description', 'value' => $article->content_description])
+
+                        
                         @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => !empty($article->publication) ? $article->publication->id : ''])
 
                         @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => !empty($article->brand) ? $article->brand->id : ''])

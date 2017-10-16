@@ -14,6 +14,15 @@
                     <br />
                     <form method="post" action="{{ route('articles.store') }}" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data">
                         @include('blocks.form_input', ['name' => 'title', 'label' => 'Title', 'value' => Request::old('title') ?: '', 'required' => true])
+                        
+                        
+                        @include('blocks.form_input', ['name' => 'meta_title', 'label' => 'Meta Title', 'value' => Request::old('meta_title') ?: ''])
+                        
+                        @include('blocks.form_input', ['name' => 'meta_description', 'label' => 'Meta Description', 'value' => Request::old('meta_description') ?: ''])
+                        
+                        @include('blocks.form_input', ['name' => 'meta_keywords', 'label' => 'Meta Keywords', 'value' => Request::old('meta_keywords') ?: ''])
+                        
+                        @include('blocks.form_input', ['name' => 'content_description', 'label' => 'Content Description', 'value' => Request::old('content_description') ?: ''])
 
                         
                         @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => Request::old('publication') ?: ''])
