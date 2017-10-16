@@ -83,12 +83,11 @@ class ArticleController extends Controller
         $params = $request->all();
         if(isset($params['tags'])) {
             $params['tags'] = explode(',', $params['tags']);
-        }
-
-        $validator = $this->tagsValidator($params);
-        if ($validator->fails()) {
-            $data = array('errors' => $validator->errors()->all());
-            return response()->json($data, 400);
+            $validator = $this->tagsValidator($params);
+            if ($validator->fails()) {
+                $data = array('errors' => $validator->errors()->all());
+                return response()->json($data, 400);
+            }
         }
 
         $articles =  Article::with('elements', 'tags')
