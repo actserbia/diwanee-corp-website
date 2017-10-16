@@ -1,3 +1,22 @@
+<!--{!! SirTrevorJs::scripts() !!}-->
+<link rel="stylesheet" href="{{ url('asset/sirtrevorjs/sir-trevor.css')}}" type="text/css">
+
+<script src="{{ url('asset/sirtrevorjs/sir-trevor.js')}}" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+    window.onload = function(e){
+        SirTrevor.setDefaults({ uploadUrl: "/images",  iconUrl: "/asset/sirtrevorjs/sir-trevor-icons.svg" });
+
+        window.editor = new SirTrevor.Editor({
+            el:document.querySelector('.sir-trevor'),
+            defaultType: 'Text',
+            blockTypes: ['Text', 'List', 'Quote', 'Image', 'Video', 'Heading']
+        });
+    }
+</script>
+
+
 @extends('templates.admin.layout')
 
 @section('content')
@@ -77,6 +96,16 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <textarea id="content" name="content" class="js-st-instance sir-trevor editable">{{ Request::old('content') ?: '' }}</textarea>
+                                @if ($errors->has('content'))
+                                   <span class="help-block">{{ $errors->first('content') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="ln_solid"></div>
 
                         <div class="form-group">
@@ -85,6 +114,7 @@
                                 <button type="submit" class="btn btn-success">Create article</button>
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>

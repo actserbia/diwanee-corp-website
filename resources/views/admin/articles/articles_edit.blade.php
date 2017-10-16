@@ -1,3 +1,22 @@
+<link rel="stylesheet" href="{{ url('asset/sirtrevorjs/sir-trevor.css')}}" type="text/css">
+
+<script src="{{ url('asset/sirtrevorjs/sir-trevor.js')}}" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+    window.onload = function(e){
+
+        SirTrevor.setDefaults({ uploadUrl: "/images",  iconUrl: "/asset/sirtrevorjs/sir-trevor-icons.svg" });
+
+        window.editor = new SirTrevor.Editor({
+            el:document.querySelector('.sir-trevor'),
+            defaultType: 'Text',
+            blockTypes: ['Text', 'List', 'Quote', 'Image', 'Video', 'Heading']
+        });
+
+    }
+</script>
+
 @extends('templates.admin.layout')
 
 @section('content')
@@ -15,7 +34,6 @@
                     <form method="post" action="{{ route('articles.update', ['id' => $article->id]) }}" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data">
                         @include('blocks.form_input', ['name' => 'title', 'label' => 'Title', 'value' => $article->title, 'required' => true])
 
-                        
                         @include('blocks.form_input', ['name' => 'meta_title', 'label' => 'Meta Title', 'value' => $article->meta_title])
                         
                         @include('blocks.form_input', ['name' => 'meta_description', 'label' => 'Meta Description', 'value' => $article->meta_description])
@@ -24,7 +42,6 @@
                         
                         @include('blocks.form_input', ['name' => 'content_description', 'label' => 'Content Description', 'value' => $article->content_description])
 
-                        
                         @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => !empty($article->publication) ? $article->publication->id : ''])
 
                         @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => !empty($article->brand) ? $article->brand->id : ''])
@@ -85,6 +102,17 @@
                                 @endif
                                 <input type="hidden" name="_token" value="{{ $article->image }}">
                             </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            <textarea id="content" name="content" class="js-st-instance sir-trevor editable">{{ !$article->elements->isEmpty() ? $article->elements[0]->content : '' }}</textarea>
+                            @if ($errors->has('content'))
+                            <span class="help-block">{{ $errors->first('content') }}</span>
+                            @endif
+                          </div>
                         </div>
 
                         <div class="ln_solid"></div>

@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 /public/images
+/public/asset
 /storage/*.key
 /vendor
 /.idea
@@ -84,3 +85,8 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/sonarlint
+
+#swagger
+public/vendor/l5-swagger
+resources/views/vendor/l5-swagger
+storage/api-docs

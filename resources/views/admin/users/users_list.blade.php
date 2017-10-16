@@ -24,6 +24,7 @@
                         </thead>
                         <tbody>
 
+                        @if( isset($userdetail))
                         @foreach($userdetail as $user)
                         <tr>
                             <td>{{ $user['id'] }}</td>
@@ -36,7 +37,7 @@
                             </td>
                         </tr>
                         @endforeach
-
+                        @endif
                         </tbody>
                     </table>
                 </div>

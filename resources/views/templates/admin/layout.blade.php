@@ -168,7 +168,7 @@
     <script src="{{asset('_admin_/js/dataTables.keyTable.min.js')}}"></script>
     <script src="{{asset('_admin_/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('_admin_/js/responsive.bootstrap.js')}}"></script>
-    <script src="{{asset('_admin_/js/datatables.scroller.min.js')}}"></script>
+    <script src="{{asset('_admin_/js/dataTables.scroller.min.js')}}"></script>
     <script src="{{asset('_admin_/js/jszip.min.js')}}"></script>
     <script src="{{asset('_admin_/js/pdfmake.min.js')}}"></script>
     <script src="{{asset('_admin_/js/vfs_fonts.js')}}"></script>

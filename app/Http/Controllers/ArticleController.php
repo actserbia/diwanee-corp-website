@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -17,20 +16,85 @@ class ArticleController extends Controller
      *
      * @return Response
      */
+    /**
+    *   @SWG\Get(
+    *   path="/",
+    *   summary="List articles",
+    *   operationId="index",
+    *   @SWG\Parameter(
+    *     name="active",
+    *     in="query",
+    *     description="Filter results based on query string value.",
+    *     required=false,
+    *     enum={"true", "false"},
+    *     default="true",
+    *     type="string"
+    *   ),
+     * @SWG\Parameter(
+     *     name="skip",
+     *     in="query",
+     *     description="(default: 0)",
+     *     required=false,
+     *     default=0,
+     *     type="integer"
+     *   ),
+    *   @SWG\Parameter(
+    *     name="tags[]",
+    *     in="query",
+    *     description="Tags to filter by",
+    *     required=false,
+    *     type="array",
+    *     @SWG\Items(type="string"),
+    *     collectionFormat="multi"
+    *   ),
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=406, description="not acceptable"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    **/
+
     public function index(Request $request)
     {
+        //print_r(Auth::guard('api')->id());
+        /*$params = $request->all();
+        $skip = isset($params['skip']) && is_numeric($params['skip']) ? $params['skip'] : 0;
+        $tag = isset($params['tag'])  ? $params['tag'] : null;
+        if (isset($params['active'])) {
+            $status = $params['active'] ? 1 : 0;
+        } else {
+            $status = null;
+        }
+
+        if(isset($tags)) {
+            $articles = Article::whereHas('tags', function($q) use($tags) {
+                $q->where('tag_id', '=', $tags[0]);
+            });
+            foreach($tags as $tag) {
+                $articles = $articles->whereHas('tags', function($q) use($tag) {
+                    $q->where('tag_id', '=', $tag);
+                });
+            }
+            $articles = $articles->get();
+
+        } else {
+            $articles = Article::all();
+        }*/
+
         $params = $request->all();
         if(isset($params['tags'])) {
             $params['tags'] = explode(',', $params['tags']);
         }
-        
+
         $validator = $this->tagsValidator($params);
         if ($validator->fails()) {
             $data = array('errors' => $validator->errors()->all());
             return response()->json($data, 400);
         }
-        
-        $articles = Article::with('elements', 'tags');
+
+        $articles =  Article::with('elements', 'tags')
+            ->orderBy('created_at', 'desc');
+
+
         if(isset($params['tags'])) {
             foreach($params['tags'] as $tag) {
                 $articles = $articles->whereHas('tags', function($q) use($tag) {
@@ -39,6 +103,17 @@ class ArticleController extends Controller
             }
         }
         return $articles->get();
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+
     }
 
     /**
@@ -68,6 +143,30 @@ class ArticleController extends Controller
      *
      * @param  int  $id
      * @return Response
+     */
+    /**
+     * @SWG\Get(
+     *   path="/articles/{id}",
+     *   summary="Article by ID",
+     *   operationId="show",
+     *   @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Target article.",
+     *     required=true,
+     *     type="integer"
+     *   ),
+     *   @SWG\Parameter(
+     *     name="active",
+     *     in="path",
+     *     description="eg. ",
+     *     required=false,
+     *     type="string"
+     *   ),
+     *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Article"),),
+     *   @SWG\Response(response=406, description="not acceptable"),
+     *   @SWG\Response(response=500, description="internal server error")
+     * )
      */
     public function show($id)
     {
