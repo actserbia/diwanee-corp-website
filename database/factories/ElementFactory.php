@@ -16,7 +16,7 @@ use App\Constants\ElementType;
 */
 
 $factory->define(Element::class, function (Faker $faker) {
-    $types = [ElementType::Text, ElementType::Image];
+    $types = [ElementType::Text, ElementType::Image, ElementType::Slider];
     
     $type = $types[$faker->numberBetween(0, count($types) - 1)];
     $content = '';
@@ -28,6 +28,7 @@ $factory->define(Element::class, function (Faker $faker) {
           
         case ElementType::Image:
             $content = 'test.jpg';
+            $options['alt'] = $faker->text(30);
             break; 
           
         //case ElementType::Video:
@@ -38,6 +39,18 @@ $factory->define(Element::class, function (Faker $faker) {
     return [
         'type' => $type,
         'content' => $content,
+        'options' => json_encode($options)
+    ];
+});
+
+
+$factory->defineAs(Element::class, 'image', function (Faker $faker) {
+    $options = array();
+    $options['alt'] = $faker->text(30);
+
+    return [
+        'type' => 'image',
+        'content' => 'test.jpg',
         'options' => json_encode($options)
     ];
 });

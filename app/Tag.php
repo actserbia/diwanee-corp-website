@@ -14,16 +14,13 @@ class Tag extends Model {
 
     public function articles() {
         return $this->belongsToMany(Article::class, 'article_tag', 'id_tag', 'id_article');
-		//return $this->belongsToMany('App\Article', 'article_tag', 'id_tag', 'id_article');
     }
     
     public function children() {
         return $this->belongsToMany(Tag::class, 'tag_parent', 'id_parent', 'id_tag');
-        //return $this->belongsToMany('App\Tag', 'tag_parent', 'id_parent', 'id_tag');
     }
 
     public function parents() {
         return $this->belongsToMany(Tag::class, 'tag_parent', 'id_tag', 'id_parent');
-        //return $this->belongsToMany('App\Tag', 'tag_parent', 'id_tag', 'id_parent');
     }
 }
