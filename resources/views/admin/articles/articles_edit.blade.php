@@ -11,7 +11,7 @@
         window.editor = new SirTrevor.Editor({
             el:document.querySelector('.sir-trevor'),
             defaultType: 'Text',
-            blockTypes: ['Text', 'List', 'Quote', 'Image', 'Video', 'Heading']
+            blockTypes: [ 'Text', 'List', 'Quote', 'Image', 'Video', 'Heading', 'SliderImage' ]
         });
 
     }
@@ -124,4 +124,5 @@
 
 @push('scripts')
     <script src="{{ asset('js/articles.js') }}"></script>
+    <script src="{{ asset('js/sir-trevor-custom.js') }}"></script>
 @endpush
