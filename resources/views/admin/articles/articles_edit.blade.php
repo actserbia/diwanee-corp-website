@@ -2,6 +2,7 @@
 
 @push('stylesheets')
     <link rel="stylesheet" href="{{ url('asset/sirtrevorjs/sir-trevor.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ url('css/sir-trevor-custom.css')}}" type="text/css">
 @endpush
 
 @section('content')

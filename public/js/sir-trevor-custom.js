@@ -77,7 +77,10 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Block.extend({
             field.setAttribute("name", element.sel);
             field.setAttribute("class", element.sel);
             field.setAttribute("value", data[element.sel]);
-            
+            if(element.required) {
+                field.setAttribute("required", true);
+            }
+            field.setAttribute("maxlength", 90);
             var label = document.createElement("label");
             var t = document.createTextNode(i);
             label.setAttribute("for", i);
@@ -161,7 +164,10 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Block.extend({
             field.setAttribute("name", element.sel);
             field.setAttribute("class", element.sel);
             field.setAttribute("value", data[element.sel]);
-            
+             if(element.required) {
+              field.setAttribute("required", true);
+            }
+            field.setAttribute("maxlength", 90);
             var label = document.createElement("label");
             var t = document.createTextNode(i);
             label.setAttribute("for", i);

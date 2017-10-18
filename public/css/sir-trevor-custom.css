@@ -1,0 +1,18 @@
+.image_input_text {
+    display: block;
+    width: 100%;
+}
+.image_input_text label {
+    margin-bottom: 2px;
+}
+.image_input_text input[type="text"], .image_input_text input[type="text"]:active, .image_input_text input[type="text"]:focus {
+    border: 1px solid #e5e5e5 !important;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    padding: .2em;
+    background: #fff;
+    width: 100%;
+}
+.st-block {
+    clear: both;
+    margin-bottom: 5px;
+}
