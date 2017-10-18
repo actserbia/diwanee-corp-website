@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Constants\ElementType;
 use App\Constants\TagType;
+use App\Constants\Settings;
 use App\Element;
 use App\Tag;
 use App\User;
 use DB;
+
 
 class Article extends Model {
 
@@ -82,12 +84,20 @@ class Article extends Model {
 
             switch($element->type) {
                 case ElementType::Text:
+                case ElementType::Heading:
                     $elementData['data']['text'] = $element->content;
                     $elementData['data']['format'] = $options->format;
                     break;
+                  
+                case ElementType::Quote:
+                    $elementData['data']['text'] = $element->content;
+                    $elementData['data']['format'] = $options->format;
+                    $elementData['data']['cite'] = $options->cite;
+                    break;
 
                 case ElementType::Image:
-                    $elementData['data']['file']['url'] = $element->content;
+                case ElementType::SliderImage:
+                    $elementData['data']['file']['url'] = Settings::ImagesSrc . $element->content;
                     break;
 
                 case ElementType::Video:

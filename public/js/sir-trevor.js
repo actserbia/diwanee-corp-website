@@ -4,6 +4,6 @@ $(document).ready(function() {
     window.editor = new SirTrevor.Editor({
         el: document.querySelector('.sir-trevor'),
         defaultType: 'Text',
-        blockTypes: ['Text', 'List', 'Quote', 'Image', 'Video', 'Heading']
+        blockTypes: ['Text', 'List', 'Quote', 'Image', 'Video', 'Heading', 'SliderImage']
     });
 });

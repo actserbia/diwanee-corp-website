@@ -16,24 +16,28 @@ use App\Constants\ElementType;
 */
 
 $factory->define(Element::class, function (Faker $faker) {
-    $types = [ElementType::Text, ElementType::Image, ElementType::Slider];
+    $types = [ElementType::Text, ElementType::Image, ElementType::SliderImage, ElementType::Video, ElementType::Heading];
     
     $type = $types[$faker->numberBetween(0, count($types) - 1)];
     $content = '';
     $options = array();
     switch($type) {
         case ElementType::Text:
+        case ElementType::Heading:
             $content = $faker->paragraph;
+            $options['format'] = 'html';
             break;
           
         case ElementType::Image:
+        case ElementType::SliderImage:
             $content = 'test.jpg';
             $options['alt'] = $faker->text(30);
             break; 
           
-        //case ElementType::Video:
-        //    $content = 'FKUAAZSJiGY';
-        //    break; 
+        case ElementType::Video:
+            $content = 'FKUAAZSJiGY';
+            $options['source'] = 'youtube';
+            break; 
     }
     
     return [

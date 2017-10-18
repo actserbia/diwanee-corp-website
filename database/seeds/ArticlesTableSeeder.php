@@ -6,6 +6,7 @@ use Faker\Factory as Faker;
 use App\Article;
 use App\Element;
 use App\Tag;
+use App\Constants\ElementType;
 
 class ArticlesTableSeeder extends Seeder
 {
@@ -50,8 +51,7 @@ class ArticlesTableSeeder extends Seeder
     private function addSlider($element, $faker) {
         $count = $faker->numberBetween(1, 5);
         for($index = 1; $index <= $count; $index++) {
-            $image = factory(Element::class, 'image')->make();
-            //$element->subelements()->save($image, ['ordinal_number' => $index]);
+            $image = factory(Element::class, ElementType::SliderImage)->make();
             $element->subelements()->save($image);
         }
     }

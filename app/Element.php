@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Article;
 use App\Constants\ElementType;
+use App\Constants\Settings;
 
 class Element extends Model {
     public function articles() {
@@ -25,12 +26,20 @@ class Element extends Model {
         $options = array();
         switch($this->type) {
             case ElementType::Text:
+            case ElementType::Heading:
                 $this->content = $elementData->data->text;
                 $options['format'] = $elementData->data->format;
                 break;
+              
+            case ElementType::Quote:
+                $this->content = $elementData->data->text;
+                $options['format'] = $elementData->data->format;
+                $options['cite'] = $elementData->data->cite;
+                break;
 
             case ElementType::Image:
-                $this->content = $elementData->data->file->url;
+            case ElementType::SliderImage:
+                $this->content = str_replace(Settings::ImagesSrc, '', $elementData->data->file->url);
                 break;
 
             case ElementType::Video:

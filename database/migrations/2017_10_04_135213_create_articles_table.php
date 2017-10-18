@@ -22,6 +22,7 @@ class CreateArticlesTable extends Migration
             $table->string('meta_description')->nullable();
             $table->string('meta_keywords')->nullable();
             $table->string('content_description')->nullable();
+            $table->string('external_url')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

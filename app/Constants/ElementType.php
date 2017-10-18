@@ -5,7 +5,9 @@ namespace App\Constants;
 final class ElementType {
     const Text = 'text';
     const Image = 'image';
+    const SliderImage = 'slider_image';
     const Video = 'video';
-    const Slider = 'slider';
     const ElementList = 'list';
+    const Heading = 'heading';
+    const Quote = 'quote';
 }
