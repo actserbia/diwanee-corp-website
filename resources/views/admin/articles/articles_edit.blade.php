@@ -27,6 +27,8 @@
                         
                         @include('blocks.form_input', ['name' => 'content_description', 'label' => 'Content Description', 'value' => $article->content_description])
 
+                        @include('blocks.form_input', ['name' => 'external_url', 'label' => 'External Url', 'value' => $article->external_url])
+
                         @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => !empty($article->publication) ? $article->publication->id : ''])
 
                         @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => !empty($article->brand) ? $article->brand->id : ''])

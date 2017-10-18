@@ -28,6 +28,7 @@
                         
                         @include('blocks.form_input', ['name' => 'content_description', 'label' => 'Content Description', 'value' => Request::old('content_description') ?: ''])
 
+                        @include('blocks.form_input', ['name' => 'external_url', 'label' => 'External Url', 'value' => Request::old('external_url') ?: ''])
                         
                         @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => Request::old('publication') ?: ''])
 

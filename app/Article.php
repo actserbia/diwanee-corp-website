@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-use App\Constants\ElementType;
 use App\Constants\TagType;
-use App\Constants\Settings;
 use App\Element;
 use App\Tag;
 use App\User;
@@ -76,40 +74,9 @@ class Article extends Model {
     public function getContentAttribute() {
         $data = array();
         foreach($this->elements as $element) {
-            $options = json_decode($element->options);
-
             $elementData = array();
-
             $elementData['type'] = $element->type;
-
-            switch($element->type) {
-                case ElementType::Text:
-                case ElementType::Heading:
-                    $elementData['data']['text'] = $element->content;
-                    $elementData['data']['format'] = $options->format;
-                    break;
-                  
-                case ElementType::Quote:
-                    $elementData['data']['text'] = $element->content;
-                    $elementData['data']['format'] = $options->format;
-                    $elementData['data']['cite'] = $options->cite;
-                    break;
-
-                case ElementType::Image:
-                case ElementType::SliderImage:
-                    $elementData['data']['file']['url'] = Settings::ImagesSrc . $element->content;
-                    break;
-
-                case ElementType::Video:
-                    $elementData['data']['remote_id'] = $element->content;
-                    $elementData['data']['source'] = $options->source;
-                    break;
-
-                case ElementType::ElementList:
-                    $elementData['data']['listItems'] = json_decode($element->content);
-                    $elementData['data']['format'] = $options->format;
-                    break;
-            }
+            $elementData['data'] = json_decode($element->content);
 
             $data[] = $elementData;
         }
@@ -147,6 +114,7 @@ class Article extends Model {
         $this->meta_description = $data['meta_description'];
         $this->meta_keywords = $data['meta_keywords'];
         $this->content_description = $data['content_description'];
+        $this->external_url = $data['external_url'];
     }
 
     private function saveElements(array $data) {

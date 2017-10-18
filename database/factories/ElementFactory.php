@@ -3,6 +3,7 @@
 use Faker\Generator as Faker;
 use App\Element;
 use App\Constants\ElementType;
+use App\Constants\Settings;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,45 +17,54 @@ use App\Constants\ElementType;
 */
 
 $factory->define(Element::class, function (Faker $faker) {
-    $types = [ElementType::Text, ElementType::Image, ElementType::SliderImage, ElementType::Video, ElementType::Heading];
+    $types = [ElementType::Text, ElementType::Image, ElementType::SliderImage, ElementType::Video, ElementType::Heading, ElementType::ElementList];
     
     $type = $types[$faker->numberBetween(0, count($types) - 1)];
-    $content = '';
-    $options = array();
+    $content = array();
     switch($type) {
         case ElementType::Text:
         case ElementType::Heading:
-            $content = $faker->paragraph;
-            $options['format'] = 'html';
+            $content['text'] = $faker->paragraph;
+            $content['format'] = 'html';
             break;
           
         case ElementType::Image:
         case ElementType::SliderImage:
-            $content = 'test.jpg';
-            $options['alt'] = $faker->text(30);
+            $content['file']['url'] = Settings::ImagesSrc . 'test.jpg';
+            $content['seoname'] = $faker->text(30);
+            $content['seoalt'] = $faker->text(30);
+            $content['caption'] = $faker->text(30);
+            $content['copyright'] = $faker->text(30);
             break; 
           
         case ElementType::Video:
-            $content = 'FKUAAZSJiGY';
-            $options['source'] = 'youtube';
+            $content['remote_id'] = 'FKUAAZSJiGY';
+            $content['source'] = 'youtube';
             break; 
+
+        case ElementType::ElementList:
+            $count = $faker->numberBetween(1, 5);
+            for($index = 0; $index < $count; $index++) {
+                $content['listItems'][] = array('content' => $faker->text(20));
+            }
+            $content['format'] = 'html';
+            break;
     }
     
     return [
         'type' => $type,
-        'content' => $content,
-        'options' => json_encode($options)
+        'content' => json_encode($content)
     ];
 });
 
 
 $factory->defineAs(Element::class, 'image', function (Faker $faker) {
-    $options = array();
-    $options['alt'] = $faker->text(30);
+    $content = array();
+    $content['data']['file']['url'] = 'test.jpg';
+    $content['data']['alt'] = $faker->text(30);
 
     return [
         'type' => 'image',
-        'content' => 'test.jpg',
-        'options' => json_encode($options)
+        'content' => json_encode($content)
     ];
 });

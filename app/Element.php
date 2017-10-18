@@ -22,36 +22,6 @@ class Element extends Model {
 
     public function populateBasicData($elementData) {
         $this->type = $elementData->type;
-
-        $options = array();
-        switch($this->type) {
-            case ElementType::Text:
-            case ElementType::Heading:
-                $this->content = $elementData->data->text;
-                $options['format'] = $elementData->data->format;
-                break;
-              
-            case ElementType::Quote:
-                $this->content = $elementData->data->text;
-                $options['format'] = $elementData->data->format;
-                $options['cite'] = $elementData->data->cite;
-                break;
-
-            case ElementType::Image:
-            case ElementType::SliderImage:
-                $this->content = str_replace(Settings::ImagesSrc, '', $elementData->data->file->url);
-                break;
-
-            case ElementType::Video:
-                $this->content = $elementData->data->remote_id;
-                $options['source'] = $elementData->data->source;
-                break;
-
-            case ElementType::ElementList:
-                $this->content = json_encode($elementData->data->listItems);
-                $options['format'] = $elementData->data->format;
-                break;
-        }
-        $this->options = json_encode($options);
+        $this->content = json_encode($elementData->data);
     }
 }

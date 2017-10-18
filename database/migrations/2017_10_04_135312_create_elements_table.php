@@ -17,7 +17,6 @@ class CreateElementsTable extends Migration
             $table->increments('id');
             $table->enum('type', ['image', 'video', 'slider_image', 'text', 'list', 'heading', 'quote']);
             $table->longText('content');
-            $table->longText('options')->nullable();
             $table->timestamps();
         });
     }
