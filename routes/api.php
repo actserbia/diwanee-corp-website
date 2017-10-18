@@ -17,11 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', 'ArticleController@index');
+Route::get('/', 'ArticleController@all');
 
 Route::get('articles', 'ArticleController@index');
 Route::get('articles/{id}', 'ArticleController@show');
-Route::get('tags/{type?}', 'TagController@index');
+Route::get('tags', 'TagController@index');
 Route::get('tags/{id}', 'TagController@show');
 
 Route::group(['middleware' => 'auth:api'], function() {

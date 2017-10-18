@@ -14,6 +14,23 @@ class TagController extends Controller
      *
      * @return Response
      */
+    /**
+    *   @SWG\Get(
+    *   path="/tags",
+    *   summary="List tags",
+    *   operationId="index",
+    * @SWG\Parameter(
+    *     name="type",
+    *     in="query",
+    *     description="Tag Type",
+    *     required=false,
+    *     type="string"
+    *   ),
+    *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=406, description="not acceptable"),
+    *   @SWG\Response(response=500, description="internal server error")
+    * )
+    **/
     public function index(Request $request)
     {
         $params = $request->all();
@@ -57,9 +74,26 @@ class TagController extends Controller
      * @param  int  $id
      * @return Response
      */
+    /**
+     * @SWG\Get(
+     *   path="/tags/{id}",
+     *   summary="Tag by ID",
+     *   operationId="show",
+     *   @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="Target tag.",
+     *     required=true,
+     *     type="integer"
+     *   ),
+     *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Tag"),),
+     *   @SWG\Response(response=406, description="not acceptable"),
+     *   @SWG\Response(response=500, description="internal server error")
+     * )
+     */
     public function show($id)
     {
-        return Tag::with('parent', 'children')->find($id);
+        return Tag::with('parents', 'children')->find($id);
     }
 
     /**
