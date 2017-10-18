@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use League\HTMLToMarkdown\HtmlConverter;
 
 use App\Constants\TagType;
 use App\Element;
@@ -16,6 +16,7 @@ use DB;
 class Article extends Model {
 
     use SoftDeletes;
+
 
     public function tags() {
         return $this->belongsToMany(Tag::class, 'article_tag', 'id_article', 'id_tag');
@@ -124,8 +125,14 @@ class Article extends Model {
     private function saveElements(array $data) {
         $content = json_decode($data['content']);
         foreach($content->data as $index => $elementData) {
+            $converter = new HtmlConverter();
+            if($elementData->type == 'text') {
+                $elementData->data->text = $converter->convert($elementData->data->text);
+                $elementData->data->format = "markdown";
+            }
             $this->saveElement($elementData, $index);
         }
+
         for($index = count($content->data); $index < count($this->elements); $index++) {
             $this->elements()->detach($this->elements[$index]->id);
             Element::find($this->elements[$index]->id)->delete();

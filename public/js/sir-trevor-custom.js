@@ -98,8 +98,11 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Block.extend({
 });
 
 
-SirTrevor.Blocks.DiwaneeImage = SirTrevor.Block.extend({
+SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
     type: "diwanee image",
+    title: function() {
+        return "image";
+    },
 
     droppable: true,
     uploadable: true,
