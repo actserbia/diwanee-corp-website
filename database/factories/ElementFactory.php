@@ -17,7 +17,7 @@ use App\Constants\Settings;
 */
 
 $factory->define(Element::class, function (Faker $faker) {
-    $types = [ElementType::Text, ElementType::Image, ElementType::SliderImage, ElementType::Video, ElementType::Heading, ElementType::ElementList];
+    $types = [ElementType::Text, ElementType::DiwaneeImage, ElementType::SliderImage, ElementType::Video, ElementType::Heading, ElementType::ElementList];
     
     $type = $types[$faker->numberBetween(0, count($types) - 1)];
     $content = array();
@@ -28,7 +28,7 @@ $factory->define(Element::class, function (Faker $faker) {
             $content['format'] = 'html';
             break;
           
-        case ElementType::Image:
+        case ElementType::DiwaneeImage:
         case ElementType::SliderImage:
             $content['file']['url'] = Settings::ImagesSrc . 'test.jpg';
             $content['seoname'] = $faker->text(30);

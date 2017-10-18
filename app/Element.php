@@ -4,8 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Article;
-use App\Constants\ElementType;
-use App\Constants\Settings;
 
 class Element extends Model {
     public function articles() {
