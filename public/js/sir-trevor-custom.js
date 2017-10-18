@@ -76,7 +76,8 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Block.extend({
             field.setAttribute("type", "text");
             field.setAttribute("name", element.sel);
             field.setAttribute("class", element.sel);
-            //field.setAttribute("value", 'nesto');
+            field.setAttribute("value", data[element.sel]);
+            
             var label = document.createElement("label");
             var t = document.createTextNode(i);
             label.setAttribute("for", i);
@@ -159,7 +160,8 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Block.extend({
             field.setAttribute("type", "text");
             field.setAttribute("name", element.sel);
             field.setAttribute("class", element.sel);
-            //field.setAttribute("value", '');
+            field.setAttribute("value", data[element.sel]);
+            
             var label = document.createElement("label");
             var t = document.createTextNode(i);
             label.setAttribute("for", i);
