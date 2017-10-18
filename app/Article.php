@@ -45,6 +45,10 @@ class Article extends Model {
         return $this->getSelectedTags(TagType::Type);
     }
 
+    public function getInfluencerAttribute() {
+        return $this->getSelectedTags(TagType::Influencer);
+    }
+
     public function getBrandAttribute() {
         return $this->getSelectedTags(TagType::Brand);
     }
@@ -144,6 +148,7 @@ class Article extends Model {
         $this->changeTag($this->publication, $data['publication']);
         $this->changeTag($this->type, $data['type']);
         $this->changeTag($this->brand, $data['brand']);
+        $this->changeTag($this->influencer, $data['influencer']);
         $this->changeTag($this->category, $data['category']);
 
         $newSubcategories = isset($data['subcategories']) ? $data['subcategories'] : array();

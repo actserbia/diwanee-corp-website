@@ -8,4 +8,5 @@ final class TagType {
     const Brand = 'brand';
     const Category = 'category';
     const Subcategory = 'subcategory';
+    const Influencer = 'influencer';
 }
