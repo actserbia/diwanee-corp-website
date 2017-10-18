@@ -76,7 +76,9 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Block.extend({
             field.setAttribute("type", "text");
             field.setAttribute("name", element.sel);
             field.setAttribute("class", element.sel);
-            field.setAttribute("value", data[element.sel]);
+            if(data !== undefined) {
+              field.setAttribute("value", data[element.sel]);
+            }
             if(element.required) {
                 field.setAttribute("required", true);
             }
