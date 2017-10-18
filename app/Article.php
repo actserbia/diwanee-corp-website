@@ -146,7 +146,6 @@ class Article extends Model {
 
     private function saveTags(array $data) {
         $this->changeTag($this->publication, $data['publication']);
-        $this->changeTag($this->type, $data['type']);
         $this->changeTag($this->brand, $data['brand']);
         $this->changeTag($this->influencer, $data['influencer']);
         $this->changeTag($this->category, $data['category']);

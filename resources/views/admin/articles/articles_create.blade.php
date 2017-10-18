@@ -35,8 +35,6 @@
 
                         @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => old('brand')])
 
-                        @include('blocks.tags', ['name' => 'type', 'label' => 'Type', 'tags' => $tags, 'selected' => old('type')])
-
                         @include('blocks.tags', ['name' => 'influencer', 'label' => 'Influencer', 'tags' => $tags, 'selected' => old('influencer')])
 
                         @include('blocks.tags', ['name' => 'category', 'label' => 'Category', 'tags' => $tags, 'selected' => old('category'), 'required' => true])

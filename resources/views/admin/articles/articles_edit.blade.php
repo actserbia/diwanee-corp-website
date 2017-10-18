@@ -34,8 +34,6 @@
 
                         @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => !empty($article->brand) ? $article->brand->id : ''])
 
-                        @include('blocks.tags', ['name' => 'type', 'label' => 'Type', 'tags' => $tags, 'selected' => !empty($article->type) ? $article->type->id : ''])
-
                         @include('blocks.tags', ['name' => 'influencer', 'label' => 'Influencer', 'tags' => $tags, 'selected' => !empty($article->influencer) ? $article->influencer->id : ''])
 
                         @include('blocks.tags', ['name' => 'category', 'label' => 'Category', 'tags' => $tags, 'selected' => !empty($article->category) ? $article->category->id : '', 'required' => true])
