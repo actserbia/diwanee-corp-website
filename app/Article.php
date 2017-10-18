@@ -148,10 +148,6 @@ class Article extends Model {
             $this->elements()->detach($this->elements[$index]->id);
             Element::find($this->elements[$index]->id)->delete();
         }
-
-        foreach($this->elements as $index => $element) {
-
-        }
     }
     
     private function saveElement($elementData, $index) {
