@@ -30,6 +30,8 @@
     <link href="{{asset('_admin_/css/fixedHeader.bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('_admin_/css/responsive.bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('_admin_/css/scroller.bootstrap.min.css')}}" rel="stylesheet">
+
+    @stack('stylesheets')
 </head>
 
 <body class="nav-md">

@@ -1,21 +1,8 @@
-<link rel="stylesheet" href="{{ url('asset/sirtrevorjs/sir-trevor.css')}}" type="text/css">
-<script src="{{ url('asset/sirtrevorjs/sir-trevor.js')}}" type="text/javascript"></script>
-
-
-<script type="text/javascript">
-    window.onload = function(e){
-        SirTrevor.setDefaults({ uploadUrl: "/images",  iconUrl: "/asset/sirtrevorjs/sir-trevor-icons.svg" });
-
-        window.editor = new SirTrevor.Editor({
-            el:document.querySelector('.sir-trevor'),
-            defaultType: 'Text',
-            blockTypes: ['Text', 'List', 'Quote', 'Image', 'Video', 'Heading', 'SliderImage']
-        });
-    }
-</script>
-
-
 @extends('templates.admin.layout')
+
+@push('stylesheets')
+    <link rel="stylesheet" href="{{ url('asset/sirtrevorjs/sir-trevor.css')}}" type="text/css">
+@endpush
 
 @section('content')
 <div class="">
@@ -73,17 +60,6 @@
                                 @endif
                             </div>
                         </div>
-                        
-
-                        <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="image">Image</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="file" id="image" name="image">
-                                @if ($errors->has('image'))
-                                    <span class="help-block">{{ $errors->first('image') }}</span>
-                                @endif
-                            </div>
-                        </div>
 
                         <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
@@ -113,6 +89,8 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ url('asset/sirtrevorjs/sir-trevor.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('js/sir-trevor.js') }}"></script>
     <script src="{{ asset('js/articles.js') }}"></script>
     <script src="{{ asset('js/sir-trevor-custom.js') }}"></script>
 @endpush

@@ -21,6 +21,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('articles', 'ArticleController', ['only' => ['index', 'show']]);
 
+Route::post('sir-trevor/images', 'SirTrevorController@images')->name('sirtrevor.images');
+
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function(){
 //    Route::get('/', function() {
@@ -31,7 +33,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin
     Route::resource('tags', 'TagsController');
     Route::resource('articles', 'ArticlesController');
     Route::resource('users', 'UsersController');
-
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Auth'],function(){

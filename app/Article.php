@@ -30,6 +30,13 @@ class Article extends Model {
     }
 
 
+
+    public function scopePublished($query) {
+        return $query->where('status', 1);
+    }
+
+
+
     public function getPublicationAttribute() {
         return $this->getSelectedTags(TagType::Publication);
     }
@@ -64,41 +71,48 @@ class Article extends Model {
     }
     
     
-    
-    
-    
     public function getContentAttribute() {
-        return $this->getElementContent(ElementType::Text);
-    }
-    
-    public function getImageAttribute() {
-        return $this->getElementContent(ElementType::Image);
-    }
-    
-    private function getElementContent($elementType) {
-        $content = '';
+        $data = array();
         foreach($this->elements as $element) {
-            if($element->type === $elementType) {
-                $content = $element->content;
+            $options = json_decode($element->options);
+
+            $elementData = array();
+
+            $elementData['type'] = $element->type;
+
+            switch($element->type) {
+                case ElementType::Text:
+                    $elementData['data']['text'] = $element->content;
+                    $elementData['data']['format'] = $options->format;
+                    break;
+
+                case ElementType::Image:
+                    $elementData['data']['file']['url'] = $element->content;
+                    break;
+
+                case ElementType::Video:
+                    $elementData['data']['remote_id'] = $element->content;
+                    $elementData['data']['source'] = $options->source;
+                    break;
+
+                case ElementType::ElementList:
+                    $elementData['data']['listItems'] = json_decode($element->content);
+                    $elementData['data']['format'] = $options->format;
+                    break;
             }
+
+            $data[] = $elementData;
         }
-        return $content;
-    }   
-    
+
+        $content['data'] = $data;
+        return json_encode($content);
+    }
     
     
     public function saveArticle(array $data) {
         DB::beginTransaction();
         try {
-            $this->status = $data['status'];
-            if(!$this->id_author) {
-                $this->id_author = $data['id_author'];
-            }
-            $this->title = $data['title'];
-            $this->meta_title = $data['meta_title'];
-            $this->meta_description = $data['meta_description'];
-            $this->meta_keywords = $data['meta_keywords'];
-            $this->content_description = $data['content_description'];
+            $this->populateBasicData($data);
             $this->save();
 
             $this->saveElements($data);
@@ -113,35 +127,36 @@ class Article extends Model {
         }
     }
 
+    private function populateBasicData(array $data) {
+        $this->status = $data['status'];
+        if(!$this->id_author) {
+            $this->id_author = $data['id_author'];
+        }
+        $this->title = $data['title'];
+        $this->meta_title = $data['meta_title'];
+        $this->meta_description = $data['meta_description'];
+        $this->meta_keywords = $data['meta_keywords'];
+        $this->content_description = $data['content_description'];
+    }
+
     private function saveElements(array $data) {
-        $index = 0;
-        if(!empty($data['image'])) {
-            $this->saveElement($index, ElementType::Image, $data['image']->name);
-            $index++;
+        $content = json_decode($data['content']);
+        foreach($content->data as $index => $elementData) {
+            $this->saveElement($elementData, $index);
         }
-        
-        if(!empty($data['image_old'])) {
-            $this->saveElement($index, ElementType::Image, $data['image_old']);
-            $index++;
-        }
-        
-        if(!empty($data['content'])) {
-            $this->saveElement($index, ElementType::Text, $data['content']);
-            $index++;
-        }
-        
-        while($index < count($this->elements)) {
+        for($index = count($content->data); $index < count($this->elements); $index++) {
             $this->elements()->detach($this->elements[$index]->id);
             Element::find($this->elements[$index]->id)->delete();
-            $index++;
+        }
+
+        foreach($this->elements as $index => $element) {
+
         }
     }
     
-    private function saveElement($index, $type, $content, $options = array()) {
+    private function saveElement($elementData, $index) {
         $element = count($this->elements) > $index ? $this->elements[$index] : new Element;
-        $element->content = $content;
-        $element->options = json_encode($options);
-        $element->type = $type;
+        $element->populateBasicData($elementData);
 
         if($element->id) {
             $element->save();
@@ -185,17 +200,4 @@ class Article extends Model {
             }
         }
     }
-    /*private function saveTags(array $data) {
-        $this->tags()->detach();
-        $this->tags()->attach($data['publication']);
-        $this->tags()->attach($data['type']);
-        $this->tags()->attach($data['brand']);
-        $this->tags()->attach($data['category']);
-        if(isset($data['subcategories'])) {
-            foreach($data['subcategories'] as $subcategory) {
-                $this->tags()->attach($subcategory);
-            }
-        }
-        $this->save();
-    }*/
 }

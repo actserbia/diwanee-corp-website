@@ -9,7 +9,6 @@ use App\Tag;
 use App\Constants\ArticleStatus;
 use Validator;
 use Auth;
-use App\Constants\Settings;
 
 class ArticlesController extends Controller
 {
@@ -53,8 +52,6 @@ class ArticlesController extends Controller
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
-        
-        $this->uploadImage($request);
 
         $article = new Article;
         $data['id_author'] = Auth::id();
@@ -100,20 +97,14 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-      
         $data = $request->all();
 
         $validator = $this->validator($data);
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
-        
-        $this->uploadImage($request);
   
         $article = Article::find($id);
-        if(!isset($data['image']->name) && !empty($article->image)) {
-            $data['image_old'] = $article->image;
-        }
         $article->saveArticle($data);
 
         return redirect()->route('articles.index')->with('success', "The article <strong>" . $article->title . "</strong> has successfully been updated.");
@@ -138,13 +129,5 @@ class ArticlesController extends Controller
             'category' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-    }
-    
-    private function uploadImage(Request $request) {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $image->name = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(base_path() . Settings::ImagesFolder, $image->name);
-        }
     }
 }
