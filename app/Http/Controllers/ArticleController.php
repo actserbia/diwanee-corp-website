@@ -30,14 +30,22 @@ class ArticleController extends Controller
     *     default="true",
     *     type="string"
     *   ),
-     * @SWG\Parameter(
-     *     name="skip",
-     *     in="query",
-     *     description="(default: 0)",
-     *     required=false,
-     *     default=0,
-     *     type="integer"
-     *   ),
+    * @SWG\Parameter(
+    *     name="skip",
+    *     in="query",
+    *     description="(default: 0)",
+    *     required=false,
+    *     default=0,
+    *     type="integer"
+    *   ),
+    * @SWG\Parameter(
+    *     name="limit",
+    *     in="query",
+    *     description="(default: 0)",
+    *     required=false,
+    *     default=0,
+    *     type="integer"
+    *   ),
     *   @SWG\Parameter(
     *     name="tags[]",
     *     in="query",
@@ -55,53 +63,42 @@ class ArticleController extends Controller
 
     public function index(Request $request)
     {
-        //print_r(Auth::guard('api')->id());
-        /*$params = $request->all();
-        $skip = isset($params['skip']) && is_numeric($params['skip']) ? $params['skip'] : 0;
-        $tag = isset($params['tag'])  ? $params['tag'] : null;
-        if (isset($params['active'])) {
-            $status = $params['active'] ? 1 : 0;
-        } else {
-            $status = null;
-        }
-
-        if(isset($tags)) {
-            $articles = Article::whereHas('tags', function($q) use($tags) {
-                $q->where('tag_id', '=', $tags[0]);
-            });
-            foreach($tags as $tag) {
-                $articles = $articles->whereHas('tags', function($q) use($tag) {
-                    $q->where('tag_id', '=', $tag);
-                });
-            }
-            $articles = $articles->get();
-
-        } else {
-            $articles = Article::all();
-        }*/
+        $articles =  Article::with('elements', 'tags')->orderBy('created_at', 'desc');
 
         $params = $request->all();
         if(isset($params['tags'])) {
-            $params['tags'] = explode(',', $params['tags']);
             $validator = $this->tagsValidator($params);
             if ($validator->fails()) {
                 $data = array('errors' => $validator->errors()->all());
                 return response()->json($data, 400);
             }
-        }
-
-        $articles =  Article::with('elements', 'tags')
-            ->orderBy('created_at', 'desc');
-
-
-        if(isset($params['tags'])) {
+            
             foreach($params['tags'] as $tag) {
                 $articles = $articles->whereHas('tags', function($q) use($tag) {
-                    $q->where('id_tag', '=', $tag);
+                    $q->where('name', '=', $tag);
                 });
             }
         }
-        return $articles->get();
+        
+        if(isset($params['active'])) {
+            $status = $params['active'] ? 1 : 0;
+            $articles = $articles->where('status', $status);
+        }
+        
+        $skip = isset($params['skip']) && is_numeric($params['skip']) ? $params['skip'] : 0;
+        $limit = isset($params['limit']) && is_numeric($params['limit']) ? $params['limit'] : 0;
+        if($skip > 0 && $limit == 0) {
+            $limit = 10;
+        }
+        if($skip > 0 || $limit > 0) {
+            $articles = $articles->skip($skip)->take($limit);
+        }
+        
+        $articlesData = $articles->get();
+        
+        $this->decodeContent($articlesData);
+        
+        return $articlesData;
 
     }
 
@@ -216,8 +213,14 @@ class ArticleController extends Controller
     private function tagsValidator(array $data) {
         $rules = [];
         foreach($data['tags'] as $index => $tag) {
-            $rules['tags.' . $index] = 'exists:tags,id';
+            $rules['tags.' . $index] = 'exists:tags,name';
 }
         return Validator::make($data, $rules);
+    }
+    
+    private function decodeContent($articles) {
+        foreach($articles as $article) {
+            $article->decodeContent();
+        }
     }
 }

@@ -127,7 +127,8 @@ class ArticlesController extends Controller
         return Validator::make($data, [
             'title' => 'required|max:255',
             'category' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'external_url' => 'url',
         ]);
     }
 }

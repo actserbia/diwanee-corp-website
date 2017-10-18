@@ -20,11 +20,11 @@ class ArticlesTableSeeder extends Seeder
         $faker = Faker::create();
         
         $publications = Tag::where('type', '=', 'publication')->get()->toArray();
-        $types = Tag::where('type', '=', 'type')->get()->toArray();
+        $influencers = Tag::where('type', '=', 'influencer')->get()->toArray();
         $brands = Tag::where('type', '=', 'brand')->get()->toArray();
         $categories = Tag::where('type', '=', 'category')->get();
         
-        factory(Article::class, 100)->create()->each(function ($article) use ($faker, $publications, $types, $brands, $categories) {
+        factory(Article::class, 100)->create()->each(function ($article) use ($faker, $publications, $influencers, $brands, $categories) {
             $count = $faker->numberBetween(1, 5);
             for($index = 1; $index <= $count; $index++) {
                 $element = factory(Element::class)->make();
@@ -36,7 +36,7 @@ class ArticlesTableSeeder extends Seeder
             }
             
             $article->tags()->attach($faker->randomElement($publications)['id']);
-            $article->tags()->attach($faker->randomElement($types)['id']);
+            $article->tags()->attach($faker->randomElement($influencers)['id']);
             $article->tags()->attach($faker->randomElement($brands)['id']);
             
             $category = $categories[$faker->numberBetween(0, count($categories) - 1)];
@@ -49,7 +49,7 @@ class ArticlesTableSeeder extends Seeder
     }
     
     private function addSlider($element, $faker) {
-        $count = $faker->numberBetween(1, 5);
+        $count = $faker->numberBetween(2, 5);
         for($index = 1; $index <= $count; $index++) {
             $image = factory(Element::class, ElementType::SliderImage)->make();
             $element->subelements()->save($image);

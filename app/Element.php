@@ -17,9 +17,22 @@ class Element extends Model {
     public function parentElement() {
         return $this->belongsTo(Tag::class, 'element_subelement', 'id_subelement', 'id_element');
     }
+    
+    public function getEditorContentAttribute() {
+        $elementData = array();
+        
+        $elementData['type'] = $this->type;
+        $elementData['data'] = json_decode($this->content);
 
+        return $elementData;
+    }
+    
     public function populateBasicData($elementData) {
         $this->type = $elementData->type;
         $this->content = json_encode($elementData->data);
+    }
+    
+    public function decodeContent() {
+        $this->content = json_decode($this->content);
     }
 }

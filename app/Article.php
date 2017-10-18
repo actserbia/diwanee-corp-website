@@ -41,10 +41,6 @@ class Article extends Model {
         return $this->getSelectedTags(TagType::Publication);
     }
 
-    public function getTypeAttribute() {
-        return $this->getSelectedTags(TagType::Type);
-    }
-
     public function getInfluencerAttribute() {
         return $this->getSelectedTags(TagType::Influencer);
     }
@@ -75,18 +71,22 @@ class Article extends Model {
     }
     
     
-    public function getContentAttribute() {
+    public function getEditorContentAttribute() {
         $data = array();
+        
         foreach($this->elements as $element) {
-            $elementData = array();
-            $elementData['type'] = $element->type;
-            $elementData['data'] = json_decode($element->content);
-
-            $data[] = $elementData;
+            $data[] = $element->editorContent;
         }
 
         $content['data'] = $data;
+        
         return json_encode($content);
+    }
+    
+    public function decodeContent() {
+        foreach($this->elements as $element) {
+            $element->decodeContent();
+        }
     }
     
     

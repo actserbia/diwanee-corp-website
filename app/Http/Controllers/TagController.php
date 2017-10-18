@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Tag;
-use App\Constants\TagType;
 use Validator;
 
 class TagController extends Controller
@@ -98,9 +96,8 @@ class TagController extends Controller
     }
     
     private function validator(array $data) {
-        $typesList = array(TagType::Publication, TagType::Type, TagType::Brand, TagType::Category, TagType::Subcategory);
         return Validator::make($data, [
-            'type' => 'in:' . implode(',', $typesList)
+            'type' => 'exists:tags,type'
         ]);
     }
 }
