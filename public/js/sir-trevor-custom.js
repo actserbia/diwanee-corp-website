@@ -107,7 +107,7 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Block.extend({
         seo_name: {sel: 'seoname', required: false},
         seo_alt: {sel: 'seoalt', required: false},
         caption: {sel: 'caption', required: false},
-        copyright: {sel: 'copyrigh', required: false}
+        copyright: {sel: 'copyright', required: false}
     },
 
     loadData: function(data){
@@ -163,7 +163,9 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Block.extend({
             field.setAttribute("type", "text");
             field.setAttribute("name", element.sel);
             field.setAttribute("class", element.sel);
-            field.setAttribute("value", data[element.sel]);
+            if(data !== undefined) {
+                field.setAttribute("value", data[element.sel]);
+            }
              if(element.required) {
               field.setAttribute("required", true);
             }
