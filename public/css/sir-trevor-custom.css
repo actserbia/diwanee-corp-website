@@ -16,3 +16,13 @@
     clear: both;
     margin-bottom: 5px;
 }
+
+.image-additional {
+    float: right;
+    width: 50%;
+    padding: 3px;
+}
+
+.st-block__editor img {
+    width: 50%;
+}

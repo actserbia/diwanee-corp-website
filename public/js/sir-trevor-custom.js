@@ -38,13 +38,15 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Block.extend({
             // Show this image on here
             this.inputs.style.display = 'none';
             this.editor.innerHTML = '';
+            
+            var div = document.createElement("div");
+            var t = document.createTextNode("Slider Image");
+            div.appendChild(t);
+            this.editor.appendChild(div);
+            
             var image = document.createElement("img");
             image.setAttribute("src", urlAPI.createObjectURL(file));
             this.editor.appendChild(image);
-            var span = document.createElement("span");
-            var t = document.createTextNode("Slider Image");
-            span.appendChild(t);
-            this.editor.appendChild(span);
 
             this.imageAddition();
 
@@ -68,6 +70,9 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Block.extend({
     imageAddition: function(data){
         console.log(data);
         var that = this;
+        
+        var divAddition = document.createElement("div");
+        divAddition.setAttribute("class", "image-additional");
         $.each(this.textFields, function(i, element) {
             var div = document.createElement("div");
             div.setAttribute('class', 'image_input_text');
@@ -90,8 +95,9 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Block.extend({
             div.appendChild(label);
             div.appendChild(field);
 
-            that.editor.appendChild(div);
+            divAddition.appendChild(div);
         });
+        that.editor.appendChild(divAddition);
 
     }
 
@@ -160,6 +166,9 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
     imageAddition: function(data){
         console.log(data);
         var that = this;
+        
+        var divAddition = document.createElement("div");
+        divAddition.setAttribute("class", "image-additional");
         $.each(this.textFields, function(i, element) {
             var div = document.createElement("div");
             div.setAttribute('class', 'image_input_text');
@@ -182,8 +191,9 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
             div.appendChild(label);
             div.appendChild(field);
 
-            that.editor.appendChild(div);
+            divAddition.appendChild(div);
         });
+        that.editor.appendChild(divAddition);
 
     }
 
