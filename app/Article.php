@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use League\HTMLToMarkdown\HtmlConverter;
 
 use App\Constants\TagType;
 use App\Element;
@@ -125,11 +124,6 @@ class Article extends Model {
     private function saveElements(array $data) {
         $content = json_decode($data['content']);
         foreach($content->data as $index => $elementData) {
-            $converter = new HtmlConverter();
-            if($elementData->type == 'text') {
-                $elementData->data->text = $converter->convert($elementData->data->text);
-                $elementData->data->format = "markdown";
-            }
             $this->saveElement($elementData, $index);
         }
 
