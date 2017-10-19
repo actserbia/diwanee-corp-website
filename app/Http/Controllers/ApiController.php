@@ -78,11 +78,11 @@ class ApiController extends Controller
 
     }
 
-    private function formatOutput($articles) {
-        $articlesOutput = array();
-        foreach($articles as $article) {
-            $articlesOutput[$article->id] = $article;
+    private function formatOutput($items) {
+        $itemsOutput = array();
+        foreach($items as $item) {
+            $itemsOutput[$item->id] = $item;
         }
-        return $articlesOutput;
+        return $itemsOutput;
     }
 }

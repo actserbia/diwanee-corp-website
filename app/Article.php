@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Constants\TagType;
+use App\Constants\Settings;
 use App\Element;
 use App\Tag;
 use App\User;
@@ -123,7 +124,22 @@ class Article extends Model {
 
     private function saveElements(array $data) {
         $content = json_decode($data['content']);
+        $converter = new HtmlConverter(Settings::MarkdownConverterConfig);
         foreach($content->data as $index => $elementData) {
+            if($elementData->type == 'text') {
+                $elementData->data->text = $converter->convert($elementData->data->text);
+                $elementData->data->format = "markdown";
+            }
+
+            if($elementData->type == 'list') {
+                $html = '<ul>';
+                foreach($elementData->data->listItems as $listItem) {
+                    $html .= '<li>' . $listItem->content . '</li>';
+                }
+                $html .= '</ul>';
+                $elementData->data->text = $converter->convert($html);
+                $elementData->data->format = "markdown";
+            }
             $this->saveElement($elementData, $index);
         }
 
@@ -178,5 +194,26 @@ class Article extends Model {
                 $this->tags()->attach($newTagId);
             }
         }
+    }
+
+
+    public function addSliderToElements() {
+        $data = array();
+
+        $sliderElement = new \stdClass();
+        $sliderElement->type = 'slider';
+        $sliderElement->images = array();
+        foreach($this->elements as $element) {
+            if($element->type == Constants\ElementType::SliderImage) {
+                $sliderElement->images[] = $element;
+            }
+        }
+        if(count($sliderElement->images) > 0) {
+            $this->elements[] = $sliderElement;
+        }
+
+        $content['data'] = $data;
+
+        return json_encode($content);
     }
 }

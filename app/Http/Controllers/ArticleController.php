@@ -95,7 +95,7 @@ class ArticleController extends Controller
         
         $articlesData = $articles->get();
         
-        $this->changeJsonEncodeFormat($articlesData, false);
+        $this->formatArticles($articlesData, false);
         
         return $articlesData;
 
@@ -165,7 +165,9 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        return Article::with('elements', 'tags')->find($id);
+        $article = Article::with('elements', 'tags')->find($id);
+        $article->addSliderToElements();
+        return $article;
     }
 
     /**
@@ -217,9 +219,10 @@ class ArticleController extends Controller
         return Validator::make($data, $rules);
     }
     
-    private function changeJsonEncodeFormat($articles, $encode) {
+    private function formatArticles($articles, $encode) {
         foreach($articles as $article) {
-            $article->changeJsonEncodeFormat(false);
+            $article->changeJsonEncodeFormat($encode);
+            $article->addSliderToElements();
         }
     }
 }
