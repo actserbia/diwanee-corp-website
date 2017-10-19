@@ -189,3 +189,13 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
 
 
 });
+
+
+    SirTrevor.Blocks.Heading = SirTrevor.Blocks.Heading.extend({
+        toolbarEnabled: true
+    });
+    
+    SirTrevor.Blocks.Quote = SirTrevor.Blocks.Quote.extend({
+        toolbarEnabled: true
+    });
+

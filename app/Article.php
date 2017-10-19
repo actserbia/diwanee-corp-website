@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Constants\TagType;
-use App\Constants\Settings;
 use App\Element;
 use App\Tag;
 use App\User;
@@ -84,9 +83,9 @@ class Article extends Model {
         return json_encode($content);
     }
     
-    public function changeJsonEncodeFormat($encode) {
+    public function changeFormat($jsonEncode = true, $toHtml = false) {
         foreach($this->elements as $element) {
-            $element->changeJsonEncodeFormat($encode);
+            $element->changeFormat($jsonEncode, $toHtml);
         }
     }
     
@@ -124,22 +123,8 @@ class Article extends Model {
 
     private function saveElements(array $data) {
         $content = json_decode($data['content']);
-        $converter = new HtmlConverter(Settings::MarkdownConverterConfig);
+        
         foreach($content->data as $index => $elementData) {
-            if($elementData->type == 'text') {
-                $elementData->data->text = $converter->convert($elementData->data->text);
-                $elementData->data->format = "markdown";
-            }
-
-            if($elementData->type == 'list') {
-                $html = '<ul>';
-                foreach($elementData->data->listItems as $listItem) {
-                    $html .= '<li>' . $listItem->content . '</li>';
-                }
-                $html .= '</ul>';
-                $elementData->data->text = $converter->convert($html);
-                $elementData->data->format = "markdown";
-            }
             $this->saveElement($elementData, $index);
         }
 

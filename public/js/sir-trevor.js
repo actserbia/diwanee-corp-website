@@ -4,7 +4,7 @@ $(document).ready(function() {
     window.editor = new SirTrevor.Editor({
         el:document.querySelector('.sir-trevor'),
         defaultType: 'Text',
-        blockTypes: [ 'Text', 'List', 'Quote', 'DiwaneeImage', 'Video', 'Heading', 'SliderImage' ],
+        blockTypes: [ 'Text', 'List', 'Quote', 'Heading', 'DiwaneeImage', 'Video', 'SliderImage' ],
         formatBar: {
 	      commands: [{
 	        name: "Bold",
@@ -32,7 +32,7 @@ $(document).ready(function() {
 	        iconName: "fmt-unlink",
 	        cmd: "unlink",
 	        text: "link"
-	      }, {
+	      }/*, {
 	        name: "Heading",
 	        title: "heading",
 	        iconName: "fmt-heading",
@@ -44,8 +44,8 @@ $(document).ready(function() {
 	        iconName: "fmt-quote",
 	        cmd: "quote",
 	        text: "quote"
-	      }]
-	    },
+	      }*/]
+	    }
     });
 
 });

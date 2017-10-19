@@ -7,10 +7,12 @@ use League\HTMLToMarkdown\HtmlConverter;
 use League\CommonMark\CommonMarkConverter;
 
 use App\Article;
+use App\Constants\ElementType;
+use App\Constants\Settings;
 
 class Element extends Model {
 
-    protected $textTypes = array('text', 'heading', 'quote');
+    protected $textTypes = array(ElementType::Text, ElementType::Heading, ElementType::Quote);
 
     public function articles() {
 		return $this->belongsToMany(Article::class, 'article_element', 'id_element', 'id_article');
@@ -43,9 +45,9 @@ class Element extends Model {
         $this->content = json_encode($elementData->data);
     }
     
-    public function changeJsonEncodeFormat($encode) {
-        $encode ? $this->encodeContent() : $this->decodeContent();
-        if( in_array($this->type, $this->textTypes) && $this->content->format !== 'html') {
+    public function changeFormat($jsonEncode = true, $toHtml = false) {
+        $jsonEncode ? $this->encodeContent() : $this->decodeContent();
+        if($toHtml && in_array($this->type, $this->textTypes) && $this->content->format !== 'html') {
             $converter = new CommonMarkConverter();
             $this->content->text = $converter->convertToHtml($this->content->text);
             $this->content->format = 'html';
@@ -62,25 +64,25 @@ class Element extends Model {
         if(!$this->jsonEncoded) {
             $this->content = json_encode($this->content);
         }
+    }
 
 
     protected function elementDataToMarkdown($elementData) {
-        $converter = new HtmlConverter();
+        $converter = new HtmlConverter(Settings::MarkdownConverterConfig);
         if( in_array($elementData->type, $this->textTypes) ) {
             $elementData->data->text = $converter->convert($elementData->data->text);
             $elementData->data->format = "markdown";
         }
-        /*Currently SirTrevor func parseFromMarkdown is not working well with Lists*/
-        /*else if( $elementData->type == 'list' ) {
-            $listItems = array();
-            $elementData->data->format = "markdown";
-            foreach( $elementData->data->listItems as $listItem ) {
-                $md = new \stdClass();
-                $md->content = $converter->convert($listItem->content);
-                $listItems[] = $md;
+
+        if($elementData->type == ElementType::ElementList) {
+            $html = '<ul>';
+            foreach($elementData->data->listItems as $listItem) {
+                $html .= '<li>' . $listItem->content . '</li>';
             }
-            $elementData->data->listItems = $listItems;
-        }*/
+            $html .= '</ul>';
+            $elementData->data->text = $converter->convert($html);
+            $elementData->data->format = "markdown";
+        }
         return $elementData;
     }
 }

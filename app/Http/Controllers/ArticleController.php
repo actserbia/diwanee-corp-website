@@ -95,10 +95,9 @@ class ArticleController extends Controller
         
         $articlesData = $articles->get();
         
-        $this->formatArticles($articlesData, false);
+        $this->formatArticles($articlesData, false, true);
         
         return $articlesData;
-
     }
 
     /**
@@ -219,9 +218,9 @@ class ArticleController extends Controller
         return Validator::make($data, $rules);
     }
     
-    private function formatArticles($articles, $encode) {
+    private function formatArticles($articles, $jsonEncode = true, $toHtml = false) {
         foreach($articles as $article) {
-            $article->changeJsonEncodeFormat($encode);
+            $article->changeFormat($jsonEncode, $toHtml);
             $article->addSliderToElements();
         }
     }
