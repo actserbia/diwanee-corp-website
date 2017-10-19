@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Constants\Role;
+
+use Validator;
+
 
 class UsersController extends Controller
 {
@@ -59,7 +63,10 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.users.users_edit');
+        $user = User::findOrFail($id);
+        $roles = Role::getRoles();
+
+        return view('admin.users.users_edit', ['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -71,7 +78,17 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return redirect()->route('users.index')->with('success', "The user <strong>user name</strong> has successfully been updated.");
+        $data = $request->all();
+
+        $validator = $this->validator($data);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $user = User::find($id);
+        $user->saveUser($data);
+
+        return redirect()->route('users.index')->with('success', "The user <strong>" . $user->name . "</strong> has successfully been updated.");
     }
 
     /**
@@ -83,5 +100,12 @@ class UsersController extends Controller
     public function destroy($id)
     {
         return redirect()->route('users.index')->with('success', "The user <strong>user name</strong> has successfully been archived.");
+    }
+
+    private function validator(array $data) {
+        return Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => 'email'
+        ]);
     }
 }

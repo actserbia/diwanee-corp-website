@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="">
-
     <div class="row">
 
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -32,8 +31,10 @@
                             <td>{{ $user['email'] }}</td>
                             <td>{{ $user['role'] }}</td>
                             <td>
+                                @if(Auth::user()->role == 'admin')
                                 <a href="{{ route('users.edit', ['id' => $user['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="Edit"></i> </a>
                                 <a href="{{ route('users.show', ['id' => $user['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="Delete"></i> </a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

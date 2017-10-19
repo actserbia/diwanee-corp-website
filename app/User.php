@@ -6,6 +6,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use DB;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -28,4 +30,21 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function saveUser(array $data) {
+        DB::beginTransaction();
+        try {
+            $this->name = $data['name'];
+            $this->email = $data['email'];
+            $this->role = $data['role'];
+            $this->save();
+
+            DB::commit();
+            return true;
+
+        } catch(Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
 }

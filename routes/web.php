@@ -23,16 +23,17 @@ Route::resource('articles', 'ArticleController', ['only' => ['index', 'show']]);
 
 Route::post('sir-trevor/images', 'SirTrevorController@images')->name('sirtrevor.images');
 
+//only admin can access
+Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMiddleware', 'namespace' => 'Admin'], function() {
+    Route::resource('users', 'UsersController');
+});
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function(){
-//    Route::get('/', function() {
-//      return View::make('admin.dashboard');
-//    });
     Route::get('/', 'DashboardController@index');
 
     Route::resource('tags', 'TagsController');
     Route::resource('articles', 'ArticlesController');
-    Route::resource('users', 'UsersController');
+    //Route::resource('users', 'UsersController');
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Auth'],function(){
