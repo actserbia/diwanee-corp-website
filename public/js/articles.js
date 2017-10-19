@@ -52,6 +52,7 @@ $(document).ready(function() {
         $('.subcategory-remove').click(function() {
             $('#subcategory option[value="' + $(this).data('id') + '"]').removeAttr('disabled');
             $(this).parent().remove();
+            return false;
         });
     }
 
