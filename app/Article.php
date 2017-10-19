@@ -31,8 +31,8 @@ class Article extends Model {
 
 
 
-    public function scopePublished($query) {
-        return $query->where('status', 1);
+    public function scopeWithStatus($query, $status = 1) {
+        return $query->where('status', $status);
     }
 
 

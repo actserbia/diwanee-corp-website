@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Article;
 use Auth;
 use Validator;
-use App\Http\Controllers\TagController;
 
 
 class ArticleController extends Controller
@@ -82,7 +81,7 @@ class ArticleController extends Controller
         
         if(isset($params['active'])) {
             $status = $params['active'] ? 1 : 0;
-            $articles = $articles->where('status', $status);
+            $articles = $articles->withStatus($status);
         }
         
         $skip = isset($params['skip']) && is_numeric($params['skip']) ? $params['skip'] : 0;

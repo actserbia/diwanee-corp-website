@@ -69,16 +69,16 @@ class ApiController extends Controller
     public function all(Request $request)
     {
         $articleController = new ArticleController();
-        $data['articles'] = $this->getOutput($articleController->index($request));
+        $data['articles'] = $this->formatOutput($articleController->index($request));
 
         $tagController = new TagController();
-        $data['tags'] = $this->getOutput($tagController->index($request));
+        $data['tags'] = $this->formatOutput($tagController->index($request));
 
         return $data;
 
     }
 
-    private function getOutput($articles) {
+    private function formatOutput($articles) {
         $articlesOutput = array();
         foreach($articles as $article) {
             $articlesOutput[$article->id] = $article;

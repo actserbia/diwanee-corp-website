@@ -128,7 +128,7 @@ class ArticlesController extends Controller
             'title' => 'required|max:255',
             'category' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'external_url' => 'url',
+            'external_url' => 'nullable|url',
         ]);
     }
 }
