@@ -84,9 +84,9 @@ class Article extends Model {
         return json_encode($content);
     }
     
-    public function decodeContent() {
+    public function changeJsonEncodeFormat($encode) {
         foreach($this->elements as $element) {
-            $element->decodeContent();
+            $element->changeJsonEncodeFormat($encode);
         }
     }
     

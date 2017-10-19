@@ -27,12 +27,28 @@ class Element extends Model {
         return $elementData;
     }
     
+    public function getJsonEncodedAttribute() {
+        return is_string($this->content);
+    }
+
     public function populateBasicData($elementData) {
         $this->type = $elementData->type;
         $this->content = json_encode($elementData->data);
     }
     
-    public function decodeContent() {
-        $this->content = json_decode($this->content);
+    public function changeJsonEncodeFormat($encode) {
+        $encode ? $this->encodeContent() : $this->decodeContent();
+    }
+
+    private function decodeContent() {
+        if($this->jsonEncoded) {
+            $this->content = json_decode($this->content);
+        }
+    }
+
+    private function encodeContent() {
+        if(!$this->jsonEncoded) {
+            $this->content = json_encode($this->content);
+        }
     }
 }

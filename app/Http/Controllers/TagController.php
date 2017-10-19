@@ -45,7 +45,10 @@ class TagController extends Controller
         if(isset($params['type'])) {
             $tags = $tags->where('type', '=', $params['type']);
         }
-        return $tags->get();
+
+        $tagsData = $tags->get();
+
+        return $tagsData;
     }
 
     /**
