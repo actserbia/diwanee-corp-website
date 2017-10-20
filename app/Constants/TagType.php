@@ -8,4 +8,14 @@ final class TagType {
     const Category = 'category';
     const Subcategory = 'subcategory';
     const Influencer = 'influencer';
+
+    public static function populateTypes() {
+        return array(
+            'publication' => 'Publication',
+            'brand' => 'Brand',
+            'category' => 'Category',
+            'subcategory' => 'Subcategory',
+            'influencer' => 'Influencer'
+        );
+    }
 }

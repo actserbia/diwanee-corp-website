@@ -23,4 +23,18 @@ class AjaxController extends Controller {
 
         return json_encode($tagsOutput);
     }
+
+    public function tagsByType($type) {
+        $tags = Tag::where('type', '=', $type)->get();
+
+        $tagsOutput = array();
+        foreach($tags as $tag) {
+            $tagsOutput[] = array(
+                'id' => $tag->id,
+                'name' => $tag->name
+            );
+        }
+
+        return json_encode($tagsOutput);
+    }
 }

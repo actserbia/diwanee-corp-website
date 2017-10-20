@@ -33,9 +33,9 @@ class ArticlesController extends Controller
     public function create()
     {
         $tags = Tag::all()->toArray();
-        $status = ArticleStatus::populateStatus();
+        $statuses = ArticleStatus::populateStatus();
 
-        return view('admin.articles.articles_create', ['tags' => $tags, 'status' => $status]);
+        return view('admin.articles.articles_create', ['tags' => $tags, 'statuses' => $statuses]);
     }
 
     /**
@@ -83,9 +83,9 @@ class ArticlesController extends Controller
         $article = Article::findOrFail($id);
 
         $tags = Tag::all()->toArray();
-        $status = ArticleStatus::populateStatus();
+        $statuses = ArticleStatus::populateStatus();
         
-        return view('admin.articles.articles_edit', ['article' => $article, 'tags' => $tags, 'status' => $status]);
+        return view('admin.articles.articles_edit', ['article' => $article, 'tags' => $tags, 'statuses' => $statuses]);
     }
 
     /**

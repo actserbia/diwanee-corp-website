@@ -14,27 +14,13 @@
                     <br />
                     <form method="post" action="{{ route('tags.store') }}" data-parsley-validate class="form-horizontal form-label-left">
 
-                        <div class="form-group{{ $errors->has('category') ? ' has-error' : '' }}">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category">Category <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" value="{{ Request::old('category') ?: '' }}" id="category" name="category" class="form-control col-md-7 col-xs-12">
-                                @if ($errors->has('category'))
-                                <span class="help-block">{{ $errors->first('category') }}</span>
-                                @endif
-                            </div>
-                        </div>
+                        @include('blocks.form_input', ['name' => 'name', 'label' => 'Name', 'value' => Request::old('name') ?: '', 'required' => false])
 
-                        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">Description <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" value="{{ Request::old('description') ?: '' }}" id="description" name="description" class="form-control col-md-7 col-xs-12">
-                                @if ($errors->has('description'))
-                                <span class="help-block">{{ $errors->first('description') }}</span>
-                                @endif
-                            </div>
-                        </div>
+                        @include('blocks.form_select', ['name' => 'type', 'label' => 'Type', 'items' => $types, 'selected' => Request::old('type') ?: '', 'required' => false])
+
+                        @include('blocks.form_multiple_tags', ['name' => 'parents', 'label' => 'Parents'])
+
+                        @include('blocks.form_multiple_tags', ['name' => 'children', 'label' => 'Children'])
 
                         <div class="ln_solid"></div>
 
@@ -50,4 +36,8 @@
         </div>
     </div>
 </div>
-@stop
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('js/tags.js') }}"></script>
+@endpush

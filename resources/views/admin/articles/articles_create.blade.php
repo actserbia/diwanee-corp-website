@@ -31,37 +31,19 @@
 
                         @include('blocks.form_input', ['name' => 'external_url', 'label' => 'External Url', 'value' => Request::old('external_url') ?: ''])
                         
-                        @include('blocks.tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => Request::old('publication') ?: ''])
 
-                        @include('blocks.tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => old('brand')])
+                        @include('blocks.form_tags', ['name' => 'publication', 'label' => 'Publication', 'tags' => $tags, 'selected' => Request::old('publication') ?: ''])
 
-                        @include('blocks.tags', ['name' => 'influencer', 'label' => 'Influencer', 'tags' => $tags, 'selected' => old('influencer')])
+                        @include('blocks.form_tags', ['name' => 'brand', 'label' => 'Brand', 'tags' => $tags, 'selected' => Request::old('brand')])
 
-                        @include('blocks.tags', ['name' => 'category', 'label' => 'Category', 'tags' => $tags, 'selected' => old('category'), 'required' => true])
+                        @include('blocks.form_tags', ['name' => 'influencer', 'label' => 'Influencer', 'tags' => $tags, 'selected' => Request::old('influencer')])
 
-                        @include('blocks.tags', ['name' => 'subcategory', 'label' => 'Subcategory', 'tags' => []])
+                        @include('blocks.form_tags', ['name' => 'category', 'label' => 'Category', 'tags' => $tags, 'selected' => Request::old('category'), 'required' => true])
 
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div id="selected-subcategories"></div>
-                                <div id="selected-subcategories-hidden"></div>
-                            </div>
-                        </div>
+                        @include('blocks.form_multiple_tags', ['name' => 'subcategories', 'label' => 'Subcategories'])
 
-                        <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <select id="status" name="status" class="form-control col-md-7 col-xs-12">
-                                    @foreach ($status as $id => $name)
-                                        <option value="{{ $id }}" @if (Request::old('status') == $id) selected @endif>{{ $name }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('status'))
-                                    <span class="help-block">{{ $errors->first('status') }}</span>
-                                @endif
-                            </div>
-                        </div>
+
+                        @include('blocks.form_select', ['name' => 'status', 'label' => 'Status', 'items' => $statuses, 'selected' => '0', 'required' => true])
 
                         <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>

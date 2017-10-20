@@ -2,15 +2,14 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ $name }}">{{ $label }} @if(!empty($required) && $required)<span class="required">*</span>@endif</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         <select class="form-control col-md-7 col-xs-12" id="{{ $name }}" name="{{ $name }}" @if(!empty($required) && $required) required @endif>
-            @if (!empty($tags))
+            @if (!empty($items))
                 <option value=""></option>
-                @foreach ($tags as $tag)
-                    @if ($tag['type'] === $name)
-                        <option value="{{ $tag['id'] }}" @if(!empty($selected) && $selected == $tag['id']) selected @endif>{{ $tag['name'] }}</option>
-                    @endif
+                @foreach ($items as $itemValue => $itemTitle)
+                    <option value="{{ $itemValue }}" @if(isset($selected) && $selected == $itemValue) selected @endif>{{ $itemTitle }}</option>
                 @endforeach
             @endif
         </select>
+
         @if ($errors->has($name))
             <span class="help-block">{{ $errors->first($name) }}</span>
         @endif

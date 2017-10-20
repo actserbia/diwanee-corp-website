@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
+use App\Constants\TagType;
+use Validator;
 
 class TagsController extends Controller
 {
@@ -26,7 +28,9 @@ class TagsController extends Controller
      */
     public function create()
     {
-        return view('admin.tags.tags_create');
+        $types = TagType::populateTypes();
+
+        return view('admin.tags.tags_create', ['types' => $types]);
     }
 
     /**
@@ -37,7 +41,17 @@ class TagsController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->route('tags.index')->with('success', "The tag <strong>Category</strong> has successfully been created.");
+        $data = $request->all();
+
+        $validator = $this->validator($data);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $tag = new Tag;
+        $tag->saveTag($data);
+
+        return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been created.");
     }
 
     /**
@@ -48,7 +62,8 @@ class TagsController extends Controller
      */
     public function show($id)
     {
-        return view('admin.tags.tags_delete');
+        $tag = Tag::findOrFail($id)->toArray();
+        return view('admin.tags.tags_delete', ['tag' => $tag]);
     }
 
     /**
@@ -59,7 +74,19 @@ class TagsController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.tags.tags_edit');
+        $tag = Tag::findOrFail($id);
+
+        $types = TagType::populateTypes();
+
+        $parentsByType = array();
+        $parentsByType['subcategory'] = 'category';
+        $parentsList = isset($parentsByType[$tag->type]) ? Tag::where('type', '=', $parentsByType[$tag->type])->get() : null;
+
+        $childrenByType = array();
+        $childrenByType['category'] = 'subcategory';
+        $childrenList = isset($childrenByType[$tag->type]) ? Tag::where('type', '=', $childrenByType[$tag->type])->get() : null;
+
+        return view('admin.tags.tags_edit', ['tag' => $tag, 'types' => $types, 'parentsList' => $parentsList, 'childrenList' => $childrenList]);
     }
 
     /**
@@ -71,7 +98,17 @@ class TagsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return redirect()->route('tags.index')->with('success', "The tag <strong>Category</strong> has successfully been updated.");
+        $data = $request->all();
+
+        $validator = $this->validator($data);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $tag = Tag::find($id);
+        $tag->saveTag($data);
+
+        return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been updated.");
     }
 
     /**
@@ -82,6 +119,15 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        return redirect()->route('tags.index')->with('success', "The tag <strong>Category</strong> has successfully been archived.");
+        $tag = Tag::find($id);
+        $tag->delete();
+        return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been archived.");
+    }
+
+    private function validator(array $data) {
+        return Validator::make($data, [
+            'name' => 'required|max:255',
+            'type' => 'required'
+        ]);
     }
 }

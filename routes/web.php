@@ -52,4 +52,5 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth'],function(){
 
 Route::group(['prefix' => 'ajax'], function() {
     Route::get('/subcategories/{category_id?}', 'AjaxController@subcategories')->name('subcategories');
+    Route::get('/tags/{type}', 'AjaxController@tagsByType')->name('tags.by.type');
 });
