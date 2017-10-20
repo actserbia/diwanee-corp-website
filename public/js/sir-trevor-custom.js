@@ -18,13 +18,17 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Block.extend({
         console.log(data.file.url);
         // Create our image tag
         this.editor.innerHTML = '';
+        
+        var div = document.createElement("div");
+        var t = document.createTextNode("Slider Image");
+        div.appendChild(t);
+        this.editor.appendChild(div);
+        
+        var div = document.createElement("div");
         var image = document.createElement("img");
         image.setAttribute("src", data.file.url);
-        var span = document.createElement("span");
-        var t = document.createTextNode("Slider Image");
-        span.appendChild(t);
         this.editor.appendChild(image);
-        this.editor.appendChild(span);
+        
         this.imageAddition(data);
     },
 
