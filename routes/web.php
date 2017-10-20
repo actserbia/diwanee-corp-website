@@ -11,13 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('articles', 'ArticleController', ['only' => ['index', 'show']]);
 
@@ -28,7 +24,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMid
     Route::resource('users', 'UsersController');
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\EditorMiddleware', 'namespace' => 'Admin'], function(){
     Route::get('/', 'DashboardController@index');
 
     Route::resource('tags', 'TagsController');

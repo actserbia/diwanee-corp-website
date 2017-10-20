@@ -19,7 +19,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $userdetail = User::get()->toArray();
+        $userdetail = User::withTrashed()->get()->toArray();
         return view('admin.users.users_list', compact('userdetail'));
     }
 
@@ -99,6 +99,8 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        $user = User::find($id);
+        $user->delete();
         return redirect()->route('users.index')->with('success', "The user <strong>user name</strong> has successfully been archived.");
     }
 
