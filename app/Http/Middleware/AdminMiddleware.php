@@ -15,9 +15,10 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user()->role != 'admin')
+        if ($request->user() === null || $request->user()->role != 'admin')
         {
-            return redirect('home');
+            abort(403, 'Unauthorized action.');
+            return redirect('/');
         }
 
         return $next($request);

@@ -28,9 +28,12 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        Diwanee
+                    @if(Auth::admin() || Auth::editor())
+                    <a class="navbar-brand" href="{{ url('/admin') }}">
+                        Admin Panel
                     </a>
+                    @endif
+
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">

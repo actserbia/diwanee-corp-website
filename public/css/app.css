@@ -78,6 +78,10 @@ h1 {
   font-size: 2em;
   margin: 0.67em 0;
 }
+h1.big-title {
+  font-size: 84px;
+  margin-bottom: 30px;
+}
 
 mark {
   background: #ff0;
@@ -8350,3 +8354,8 @@ button.close {
   }
 }
 
+.flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
