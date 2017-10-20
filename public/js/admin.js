@@ -20,9 +20,11 @@ $(document).ready(function() {
 
     $.fn.populateTags = function(mainValue) {
         $(this).each(function(index, object) {
-            var tagsName = $(this).attr('id'); // parents or children
+            var tagsName = $(this).attr('id'); // parents or children or subcategories
+            
             $(this).empty();
             $('#selected-' + tagsName).empty();
+            
             var ajaxUrl = getAjaxUrl(mainValue, tagsName);
             if(ajaxUrl !== '') {
                 var thisObject = $(this);
@@ -64,7 +66,7 @@ $(document).ready(function() {
 
     $.fn.disableSelectedTags = function() {
         $(this).each(function(index, object) {
-            var tagsName = $(this).data('tags-type'); // parents or children
+            var tagsName = $(this).data('tags-type'); // parents or children or subcategories
             $('#' + tagsName + ' option[value="' + $(this).data('id') + '"]').attr('disabled', 'disabled');
         });
     };
@@ -72,7 +74,7 @@ $(document).ready(function() {
     $.fn.addRemoveSelectedEvents = function() {
         $(this).each(function(index, object) {
             $(this).click(function() {
-                var tagsName = $(this).data('tags-type'); // parents or children
+                var tagsName = $(this).data('tags-type'); // parents or children or subcategories
                 $('#' + tagsName + ' option[value="' + $(this).data('id') + '"]').removeAttr('disabled');
                 $(this).parent().remove();
                 return false;
@@ -82,7 +84,7 @@ $(document).ready(function() {
 
     $.fn.populateMultipleTagsFormData = function() {
         $(this).each(function(index, object) {
-            var tagsName = $(this).data('tags-type'); // parents or children
+            var tagsName = $(this).data('tags-type'); // parents or children or subcategories
             if(index === 0) {
                 $('#selected-' + tagsName + '-hidden').empty();
             }
