@@ -39,5 +39,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/tags.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
 @endpush

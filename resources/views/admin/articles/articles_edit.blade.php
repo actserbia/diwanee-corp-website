@@ -76,6 +76,6 @@
 @push('scripts')
     <script src="{{ url('asset/sirtrevorjs/sir-trevor.js')}}" type="text/javascript"></script>
     <script src="{{ asset('js/sir-trevor.js') }}"></script>
-    <script src="{{ asset('js/articles.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}"></script>
     <script src="{{ asset('js/sir-trevor-custom.js') }}"></script>
 @endpush

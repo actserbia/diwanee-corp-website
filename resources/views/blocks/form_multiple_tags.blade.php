@@ -10,7 +10,7 @@
             <div id="selected-{{ $name }}">
                 @if (isset($selectedTags))
                     @foreach ($selectedTags as $tag)
-                        <div>{{ $tag->name }} <a href="#" class="{{ $name }}-remove-selected" data-tags-type="{{ $name }}" data-id="{{ $tag->id }}">x</a></div>
+                        <div>{{ $tag->name }} <a href="#" class="{{ $name }}-remove-selected" data-id="{{ $tag->id }}" data-tags-type="{{ $name }}">x</a></div>
                     @endforeach
                 @endif
             </div>
