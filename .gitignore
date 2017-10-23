@@ -22,7 +22,7 @@ yarn-error.log
 .rocketeer/
 
 ### NetBeans ###
-nbproject/private/
+nbproject/
 build/
 nbbuild/
 dist/
@@ -90,3 +90,6 @@ fabric.properties
 public/vendor/l5-swagger
 resources/views/vendor/l5-swagger
 storage/api-docs
+
+public/fonts
+public/mix-manifest.json
