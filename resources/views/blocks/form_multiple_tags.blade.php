@@ -1,4 +1,4 @@
-@if (empty($tags)) {
+@if (empty($tags))
     @include('blocks.form_select_object', ['name' => $name, 'label' => $label, 'itemKey' => 'id', 'itemTitle' => 'name'])
 @else
     @include('blocks.form_select_object', ['name' => $name, 'label' => $label, 'items' => $tags, 'itemKey' => 'id', 'itemTitle' => 'name'])
