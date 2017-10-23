@@ -16,6 +16,10 @@
     clear: both;
     margin-bottom: 5px;
 }
+.image-additional a {
+    color: #456686;
+}
+
 
 /*.image-additional {
     float: right;
