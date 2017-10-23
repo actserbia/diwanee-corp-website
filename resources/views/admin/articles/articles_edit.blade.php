@@ -1,4 +1,4 @@
-@extends('templates.admin.layout')
+@extends('layouts.admin')
 
 @push('stylesheets')
     <link rel="stylesheet" href="{{ url('asset/sirtrevorjs/sir-trevor.css')}}" type="text/css">
