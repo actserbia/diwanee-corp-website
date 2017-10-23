@@ -4,6 +4,7 @@
 }
 .image_input_text label {
     margin-bottom: 2px;
+    font-weight: normal;
 }
 .image_input_text input[type="text"], .image_input_text input[type="text"]:active, .image_input_text input[type="text"]:focus {
     border: 1px solid #e5e5e5 !important;
@@ -17,7 +18,17 @@
     margin-bottom: 5px;
 }
 .image-additional a {
-    color: #456686;
+    color: #8495a7;
+    font-weight: bold;
+}
+.image-additional {
+    padding: 7px;
+}
+.image-additional .fa-chevron:after {
+    content: "\f078";
+}
+.image-additional a.collapsed .fa-chevron:after {
+    content: "\f054";
 }
 
 

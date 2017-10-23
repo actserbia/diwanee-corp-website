@@ -66,7 +66,11 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
         var a = document.createElement("a");
         a.setAttribute("data-toggle", "collapse");
         a.setAttribute("data-target", "#image-add"+that.blockID);
+        a.setAttribute("class", "collapsed");
         a.innerHTML = "Image data";
+        var i = document.createElement("i");
+        i.setAttribute("class", "fa fa-chevron fa-fw");
+        a.appendChild(i);
         divAddition.appendChild(a);
 
         var divCollapsable = document.createElement("div");
