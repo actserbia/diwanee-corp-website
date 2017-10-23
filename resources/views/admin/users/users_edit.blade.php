@@ -17,7 +17,7 @@
 
                         @include('blocks.form_input', ['name' => 'name', 'label' => 'Name', 'value' => $user->name, 'required' => true])
 
-                        @include('blocks.form_input', ['name' => 'email', 'label' => 'Email', 'value' => $user->email, 'required' => true])
+                        @include('blocks.form_input', ['name' => 'email', 'label' => 'Email', 'value' => $user->email, 'required' => true, 'readonly' => true])
 
 
                         <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">

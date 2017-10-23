@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@push('stylesheets')
+<link rel="stylesheet" href="{{ url('css/admin-custom.css')}}" type="text/css">
+@endpush
+
 @section('content')
 <div class="">
 
@@ -35,14 +39,16 @@
                         <tbody>
 
                         @foreach($articles as $article)
-                        <tr>
+                        <tr @if($article['deleted_at']!=null) class="deleted" @endif>
                             <td>{{ $article['id'] }}</td>
                             <td>{{ $article['title'] }}</td>
                             <td>{{ $article['status'] }}</td>
                             <td>{{ $article['created_at'] }}</td>
                             <td>
+                                @if($article['deleted_at'] == null)
                                 <a href="{{ route('articles.edit', ['id' => $article['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="Edit"></i> </a>
                                 <a href="{{ route('articles.show', ['id' => $article['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="Delete"></i> </a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
