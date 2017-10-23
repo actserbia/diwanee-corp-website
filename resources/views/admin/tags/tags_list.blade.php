@@ -39,7 +39,6 @@
                             <td>{{ $tag['type'] }}</td>
                             <td>{{ $tag['created_at'] }}</td>
                             <td>
-                                <a href="{{ route('home', ['id' => $tag['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-eye" title="View"></i> </a>
                                 <a href="{{ route('tags.edit', ['id' => $tag['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="Edit"></i> </a>
                                 <a href="{{ route('tags.show', ['id' => $tag['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="Delete"></i> </a>
                             </td>
