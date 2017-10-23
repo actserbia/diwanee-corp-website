@@ -22,10 +22,16 @@ Route::get('/', 'ApiController@all');
 Route::get('articles', 'ArticleController@index');
 Route::get('articles/{id}', 'ArticleController@show');
 Route::get('tags', 'TagController@index');
-Route::get('tags/{id}', 'TagController@show');
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::post('articles', 'ArticleController@store');
     Route::put('articles/{id}', 'ArticleController@update');
     Route::delete('articles/{article}', 'ArticleController@destroy');
+
+    Route::get('tags/{id}', 'TagController@show');
+
 });
+
+Route::post('tags', 'TagController@store');
+Route::put('tags/{id}', 'TagController@update');
+Route::delete('tags/{id}', 'TagController@destroy');

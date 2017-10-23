@@ -17,12 +17,6 @@
  * 			@SWG\Property(property="title", type="string"), *
  * 			@SWG\Property(property="status", type="integer"),
  * 	 ),
- *   @SWG\Definition(
- * 			definition="Tag",
- * 			required={"name"},
- * 			@SWG\Property(property="id", type="integer"),
- * 			@SWG\Property(property="name", type="string"), *
- * 	 ),
  *   security={{"api_key_security":{}}} *
  * )
  */

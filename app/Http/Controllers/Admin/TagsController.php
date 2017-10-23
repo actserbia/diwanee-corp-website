@@ -126,8 +126,9 @@ class TagsController extends Controller
 
     private function validator(array $data) {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'type' => 'required'
+            'name' => 'required|unique:tags|max:255',
+            'type' => 'exists:tags,type',
+            'parents.*' => 'exists:tags,id',
         ]);
     }
 }

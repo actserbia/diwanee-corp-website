@@ -55,6 +55,7 @@ class Tag extends Model {
 
     private function saveParents(array $data) {
         $newParents = isset($data['parents']) ? $data['parents'] : array();
+
         $this->changeParents($newParents);
 
         $this->save();

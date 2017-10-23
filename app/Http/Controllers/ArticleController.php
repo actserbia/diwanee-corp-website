@@ -19,6 +19,7 @@ class ArticleController extends Controller
     /**
     *   @SWG\Get(
     *   path="/articles",
+    *   tags={"articles"},
     *   summary="List articles",
     *   operationId="index",
     *   @SWG\Parameter(
@@ -56,6 +57,7 @@ class ArticleController extends Controller
     *     collectionFormat="multi"
     *   ),
     *   @SWG\Response(response=200, description="successful operation"),
+    *   @SWG\Response(response=400, description="validation error"),
     *   @SWG\Response(response=406, description="not acceptable"),
     *   @SWG\Response(response=500, description="internal server error")
     * )
@@ -101,16 +103,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @return Response
@@ -141,6 +133,7 @@ class ArticleController extends Controller
     /**
      * @SWG\Get(
      *   path="/articles/{id}",
+     *   tags={"articles"},
      *   summary="Article by ID",
      *   operationId="show",
      *   @SWG\Parameter(
@@ -158,6 +151,7 @@ class ArticleController extends Controller
      *     type="string"
      *   ),
      *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Article"),),
+     *   @SWG\Response(response=400, description="validation error"),
      *   @SWG\Response(response=406, description="not acceptable"),
      *   @SWG\Response(response=500, description="internal server error")
      * )
