@@ -45,8 +45,15 @@ $(document).ready(function() {
                                 text: tag['name']
                             }));
                         });
+                        
+                        $(this).showOrHide();
+                    },
+                    error: function () {
+                        $(this).showOrHide();
                     }
                 });
+            } else {
+                $(this).showOrHide();
             }
         });
     };
@@ -91,6 +98,24 @@ $(document).ready(function() {
             $('#selected-' + tagsName + '-hidden').append('<input type="hidden" name="' + tagsName + '[]" value="' + $(this).data('id') + '"/>');
         });
     };
+    
+    $.fn.showOrHide = function() {
+        $(this).each(function(index, object) {
+            var tagsName = $(this).attr('id'); // parents or children or subcategories
+            
+            if($(this).children('option').length > 1) {
+                if(!$(this).parent().parent().is(":visible")) {
+                    $(this).parent().parent().fadeIn('slow');
+                    $('#selected-' + tagsName).parent().parent().fadeIn('slow');
+                }
+            } else {
+                if($(this).parent().parent().is(":visible")) {
+                    $(this).parent().parent().fadeOut('slow');
+                    $('#selected-' + tagsName).parent().parent().fadeOut('slow');
+                }
+            }
+        });
+    };
 
 
     $('#type').change(function() {
@@ -104,6 +129,7 @@ $(document).ready(function() {
     $('#subcategories, #parents, #children').addAddSelectedEvents();
     $('.subcategories-remove-selected, .parents-remove-selected, .children-remove-selected').addRemoveSelectedEvents();
 
+    $('#subcategories, #parents, #children').showOrHide();
     $('.subcategories-remove-selected, .parents-remove-selected, .children-remove-selected').disableSelectedTags();
 
     $('.btn-success').click(function() {

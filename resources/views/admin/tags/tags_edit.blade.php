@@ -18,9 +18,9 @@
                         @include('blocks.form_select', ['name' => 'type', 'label' => 'Type', 'items' => $types, 'selected' => $tag->type, 'required' => true])
 
 
-                        @include('blocks.form_multiple_tags', ['name' => 'parents', 'label' => 'Parents', 'tags' => $parentsList, 'selectedTags' => $tag->parents])
+                        @include('blocks.form_multiple_tags', ['name' => 'parents', 'label' => 'Parents', 'items' => $parentsList, 'selectedItems' => $tag->parents])
 
-                        @include('blocks.form_multiple_tags', ['name' => 'children', 'label' => 'Children', 'tags' => $childrenList, 'selectedTags' => $tag->children])
+                        @include('blocks.form_multiple_tags', ['name' => 'children', 'label' => 'Children', 'items' => $childrenList, 'selectedItems' => $tag->children])
 
 
                         <div class="ln_solid"></div>

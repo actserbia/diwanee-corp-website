@@ -6,12 +6,8 @@ use App\Tag;
 
 
 class AjaxController extends Controller {
-    public function subcategories($category = 0) {
-        if($category !== 0) {
-            $tags = Tag::findOrFail($category)->children;
-        } else {
-            $tags = Tag::where('type', '=', 'subcategory')->get();
-        }
+    public function subcategories($category) {
+        $tags = Tag::findOrFail($category)->children;
 
         $tagsOutput = array();
         foreach($tags as $tag) {

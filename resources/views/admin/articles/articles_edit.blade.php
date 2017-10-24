@@ -40,7 +40,7 @@
 
                         @include('blocks.form_tags', ['name' => 'category', 'label' => 'Category', 'tags' => $tags, 'selected' => !empty($article->category) ? $article->category->id : '', 'required' => true])
 
-                        @include('blocks.form_multiple_tags', ['name' => 'subcategories', 'label' => 'Subcategories', 'tags' => $article->category->children, 'selectedTags' => $article->subcategories])
+                        @include('blocks.form_multiple_tags', ['name' => 'subcategories', 'label' => 'Subcategories', 'items' => $article->category->children, 'selectedItems' => $article->subcategories])
 
 
                         @include('blocks.form_select', ['name' => 'status', 'label' => 'Status', 'items' => $statuses, 'selected' => $article->status, 'required' => true])

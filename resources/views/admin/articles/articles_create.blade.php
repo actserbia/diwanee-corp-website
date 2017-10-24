@@ -42,7 +42,6 @@
 
                         @include('blocks.form_multiple_tags', ['name' => 'subcategories', 'label' => 'Subcategories'])
 
-
                         @include('blocks.form_select', ['name' => 'status', 'label' => 'Status', 'items' => $statuses, 'selected' => '0', 'required' => true])
 
                         <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
