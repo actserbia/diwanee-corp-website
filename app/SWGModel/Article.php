@@ -51,21 +51,21 @@ class Article {
     public $status;
 
     /**
-     * @SWG\Property()
+     * @SWG\Property(example="")
      *
      * @var integer
      */
     public $publication;
 
     /**
-     * @SWG\Property()
+     * @SWG\Property(example="")
      *
      * @var integer
      */
     public $brand;
 
     /**
-     * @SWG\Property()
+     * @SWG\Property(example="")
      *
      * @var integer
      */
@@ -85,7 +85,7 @@ class Article {
     public $subcategories;
 
     /**
-     * @SWG\Property()
+     * @SWG\Property(example="")
      *
      * @var integer
      */
@@ -93,16 +93,7 @@ class Article {
 
     /**
      * @SWG\Property(
-     *     example = {
-     *          "data": {{
-     *                  "type": "text",
-     *                  "data": {
-     *                      "text": "",
-     *                      "format": "html"
-     *                  }
-     *              }
-     *          }
-     *     },
+     *     example = "",
      * )
      *
      * @var string

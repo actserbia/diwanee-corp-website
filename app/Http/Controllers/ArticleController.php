@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Article;
 use Auth;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use App\Rules\CheckSTContent;
 
 
@@ -160,7 +160,7 @@ class ArticleController extends Controller
      *        required=true,
      *        @SWG\Schema(ref="#/definitions/Article"),
      *    ),
-     * @SWG\Response(response=201, description="successful operation", @SWG\Schema(ref="#/definitions/Article")),
+     * @SWG\Response(response=201, description="successful operation")),
      * @SWG\Response(response=405, description="validation exception"),
      * @SWG\Response(response=500, description="internal server error")
      * )
@@ -208,7 +208,7 @@ class ArticleController extends Controller
      *        required=true,
      *        @SWG\Schema(ref="#/definitions/Article"),
      *    ),
-     * @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Article")),
+     * @SWG\Response(response=200, description="successful operation"),
      * @SWG\Response(response=405, description="validation exception"),
      * @SWG\Response(response=500, description="internal server error")
      * )
@@ -275,10 +275,10 @@ class ArticleController extends Controller
         return Validator::make($data, [
             'title' => 'required|max:255',
             'external_url' => 'nullable|url',
-            'publication' => 'exists:tags,id|checkTagType:publication',
-            'brand' => 'exists:tags,id|checkTagType:brand',
+            'publication' => 'nullable|exists:tags,id|checkTagType:publication',
+            'brand' => 'nullable|exists:tags,id|checkTagType:brand',
             'category' => 'required|exists:tags,id|checkTagType:category',
-            'influencer' => 'exists:tags,id|checkTagType:influencer',
+            'influencer' => 'nullable|exists:tags,id|checkTagType:influencer',
             'subcategories.*' => 'exists:tags,id|checkTagType:subcategory',
             'content' => [new CheckSTContent]
         ]);

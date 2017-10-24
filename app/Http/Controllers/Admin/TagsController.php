@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
 use App\Constants\TagType;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class TagsController extends Controller
 {
@@ -43,7 +43,7 @@ class TagsController extends Controller
     {
         $data = $request->all();
 
-        $validator = $this->validator($data);
+        $validator = $this->validator($data, 0);
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
@@ -100,7 +100,7 @@ class TagsController extends Controller
     {
         $data = $request->all();
 
-        $validator = $this->validator($data);
+        $validator = $this->validator($data, $id);
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
@@ -124,11 +124,12 @@ class TagsController extends Controller
         return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been archived.");
     }
 
-    private function validator(array $data) {
+    private function validator(array $data, $id) {
         return Validator::make($data, [
-            'name' => 'required|unique:tags|max:255',
-            'type' => 'exists:tags,type',
-            'parents.*' => 'exists:tags,id',
+            'name' => 'required|unique:tags,id,' . $id . '|max:255',
+            'type' => 'required|exists:tags,type',
+            'parents.*' => 'exists:tags,id|checkTagType:category',
+            'children.*' => 'exists:tags,id|checkTagType:subcategory',
         ]);
     }
 }

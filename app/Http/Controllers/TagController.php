@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class TagController extends Controller
 {
@@ -218,7 +218,7 @@ class TagController extends Controller
     private function validator(array $data, $id) {
         return Validator::make($data, [
             'name' => 'required|unique:tags,id,' . $id . '|max:255',
-            'type' => 'exists:tags,type',
+            'type' => 'required|exists:tags,type',
             'parents.*' => 'exists:tags,id|checkTagType:category',
             'children.*' => 'exists:tags,id|checkTagType:subcategory',
         ]);

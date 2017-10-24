@@ -7,8 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Article;
 use App\Tag;
 use App\Constants\ArticleStatus;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Auth;
+
 
 class ArticlesController extends Controller
 {
@@ -50,6 +51,7 @@ class ArticlesController extends Controller
 
         $validator = $this->validator($data);
         if ($validator->fails()) {
+            print_r($validator->errors()->all());die();
             return back()->withInput()->withErrors($validator);
         }
 
@@ -126,9 +128,12 @@ class ArticlesController extends Controller
     private function validator(array $data) {
         return Validator::make($data, [
             'title' => 'required|max:255',
-            'category' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'external_url' => 'nullable|url',
+            'publication' => 'nullable|exists:tags,id|checkTagType:publication',
+            'brand' => 'nullable|exists:tags,id|checkTagType:brand',
+            'category' => 'required|exists:tags,id|checkTagType:category',
+            'influencer' => 'nullable|exists:tags,id|checkTagType:influencer',
+            'subcategories.*' => 'exists:tags,id|checkTagType:subcategory',
+            'external_url' => 'nullable|url'
         ]);
     }
 }

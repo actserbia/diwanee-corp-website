@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        Validator::extend('checkTagType', function ($attribute, $value, $parameters, $validator) {
+        Validator::extend('checkTagType', function ($attribute, $value, $parameters) {
             $tag = Tag::find($value);
             return $tag['type'] == $parameters[0];
         });
