@@ -17,7 +17,7 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('articles', 'ArticleController', ['only' => ['index', 'show']]);
 
-Route::post('sir-trevor/images', 'SirTrevorController@images')->name('sirtrevor.images');
+Route::post('sirtrevor/upload-image', 'ImagesController@uploadSirTrevorImage')->name('sirtrevor.upload.image');
 
 //only admin can access
 Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMiddleware', 'namespace' => 'Admin'], function() {

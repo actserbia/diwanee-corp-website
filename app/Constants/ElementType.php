@@ -11,4 +11,17 @@ final class ElementType {
     const ElementList = 'list';
     const Heading = 'heading';
     const Quote = 'quote';
+
+    public static function populateTypes() {
+        return array(
+            'text',
+            'image',
+            'slider_image',
+            'diwanee_image',
+            'video',
+            'list',
+            'heading',
+            'quote'
+        );
+    }
 }

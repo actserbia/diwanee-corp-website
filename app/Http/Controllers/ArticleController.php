@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Article;
 use Auth;
 use Validator;
+use App\Rules\CheckSTContent;
 
 
 class ArticleController extends Controller
@@ -103,28 +104,6 @@ class ArticleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        $data = $request->all();
-
-        $validator = $this->validator($data);
-        if ($validator->fails()) {
-            $data = array('errors' => $validator->errors()->all());
-            return response()->json($data, 400);
-        }
-
-        $article = new Article;
-        $data['id_author'] = Auth::guard('api')->id();
-        $article->saveArticle($data);
-
-        return response()->json($article, 201);
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -164,22 +143,87 @@ class ArticleController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    /**
+     * @SWG\Post(
+     *    path="/articles",
+     *    tags={"articles"},
+     *    summary="Create article",
+     *    operationId="store",
+     *    @SWG\Parameter(
+     *        name="body",
+     *        in="body",
+     *        description="Article object that will be created",
+     *        required=true,
+     *        @SWG\Schema(ref="#/definitions/Article"),
+     *    ),
+     * @SWG\Response(response=201, description="successful operation", @SWG\Schema(ref="#/definitions/Article")),
+     * @SWG\Response(response=405, description="validation exception"),
+     * @SWG\Response(response=500, description="internal server error")
+     * )
+    **/
+    public function store(Request $request)
+    {
+        $data = $request->all();
+
+        $errors = $this->validateData($data);
+        if (!empty($errors)) {
+            $data = array('errors' => $errors);
+            return response()->json($data, 405);
+        }
+
+        $article = new Article;
+        $data['id_author'] = Auth::guard('api')->id();
+        $article->saveArticle($data);
+
+        return response()->json($article, 201);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
      * @return Response
      */
+    /**
+     * @SWG\Put(
+     *    path="/articles/{id}",
+     *    tags={"articles"},
+     *    summary="Update an existing article",
+     *    operationId="update",
+     *    @SWG\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Target article",
+     *      required=true,
+     *      type="integer"
+     *    ),
+     *    @SWG\Parameter(
+     *        name="body",
+     *        in="body",
+     *        description="Article object that will be updated",
+     *        required=true,
+     *        @SWG\Schema(ref="#/definitions/Article"),
+     *    ),
+     * @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Article")),
+     * @SWG\Response(response=405, description="validation exception"),
+     * @SWG\Response(response=500, description="internal server error")
+     * )
+    **/
     public function update($id, Request $request)
     {
         $data = $request->all();
 
-        $validator = $this->validator($data);
-        if ($validator->fails()) {
-            $data = array('errors' => $validator->errors()->all());
-            return response()->json($data, 400);
+        $errors = $this->validateData($data);
+        if (!empty($errors)) {
+            $data = array('errors' => $errors);
+            return response()->json($data, 405);
         }
 
-        $article = Article::find($id);
+        $article = Article::findOrFail($id);
         $article->saveArticle($data);
 
         return response()->json($article, 200);
@@ -191,16 +235,52 @@ class ArticleController extends Controller
      * @param  Article  $article
      * @return Response
      */
-    public function destroy(Article $article) {
+    /**
+     * @SWG\Delete(
+     *     path="/articles/{id}",
+     *     tags={"articles"},
+     *     operationId="destroy",
+     *     summary="Delete an existing article",
+     *     description="",
+     *     @SWG\Parameter(
+     *        name="id",
+     *        in="path",
+     *        description="Target article",
+     *        required=true,
+     *        type="integer"
+     *     ),
+     *     @SWG\Response(response=204, description="successful operation"),
+     *     @SWG\Response(response=404, description="Article not found")
+     * )
+    */
+    public function destroy($id) {
+        $article = Article::findOrFail($id);
         $article->delete();
 
         return response()->json(null, 204);
     }
 
+    private function validateData(array $data) {
+        $errors = array();
+
+        $validator = $this->validator($data);
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+        }
+
+        return $errors;
+    }
+
     private function validator(array $data) {
         return Validator::make($data, [
             'title' => 'required|max:255',
-            'category' => 'required'
+            'external_url' => 'nullable|url',
+            'publication' => 'exists:tags,id|checkTagType:publication',
+            'brand' => 'exists:tags,id|checkTagType:brand',
+            'category' => 'required|exists:tags,id|checkTagType:category',
+            'influencer' => 'exists:tags,id|checkTagType:influencer',
+            'subcategories.*' => 'exists:tags,id|checkTagType:subcategory',
+            'content' => [new CheckSTContent]
         ]);
     }
     

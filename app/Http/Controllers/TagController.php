@@ -29,19 +29,12 @@ class TagController extends Controller
     *   ),
     *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/Tag"))),
     *   @SWG\Response(response=405, description="validation exception"),
-    *   @SWG\Response(response=406, description="not acceptable"),
     *   @SWG\Response(response=500, description="internal server error")
     * )
     **/
     public function index(Request $request)
     {
         $params = $request->all();
-        
-        $validator = $this->validator($params);
-        if ($validator->fails()) {
-            $data = array('errors' => $validator->errors()->all());
-            return response()->json($data, 400);
-        }
         
         $tags = Tag::with('parents', 'children');
         if(isset($params['type'])) {
@@ -74,7 +67,6 @@ class TagController extends Controller
      *   ),
      *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Tag")),
      *   @SWG\Response(response=405, description="validation exception"),
-     *   @SWG\Response(response=406, description="not acceptable"),
      *   @SWG\Response(response=500, description="internal server error")
      * )
      */
@@ -103,7 +95,6 @@ class TagController extends Controller
      *    ),
      * @SWG\Response(response=201, description="successful operation", @SWG\Schema(ref="#/definitions/Tag")),
      * @SWG\Response(response=405, description="validation exception"),
-     * @SWG\Response(response=406, description="not acceptable"),
      * @SWG\Response(response=500, description="internal server error")
      * )
     **/

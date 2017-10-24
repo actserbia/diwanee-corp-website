@@ -103,8 +103,13 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-        'parents.*' => ['check_tag_type' => 'The :attribute must be of type category.'],
-        'children.*' => ['check_tag_type' => 'The :attribute must be of type subcategory.']
+        'parents.*' => ['check_tag_type' => 'The :attribute tag must be of type category.'],
+        'children.*' => ['check_tag_type' => 'The :attribute tag must be of type subcategory.'],
+        'publication' => ['check_tag_type' => 'The :attribute tag must be of type publication.'],
+        'brand' => ['check_tag_type' => 'The :attribute tag must be of type brand.'],
+        'category' => ['check_tag_type' => 'The :attribute tag must be of type category.'],
+        'subcategories.*' => ['check_tag_type' => 'The :attribute tag must be of type subcategory.'],
+        'influencer' => ['check_tag_type' => 'The :attribute tag must be of type influencer.']
     ],
 
     /*
