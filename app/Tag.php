@@ -77,6 +77,8 @@ class Tag extends Model {
                 $this->parents()->detach($tag);
             }
         }
+        
+        $this->load('parents');
     }
 
     private function saveChildren(array $data) {
@@ -102,5 +104,7 @@ class Tag extends Model {
                 $this->children()->detach($tag);
             }
         }
+        
+        $this->load('children');
     }
 }

@@ -178,7 +178,7 @@ class ArticleController extends Controller
         $article = new Article;
         $data['id_author'] = Auth::guard('api')->id();
         $article->saveArticle($data);
-
+        
         return response()->json($article, 201);
     }
 
@@ -216,7 +216,7 @@ class ArticleController extends Controller
     public function update($id, Request $request)
     {
         $data = $request->all();
-
+        
         $errors = $this->validateData($data);
         if (!empty($errors)) {
             $data = array('errors' => $errors);

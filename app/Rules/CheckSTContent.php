@@ -30,7 +30,7 @@ class CheckSTContent implements Rule
         $this->message = '';
         
         
-        $content = json_decode($value);
+        $content = json_decode(str_replace("'", "\"", $value));
         if(!isset($content->data) || !is_array($content->data)) {
             $this->message = "It should be array with data key!";
             return false;

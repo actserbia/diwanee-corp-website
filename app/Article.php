@@ -122,7 +122,7 @@ class Article extends Model {
     }
 
     private function saveElements(array $data) {
-        $content = json_decode($data['content']);
+        $content = json_decode(str_replace("'", "\"", $data['content']));
         
         foreach($content->data as $index => $elementData) {
             $this->saveElement($elementData, $index);
@@ -132,6 +132,8 @@ class Article extends Model {
             $this->elements()->detach($this->elements[$index]->id);
             Element::find($this->elements[$index]->id)->delete();
         }
+        
+        $this->load('elements');
     }
     
     private function saveElement($elementData, $index) {
@@ -154,8 +156,8 @@ class Article extends Model {
 
         $newSubcategories = isset($data['subcategories']) ? $data['subcategories'] : array();
         $this->changeTags($this->subcategories, $newSubcategories);
-
-        $this->save();
+        
+        $this->load('tags');
     }
 
     private function changeTag($currentTag, $newTagId) {

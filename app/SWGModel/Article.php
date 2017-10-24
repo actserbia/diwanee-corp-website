@@ -3,7 +3,7 @@
 namespace App\SWGModel;
 
 /**
- * @SWG\Definition(required={"title", "type"}, type="object", @SWG\Xml(name="Article"))
+ * @SWG\Definition(required={"title", "category"}, type="object", @SWG\Xml(name="Article"))
  */
 class Article {
     /**
@@ -93,7 +93,7 @@ class Article {
 
     /**
      * @SWG\Property(
-     *     example = "",
+     *     example = "{'data': []}"
      * )
      *
      * @var string
