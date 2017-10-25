@@ -4,7 +4,7 @@ $(document).ready(function() {
     window.editor = new SirTrevor.Editor({
         el:document.querySelector('.sir-trevor'),
         defaultType: 'Text',
-        blockTypes: [ 'Text', 'List', 'Quote', 'Heading', 'DiwaneeImage', 'Video', 'SliderImage' ],
+        blockTypes: [ 'Text', 'Heading', 'List', 'DiwaneeImage', 'Video', 'SliderImage', 'Quote' ],
         formatBar: {
 	      commands: [{
 	        name: "Bold",

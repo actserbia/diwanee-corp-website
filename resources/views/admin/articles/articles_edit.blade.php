@@ -46,8 +46,8 @@
                         @include('blocks.form_select', ['name' => 'status', 'label' => 'Status', 'items' => $statuses, 'selected' => $article->status, 'required' => true])
 
                         <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">Content</label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
+                          <label class="control-label col-md-3 col-sm-2 col-xs-12" for="content">Content</label>
+                          <div class="col-md-6 col-sm-8 col-xs-12">
 
                             <textarea id="content" name="content" class="sir-trevor editable">{{ $article->editorContent }}</textarea>
                             @if ($errors->has('content'))

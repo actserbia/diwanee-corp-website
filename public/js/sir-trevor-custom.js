@@ -113,7 +113,9 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
 
     type: "slider image",
     icon_name: 'iframe',        //'sliderimage',
-
+    title: function() {
+        return "slider image";
+    },
 
     loadData: function(data){
         // Create our image tag

@@ -15,7 +15,7 @@
 }
 .st-block {
     clear: both;
-    margin-bottom: 5px;
+    margin-bottom: 25px;
 }
 .image-additional a {
     color: #8495a7;
@@ -30,14 +30,38 @@
 .image-additional a.collapsed .fa-chevron:after {
     content: "\f054";
 }
-
-
-/*.image-additional {
-    float: right;
-    width: 50%;
-    padding: 3px;
+.st-top-controls {
+   min-height: 2.75em;
+}
+.st-block-addition__button {
+    margin-top: 10px;
+}
+.st-block__inner {
+    margin: 0 10px;
+}
+.st-block-ui-btn__reorder {
+    right: 1em;
+}
+.st-block-ui-btn__delete {
+    right: 0.5em;
+}
+.st-block__editor div {
+    margin-bottom: 7px;
+}
+.st-block__editor div.image-additional {
+    margin-bottom: 3px;
+}
+.st-block-controls__buttons, .st-block-controls__button {
+    background-color: white;
+    font-size: 10px;
+}
+.st-block-controls__button .st-icon {
+    width: 40px;
+    height: 38px;
+    display: block;
+    margin: auto;
+}
+.st-block-controls__button {
+    margin: 0.2em;
 }
 
-.st-block__editor img {
-    width: 50%;
-}*/
