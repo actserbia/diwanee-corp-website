@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Constants\Settings;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -16,10 +15,11 @@ class ImagesController extends Controller {
             $filename = $data['uid'] . '-' . $data['name'];
 
             $file = $request->file('attachment');
-            $file['file']->move(base_path() . Settings::ImagesFolder, $filename);
+            $imagesConfig = config('images');
+            $file['file']->move(base_path() . $imagesConfig['imagesFolder'], $filename);
         }
 
-        return json_encode(array('file' => array('url' => Settings::ImagesSrc . $filename)));
+        return json_encode(array('file' => array('url' => $filename)));
     }
 
 
@@ -53,10 +53,11 @@ class ImagesController extends Controller {
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '-' . $file->getClientOriginalName();
-            $file->move(base_path() . Settings::ImagesFolder, $filename);
+            $imagesConfig = config('images');
+            $file->move(base_path() . $imagesConfig['imagesFolder'], $filename);
         }
 
-        return json_encode(array('file' => array('url' => Settings::ImagesSrc . $filename)));
+        return json_encode(array('file' => array('url' => filename)));
     }
 
     private function validator(array $data) {

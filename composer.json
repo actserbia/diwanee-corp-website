@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "99designs/phumbor": "^1.2",
         "DarkaOnLine/L5-Swagger": "^5.5",
         "LaravelCollective/html": "^5.5",
         "caouecs/sirtrevorjs": "~3.0.0",

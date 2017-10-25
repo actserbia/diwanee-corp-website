@@ -8,6 +8,8 @@ use App\Tag;
 use App\Constants\TagType;
 use Illuminate\Support\Facades\Validator;
 
+use Thumbor\Url\BuilderFactory;
+
 class TagsController extends Controller
 {
     /**
@@ -29,8 +31,17 @@ class TagsController extends Controller
     public function create()
     {
         $types = TagType::populateTypes();
-
-        return view('admin.tags.tags_create', ['types' => $types]);
+        
+        $imagesConfig = config('images');
+        $thumbnailUrlFactory = BuilderFactory::construct($imagesConfig['server'], $imagesConfig['secret']);
+            
+        $settings = array();
+        $settings['width'] = 200;
+        $settings['height'] = 100;
+        $imageUrl =  $imagesConfig['imagesUrl'] . 'test.jpg';
+        $image = $thumbnailUrlFactory->url($imageUrl)->resize($settings['width'], $settings['height'])->smartCrop(true);
+        
+        return view('admin.tags.tags_create', ['types' => $types, 'image' => $image]);
     }
 
     /**

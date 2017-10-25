@@ -30,7 +30,7 @@ $factory->define(Element::class, function (Faker $faker) {
           
         case ElementType::DiwaneeImage:
         case ElementType::SliderImage:
-            $content['file']['url'] = Settings::ImagesSrc . 'test.jpg';
+            $content['file']['url'] = 'test.jpg';
             $content['seoname'] = $faker->text(30);
             $content['seoalt'] = $faker->text(30);
             $content['caption'] = $faker->text(30);

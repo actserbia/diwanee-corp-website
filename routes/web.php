@@ -20,7 +20,7 @@ Route::resource('articles', 'ArticleController', ['only' => ['index', 'show']]);
 Route::post('sirtrevor/upload-image', 'ImagesController@uploadSirTrevorImage')->name('sirtrevor.upload.image');
 
 //only admin can access
-Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMiddleware', 'namespace' => 'Admin'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function() {
     Route::resource('users', 'UsersController');
 });
 
