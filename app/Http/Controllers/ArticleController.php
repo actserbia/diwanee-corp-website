@@ -139,7 +139,6 @@ class ArticleController extends Controller
     {
         $article = Article::with('elements', 'tags')->find($id);
         $article->changeFormat(false, true);
-        $article->addSliderToElements();
         return $article;
     }
 
@@ -296,7 +295,6 @@ class ArticleController extends Controller
     private function formatArticles($articles, $jsonEncode = true, $toHtml = false) {
         foreach($articles as $article) {
             $article->changeFormat($jsonEncode, $toHtml);
-            $article->addSliderToElements();
         }
     }
 }

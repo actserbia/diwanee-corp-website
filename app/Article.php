@@ -17,7 +17,7 @@ class Article extends Model {
     use SoftDeletes;
     
     protected $fillable = [
-        'status', 'id_author', 'title', 'meta_title', 'meta_description', 'meta_keywords', 'content_description', 'external_url'
+        'title', 'meta_title', 'meta_description', 'meta_keywords', 'content_description', 'external_url', 'status', 'id_author'
     ];
 
     public function tags() {
@@ -33,11 +33,9 @@ class Article extends Model {
     }
 
 
-
     public function scopeWithStatus($query, $status = 1) {
         return $query->where('status', $status);
     }
-
 
 
     public function getPublicationAttribute() {
@@ -85,6 +83,7 @@ class Article extends Model {
         
         return json_encode($content);
     }
+    
     
     public function saveArticle(array $data) {
         DB::beginTransaction();
@@ -170,25 +169,5 @@ class Article extends Model {
         foreach($this->elements as $element) {
             $element->changeFormat($jsonEncode, $toHtml);
         }
-    }
-    
-    public function addSliderToElements() {
-        $data = array();
-
-        $sliderElement = new \stdClass();
-        $sliderElement->type = 'slider';
-        $sliderElement->images = array();
-        foreach($this->elements as $element) {
-            if($element->type == Constants\ElementType::SliderImage) {
-                $sliderElement->images[] = $element;
-            }
-        }
-        if(count($sliderElement->images) > 0) {
-            $this->elements[] = $sliderElement;
-        }
-
-        $content['data'] = $data;
-
-        return json_encode($content);
     }
 }
