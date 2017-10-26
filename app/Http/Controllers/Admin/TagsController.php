@@ -28,10 +28,7 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $types = TagType::populateTypes();
-        
+    public function create() {
         /*$imagesConfig = config('images');
         $thumbnailUrlFactory = BuilderFactory::construct($imagesConfig['server'], $imagesConfig['secret']);
             
@@ -41,7 +38,7 @@ class TagsController extends Controller
         $imageUrl =  $imagesConfig['imagesUrl'] . 'test.jpg';
         $image = $thumbnailUrlFactory->url($imageUrl)->resize($settings['width'], $settings['height'])->smartCrop(true);*/
         
-        return view('admin.tags.tags_create', ['types' => $types]);
+        return view('admin.tags.tags_create', ['types' => TagType::all]);
     }
 
     /**
@@ -50,8 +47,7 @@ class TagsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $data = $request->all();
 
         $validator = $this->validator($data, 0);
@@ -87,8 +83,6 @@ class TagsController extends Controller
     {
         $tag = Tag::findOrFail($id);
 
-        $types = TagType::populateTypes();
-
         $parentsByType = array();
         $parentsByType['subcategory'] = 'category';
         $parentsList = isset($parentsByType[$tag->type]) ? Tag::where('type', '=', $parentsByType[$tag->type])->get() : null;
@@ -97,7 +91,7 @@ class TagsController extends Controller
         $childrenByType['category'] = 'subcategory';
         $childrenList = isset($childrenByType[$tag->type]) ? Tag::where('type', '=', $childrenByType[$tag->type])->get() : null;
 
-        return view('admin.tags.tags_edit', ['tag' => $tag, 'types' => $types, 'parentsList' => $parentsList, 'childrenList' => $childrenList]);
+        return view('admin.tags.tags_edit', ['tag' => $tag, 'types' => TagType::all, 'parentsList' => $parentsList, 'childrenList' => $childrenList]);
     }
 
     /**

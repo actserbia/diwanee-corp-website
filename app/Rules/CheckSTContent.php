@@ -51,8 +51,8 @@ class CheckSTContent implements Rule
             return false;
         }
 
-        if(!in_array($element->type, ElementType::populateTypes())) {
-            $this->message = $element->type . ' is not valid sir trevor element type. Valid types are: ' . implode(',', ElementType::populateTypes());
+        if(!in_array($element->type, ElementType::all)) {
+            $this->message = $element->type . ' is not valid sir trevor element type. Valid types are: ' . implode(',', ElementType::all);
             return false;
         }
 

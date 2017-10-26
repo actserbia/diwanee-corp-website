@@ -4,7 +4,6 @@ namespace App\Constants;
 
 final class ElementType {
     const Text = 'text';
-    const Image = 'image';
     const SliderImage = 'slider_image';
     const DiwaneeImage = 'diwanee_image';
     const Video = 'video';
@@ -12,16 +11,16 @@ final class ElementType {
     const Heading = 'heading';
     const Quote = 'quote';
 
-    public static function populateTypes() {
-        return array(
-            'text',
-            'image',
-            'slider_image',
-            'diwanee_image',
-            'video',
-            'list',
-            'heading',
-            'quote'
-        );
-    }
+    const all = array(
+        ElementType::Text,
+        ElementType::SliderImage,
+        ElementType::DiwaneeImage,
+        ElementType::Video,
+        ElementType::ElementList,
+        ElementType::Heading,
+        ElementType::Quote
+    );
+    
+    const textTypes = array(ElementType::Text, ElementType::Heading, ElementType::Quote);
+    const imageTypes = array(ElementType::DiwaneeImage, ElementType::SliderImage);
 }

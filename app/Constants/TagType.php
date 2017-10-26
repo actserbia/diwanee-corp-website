@@ -9,13 +9,11 @@ final class TagType {
     const Subcategory = 'subcategory';
     const Influencer = 'influencer';
 
-    public static function populateTypes() {
-        return array(
-            'publication' => 'Publication',
-            'brand' => 'Brand',
-            'category' => 'Category',
-            'subcategory' => 'Subcategory',
-            'influencer' => 'Influencer'
-        );
-    }
+    const all = array(
+        TagType::Publication => 'Publication',
+        TagType::Brand => 'Brand',
+        TagType::Category => 'Category',
+        TagType::Subcategory => 'Subcategory',
+        TagType::Influencer => 'Influencer'
+    );
 }

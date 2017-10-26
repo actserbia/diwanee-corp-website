@@ -11,10 +11,6 @@ use App\Constants\ElementType;
 use App\Constants\Settings;
 
 class Element extends Model {
-
-    protected $textTypes = array(ElementType::Text, ElementType::Heading, ElementType::Quote);
-    protected $imageTypes = array(ElementType::DiwaneeImage, ElementType::SliderImage);
-    
     protected $fillable = [
         'type'
     ];
@@ -32,7 +28,7 @@ class Element extends Model {
     }
     
     public function getContentAttribute($value) {
-        if(in_array($this->type, $this->imageTypes)) {
+        if(in_array($this->type, ElementType::imageTypes)) {
             $imagesConfig = config('images');
             $content = is_string($value) ? json_decode($value) : $value;
             if(strpos($content->file->url, $imagesConfig['imagesUrl']) === FALSE) {
@@ -67,7 +63,7 @@ class Element extends Model {
     private function prepareElementData($elementData) {
         $preparedElementData = $this->elementDataToMarkdown($elementData);
         
-        if(in_array($this->type, $this->imageTypes)) {
+        if(in_array($this->type, ElementType::imageTypes)) {
             $imagesConfig = config('images');
             $preparedElementData['data']['file']['url'] = str_replace($imagesConfig['imagesUrl'], '', $preparedElementData['data']['file']['url']);
         }
@@ -77,7 +73,7 @@ class Element extends Model {
     
     protected function elementDataToMarkdown($elementData) {
         $converter = new HtmlConverter(Settings::MarkdownConverterConfig);
-        if(in_array($elementData['type'], $this->textTypes)) {
+        if(in_array($elementData['type'], ElementType::textTypes)) {
             $elementData['data']['text'] = $converter->convert($elementData['data']['text']);
             $elementData['data']['format'] = 'markdown';
         }
@@ -119,7 +115,7 @@ class Element extends Model {
         if(isset($this->content->format) && $this->content->format !== 'html') {
             $converter = new CommonMarkConverter();
 
-            if(in_array($this->type, $this->textTypes)) {
+            if(in_array($this->type, ElementType::textTypes)) {
                 $this->content->text = $converter->convertToHtml($this->content->text);
                 $this->content->format = 'html';
             }
