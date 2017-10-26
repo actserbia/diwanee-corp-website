@@ -29,15 +29,22 @@ class Element extends Model {
     
     public function getDataAttribute($value) {
         if(in_array($this->type, ElementType::imageTypes)) {
-            $imagesConfig = config('images');
-            $data = is_string($value) ? json_decode($value) : $value;
-            if(strpos($data->file->url, $imagesConfig['imagesUrl']) === FALSE) {
-                $data->file->url = $imagesConfig['imagesUrl'] . $data->file->url;
-            }
-            return is_string($value) ? json_encode($data) : $data;
-        } else {
-            return $value;
+            $value = $this->getImageFullUrl($value);
         }
+        
+        return $value;
+    }
+    
+    private function getImageFullUrl($value) {
+        $imagesConfig = config('images');
+        
+        $imageData = is_string($value) ? json_decode($value) : $value;
+        
+        if(strpos($imageData->file->url, $imagesConfig['imagesUrl']) === FALSE) {
+            $imageData->file->url = $imagesConfig['imagesUrl'] . $imageData->file->url;
+        }
+            
+        return is_string($value) ? json_encode($imageData) : $imageData;
     }
     
     public function getEditorContentAttribute() {
@@ -75,13 +82,8 @@ class Element extends Model {
     public function changeFormat($jsonEncode = true, $toHtml = false) {
         $jsonEncode ? $this->encodeData() : $this->decodeData();
         
-        if($toHtml) {
-            $converter = new ToHtmlConverter();
-            $converter->convertElementDataToHtml($this);
-        } else {
-            $converter = new ToMarkdownConverter();
-            $converter->convertElementDataToMarkdown($this);
-        }
+        $converter = $toHtml ? new ToHtmlConverter() : new ToMarkdownConverter();
+        $converter->convertElementData($this);
     }
     
     private function decodeData() {

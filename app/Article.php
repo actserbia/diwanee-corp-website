@@ -107,7 +107,9 @@ class Article extends Model {
         $content = json_decode(str_replace("'", "\"", $data['content']), true);
         
         foreach($content['data'] as $index => $elementData) {
-            $this->saveElement($elementData, $index);
+            if(!empty($elementData['data'])) {
+                $this->saveElement($elementData, $index);
+            }
         }
 
         for($index = count($content['data']); $index < count($this->elements); $index++) {
