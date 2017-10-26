@@ -65,7 +65,7 @@ class ArticleController extends Controller
     **/
     public function index(Request $request)
     {
-        $articles =  Article::with('elements', 'tags')->orderBy('created_at', 'desc');
+        $articles = Article::with('elements', 'tags')->orderBy('created_at', 'desc');
 
         $params = $request->all();
         if(isset($params['tags'])) {

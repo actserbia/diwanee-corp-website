@@ -19,55 +19,55 @@ $factory->define(Element::class, function (Faker $faker) {
     $types = [ElementType::Text, ElementType::DiwaneeImage, ElementType::SliderImage, ElementType::Video, ElementType::Heading, ElementType::ElementList];
     
     $type = $types[$faker->numberBetween(0, count($types) - 1)];
-    $content = array();
+    $data = array();
     switch($type) {
         case ElementType::Text:
         case ElementType::Heading:
-            $content['text'] = $faker->paragraph;
-            $content['format'] = 'html';
+            $data['text'] = $faker->paragraph;
+            $data['format'] = 'html';
             break;
           
         case ElementType::DiwaneeImage:
         case ElementType::SliderImage:
-            $content['file']['url'] = 'test.jpg';
-            $content['seoname'] = $faker->text(30);
-            $content['seoalt'] = $faker->text(30);
-            $content['caption'] = $faker->text(30);
-            $content['copyright'] = $faker->text(30);
+            $data['file']['url'] = 'test.jpg';
+            $data['seoname'] = $faker->text(30);
+            $data['seoalt'] = $faker->text(30);
+            $data['caption'] = $faker->text(30);
+            $data['copyright'] = $faker->text(30);
             break; 
           
         case ElementType::Video:
-            $content['remote_id'] = 'FKUAAZSJiGY';
-            $content['source'] = 'youtube';
+            $data['remote_id'] = 'FKUAAZSJiGY';
+            $data['source'] = 'youtube';
             break; 
 
         case ElementType::ElementList:
             $count = $faker->numberBetween(1, 5);
             for($index = 0; $index < $count; $index++) {
-                $content['listItems'][] = array('content' => $faker->text(20));
+                $data['listItems'][] = array('content' => $faker->text(20));
             }
-            $content['format'] = 'html';
+            $data['format'] = 'html';
             break;
     }
     
     return [
         'type' => $type,
-        'content' => json_encode($content)
+        'data' => json_encode($data)
     ];
 });
 
 
 $factory->defineAs(Element::class, ElementType::SliderImage, function (Faker $faker) {
-    $content = array();
-    $content['file']['url'] = 'test.jpg';
-    $content['alt'] = $faker->text(30);
-    $content['seoname'] = $faker->text(30);
-    $content['seoalt'] = $faker->text(30);
-    $content['caption'] = $faker->text(30);
-    $content['copyright'] = $faker->text(30);
+    $data = array();
+    $data['file']['url'] = 'test.jpg';
+    $data['alt'] = $faker->text(30);
+    $data['seoname'] = $faker->text(30);
+    $data['seoalt'] = $faker->text(30);
+    $data['caption'] = $faker->text(30);
+    $data['copyright'] = $faker->text(30);
 
     return [
         'type' => ElementType::SliderImage,
-        'content' => json_encode($content)
+        'data' => json_encode($data)
     ];
 });

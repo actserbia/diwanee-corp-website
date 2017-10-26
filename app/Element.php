@@ -3,12 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use League\HTMLToMarkdown\HtmlConverter;
-use League\CommonMark\CommonMarkConverter;
 
 use App\Article;
 use App\Constants\ElementType;
 use App\Constants\Settings;
+use App\Converters\ToHtmlConverter;
+use App\Converters\ToMarkdownConverter;
 
 class Element extends Model {
     protected $fillable = [
@@ -27,14 +27,14 @@ class Element extends Model {
         return $this->belongsTo(Tag::class, 'element_subelement', 'id_subelement', 'id_element');
     }
     
-    public function getContentAttribute($value) {
+    public function getDataAttribute($value) {
         if(in_array($this->type, ElementType::imageTypes)) {
             $imagesConfig = config('images');
-            $content = is_string($value) ? json_decode($value) : $value;
-            if(strpos($content->file->url, $imagesConfig['imagesUrl']) === FALSE) {
-                $content->file->url = $imagesConfig['imagesUrl'] . $content->file->url;
+            $data = is_string($value) ? json_decode($value) : $value;
+            if(strpos($data->file->url, $imagesConfig['imagesUrl']) === FALSE) {
+                $data->file->url = $imagesConfig['imagesUrl'] . $data->file->url;
             }
-            return is_string($value) ? json_encode($content) : $content;
+            return is_string($value) ? json_encode($data) : $data;
         } else {
             return $value;
         }
@@ -44,24 +44,25 @@ class Element extends Model {
         $elementData = array();
         
         $elementData['type'] = $this->type;
-        $elementData['data'] = json_decode($this->content);
+        $elementData['data'] = json_decode($this->data);
 
         return $elementData;
     }
     
     public function getJsonEncodedAttribute() {
-        return is_string($this->content);
+        return is_string($this->data);
     }
 
     public function populateData($elementData) {
         $this->fill($elementData);
         
         $preparedElementData = $this->prepareElementData($elementData);
-        $this->content = json_encode($preparedElementData['data']);
+        $this->data = json_encode($preparedElementData['data']);
     }
     
     private function prepareElementData($elementData) {
-        $preparedElementData = $this->elementDataToMarkdown($elementData);
+        $converter = new ToMarkdownConverter(Settings::MarkdownConverterConfig);
+        $preparedElementData = $converter->convertElementDataToMarkdown($elementData);
         
         if(in_array($this->type, ElementType::imageTypes)) {
             $imagesConfig = config('images');
@@ -71,71 +72,27 @@ class Element extends Model {
         return $preparedElementData;
     }
     
-    protected function elementDataToMarkdown($elementData) {
-        $converter = new HtmlConverter(Settings::MarkdownConverterConfig);
-        if(in_array($elementData['type'], ElementType::textTypes)) {
-            $elementData['data']['text'] = $converter->convert($elementData['data']['text']);
-            $elementData['data']['format'] = 'markdown';
-        }
-
-        if($elementData['type'] == ElementType::ElementList) {
-            $html = '<ul>';
-            foreach($elementData['data']['listItems'] as $listItem) {
-                $html .= '<li>' . $listItem['content'] . '</li>';
-            }
-            $html .= '</ul>';
-            $elementData['data']['text'] = $converter->convert($html);
-            $elementData['data']['format'] = 'markdown';
-        }
-        
-        return $elementData;
-    }
-    
     public function changeFormat($jsonEncode = true, $toHtml = false) {
-        $jsonEncode ? $this->encodeContent() : $this->decodeContent();
+        $jsonEncode ? $this->encodeData() : $this->decodeData();
         
         if($toHtml) {
-            $this->convertToHtml();
+            $converter = new ToHtmlConverter();
+            $converter->convertElementDataToHtml($this);
+        } else {
+            $converter = new ToMarkdownConverter();
+            $converter->convertElementDataToMarkdown($this);
         }
     }
     
-    private function decodeContent() {
+    private function decodeData() {
         if($this->jsonEncoded) {
-            $this->content = json_decode($this->content);
+            $this->data = json_decode($this->data);
         }
     }
 
-    private function encodeContent() {
+    private function encodeData() {
         if(!$this->jsonEncoded) {
-            $this->content = json_encode($this->content);
+            $this->data = json_encode($this->data);
         }
-    }
-    
-    private function convertToHtml() {
-        if(isset($this->content->format) && $this->content->format !== 'html') {
-            $converter = new CommonMarkConverter();
-
-            if(in_array($this->type, ElementType::textTypes)) {
-                $this->content->text = $converter->convertToHtml($this->content->text);
-                $this->content->format = 'html';
-            }
-
-            if($this->type == ElementType::ElementList) {
-                $this->convertListToHtml($converter);
-            }
-        }
-    }
-    
-    private function convertListToHtml($converter) {
-        $listItems = explode(Settings::MarkdownConverterConfig['list_item_style'], $this->content->text);
-        $htmlListItems = array();
-        foreach($listItems as $listItem) {
-            if(!empty($listItem)) {
-                $htmlListItems[]['content'] = $converter->convertToHtml($listItem);
-            }
-        }
-        $this->content->listItems = $htmlListItems;
-        unset($this->content->text);
-        $this->content->format = 'html';
     }
 }

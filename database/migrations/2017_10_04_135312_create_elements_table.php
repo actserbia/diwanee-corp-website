@@ -16,7 +16,7 @@ class CreateElementsTable extends Migration
         Schema::create('elements', function (Blueprint $table) {
             $table->increments('id');
             $table->enum('type', ['image', 'diwanee_image', 'slider_image', 'video', 'text', 'list', 'heading', 'quote']);
-            $table->longText('content');
+            $table->longText('data');
             $table->timestamps();
         });
     }

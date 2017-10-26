@@ -10,10 +10,10 @@ final class TagType {
     const Influencer = 'influencer';
 
     const all = array(
-        TagType::Publication => 'Publication',
-        TagType::Brand => 'Brand',
-        TagType::Category => 'Category',
-        TagType::Subcategory => 'Subcategory',
-        TagType::Influencer => 'Influencer'
+        self::Publication => 'Publication',
+        self::Brand => 'Brand',
+        self::Category => 'Category',
+        self::Subcategory => 'Subcategory',
+        self::Influencer => 'Influencer'
     );
 }

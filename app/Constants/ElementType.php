@@ -12,15 +12,15 @@ final class ElementType {
     const Quote = 'quote';
 
     const all = array(
-        ElementType::Text,
-        ElementType::SliderImage,
-        ElementType::DiwaneeImage,
-        ElementType::Video,
-        ElementType::ElementList,
-        ElementType::Heading,
-        ElementType::Quote
+        self::Text,
+        self::SliderImage,
+        self::DiwaneeImage,
+        self::Video,
+        self::ElementList,
+        self::Heading,
+        self::Quote
     );
     
-    const textTypes = array(ElementType::Text, ElementType::Heading, ElementType::Quote);
-    const imageTypes = array(ElementType::DiwaneeImage, ElementType::SliderImage);
+    const textTypes = array(self::Text, self::Heading, self::Quote);
+    const imageTypes = array(self::DiwaneeImage, self::SliderImage);
 }
