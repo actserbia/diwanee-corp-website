@@ -32,16 +32,16 @@ class TagsController extends Controller
     {
         $types = TagType::populateTypes();
         
-        $imagesConfig = config('images');
+        /*$imagesConfig = config('images');
         $thumbnailUrlFactory = BuilderFactory::construct($imagesConfig['server'], $imagesConfig['secret']);
             
         $settings = array();
         $settings['width'] = 200;
         $settings['height'] = 100;
         $imageUrl =  $imagesConfig['imagesUrl'] . 'test.jpg';
-        $image = $thumbnailUrlFactory->url($imageUrl)->resize($settings['width'], $settings['height'])->smartCrop(true);
+        $image = $thumbnailUrlFactory->url($imageUrl)->resize($settings['width'], $settings['height'])->smartCrop(true);*/
         
-        return view('admin.tags.tags_create', ['types' => $types, 'image' => $image]);
+        return view('admin.tags.tags_create', ['types' => $types]);
     }
 
     /**

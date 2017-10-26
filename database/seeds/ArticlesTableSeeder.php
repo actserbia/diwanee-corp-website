@@ -29,12 +29,10 @@ class ArticlesTableSeeder extends Seeder
             for($index = 1; $index <= $count; $index++) {
                 $element = factory(Element::class)->make();
                 $article->elements()->save($element, ['ordinal_number' => $index]);
-
-                if($element->type === 'slider') {
-                    $this->addSlider($element, $faker);
-                }
             }
             
+            $this->addSlider($article, $faker, $index);
+
             $article->tags()->attach($faker->randomElement($publications)['id']);
             $article->tags()->attach($faker->randomElement($influencers)['id']);
             $article->tags()->attach($faker->randomElement($brands)['id']);
@@ -48,11 +46,11 @@ class ArticlesTableSeeder extends Seeder
         });
     }
     
-    private function addSlider($element, $faker) {
-        $count = $faker->numberBetween(2, 5);
-        for($index = 1; $index <= $count; $index++) {
-            $image = factory(Element::class, ElementType::SliderImage)->make();
-            $element->subelements()->save($image);
+    private function addSlider($article, $faker, $startIndex) {
+        $count = $faker->numberBetween(3, 6);
+        for($index = 0; $index < $count; $index++) {
+            $element = factory(Element::class, ElementType::SliderImage)->make();
+            $article->elements()->save($element, ['ordinal_number' => $startIndex + $index]);
         }
     }
 

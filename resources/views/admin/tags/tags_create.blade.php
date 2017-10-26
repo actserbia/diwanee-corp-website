@@ -11,7 +11,6 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <img src="{{ $image }}" />
                     <br />
                     <form method="post" action="{{ route('tags.store') }}" data-parsley-validate class="form-horizontal form-label-left">
 

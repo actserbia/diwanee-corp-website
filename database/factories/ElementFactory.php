@@ -3,7 +3,6 @@
 use Faker\Generator as Faker;
 use App\Element;
 use App\Constants\ElementType;
-use App\Constants\Settings;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,13 +57,17 @@ $factory->define(Element::class, function (Faker $faker) {
 });
 
 
-$factory->defineAs(Element::class, 'image', function (Faker $faker) {
+$factory->defineAs(Element::class, ElementType::SliderImage, function (Faker $faker) {
     $content = array();
-    $content['data']['file']['url'] = 'test.jpg';
-    $content['data']['alt'] = $faker->text(30);
+    $content['file']['url'] = 'test.jpg';
+    $content['alt'] = $faker->text(30);
+    $content['seoname'] = $faker->text(30);
+    $content['seoalt'] = $faker->text(30);
+    $content['caption'] = $faker->text(30);
+    $content['copyright'] = $faker->text(30);
 
     return [
-        'type' => 'image',
+        'type' => ElementType::SliderImage,
         'content' => json_encode($content)
     ];
 });
