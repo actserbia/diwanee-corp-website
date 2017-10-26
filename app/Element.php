@@ -14,6 +14,10 @@ class Element extends Model {
 
     protected $textTypes = array(ElementType::Text, ElementType::Heading, ElementType::Quote);
     protected $imageTypes = array(ElementType::DiwaneeImage, ElementType::SliderImage);
+    
+    protected $fillable = [
+        'type'
+    ];
 
     public function articles() {
 		return $this->belongsToMany(Article::class, 'article_element', 'id_element', 'id_article');
@@ -53,25 +57,52 @@ class Element extends Model {
         return is_string($this->content);
     }
 
-    public function populateBasicData($elementData) {
-        $this->type = $elementData->type;
-        $this->elementDataToMarkdown($elementData);
+    public function populateData($elementData) {
+        $this->fill($elementData);
+        
+        $preparedElementData = $this->prepareElementData($elementData);
+        $this->content = json_encode($preparedElementData['data']);
+    }
+    
+    private function prepareElementData($elementData) {
+        $preparedElementData = $this->elementDataToMarkdown($elementData);
+        
         if(in_array($this->type, $this->imageTypes)) {
             $imagesConfig = config('images');
-            $elementData->data->file->url = str_replace($imagesConfig['imagesUrl'], '', $elementData->data->file->url);
+            $preparedElementData['data']['file']['url'] = str_replace($imagesConfig['imagesUrl'], '', $preparedElementData['data']['file']['url']);
         }
-        $this->content = json_encode($elementData->data);
+        
+        return $preparedElementData;
+    }
+    
+    protected function elementDataToMarkdown($elementData) {
+        $converter = new HtmlConverter(Settings::MarkdownConverterConfig);
+        if(in_array($elementData['type'], $this->textTypes)) {
+            $elementData['data']['text'] = $converter->convert($elementData['data']['text']);
+            $elementData['data']['format'] = 'markdown';
+        }
+
+        if($elementData['type'] == ElementType::ElementList) {
+            $html = '<ul>';
+            foreach($elementData['data']['listItems'] as $listItem) {
+                $html .= '<li>' . $listItem['content'] . '</li>';
+            }
+            $html .= '</ul>';
+            $elementData['data']['text'] = $converter->convert($html);
+            $elementData['data']['format'] = 'markdown';
+        }
+        
+        return $elementData;
     }
     
     public function changeFormat($jsonEncode = true, $toHtml = false) {
         $jsonEncode ? $this->encodeContent() : $this->decodeContent();
-        if($toHtml && in_array($this->type, $this->textTypes) && $this->content->format !== 'html') {
-            $converter = new CommonMarkConverter();
-            $this->content->text = $converter->convertToHtml($this->content->text);
-            $this->content->format = 'html';
+        
+        if($toHtml) {
+            $this->convertToHtml();
         }
     }
-
+    
     private function decodeContent() {
         if($this->jsonEncoded) {
             $this->content = json_decode($this->content);
@@ -83,24 +114,32 @@ class Element extends Model {
             $this->content = json_encode($this->content);
         }
     }
+    
+    private function convertToHtml() {
+        if(isset($this->content->format) && $this->content->format !== 'html') {
+            $converter = new CommonMarkConverter();
 
-
-    protected function elementDataToMarkdown($elementData) {
-        $converter = new HtmlConverter(Settings::MarkdownConverterConfig);
-        if( in_array($elementData->type, $this->textTypes) ) {
-            $elementData->data->text = $converter->convert($elementData->data->text);
-            $elementData->data->format = "markdown";
-        }
-
-        if($elementData->type == ElementType::ElementList) {
-            $html = '<ul>';
-            foreach($elementData->data->listItems as $listItem) {
-                $html .= '<li>' . $listItem->content . '</li>';
+            if(in_array($this->type, $this->textTypes)) {
+                $this->content->text = $converter->convertToHtml($this->content->text);
+                $this->content->format = 'html';
             }
-            $html .= '</ul>';
-            $elementData->data->text = $converter->convert($html);
-            $elementData->data->format = "markdown";
+
+            if($this->type == ElementType::ElementList) {
+                $this->convertListToHtml($converter);
+            }
         }
-        return $elementData;
+    }
+    
+    private function convertListToHtml($converter) {
+        $listItems = explode(Settings::MarkdownConverterConfig['list_item_style'], $this->content->text);
+        $htmlListItems = array();
+        foreach($listItems as $listItem) {
+            if(!empty($listItem)) {
+                $htmlListItems[]['content'] = $converter->convertToHtml($listItem);
+            }
+        }
+        $this->content->listItems = $htmlListItems;
+        unset($this->content->text);
+        $this->content->format = 'html';
     }
 }

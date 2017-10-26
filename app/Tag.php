@@ -33,7 +33,7 @@ class Tag extends Model {
     public function saveTag(array $data) {
         DB::beginTransaction();
         try {
-            $this->populateBasicData($data);
+            $this->fill($data);
             $this->save();
 
             $this->saveParents($data);
@@ -46,11 +46,6 @@ class Tag extends Model {
             DB::rollBack();
             return false;
         }
-    }
-
-    private function populateBasicData(array $data) {
-        $this->name = $data['name'];
-        $this->type = $data['type'];
     }
 
     private function saveParents(array $data) {

@@ -15,7 +15,10 @@ use DB;
 class Article extends Model {
 
     use SoftDeletes;
-
+    
+    protected $fillable = [
+        'status', 'id_author', 'title', 'meta_title', 'meta_description', 'meta_keywords', 'content_description', 'external_url'
+    ];
 
     public function tags() {
         return $this->belongsToMany(Tag::class, 'article_tag', 'id_article', 'id_tag');
@@ -83,17 +86,10 @@ class Article extends Model {
         return json_encode($content);
     }
     
-    public function changeFormat($jsonEncode = true, $toHtml = false) {
-        foreach($this->elements as $element) {
-            $element->changeFormat($jsonEncode, $toHtml);
-        }
-    }
-    
-    
     public function saveArticle(array $data) {
         DB::beginTransaction();
         try {
-            $this->populateBasicData($data);
+            $this->fill($data);
             $this->save();
 
             $this->saveElements($data);
@@ -108,27 +104,14 @@ class Article extends Model {
         }
     }
 
-    private function populateBasicData(array $data) {
-        $this->status = $data['status'];
-        if(!$this->id_author) {
-            $this->id_author = $data['id_author'];
-        }
-        $this->title = $data['title'];
-        $this->meta_title = $data['meta_title'];
-        $this->meta_description = $data['meta_description'];
-        $this->meta_keywords = $data['meta_keywords'];
-        $this->content_description = $data['content_description'];
-        $this->external_url = $data['external_url'];
-    }
-
     private function saveElements(array $data) {
-        $content = json_decode(str_replace("'", "\"", $data['content']));
+        $content = json_decode(str_replace("'", "\"", $data['content']), true);
         
-        foreach($content->data as $index => $elementData) {
+        foreach($content['data'] as $index => $elementData) {
             $this->saveElement($elementData, $index);
         }
 
-        for($index = count($content->data); $index < count($this->elements); $index++) {
+        for($index = count($content['data']); $index < count($this->elements); $index++) {
             $this->elements()->detach($this->elements[$index]->id);
             Element::find($this->elements[$index]->id)->delete();
         }
@@ -138,7 +121,7 @@ class Article extends Model {
     
     private function saveElement($elementData, $index) {
         $element = count($this->elements) > $index ? $this->elements[$index] : new Element;
-        $element->populateBasicData($elementData);
+        $element->populateData($elementData);
 
         if($element->id) {
             $element->save();
@@ -146,7 +129,6 @@ class Article extends Model {
             $this->elements()->save($element, ['ordinal_number' => $index + 1]);
         }
     }
-
 
     private function saveTags(array $data) {
         $this->changeTag($this->publication, $data['publication']);
@@ -184,6 +166,12 @@ class Article extends Model {
     }
 
 
+    public function changeFormat($jsonEncode = true, $toHtml = false) {
+        foreach($this->elements as $element) {
+            $element->changeFormat($jsonEncode, $toHtml);
+        }
+    }
+    
     public function addSliderToElements() {
         $data = array();
 

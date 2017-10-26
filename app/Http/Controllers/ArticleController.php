@@ -138,6 +138,7 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::with('elements', 'tags')->find($id);
+        $article->changeFormat(false, true);
         $article->addSliderToElements();
         return $article;
     }

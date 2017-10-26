@@ -8,7 +8,7 @@ use App\Tag;
 use App\Constants\TagType;
 use Illuminate\Support\Facades\Validator;
 
-use Thumbor\Url\BuilderFactory;
+//use Thumbor\Url\BuilderFactory;
 
 class TagsController extends Controller
 {
@@ -92,7 +92,7 @@ class TagsController extends Controller
         $parentsByType = array();
         $parentsByType['subcategory'] = 'category';
         $parentsList = isset($parentsByType[$tag->type]) ? Tag::where('type', '=', $parentsByType[$tag->type])->get() : null;
-
+        
         $childrenByType = array();
         $childrenByType['category'] = 'subcategory';
         $childrenList = isset($childrenByType[$tag->type]) ? Tag::where('type', '=', $childrenByType[$tag->type])->get() : null;

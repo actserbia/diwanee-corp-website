@@ -11,7 +11,7 @@ $(document).ready(function() {
 
         if(tagsName === 'parents' || tagsName === 'children') {
             if(typeof tagsByType[tagsName][mainValue] !== 'undefined') {
-                return '/ajax/tags/' + mainValue;
+                return '/ajax/tags/' + tagsByType[tagsName][mainValue];
             }
         }
 
