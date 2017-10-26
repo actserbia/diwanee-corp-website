@@ -14,9 +14,9 @@
                     <br />
                     <form method="post" action="{{ route('tags.store') }}" data-parsley-validate class="form-horizontal form-label-left">
 
-                        @include('blocks.form_input', ['name' => 'name', 'label' => 'Name', 'value' => Request::old('name') ?: '', 'required' => false])
+                        @include('blocks.form_input', ['name' => 'name', 'label' => 'Name', 'value' => Request::old('name') ?: '', 'required' => true])
 
-                        @include('blocks.form_select', ['name' => 'type', 'label' => 'Type', 'items' => $types, 'selected' => Request::old('type') ?: '', 'required' => false])
+                        @include('blocks.form_select', ['name' => 'type', 'label' => 'Type', 'items' => $types, 'selected' => Request::old('type') ?: '', 'required' => true])
 
                         @include('blocks.form_multiple_tags', ['name' => 'parents', 'label' => 'Parents'])
 
