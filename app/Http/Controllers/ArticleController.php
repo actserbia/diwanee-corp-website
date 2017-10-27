@@ -77,7 +77,7 @@ class ArticleController extends Controller
             $articles = $articles->withTags($params['tags'], 'name');
         }
         
-        $articlesData = $articles->withActive($params)->withPagination($params)->get();
+        $articlesData = $articles->withActive($params)->withPagination($params);
         
         $this->formatArticles($articlesData, false, true);
         

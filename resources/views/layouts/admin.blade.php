@@ -210,7 +210,11 @@
                             className: "btn-sm"
                         },
                         ],
-                        responsive: true
+                        responsive: true,
+                        aaSorting: [
+                            [0, "desc"]
+                        ],
+                        iDisplayLength: 15
                     });
                 }
             };

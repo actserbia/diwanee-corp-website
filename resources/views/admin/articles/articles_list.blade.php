@@ -23,7 +23,7 @@
                                 <th>Title</th>
                                 <th>Status</th>
                                 <th>Created</th>
-                                <!-- add author -->
+                                <th>Author</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -33,26 +33,27 @@
                                 <th>Title</th>
                                 <th>Status</th>
                                 <th>Created</th>
+                                <th>Author</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
                         <tbody>
 
                         @foreach($articles as $article)
-                        <tr @if($article['deleted_at']!=null) class="deleted" @endif>
+                        <tr @if($article['deleted_at'] != null) class="deleted" @endif>
                             <td>{{ $article['id'] }}</td>
                             <td>{{ $article['title'] }}</td>
-                            <td>{{ $article['status'] }}</td>
+                            <td>{{ $statuses[$article['status']] }}</td>
                             <td>{{ $article['created_at'] }}</td>
+                            <td>{{ $article['author']['name'] }}</td>
                             <td>
                                 @if($article['deleted_at'] == null)
-                                <a href="{{ route('articles.edit', ['id' => $article['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="Edit"></i> </a>
-                                <a href="{{ route('articles.show', ['id' => $article['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="Delete"></i> </a>
+                                    <a href="{{ route('articles.edit', ['id' => $article['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="Edit"></i> </a>
+                                    <a href="{{ route('articles.show', ['id' => $article['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="Delete"></i> </a>
                                 @endif
                             </td>
                         </tr>
                         @endforeach
-
                         </tbody>
                     </table>
                 </div>

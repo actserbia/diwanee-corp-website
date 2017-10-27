@@ -25,6 +25,8 @@ class Article extends Model {
         'title', 'meta_title', 'meta_description', 'meta_keywords', 'content_description', 'external_url', 'status', 'id_author'
     ];
 
+    protected $perPage = 12;
+
     public function tags() {
         return $this->belongsToMany(Tag::class, 'article_tag', 'id_article', 'id_tag');
     }

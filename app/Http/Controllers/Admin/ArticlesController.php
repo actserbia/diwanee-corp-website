@@ -22,8 +22,8 @@ class ArticlesController extends Controller
     {
         //Article::withTrashed()->restore();
 
-        $articles = Article::withTrashed()->get()->toArray();
-        return view('admin.articles.articles_list', compact('articles'));
+        $articles = Article::withTrashed()->with('author')->get()->toArray();
+        return view('admin.articles.articles_list', ['articles' => $articles, 'statuses' => ArticleStatus::all]);
     }
 
     /**
