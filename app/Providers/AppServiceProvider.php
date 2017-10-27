@@ -23,6 +23,18 @@ class AppServiceProvider extends ServiceProvider
             $tag = Tag::find($value);
             return $tag['type'] == $parameters[0];
         });
+        
+        Validator::extend('checkParentsAndChildren', function ($attribute, $value, $parameters) {
+            if($attribute === 'parents' && $parameters[0] !== 'subcategory' && !empty($value)) {
+                return false;
+            }
+            
+            if($attribute === 'children' && $parameters[0] !== 'category' && !empty($value)) {
+                return false;
+            }
+            
+            return true;
+        });
     }
 
     /**

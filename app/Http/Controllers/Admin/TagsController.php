@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
 use App\Constants\TagType;
-use Illuminate\Support\Facades\Validator;
+use App\Validators\Validators;
 
 //use Thumbor\Url\BuilderFactory;
 
@@ -62,7 +62,7 @@ class TagsController extends Controller
     public function store(Request $request) {
         $data = $request->all();
 
-        $validator = $this->validator($data, 0);
+        $validator = Validators::tagsFormValidator($data, ['id' => 0]);
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
@@ -106,7 +106,7 @@ class TagsController extends Controller
     public function update(Request $request, $id) {
         $data = $request->all();
 
-        $validator = $this->validator($data, $id);
+        $validator = Validators::tagsFormValidator($data, ['id' => $id]);
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
@@ -130,14 +130,5 @@ class TagsController extends Controller
         $successName = $tag->delete() ? 'success' : 'error';
         
         return redirect()->route('tags.index')->with($successName, __('messages.tags.destroy_' . $successName, ['name' => $tag->name]));
-    }
-
-    private function validator(array $data, $id) {
-        return Validator::make($data, [
-            'name' => 'required|unique:tags,id,' . $id . '|max:255',
-            'type' => 'required|exists:tags,type',
-            'parents.*' => 'exists:tags,id|checkTagType:category',
-            'children.*' => 'exists:tags,id|checkTagType:subcategory',
-        ]);
     }
 }

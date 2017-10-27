@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
-use Illuminate\Support\Facades\Validator;
+use App\Validators\Validators;
 
 class TagController extends Controller
 {
@@ -105,10 +105,9 @@ class TagController extends Controller
     {
         $data = $request->all();
 
-        $errors = $this->validateData($data, 0);
-        if (!empty($errors)) {
-            $data = array('errors' => $errors);
-            return response()->json($data, 405);
+        $validationData = Validators::validateData($data, ['id' => 0], 'tagsFormValidator');
+        if (!empty($validationData)) {
+            return response()->json($validationData, 405);
         }
 
         $tag = new Tag;
@@ -158,10 +157,9 @@ class TagController extends Controller
     {
         $data = $request->all();
 
-        $errors = $this->validateData($data, $id);
-        if (!empty($errors)) {
-            $data = array('errors' => $errors);
-            return response()->json($data, 405);
+        $validationData = Validators::validateData($data, ['id' => $id], 'tagsFormValidator');
+        if (!empty($validationData)) {
+            return response()->json($validationData, 405);
         }
 
         $tag = Tag::find($id);
@@ -217,33 +215,5 @@ class TagController extends Controller
             $data = array('errors' => [__('messages.tags.destroy_error', ['name' => $tag->name])]);
             return response()->json($data, 500);
         }
-    }
-
-    private function validateData(array $data, $id) {
-        $errors = array();
-
-        $validator = $this->validator($data, $id);
-        if ($validator->fails()) {
-            $errors = $validator->errors()->all();
-        }
-
-        if($data['type'] !== 'subcategory' && !empty($data['parents'])) {
-            $errors[] = __('messages.tags.only_subcategories_have_parents');
-        }
-
-        if($data['type'] !== 'category' && !empty($data['children'])) {
-            $errors[] = __('messages.tags.only_categories_have_children');
-        }
-
-        return $errors;
-    }
-    
-    private function validator(array $data, $id) {
-        return Validator::make($data, [
-            'name' => 'required|unique:tags,id,' . $id . '|max:255',
-            'type' => 'required|exists:tags,type',
-            'parents.*' => 'exists:tags,id|checkTagType:category',
-            'children.*' => 'exists:tags,id|checkTagType:subcategory',
-        ]);
     }
 }

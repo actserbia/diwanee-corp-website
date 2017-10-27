@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Article;
 use Auth;
-use Illuminate\Support\Facades\Validator;
-use App\Rules\CheckSTContent;
+use App\Validators\Validators;
 
 
 class ArticleController extends Controller
@@ -65,10 +64,10 @@ class ArticleController extends Controller
     **/
     public function index(Request $request) {
         $params = $request->all();
-            $validatorData = $this->validateData($params, 'tagsValidator');
-            if (!empty($validatorData)) {
-                return response()->json($validatorData, 400);
-            }
+        $validatorData = Validators::validateData($params, 'articlesIndexValidator');
+        if (!empty($validatorData)) {
+            return response()->json($validatorData, 400);
+        }
         
         $articles = Article::with('elements', 'tags')
             ->withTagsIfParamExists($params, 'name')
@@ -152,7 +151,7 @@ class ArticleController extends Controller
     public function store(Request $request) {
         $data = $request->all();
 
-        $validatorData = $this->validateData($data);
+        $validatorData = Validators::validateData($data, 'articlesFormValidator');
         if (!empty($validatorData)) {
             return response()->json($validatorData, 405);
         }
@@ -201,7 +200,7 @@ class ArticleController extends Controller
     public function update($id, Request $request) {
         $data = $request->all();
         
-        $validatorData = $this->validateData($data);
+        $validatorData = Validators::validateData($data, 'articlesFormValidator');
         if (!empty($validatorData)) {
             return response()->json($validatorData, 405);
         }
@@ -257,46 +256,6 @@ class ArticleController extends Controller
             $data = array('errors' => [__('messages.articles.destroy_error', ['title' => $article->title])]);
             return response()->json($data, 500);
         }
-    }
-
-    private function validateData(array $data, $validatorFunctionName = 'validator') {
-        $validatorData = array();
-
-        $validator = $this->$validatorFunctionName($data);
-        if ($validator->fails()) {
-            $validatorData = array('errors' => $validator->errors()->all());
-        }
-
-        return $validatorData;
-    }
-
-    private function validator(array $data) {
-        return Validator::make($data, [
-            'title' => 'required|max:255',
-            'external_url' => 'nullable|url',
-            'publication' => 'nullable|exists:tags,id|checkTagType:publication',
-            'brand' => 'nullable|exists:tags,id|checkTagType:brand',
-            'category' => 'required|exists:tags,id|checkTagType:category',
-            'influencer' => 'nullable|exists:tags,id|checkTagType:influencer',
-            'subcategories.*' => 'exists:tags,id|checkTagType:subcategory',
-            'content' => [new CheckSTContent]
-        ]);
-    }
-    
-    private function tagsValidator(array $params) {
-        $rules = [];
-        
-        if(isset($params['tags'])) {
-            foreach(array_keys($params['tags']) as $index) {
-                $rules['tags.' . $index] = 'nullable|exists:tags,name';
-            }
-        }
-        
-        $rules['active'] = 'nullable|bool';
-        $rules['perPage'] = 'nullable|integer';
-        $rules['page'] = 'nullable|integer';
-        
-        return Validator::make($params, $rules);
     }
     
     private function formatArticles($articles, $jsonEncode = true, $toHtml = false) {

@@ -17,9 +17,7 @@ return [
         'update_success' => 'The tag <strong>:title</strong> has successfully been updated.',
         'update_error' => 'The tag <strong>:title</strong> has not successfully been updated.',
         'destroy_success' => 'The tag <strong>:title</strong> has successfully been archived.',
-        'destroy_error' => 'The tag <strong>:title</strong> has not successfully been archived.',
-        'only_subcategories_have_parents' => 'Only subcategory tags have parents.',
-        'only_categories_have_children' => 'Only category tags have children.'
+        'destroy_error' => 'The tag <strong>:title</strong> has not successfully been archived.'
     ],
     'check_sir_trevor_content' => [
         'data_missing' => 'It should be array with data key.',
