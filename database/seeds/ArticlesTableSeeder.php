@@ -6,6 +6,7 @@ use Faker\Factory as Faker;
 use App\Article;
 use App\Element;
 use App\Tag;
+use App\Constants\TagType;
 use App\Constants\ElementType;
 
 class ArticlesTableSeeder extends Seeder
@@ -19,10 +20,10 @@ class ArticlesTableSeeder extends Seeder
     {
         $faker = Faker::create();
         
-        $publications = Tag::where('type', '=', 'publication')->get()->toArray();
-        $influencers = Tag::where('type', '=', 'influencer')->get()->toArray();
-        $brands = Tag::where('type', '=', 'brand')->get()->toArray();
-        $categories = Tag::where('type', '=', 'category')->get();
+        $publications = Tag::where('type', '=', TagType::Publication)->get()->toArray();
+        $influencers = Tag::where('type', '=', TagType::Influencer)->get()->toArray();
+        $brands = Tag::where('type', '=', TagType::Brand)->get()->toArray();
+        $categories = Tag::where('type', '=', TagType::Category)->get();
         
         factory(Article::class, 100)->create()->each(function ($article) use ($faker, $publications, $influencers, $brands, $categories) {
             $count = $faker->numberBetween(1, 5);

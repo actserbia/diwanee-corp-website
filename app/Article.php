@@ -6,15 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Constants\TagType;
+use App\Constants\ArticleStatus;
 use App\Element;
 use App\Tag;
 use App\User;
 use DB;
+use App\Traits\Pagination;
+use App\Traits\MultipleTags;
 
 
 class Article extends Model {
 
     use SoftDeletes;
+    use Pagination;
+    use MultipleTags;
     
     protected $fillable = [
         'title', 'meta_title', 'meta_description', 'meta_keywords', 'content_description', 'external_url', 'status', 'id_author'
@@ -33,8 +38,22 @@ class Article extends Model {
     }
 
 
-    public function scopeWithStatus($query, $status = 1) {
-        return $query->where('status', $status);
+    public function scopeWithActive($query, $params) {
+        if(isset($params['active'])) {
+            $status = $params['active'] ? ArticleStatus::Published : ArticleStatus::Unpublished;
+            $query = $query->where('status', $status);
+        }
+        
+        return $query;
+    }
+    
+    public function scopeWithTags($query, $tags = array(), $tagAttribute = 'name') {
+        foreach($tags as $tag) {
+            $query = $query->whereHas('tags', function($q) use($tag, $tagAttribute) {
+                $q->where($tagAttribute, '=', $tag);
+            });
+        }
+        return $query;
     }
 
 
@@ -132,38 +151,18 @@ class Article extends Model {
     }
 
     private function saveTags(array $data) {
-        $this->changeTag($this->publication, $data['publication']);
-        $this->changeTag($this->brand, $data['brand']);
-        $this->changeTag($this->influencer, $data['influencer']);
-        $this->changeTag($this->category, $data['category']);
-
-        $newSubcategories = isset($data['subcategories']) ? $data['subcategories'] : array();
-        $this->changeTags($this->subcategories, $newSubcategories);
+        $newTagsIds = array();
         
-        $this->load('tags');
-    }
-
-    private function changeTag($currentTag, $newTagId) {
-        if(isset($currentTag->id) && $newTagId != $currentTag->id || !isset($currentTag->id) && !empty($newTagId)) {
-            $this->tags()->detach($currentTag);
-
-            if(!$this->tags->contains($newTagId)) {
-                $this->tags()->attach($newTagId);
+        foreach(array_keys(array_intersect_key(TagType::all, $data)) as $type) {
+            if(!empty($data[$type])) {
+                $newTagsIds[] = $data[$type];
             }
         }
-    }
-
-    private function changeTags($currentTags, $newTagsIds) {
-        foreach($currentTags as $tag) {
-            if(!in_array($tag->id, $newTagsIds)) {
-                $this->tags()->detach($tag);
-            }
+        if(isset($data['subcategories'])) {
+            $newTagsIds = array_merge($newTagsIds, $data['subcategories']);
         }
-        foreach($newTagsIds as $newTagId) {
-            if(!$this->tags->contains($newTagId)) {
-                $this->tags()->attach($newTagId);
-            }
-        }
+        
+        $this->changeTags($newTagsIds, 'tags');
     }
 
 

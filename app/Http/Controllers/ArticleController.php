@@ -63,8 +63,7 @@ class ArticleController extends Controller
     *   @SWG\Response(response=500, description="internal server error")
     * )
     **/
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $articles = Article::with('elements', 'tags')->orderBy('created_at', 'desc');
 
         $params = $request->all();
@@ -75,28 +74,10 @@ class ArticleController extends Controller
                 return response()->json($data, 400);
             }
             
-            foreach($params['tags'] as $tag) {
-                $articles = $articles->whereHas('tags', function($q) use($tag) {
-                    $q->where('name', '=', $tag);
-                });
-            }
+            $articles = $articles->withTags($params['tags'], 'name');
         }
         
-        if(isset($params['active'])) {
-            $status = $params['active'] ? 1 : 0;
-            $articles = $articles->withStatus($status);
-        }
-        
-        $skip = isset($params['skip']) && is_numeric($params['skip']) ? $params['skip'] : 0;
-        $limit = isset($params['limit']) && is_numeric($params['limit']) ? $params['limit'] : 0;
-        if($skip > 0 && $limit == 0) {
-            $limit = 10;
-        }
-        if($skip > 0 || $limit > 0) {
-            $articles = $articles->skip($skip)->take($limit);
-        }
-        
-        $articlesData = $articles->get();
+        $articlesData = $articles->withActive($params)->withPagination($params)->get();
         
         $this->formatArticles($articlesData, false, true);
         
@@ -135,10 +116,10 @@ class ArticleController extends Controller
      *   @SWG\Response(response=500, description="internal server error")
      * )
      */
-    public function show($id)
-    {
+    public function show($id) {
         $article = Article::with('elements', 'tags')->find($id);
         $article->changeFormat(false, true);
+        
         return $article;
     }
 
@@ -165,8 +146,7 @@ class ArticleController extends Controller
      * @SWG\Response(response=500, description="internal server error")
      * )
     **/
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $data = $request->all();
 
         $errors = $this->validateData($data);
@@ -213,8 +193,7 @@ class ArticleController extends Controller
      * @SWG\Response(response=500, description="internal server error")
      * )
     **/
-    public function update($id, Request $request)
-    {
+    public function update($id, Request $request) {
         $data = $request->all();
         
         $errors = $this->validateData($data);

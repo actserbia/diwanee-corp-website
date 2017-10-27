@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Article;
 use App\Tag;
 use DB;
+use App\Traits\MultipleTags;
 
 class Tag extends Model {
 
     use SoftDeletes;
+    use MultipleTags;
 
     protected $fillable = [
         'name', 'type'
@@ -36,8 +38,8 @@ class Tag extends Model {
             $this->fill($data);
             $this->save();
 
-            $this->saveParents($data);
-            $this->saveChildren($data);
+            $this->saveTags($data, 'parents');
+            $this->saveTags($data, 'children');
 
             DB::commit();
             return true;
@@ -48,58 +50,9 @@ class Tag extends Model {
         }
     }
 
-    private function saveParents(array $data) {
-        $newParents = isset($data['parents']) ? $data['parents'] : array();
+    private function saveTags(array $data, $tagsName) {
+        $newTagsIds = isset($data[$tagsName]) ? $data[$tagsName] : array();
 
-        $this->changeParents($newParents);
-
-        $this->save();
-    }
-
-    private function changeParents($newTagsIds) {
-        $index = 0;
-
-        foreach($newTagsIds as $newTagId) {
-            if($this->parents->contains($newTagId)) {
-                $this->parents()->updateExistingPivot($newTagId, ['ordinal_number' => $index++]);
-            } else {
-                $this->parents()->attach([$newTagId => ['ordinal_number' => $index++]]);
-            }
-        }
-
-        foreach($this->parents as $tag) {
-            if(!in_array($tag->id, $newTagsIds)) {
-                $this->parents()->detach($tag);
-            }
-        }
-        
-        $this->load('parents');
-    }
-
-    private function saveChildren(array $data) {
-        $newChildren = isset($data['children']) ? $data['children'] : array();
-        $this->changeChildren($newChildren);
-
-        $this->save();
-    }
-
-    private function changeChildren($newTagsIds) {
-        $index = 0;
-
-        foreach($newTagsIds as $newTagId) {
-            if($this->children->contains($newTagId)) {
-                $this->children()->updateExistingPivot($newTagId, ['ordinal_number' => $index++]);
-            } else {
-                $this->children()->attach([$newTagId => ['ordinal_number' => $index++]]);
-            }
-        }
-
-        foreach($this->children as $tag) {
-            if(!in_array($tag->id, $newTagsIds)) {
-                $this->children()->detach($tag);
-            }
-        }
-        
-        $this->load('children');
+        $this->changeTags($newTagsIds, $tagsName, true);
     }
 }

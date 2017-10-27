@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use App\Constants\TagType;
+
 class CreateTagsTable extends Migration
 {
     /**
@@ -15,7 +17,7 @@ class CreateTagsTable extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('type', ['publication', 'brand', 'type', 'category', 'subcategory', 'influencer']);
+            $table->enum('type', array_keys(TagType::all));
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();

@@ -69,7 +69,7 @@ class Element extends Model {
     
     private function prepareElementData($elementData) {
         $converter = new ToMarkdownConverter(Settings::MarkdownConverterConfig);
-        $preparedElementData = $converter->convertElementDataToMarkdown($elementData);
+        $preparedElementData = $converter->convertElementData($elementData);
         
         if(in_array($this->type, ElementType::imageTypes)) {
             $imagesConfig = config('images');
