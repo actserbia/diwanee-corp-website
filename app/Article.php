@@ -40,7 +40,7 @@ class Article extends Model {
     }
 
 
-    public function scopeWithActive($query, $params) {
+    public function scopeWithActiveIfParamExists($query, $params) {
         if(isset($params['active'])) {
             $status = $params['active'] ? ArticleStatus::Published : ArticleStatus::Unpublished;
             $query = $query->where('status', $status);
@@ -49,11 +49,13 @@ class Article extends Model {
         return $query;
     }
     
-    public function scopeWithTags($query, $tags = array(), $tagAttribute = 'name') {
-        foreach($tags as $tag) {
-            $query = $query->whereHas('tags', function($q) use($tag, $tagAttribute) {
-                $q->where($tagAttribute, '=', $tag);
-            });
+    public function scopeWithTagsIfParamExists($query, $params, $tagAttribute = 'name') {
+        if(isset($params['tags'])) {
+            foreach($params['tags'] as $tag) {
+                $query = $query->whereHas('tags', function($q) use($tag, $tagAttribute) {
+                    $q->where($tagAttribute, '=', $tag);
+                });
+            }
         }
         return $query;
     }

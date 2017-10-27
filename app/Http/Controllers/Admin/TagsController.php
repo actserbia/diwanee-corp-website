@@ -17,10 +17,20 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $tags = Tag::get()->toArray();
         return view('admin.tags.tags_list', compact('tags'));
+    }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        $tag = Tag::findOrFail($id)->toArray();
+        return view('admin.tags.tags_delete', ['tag' => $tag]);
     }
 
     /**
@@ -56,21 +66,10 @@ class TagsController extends Controller
         }
 
         $tag = new Tag;
-        $tag->saveTag($data);
-
-        return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been created.");
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $tag = Tag::findOrFail($id)->toArray();
-        return view('admin.tags.tags_delete', ['tag' => $tag]);
+        
+        $successName = $tag->saveTag($data) ? 'success' : 'error';
+        
+        return redirect()->route('tags.index')->with($successName, __('messages.tags.store_' . $successName, ['name' => $tag->name]));
     }
 
     /**
@@ -79,8 +78,7 @@ class TagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $tag = Tag::findOrFail($id);
 
         $parentsByType = array();
@@ -101,8 +99,7 @@ class TagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $data = $request->all();
 
         $validator = $this->validator($data, $id);
@@ -111,9 +108,10 @@ class TagsController extends Controller
         }
 
         $tag = Tag::findOrFail($id);
-        $tag->saveTag($data);
-
-        return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been updated.");
+        
+        $successName = $tag->saveTag($data) ? 'success' : 'error';
+        
+        return redirect()->route('tags.index')->with($successName, __('messages.tags.update_' . $successName, ['name' => $tag->name]));
     }
 
     /**
@@ -122,11 +120,12 @@ class TagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $tag = Tag::findOrFail($id);
-        $tag->delete();
-        return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been archived.");
+        
+        $successName = $tag->delete() ? 'success' : 'error';
+        
+        return redirect()->route('tags.index')->with($successName, __('messages.tags.destroy_' . $successName, ['name' => $tag->name]));
     }
 
     private function validator(array $data, $id) {

@@ -64,24 +64,21 @@ class ArticleController extends Controller
     * )
     **/
     public function index(Request $request) {
-        $articles = Article::with('elements', 'tags')->orderBy('created_at', 'desc');
-
         $params = $request->all();
-        if(isset($params['tags'])) {
-            $validator = $this->tagsValidator($params);
-            if ($validator->fails()) {
-                $data = array('errors' => $validator->errors()->all());
-                return response()->json($data, 400);
+            $validatorData = $this->validateData($params, 'tagsValidator');
+            if (!empty($validatorData)) {
+                return response()->json($validatorData, 400);
             }
-            
-            $articles = $articles->withTags($params['tags'], 'name');
-        }
         
-        $articlesData = $articles->withActive($params)->withPagination($params);
+        $articles = Article::with('elements', 'tags')
+            ->withTagsIfParamExists($params, 'name')
+            ->withActiveIfParamExists($params)
+            ->orderBy('created_at', 'desc')
+            ->paginateIfParamExists($params);
         
-        $this->formatArticles($articlesData, false, true);
+        $this->formatArticles($articles, false, true);
         
-        return $articlesData;
+        return $articles;
     }
 
     /**
@@ -112,14 +109,20 @@ class ArticleController extends Controller
      *   ),
      *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Article"),),
      *   @SWG\Response(response=400, description="validation error"),
+     *   @SWG\Response(response=405, description="article not exists"),
      *   @SWG\Response(response=406, description="not acceptable"),
      *   @SWG\Response(response=500, description="internal server error")
      * )
      */
     public function show($id) {
-        $article = Article::with('elements', 'tags')->findOrFail($id);
-        $article->changeFormat(false, true);
+        $article = Article::with('elements', 'tags')->find($id);
         
+        if (!$article) {
+            $data = array('errors' => [__('messages.articles.not_exist', ['id' => $id])]);
+            return response()->json($data, 404);
+        }
+        
+        $article->changeFormat(false, true);
         return $article;
     }
 
@@ -149,17 +152,19 @@ class ArticleController extends Controller
     public function store(Request $request) {
         $data = $request->all();
 
-        $errors = $this->validateData($data);
-        if (!empty($errors)) {
-            $data = array('errors' => $errors);
-            return response()->json($data, 405);
+        $validatorData = $this->validateData($data);
+        if (!empty($validatorData)) {
+            return response()->json($validatorData, 405);
         }
 
         $article = new Article;
         $data['id_author'] = Auth::guard('api')->id();
-        $article->saveArticle($data);
-        
-        return response()->json($article, 201);
+        if($article->saveArticle($data)) {
+            return response()->json($article, 201);
+        } else {
+            $data = array('errors' => [__('messages.articles.store_success', ['title' => $article->title])]);
+            return response()->json($article, 500);
+        }
     }
 
     /**
@@ -196,16 +201,23 @@ class ArticleController extends Controller
     public function update($id, Request $request) {
         $data = $request->all();
         
-        $errors = $this->validateData($data);
-        if (!empty($errors)) {
-            $data = array('errors' => $errors);
-            return response()->json($data, 405);
+        $validatorData = $this->validateData($data);
+        if (!empty($validatorData)) {
+            return response()->json($validatorData, 405);
         }
 
-        $article = Article::findOrFail($id);
-        $article->saveArticle($data);
-
-        return response()->json($article, 200);
+        $article = Article::find($id);
+        if (!$article) {
+            $data = array('errors' => [__('messages.articles.not_exist', ['id' => $id])]);
+            return response()->json($data, 404);
+        }
+        
+        if($article->saveArticle($data)) {
+            return response()->json($article, 200);
+        } else {
+            $data = array('errors' => [__('messages.articles.update_error', ['title' => $article->title])]);
+            return response()->json($article, 500);
+        }
     }
 
     /**
@@ -233,21 +245,29 @@ class ArticleController extends Controller
      * )
     */
     public function destroy($id) {
-        $article = Article::findOrFail($id);
-        $article->delete();
-
-        return response()->json(null, 204);
+        $article = Article::find($id);
+        if (!$article) {
+            $data = array('errors' => [__('messages.articles.not_exist', ['id' => $id])]);
+            return response()->json($data, 404);
+        }
+        
+        if($article->delete()) {
+            return response()->json(null, 204);
+        } else {
+            $data = array('errors' => [__('messages.articles.destroy_error', ['title' => $article->title])]);
+            return response()->json($data, 500);
+        }
     }
 
-    private function validateData(array $data) {
-        $errors = array();
+    private function validateData(array $data, $validatorFunctionName = 'validator') {
+        $validatorData = array();
 
-        $validator = $this->validator($data);
+        $validator = $this->$validatorFunctionName($data);
         if ($validator->fails()) {
-            $errors = $validator->errors()->all();
+            $validatorData = array('errors' => $validator->errors()->all());
         }
 
-        return $errors;
+        return $validatorData;
     }
 
     private function validator(array $data) {
@@ -263,12 +283,20 @@ class ArticleController extends Controller
         ]);
     }
     
-    private function tagsValidator(array $data) {
+    private function tagsValidator(array $params) {
         $rules = [];
-        foreach($data['tags'] as $index => $tag) {
-            $rules['tags.' . $index] = 'exists:tags,name';
-}
-        return Validator::make($data, $rules);
+        
+        if(isset($params['tags'])) {
+            foreach(array_keys($params['tags']) as $index) {
+                $rules['tags.' . $index] = 'nullable|exists:tags,name';
+            }
+        }
+        
+        $rules['active'] = 'nullable|bool';
+        $rules['perPage'] = 'nullable|integer';
+        $rules['page'] = 'nullable|integer';
+        
+        return Validator::make($params, $rules);
     }
     
     private function formatArticles($articles, $jsonEncode = true, $toHtml = false) {

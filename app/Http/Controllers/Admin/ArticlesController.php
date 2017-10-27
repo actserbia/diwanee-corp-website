@@ -18,12 +18,22 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //Article::withTrashed()->restore();
 
         $articles = Article::withTrashed()->with('author')->get()->toArray();
         return view('admin.articles.articles_list', ['articles' => $articles, 'statuses' => ArticleStatus::all]);
+    }
+    
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        $article = Article::findOrFail($id)->toArray();
+        return view('admin.articles.articles_delete', ['article' => $article]);
     }
 
     /**
@@ -31,8 +41,7 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $tags = Tag::all()->toArray();
 
         return view('admin.articles.articles_create', ['tags' => $tags, 'statuses' => ArticleStatus::all]);
@@ -44,8 +53,7 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $data = $request->all();
 
         $validator = $this->validator($data);
@@ -56,21 +64,10 @@ class ArticlesController extends Controller
 
         $article = new Article;
         $data['id_author'] = Auth::id();
-        $article->saveArticle($data);
-
-        return redirect()->route('articles.index')->with('success', "The article <strong>" . $article->title . "</strong> has successfully been created.");
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $article = Article::findOrFail($id)->toArray();
-        return view('admin.articles.articles_delete', ['article' => $article]);
+        
+        $successName = $article->saveArticle($data) ? 'success' : 'error';
+        
+        return redirect()->route('articles.index')->with($successName, __('messages.articles.store_' . $successName, ['title' => $article->title]));
     }
 
     /**
@@ -79,8 +76,7 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $article = Article::findOrFail($id);
 
         $tags = Tag::all()->toArray();
@@ -95,8 +91,7 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $data = $request->all();
         
         $validator = $this->validator($data);
@@ -104,10 +99,11 @@ class ArticlesController extends Controller
             return back()->withInput()->withErrors($validator);
         }
   
-        $article = Article::find($id);
-        $article->saveArticle($data);
-
-        return redirect()->route('articles.index')->with('success', "The article <strong>" . $article->title . "</strong> has successfully been updated.");
+        $article = Article::findOrFail($id);
+        
+        $successName = $article->saveArticle($data) ? 'success' : 'error';
+        
+        return redirect()->route('articles.index')->with($successName, __('messages.articles.update_' . $successName, ['title' => $article->title]));
     }
 
     /**
@@ -116,11 +112,12 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $article = Article::findOrFail($id);
-        $article->delete();
-        return redirect()->route('articles.index')->with('success', "The article <strong>" . $article->title . "</strong> has successfully been archived.");
+        
+        $successName = $article->delete() ? 'success' : 'error';
+        return redirect()->route('articles.index')->with($successName, __('messages.articles.destroy_' . $successName, ['title' => $article->title]));
+        
     }
 
     private function validator(array $data) {

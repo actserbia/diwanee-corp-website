@@ -36,10 +36,7 @@ class TagController extends Controller
     {
         $params = $request->all();
         
-        $tags = Tag::with('parents', 'children');
-        if(isset($params['type'])) {
-            $tags = $tags->where('type', '=', $params['type']);
-        }
+        $tags = Tag::with('parents', 'children')->withTypeIfParamExists($params)->get();
 
         $tagsData = $tags->get();
 
@@ -72,7 +69,13 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        return Tag::with('parents', 'children')->findOrFail($id);
+        $tag = Tag::with('parents', 'children')->find($id);
+        if (!$tag) {
+            $data = array('errors' => [__('messages.articles.not_exist', ['id' => $id])]);
+            return response()->json($data, 404);
+        }
+        
+        return $tag;
     }
 
     /**
@@ -109,9 +112,12 @@ class TagController extends Controller
         }
 
         $tag = new Tag;
-        $tag->saveTag($data);
-
-        return response()->json($tag, 201);
+        if($tag->saveTag($data)) {
+            return response()->json($tag, 201);
+        } else {
+            $data = array('errors' => [__('messages.tags.store_error', ['name' => $tag->name])]);
+            return response()->json($tag, 500);
+        }
     }
 
     /**
@@ -158,10 +164,19 @@ class TagController extends Controller
             return response()->json($data, 405);
         }
 
-        $tag = Tag::findOrFail($id);
+        $tag = Tag::find($id);
+        if (!$tag) {
+            $data = array('errors' => [__('messages.tags.not_exist', ['id' => $id])]);
+            return response()->json($data, 404);
+        }
+        
         $tag->saveTag($data);
-
-        return response()->json($tag, 200);
+        if($tag->saveTag($data)) {
+            return response()->json($tag, 200);
+        } else {
+            $data = array('errors' => [__('messages.tags.update_error', ['name' => $tag->name])]);
+            return response()->json($tag, 500);
+        }
     }
 
     /**
@@ -190,10 +205,20 @@ class TagController extends Controller
     */
     public function destroy($id)
     {
-        $tag = Tag::findOrFail($id);
-        $tag->delete();
-
-        return response()->json(null, 204);
+        $tag = Tag::find($id);
+        if (!$tag) {
+            $data = array('errors' => [__('messages.tags.not_exist', ['id' => $id])]);
+            return response()->json($data, 404);
+        }
+        
+        if($tag->delete()) {
+            return response()->json(null, 204);
+        } else {
+            $data = array('errors' => [__('messages.tags.destroy_error', ['name' => $tag->name])]);
+            return response()->json($data, 500);
+        }
+        
+        return response()->json($data, 204);
     }
 
     private function validateData(array $data, $id) {
@@ -205,11 +230,11 @@ class TagController extends Controller
         }
 
         if($data['type'] !== 'subcategory' && !empty($data['parents'])) {
-            $errors[] = 'Only subcategory tags have parents.';
+            $errors[] = __('messages.tags.only_subcategories_have_parents');
         }
 
         if($data['type'] !== 'category' && !empty($data['children'])) {
-            $errors[] = 'Only category tags have children.';
+            $errors[] = __('messages.tags.only_categories_have_children');
         }
 
         return $errors;

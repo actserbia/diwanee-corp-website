@@ -32,7 +32,7 @@ class CheckSTContent implements Rule
         
         $content = json_decode(str_replace("'", "\"", $value));
         if(!isset($content->data) || !is_array($content->data)) {
-            $this->message = "It should be array with data key!";
+            $this->message = __('messages.check_sir_trevor_content.data_missing');
             return false;
         }
 
@@ -47,30 +47,30 @@ class CheckSTContent implements Rule
 
     private function checkElementContent($element, $index) {
         if(!isset($element->type) || !isset($element->data)) {
-            $this->message = "Element " . $index . " type or data not set!";
+            $this->message = __('messages.check_sir_trevor_content.type_or_data_missing', ['elementIndex' => $index]);
             return false;
         }
 
         if(!in_array($element->type, ElementType::all)) {
-            $this->message = $element->type . ' is not valid sir trevor element type. Valid types are: ' . implode(',', ElementType::all);
+            $this->message = __('messages.check_sir_trevor_content.type_not_valid', ['type' => $element->type, 'validTypes' => implode(',', ElementType::all)]);
             return false;
         }
 
         switch($element->type) {
             case ElementType::Quote:
                 if(!isset($element->data->cite)) {
-                    $this->message = "Element " . $index . " cite is not set!";
+                    $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => $index, 'param' => 'cite']);
                     return false;
                 }
                 
             case ElementType::Text:
             case ElementType::Heading:
                 if(!isset($element->data->text)) {
-                    $this->message = "Element " . $index . " text is not set!";
+                    $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => $index, 'param' => 'text']);
                     return false;
                 }
                 if(!$this->checkElementFormat($element, $index)) {
-                    $this->message = "Element " . $index . " format is not set or is not valid!";
+                    $this->message = __('messages.check_sir_trevor_content.format_not_valid', ['elementIndex' => $index]);
                     return false;
                 }
                 break;
@@ -78,30 +78,30 @@ class CheckSTContent implements Rule
             case ElementType::DiwaneeImage:
             case ElementType::SliderImage:
                 if(!isset($element->data->file->url) || !isset($element->data->seoname) || !isset($element->data->seoalt) || !isset($element->data->caption) || !isset($element->data->copyright)) {
-                    $this->message = "Element " . $index . " data is not set!";
+                    $this->message = __('messages.check_sir_trevor_content.image_data_missing', ['elementIndex' => $index]);
                     return false;
                 }
                 break;
 
             case ElementType::Video:
                 if(!isset($element->data->remote_id) || !isset($element->data->source)) {
-                    $this->message = "Element " . $index . " remote_id or source is not set!";
+                    $this->message = __('messages.check_sir_trevor_content.video_data_missing', ['elementIndex' => $index]);
                     return false;
                 }
                 break;
 
             case ElementType::ElementList:
                 if(!isset($element->data->listItems) || !is_array($element->data->listItems)) {
-                    $$this->message = "Element " . $index . " listItems is not set or is not array!";
+                    $this->message = __('messages.check_sir_trevor_content.list_items_not_valid', ['elementIndex' => $index]);
                     return false;
                 }
                 if(!$this->checkElementFormat($element, $index)) {
-                    $this->message = "Element " . $index . " format is not set or is not valid!";
+                    $this->message = __('messages.check_sir_trevor_content.format_not_valid', ['elementIndex' => $index]);
                     return false;
                 }
-                foreach($element->data->listItems as $key => $listItem) {
+                foreach($element->data->listItems as $itemIndex => $listItem) {
                     if(!isset($listItem->content)) {
-                        $this->message = "Element " . $index . " list item " . $key . " content is not set!";
+                        $this->message = __('messages.check_sir_trevor_content.list_item_content_missing', ['elementIndex' => $index, 'itemIndex' => $itemIndex]);
                         return false;
                     }
                 }
@@ -126,6 +126,6 @@ class CheckSTContent implements Rule
      */
     public function message()
     {
-        return 'Content is not in valid sir trevor format! ' . $this->message;
+        return __('messages.check_sir_trevor_content.not_valid_message', ['message' => $this->message]);
     }
 }

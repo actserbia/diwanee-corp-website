@@ -30,6 +30,14 @@ class Tag extends Model {
     public function parents() {
         return $this->belongsToMany(Tag::class, 'tag_parent', 'id_tag', 'id_parent');
     }
+    
+    public function scopeWithTypeIfParamExists($query, $params) {
+        if(isset($params['type'])) {
+            $query = $query->where('type', '=', $params['type']);
+        }
+        
+        return $query;
+    }
 
 
     public function saveTag(array $data) {
