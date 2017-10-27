@@ -116,7 +116,7 @@ class TagController extends Controller
             return response()->json($tag, 201);
         } else {
             $data = array('errors' => [__('messages.tags.store_error', ['name' => $tag->name])]);
-            return response()->json($tag, 500);
+            return response()->json($data, 500);
         }
     }
 
@@ -175,7 +175,7 @@ class TagController extends Controller
             return response()->json($tag, 200);
         } else {
             $data = array('errors' => [__('messages.tags.update_error', ['name' => $tag->name])]);
-            return response()->json($tag, 500);
+            return response()->json($data, 500);
         }
     }
 
@@ -217,8 +217,6 @@ class TagController extends Controller
             $data = array('errors' => [__('messages.tags.destroy_error', ['name' => $tag->name])]);
             return response()->json($data, 500);
         }
-        
-        return response()->json($data, 204);
     }
 
     private function validateData(array $data, $id) {

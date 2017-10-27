@@ -163,7 +163,7 @@ class ArticleController extends Controller
             return response()->json($article, 201);
         } else {
             $data = array('errors' => [__('messages.articles.store_success', ['title' => $article->title])]);
-            return response()->json($article, 500);
+            return response()->json($data, 500);
         }
     }
 
@@ -216,7 +216,7 @@ class ArticleController extends Controller
             return response()->json($article, 200);
         } else {
             $data = array('errors' => [__('messages.articles.update_error', ['title' => $article->title])]);
-            return response()->json($article, 500);
+            return response()->json($data, 500);
         }
     }
 
