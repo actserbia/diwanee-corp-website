@@ -110,7 +110,7 @@ class TagsController extends Controller
             return back()->withInput()->withErrors($validator);
         }
 
-        $tag = Tag::find($id);
+        $tag = Tag::findOrFail($id);
         $tag->saveTag($data);
 
         return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been updated.");
@@ -124,7 +124,7 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        $tag = Tag::find($id);
+        $tag = Tag::findOrFail($id);
         $tag->delete();
         return redirect()->route('tags.index')->with('success', "The tag <strong>" . $tag->name . "</strong> has successfully been archived.");
     }

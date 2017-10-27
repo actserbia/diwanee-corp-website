@@ -117,7 +117,7 @@ class ArticleController extends Controller
      * )
      */
     public function show($id) {
-        $article = Article::with('elements', 'tags')->find($id);
+        $article = Article::with('elements', 'tags')->findOrFail($id);
         $article->changeFormat(false, true);
         
         return $article;

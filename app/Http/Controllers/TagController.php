@@ -72,7 +72,7 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        return Tag::with('parents', 'children')->find($id);
+        return Tag::with('parents', 'children')->findOrFail($id);
     }
 
     /**

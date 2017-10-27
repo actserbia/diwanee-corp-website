@@ -118,7 +118,7 @@ class ArticlesController extends Controller
      */
     public function destroy($id)
     {
-        $article = Article::find($id);
+        $article = Article::findOrFail($id);
         $article->delete();
         return redirect()->route('articles.index')->with('success', "The article <strong>" . $article->title . "</strong> has successfully been archived.");
     }
