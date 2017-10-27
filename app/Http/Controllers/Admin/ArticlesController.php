@@ -22,7 +22,10 @@ class ArticlesController extends Controller
         //Article::withTrashed()->restore();
 
         $articles = Article::withTrashed()->with('author')->get()->toArray();
-        return view('admin.articles.articles_list', ['articles' => $articles, 'statuses' => ArticleStatus::all]);
+        
+        $statuses = ArticleStatus::all;
+        
+        return view('admin.articles.articles_list', compact('articles', 'statuses'));
     }
     
     /**
@@ -33,7 +36,8 @@ class ArticlesController extends Controller
      */
     public function show($id) {
         $article = Article::findOrFail($id)->toArray();
-        return view('admin.articles.articles_delete', ['article' => $article]);
+        
+        return view('admin.articles.articles_delete', compact('article'));
     }
 
     /**
@@ -43,8 +47,9 @@ class ArticlesController extends Controller
      */
     public function create() {
         $tags = Tag::all()->toArray();
+        $statuses = ArticleStatus::all;
 
-        return view('admin.articles.articles_create', ['tags' => $tags, 'statuses' => ArticleStatus::all]);
+        return view('admin.articles.articles_create', compact('tags', 'statuses'));
     }
 
     /**
@@ -58,7 +63,6 @@ class ArticlesController extends Controller
 
         $validator = $this->validator($data);
         if ($validator->fails()) {
-            print_r($validator->errors()->all());die();
             return back()->withInput()->withErrors($validator);
         }
 
@@ -80,8 +84,9 @@ class ArticlesController extends Controller
         $article = Article::findOrFail($id);
 
         $tags = Tag::all()->toArray();
+        $statuses = ArticleStatus::all;
         
-        return view('admin.articles.articles_edit', ['article' => $article, 'tags' => $tags, 'statuses' => ArticleStatus::all]);
+        return view('admin.articles.articles_edit', compact('article', 'tags', 'statuses'));
     }
 
     /**

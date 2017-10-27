@@ -30,7 +30,7 @@ class TagsController extends Controller
      */
     public function show($id) {
         $tag = Tag::findOrFail($id)->toArray();
-        return view('admin.tags.tags_delete', ['tag' => $tag]);
+        return view('admin.tags.tags_delete', compact('tag'));
     }
 
     /**
@@ -47,8 +47,10 @@ class TagsController extends Controller
         $settings['height'] = 100;
         $imageUrl =  $imagesConfig['imagesUrl'] . 'test.jpg';
         $image = $thumbnailUrlFactory->url($imageUrl)->resize($settings['width'], $settings['height'])->smartCrop(true);*/
+      
+        $types = TagType::all;
         
-        return view('admin.tags.tags_create', ['types' => TagType::all]);
+        return view('admin.tags.tags_create', compact('types'));
     }
 
     /**
@@ -80,6 +82,8 @@ class TagsController extends Controller
      */
     public function edit($id) {
         $tag = Tag::findOrFail($id);
+        
+        $types = TagType::all;
 
         $parentsByType = array();
         $parentsByType['subcategory'] = 'category';
@@ -89,7 +93,7 @@ class TagsController extends Controller
         $childrenByType['category'] = 'subcategory';
         $childrenList = isset($childrenByType[$tag->type]) ? Tag::where('type', '=', $childrenByType[$tag->type])->get() : null;
 
-        return view('admin.tags.tags_edit', ['tag' => $tag, 'types' => TagType::all, 'parentsList' => $parentsList, 'childrenList' => $childrenList]);
+        return view('admin.tags.tags_edit', compact('tag', 'types', 'parentsList', 'childrenList'));
     }
 
     /**
