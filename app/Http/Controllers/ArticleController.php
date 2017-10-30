@@ -64,7 +64,7 @@ class ArticleController extends Controller
     **/
     public function index(Request $request) {
         $params = $request->all();
-        $validatorData = Validators::validateData($params, 'articlesIndexValidator');
+        $validatorData = Validators::validateData('articlesIndexValidator', $params);
         if (!empty($validatorData)) {
             return response()->json($validatorData, 400);
         }
@@ -151,7 +151,7 @@ class ArticleController extends Controller
     public function store(Request $request) {
         $data = $request->all();
 
-        $validatorData = Validators::validateData($data, 'articlesFormValidator');
+        $validatorData = Validators::validateData('articlesFormValidator', $data);
         if (!empty($validatorData)) {
             return response()->json($validatorData, 405);
         }
@@ -200,7 +200,7 @@ class ArticleController extends Controller
     public function update($id, Request $request) {
         $data = $request->all();
         
-        $validatorData = Validators::validateData($data, 'articlesFormValidator');
+        $validatorData = Validators::validateData('articlesFormValidator', $data);
         if (!empty($validatorData)) {
             return response()->json($validatorData, 405);
         }

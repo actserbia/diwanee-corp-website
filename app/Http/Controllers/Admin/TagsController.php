@@ -62,7 +62,7 @@ class TagsController extends Controller
     public function store(Request $request) {
         $data = $request->all();
 
-        $validator = Validators::tagsFormValidator($data, ['id' => 0]);
+        $validator = Validators::tagsFormValidator($data);
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }

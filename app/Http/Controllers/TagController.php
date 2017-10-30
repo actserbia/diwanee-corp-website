@@ -38,9 +38,7 @@ class TagController extends Controller
         
         $tags = Tag::with('parents', 'children')->withTypeIfParamExists($params)->get();
 
-        $tagsData = $tags->get();
-
-        return $tagsData;
+        return $tags;
     }
 
     /**
@@ -105,7 +103,7 @@ class TagController extends Controller
     {
         $data = $request->all();
 
-        $validationData = Validators::validateData($data, ['id' => 0], 'tagsFormValidator');
+        $validationData = Validators::validateData('tagsFormValidator', $data, ['id' => 0]);
         if (!empty($validationData)) {
             return response()->json($validationData, 405);
         }
@@ -157,7 +155,7 @@ class TagController extends Controller
     {
         $data = $request->all();
 
-        $validationData = Validators::validateData($data, ['id' => $id], 'tagsFormValidator');
+        $validationData = Validators::validateData('tagsFormValidator', $data, ['id' => $id]);
         if (!empty($validationData)) {
             return response()->json($validationData, 405);
         }

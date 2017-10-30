@@ -2,7 +2,7 @@
 namespace App\Validators;
 
 use Illuminate\Support\Facades\Validator;
-use App\Rules\CheckSTContent;
+use App\Validation\Rules\CheckSTContent;
 
 
 class Validators {
@@ -39,7 +39,7 @@ class Validators {
         ]);
     }
     
-    public static function validateData(array $data, array $additional, $validatorFunctionName) {
+    public static function validateData($validatorFunctionName, array $data, array $additional = []) {
         $validatorData = array();
 
         $validator = self::$validatorFunctionName($data, $additional);

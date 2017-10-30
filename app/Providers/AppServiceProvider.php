@@ -5,8 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use App\Tag;
+use App\Validation\Rules;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -19,22 +18,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        Validator::extend('checkTagType', function ($attribute, $value, $parameters) {
-            $tag = Tag::find($value);
-            return $tag['type'] == $parameters[0];
-        });
-        
-        Validator::extend('checkParentsAndChildren', function ($attribute, $value, $parameters) {
-            if($attribute === 'parents' && $parameters[0] !== 'subcategory' && !empty($value)) {
-                return false;
-            }
-            
-            if($attribute === 'children' && $parameters[0] !== 'category' && !empty($value)) {
-                return false;
-            }
-            
-            return true;
-        });
+        Rules::addRules();
     }
 
     /**
