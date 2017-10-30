@@ -88,14 +88,10 @@
 
 
 @media (min-width: 520px) {
-    div[data-type="diwanee image"] .st-block__editor, div[data-type="slider image"] .st-block__editor {
-        text-align: center;
-    }
-    div[data-type="diwanee image"] .st-block__editor div, div[data-type="slider image"] .st-block__editor div {
-        text-align: left;
-    }
     div[data-type="diwanee image"] .st-block__editor img, div[data-type="slider image"] .st-block__editor img {
         width: 50%;
+        display: block;
+        margin: 0 auto;
     }
     
     div[data-type="slider image"] .st-block__inner {
