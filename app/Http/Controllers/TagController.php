@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
-use App\Validators\Validators;
+use App\Validation\Validators;
 
 class TagController extends Controller
 {

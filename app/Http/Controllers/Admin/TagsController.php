@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
 use App\Constants\TagType;
-use App\Validators\Validators;
+use App\Validation\Validators;
 
 //use Thumbor\Url\BuilderFactory;
 

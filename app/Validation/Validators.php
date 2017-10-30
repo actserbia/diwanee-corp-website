@@ -1,5 +1,5 @@
 <?php
-namespace App\Validators;
+namespace App\Validation;
 
 use Illuminate\Support\Facades\Validator;
 use App\Validation\Rules\CheckSTContent;
