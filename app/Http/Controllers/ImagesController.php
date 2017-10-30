@@ -57,7 +57,7 @@ class ImagesController extends Controller {
             $file->move(base_path() . $imagesConfig['imagesFolder'], $filename);
         }
 
-        return json_encode(array('file' => array('url' => filename)));
+        return json_encode(array('file' => array('url' => $filename)));
     }
 
     private function validator(array $data) {
