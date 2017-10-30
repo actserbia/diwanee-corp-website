@@ -26,7 +26,7 @@ class ArticlesTableSeeder extends Seeder
         $categories = Tag::where('type', '=', TagType::Category)->get();
         
         factory(Article::class, 100)->create()->each(function ($article) use ($faker, $publications, $influencers, $brands, $categories) {
-            $count = $faker->numberBetween(1, 5);
+            $count = $faker->numberBetween(1, 7);
             for($index = 1; $index <= $count; $index++) {
                 $element = factory(Element::class)->make();
                 $article->elements()->save($element, ['ordinal_number' => $index]);

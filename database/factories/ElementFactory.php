@@ -3,6 +3,7 @@
 use Faker\Generator as Faker;
 use App\Element;
 use App\Constants\ElementType;
+use Illuminate\Http\UploadedFile;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use App\Constants\ElementType;
 */
 
 $factory->define(Element::class, function (Faker $faker) {
-    $types = [ElementType::Text, ElementType::DiwaneeImage, ElementType::SliderImage, ElementType::Video, ElementType::Heading, ElementType::ElementList];
+    $types = [ElementType::Text, ElementType::DiwaneeImage, ElementType::Video, ElementType::Heading, ElementType::ElementList];
     
     $type = $types[$faker->numberBetween(0, count($types) - 1)];
     $data = array();
@@ -28,8 +29,9 @@ $factory->define(Element::class, function (Faker $faker) {
             break;
           
         case ElementType::DiwaneeImage:
-        case ElementType::SliderImage:
-            $data['file']['url'] = 'test.jpg';
+            $imagesConfig = config('images');
+            $data['file']['url'] = $faker->image(base_path() . $imagesConfig['imagesFolder'], 640, 480, null, false);
+          
             $data['seoname'] = $faker->text(30);
             $data['seoalt'] = $faker->text(30);
             $data['caption'] = $faker->text(30);
@@ -42,7 +44,7 @@ $factory->define(Element::class, function (Faker $faker) {
             break; 
 
         case ElementType::ElementList:
-            $count = $faker->numberBetween(1, 5);
+            $count = $faker->numberBetween(2, 5);
             for($index = 0; $index < $count; $index++) {
                 $data['listItems'][] = array('content' => $faker->text(20));
             }
@@ -59,7 +61,10 @@ $factory->define(Element::class, function (Faker $faker) {
 
 $factory->defineAs(Element::class, ElementType::SliderImage, function (Faker $faker) {
     $data = array();
-    $data['file']['url'] = 'test.jpg';
+    
+    $imagesConfig = config('images');
+    $data['file']['url'] = $faker->image(base_path() . $imagesConfig['imagesFolder'], 640, 480, null, false);
+    
     $data['alt'] = $faker->text(30);
     $data['seoname'] = $faker->text(30);
     $data['seoalt'] = $faker->text(30);
