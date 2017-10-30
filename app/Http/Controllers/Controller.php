@@ -2,7 +2,6 @@
 /**
  * @SWG\Swagger(
  *   basePath="/api",
- *   schemes={"http"},
  * 	 produces={"application/json"},
  * 	 consumes={"application/json"},
  *   @SWG\Info(
