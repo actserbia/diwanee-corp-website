@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Article;
 use App\Tag;
 use App\Constants\ArticleStatus;
-use App\Validators\Validators;
+use App\Validation\Validators;
 use Auth;
 
 
