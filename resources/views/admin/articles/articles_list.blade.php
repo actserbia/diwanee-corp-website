@@ -12,7 +12,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>@lang('messages.templates.articles.list_title') <a href="{{route('articles.create')}}" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> @lang('messages.templates.global.create_new') </a></h2>
+                    <h2>@lang('messages.templates.admin.articles.list_title') <a href="{{route('articles.create')}}" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> @lang('messages.templates.global.create_new') </a></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

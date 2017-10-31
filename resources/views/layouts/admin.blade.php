@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Diwanee Corp Admin Panel</title>
+    <title>@lang('messages.templates.admin.page_title')</title>
 
     <link rel="shortcut icon" type="image/png" href="{{asset('_admin_/images/favicon.png')}}"/>
     <!-- Bootstrap -->
@@ -40,7 +40,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="#" class="site_title"> <span>Diwanee Corp Panel</span></a>
+                        <a href="#" class="site_title"> <span>@lang('messages.templates.admin.sidebar.title')</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="profile_info">
 
-                            <span>Welcome,</span>
+                            <span>@lang('messages.templates.admin.sidebar.welcome')</span>
                             <h2>{{ Auth::user()->name }}</h2>
                         </div>
                     </div>
@@ -63,16 +63,16 @@
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>General</h3>
+                            <h3>@lang('messages.templates.admin.sidebar.general')</h3>
                             <ul class="nav side-menu">
-                                <li><a href="/"><i class="fa fa-home"></i> Home </a></li>
-                                <li><a><i class="fa fa-edit"></i> Articles <span class="fa fa-chevron-down"></span></a>
+                                <li><a href="{{ route('admin.home') }}"><i class="fa fa-home"></i> @lang('messages.templates.admin.sidebar.home') </a></li>
+                                <li><a><i class="fa fa-edit"></i> @lang('messages.templates.admin.sidebar.items') <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{route('tags.index')}}">Categories</a></li>
-                                        <li><a href="{{route('articles.index')}}">Articles list</a></li>
+                                        <li><a href="{{ route('tags.index') }}">@lang('messages.templates.admin.sidebar.tags')</a></li>
+                                        <li><a href="{{ route('articles.index') }}">@lang('messages.templates.admin.sidebar.articles')</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="{{route('users.index')}}"><i class="fa fa-users"></i> Users </a></li>
+                                <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> @lang('messages.templates.admin.sidebar.users') </a></li>
                             </ul>
                         </div>
                     </div>
@@ -107,26 +107,7 @@
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         </div>
 
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="">
-                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{asset('_admin_/images/img.jpg')}}" alt="">{{ Auth::user()->name }}
-                                    <span class=" fa fa-angle-down"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="#"> Profile</a></li>
-                                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            <i class="fa fa-sign-out pull-right"></i> Log Out</a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-
-
-                        </ul>
+                        @include('blocks.profile')
                     </nav>
                 </div>
             </div>
@@ -141,9 +122,6 @@
 
             <!-- footer content -->
             <footer>
-                <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-                </div>
                 <div class="clearfix"></div>
             </footer>
             <!-- /footer content -->

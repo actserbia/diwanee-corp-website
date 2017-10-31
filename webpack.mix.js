@@ -18,5 +18,5 @@ mix.js('resources/assets/js/app.js', 'public/js')
 mix.copy('node_modules/sir-trevor/build/*', 'public/asset/sirtrevorjs/');
 
 mix.autoload({
-    jquery: ['$', 'window.jQuery']
+    jquery: ['$', 'window.jQuery', 'jQuery', 'window.$', 'jquery', 'window.jquery']
 });

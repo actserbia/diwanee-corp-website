@@ -25,7 +25,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admi
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'editor', 'namespace' => 'Admin'], function(){
-    Route::get('/', 'DashboardController@index');
+    Route::get('/', 'DashboardController@index')->name('admin.home');
 
     Route::resource('tags', 'TagsController');
     Route::resource('articles', 'ArticlesController');

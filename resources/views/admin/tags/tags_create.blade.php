@@ -7,7 +7,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>@lang('messages.templates.tags.create_tag_title') <a href="{{route('tags.index')}}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('messages.templates.global.back') </a></h2>
+                    <h2>@lang('messages.templates.admin.tags.create_tag_title') <a href="{{route('tags.index')}}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('messages.templates.global.back') </a></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <input type="hidden" name="_token" value="{{ Session::token() }}">
-                                <button type="submit" class="btn btn-success">@lang('messages.templates.tags.create_tag_button_text')</button>
+                                <button type="submit" class="btn btn-success">@lang('messages.templates.admin.tags.create_tag_button_text')</button>
                             </div>
                         </div>
                     </form>
