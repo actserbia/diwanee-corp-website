@@ -8,27 +8,27 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Categories <a href="{{route('tags.create')}}" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> Create New </a></h2>
+                    <h2>@lang('messages.templates.tags.list_title') <a href="{{route('tags.create')}}" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> @lang('messages.templates.global.create_new') </a></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <table id="datatable-buttons" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Created</th>
-                                <th>Action</th>
+                                <th>@lang('messages.templates.global.id')</th>
+                                <th>@lang('messages.templates.tags.name')</th>
+                                <th>@lang('messages.templates.tags.type')</th>
+                                <th>@lang('messages.templates.global.created')</th>
+                                <th>@lang('messages.templates.global.actions')</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>Id</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Created</th>
-                                <th>Action</th>
+                                <th>@lang('messages.templates.global.id')</th>
+                                <th>@lang('messages.templates.tags.name')</th>
+                                <th>@lang('messages.templates.tags.type')</th>
+                                <th>@lang('messages.templates.global.created')</th>
+                                <th>@lang('messages.templates.global.actions')</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -39,8 +39,8 @@
                             <td>{{ $tag['type'] }}</td>
                             <td>{{ $tag['created_at'] }}</td>
                             <td>
-                                <a href="{{ route('tags.edit', ['id' => $tag['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="Edit"></i> </a>
-                                <a href="{{ route('tags.show', ['id' => $tag['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="Delete"></i> </a>
+                                <a href="{{ route('tags.edit', ['id' => $tag['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('messages.templates.global.edit')"></i> </a>
+                                <a href="{{ route('tags.show', ['id' => $tag['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('messages.templates.global.delete')"></i> </a>
                             </td>
                         </tr>
                         @endforeach

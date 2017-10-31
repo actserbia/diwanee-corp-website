@@ -28,9 +28,11 @@ class Validators {
         ]);
     }
     
-    public static function tagsFormValidator(array $data, array $additional) {
+    public static function tagsFormValidator(array $data, array $additional = []) {
+        $nameUnique = isset($additional['id']) ? 'unique:tags,id,' . $additional['id'] : 'unique:tags';
+
         return Validator::make($data, [
-            'name' => 'required|unique:tags,id,' . $additional['id'] . '|max:255',
+            'name' => 'required|' . $nameUnique . '|max:255',
             'type' => 'required|exists:tags,type',
             'parents.*' => 'exists:tags,id|checkTagType:category',
             'children.*' => 'exists:tags,id|checkTagType:subcategory',
@@ -39,6 +41,20 @@ class Validators {
         ]);
     }
     
+    public static function usersFormValidator(array $data, array $additional = []) {
+        $emailUnique = isset($additional['id']) ? 'unique:users,id,' . $additional['id'] : 'unique:users';
+        $password = isset($data['password']) ? 'required' : 'nullable';
+        $confirmPassword = isset($data['confirm_password']) ? 'required|checkEqual:' . $data['password'] : 'nullable';
+
+        return Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|' . $emailUnique . '|max:255',
+            'role' => 'required',
+            'password' => $password . '|min:6',
+            'confirm_password' => $confirmPassword
+        ]);
+    }
+
     public static function validateData($validatorFunctionName, array $data, array $additional = []) {
         $validatorData = array();
 

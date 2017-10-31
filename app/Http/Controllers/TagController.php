@@ -103,7 +103,7 @@ class TagController extends Controller
     {
         $data = $request->all();
 
-        $validationData = Validators::validateData('tagsFormValidator', $data, ['id' => 0]);
+        $validationData = Validators::validateData('tagsFormValidator', $data);
         if (!empty($validationData)) {
             return response()->json($validationData, 405);
         }

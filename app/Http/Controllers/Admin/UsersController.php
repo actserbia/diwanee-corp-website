@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Constants\Role;
-
-use Validator;
+use App\Validation\Validators;
 
 
 class UsersController extends Controller
@@ -17,8 +16,7 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $userdetail = User::withTrashed()->get()->toArray();
         return view('admin.users.users_list', compact('userdetail'));
     }
@@ -28,9 +26,10 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('admin.users.users_create');
+    public function create() {
+        $roles = Role::all;
+
+        return view('admin.users.users_create', compact('roles'));
     }
 
     /**
@@ -39,9 +38,19 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        return redirect()->route('users.index')->with('success', "The user <strong>user name</strong> has successfully been created.");
+    public function store(Request $request) {
+        $data = $request->all();
+
+        $validator = Validators::usersFormValidator($data);
+        if ($validator->fails()) {
+            return back()->withInput()->withErrors($validator);
+        }
+
+        $user = new User;
+
+        $successName = $user->saveUser($data) ? 'success' : 'error';
+
+        return redirect()->route('users.index')->with($successName, __('messages.tags.store_' . $successName, ['name' => $user->name]));
     }
 
     /**
@@ -50,9 +59,10 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        return view('admin.users.users_delete');
+    public function show($id) {
+        $user = User::findOrFail($id)->toArray();
+
+        return view('admin.users.users_delete', compact('user'));
     }
 
     /**
@@ -61,12 +71,11 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $user = User::findOrFail($id);
-        $roles = Role::getRoles();
+        $roles = Role::all;
 
-        return view('admin.users.users_edit', ['user' => $user, 'roles' => $roles]);
+        return view('admin.users.users_edit', compact('user', 'roles'));
     }
 
     /**
@@ -76,19 +85,19 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $data = $request->all();
 
-        $validator = $this->validator($data);
+        $validator = Validators::usersFormValidator($data, ['id' => $id]);
         if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
 
-        $user = User::find($id);
-        $user->saveUser($data);
+        $user = User::findOrFail($id);
 
-        return redirect()->route('users.index')->with('success', "The user <strong>" . $user->name . "</strong> has successfully been updated.");
+        $successName = $user->saveUser($data) ? 'success' : 'error';
+
+        return redirect()->route('users.index')->with($successName, __('messages.users.update_' . $successName, ['name' => $user->name]));
     }
 
     /**
@@ -97,17 +106,11 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $user = User::find($id);
-        $user->delete();
-        return redirect()->route('users.index')->with('success', "The user <strong>user name</strong> has successfully been archived.");
-    }
+    public function destroy($id) {
+        $user = User::findOrFail($id);
 
-    private function validator(array $data) {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'email'
-        ]);
+        $successName = $user->delete() ? 'success' : 'error';
+
+        return redirect()->route('users.index')->with($successName, __('messages.users.destroy_' . $successName, ['name' => $user->name]));
     }
 }

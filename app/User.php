@@ -37,6 +37,15 @@ class User extends Authenticatable
             $this->name = $data['name'];
             $this->email = $data['email'];
             $this->role = $data['role'];
+
+            if(isset($data['password'])) {
+                $this->password = bcrypt($data['password']);
+            }
+
+            if(!isset($this->api_token)) {
+                $this->api_token = str_random(60);
+            }
+
             $this->save();
 
             DB::commit();

@@ -9,6 +9,7 @@ class Rules {
     public static function addRules() {
         self::addCheckTagType();
         self::addCheckParentsAndChildren();
+        self::addCheckEqual();
     }
     
     private static function addCheckTagType() {
@@ -29,6 +30,12 @@ class Rules {
             }
             
             return true;
+        });
+    }
+
+    private static function addCheckEqual() {
+        Validator::extend('checkEqual', function ($attribute, $value, $parameters) {
+            return $value == $parameters[0];
         });
     }
 }

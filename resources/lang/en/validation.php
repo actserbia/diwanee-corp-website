@@ -111,7 +111,8 @@ return [
         'subcategories.*' => ['check_tag_type' => 'The :attribute tag must be of type subcategory.'],
         'influencer' => ['check_tag_type' => 'The :attribute tag must be of type influencer.'],
         'parents' => ['check_parents_and_children' => 'Only subcategory tags have parents.'],
-        'children' => ['check_parents_and_children' => 'Only category tags have children.']
+        'children' => ['check_parents_and_children' => 'Only category tags have children.'],
+        'confirm_password' => ['check_equal' => 'The password confirmation does not match.'],
     ],
 
     /*

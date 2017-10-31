@@ -9,9 +9,10 @@ final class Role {
     const Moderator = 'moderator';
     const Admin = 'admin';
 
-    public static function getRoles() {
-        return array(
-            self::User, self::Brand, self::Moderator, self::Admin
-        );
-    }
+    const all = array(
+        self::User => self::User,
+        self::Brand => self::Brand,
+        self::Moderator => self::Moderator,
+        self::Admin => self::Admin
+    );
 }
