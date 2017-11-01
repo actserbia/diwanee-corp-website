@@ -21,7 +21,7 @@
 
                     <!-- Collapsed Hamburger -->
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">@lang('messages.templates.global.toggle_navigation')</span>
+                        <span class="sr-only">@lang('blade_templates.global.toggle_navigation')</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -30,7 +30,7 @@
                     <!-- Branding Image -->
                     @if(Auth::admin() || Auth::editor())
                     <a class="navbar-brand" href="{{ route('admin.home') }}">
-                        @lang('messages.templates.global.admin_panel')
+                        @lang('blade_templates.global.admin_panel')
                     </a>
                     @endif
 

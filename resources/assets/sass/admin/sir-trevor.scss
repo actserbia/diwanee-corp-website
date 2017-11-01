@@ -24,15 +24,15 @@
     a {
         color: #8495a7;
         font-weight: bold;
+        
+        &.collapsed {
+            .fa-chevron:after {
+                content: "\f054";
+            }
+        }
     }
     .fa-chevron:after {
         content: "\f078";
-    }
-    
-    a.collapsed {
-        .fa-chevron:after {
-            content: "\f054";
-        }
     }
 }
 .st-top-controls {
@@ -59,11 +59,13 @@
         }
     }
 }
-.st-block-controls__buttons, .st-block-controls__button {
+.st-block-controls__buttons {
     background-color: white;
     font-size: 10px;
 }
 .st-block-controls__button {
+    @extend .st-block-controls__buttons;
+    
     margin: 0.2em;
     .st-icon {
         width: 40px;
@@ -91,8 +93,6 @@
 .st-block-positioner, .st-block-positioner:before, .st-block__ui-delete-controls, .st-block__ui-delete-controls:before {
     border: 2px solid #436b92;
 }*/
-
-
 
 @media (min-width: 520px) {
     div[data-type="diwanee image"] .st-block__editor img, div[data-type="slider image"] .st-block__editor img {

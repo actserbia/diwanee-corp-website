@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@lang('messages.templates.admin.page_title')</title>
+    <title>@lang('page_titles.' . Route::currentRouteName())</title>
 
     <link rel="shortcut icon" type="image/png" href="{{ asset('pictures/favicon.png') }}"/>
     
@@ -21,7 +21,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="#" class="site_title"> <span>@lang('messages.templates.admin.sidebar.title')</span></a>
+                        <a href="#" class="site_title"> <span>@lang('blade_templates.admin.sidebar.title')</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -33,7 +33,7 @@
                         </div>
                         <div class="profile_info">
 
-                            <span>@lang('messages.templates.admin.sidebar.welcome')</span>
+                            <span>@lang('blade_templates.admin.sidebar.welcome')</span>
                             <h2>{{ Auth::user()->name }}</h2>
                         </div>
                     </div>
@@ -44,16 +44,16 @@
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>@lang('messages.templates.admin.sidebar.general')</h3>
+                            <h3>@lang('blade_templates.admin.sidebar.general')</h3>
                             <ul class="nav side-menu">
-                                <li><a href="{{ route('admin.home') }}"><i class="fa fa-home"></i> @lang('messages.templates.admin.sidebar.home') </a></li>
-                                <li><a><i class="fa fa-edit"></i> @lang('messages.templates.admin.sidebar.items') <span class="fa fa-chevron-down"></span></a>
+                                <li><a href="{{ route('admin.home') }}"><i class="fa fa-home"></i> @lang('blade_templates.admin.sidebar.home') </a></li>
+                                <li><a><i class="fa fa-edit"></i> @lang('blade_templates.admin.sidebar.items') <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('tags.index') }}">@lang('messages.templates.admin.sidebar.tags')</a></li>
-                                        <li><a href="{{ route('articles.index') }}">@lang('messages.templates.admin.sidebar.articles')</a></li>
+                                        <li><a href="{{ route('tags.index') }}">@lang('blade_templates.admin.sidebar.tags')</a></li>
+                                        <li><a href="{{ route('articles.index') }}">@lang('blade_templates.admin.sidebar.articles')</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> @lang('messages.templates.admin.sidebar.users') </a></li>
+                                <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> @lang('blade_templates.admin.sidebar.users') </a></li>
                             </ul>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
 
             <!-- page content -->
             <div class="right_col" role="main">
-                @include('templates.admin.partials.alerts')
+                @include('blocks.alerts')
                 @yield('content')
             </div>
             <!-- /page content -->

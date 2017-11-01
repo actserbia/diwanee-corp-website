@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">@lang('messages.templates.auth.reset_password_title')</div>
+                <div class="panel-heading">@lang('blade_templates.auth.reset_password_title')</div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
@@ -14,7 +14,7 @@
                         <input type="hidden" name="token" value="{{ $token }}">
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">@lang('messages.templates.users.email')</label>
+                            <label for="email" class="col-md-4 control-label">@lang('blade_templates.users.email')</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
@@ -28,7 +28,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">@lang('messages.templates.users.password')</label>
+                            <label for="password" class="col-md-4 control-label">@lang('blade_templates.users.password')</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password" required>
@@ -42,7 +42,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">@lang('messages.templates.auth.confirm_password')</label>
+                            <label for="password-confirm" class="col-md-4 control-label">@lang('blade_templates.auth.confirm_password')</label>
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
 
@@ -57,7 +57,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    @lang('messages.templates.auth.reset_password_button_text')
+                                    @lang('blade_templates.auth.reset_password_button_text')
                                 </button>
                             </div>
                         </div>

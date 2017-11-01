@@ -12,18 +12,18 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>@lang('messages.templates.admin.users.list_title') </h2>
+                    <h2>@lang('blade_templates.admin.users.list_title') </h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <table id="datatable-buttons" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>@lang('messages.templates.global.id')</th>
-                                <th>@lang('messages.templates.users.name')</th>
-                                <th>@lang('messages.templates.users.email')</th>
-                                <th>@lang('messages.templates.users.role')</th>
-                                <th>@lang('messages.templates.global.actions')</th>
+                                <th>@lang('blade_templates.global.id')</th>
+                                <th>@lang('blade_templates.users.name')</th>
+                                <th>@lang('blade_templates.users.email')</th>
+                                <th>@lang('blade_templates.users.role')</th>
+                                <th>@lang('blade_templates.global.actions')</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,8 +37,8 @@
                             <td>{{ $user['role'] }}</td>
                             <td>
                                 @if(Auth::user()->role == 'admin' && $user['deleted_at'] == null)
-                                <a href="{{ route('users.edit', ['id' => $user['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('messages.templates.global.edit')"></i> </a>
-                                <a href="{{ route('users.show', ['id' => $user['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('messages.templates.global.delete')"></i> </a>
+                                <a href="{{ route('users.edit', ['id' => $user['id']]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
+                                <a href="{{ route('users.show', ['id' => $user['id']]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
                                 @endif
                             </td>
                         </tr>
