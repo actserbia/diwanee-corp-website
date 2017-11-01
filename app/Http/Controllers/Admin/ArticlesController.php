@@ -23,7 +23,7 @@ class ArticlesController extends Controller
 
         $articles = Article::withTrashed()->with('author')->get()->toArray();
         
-        $statuses = ArticleStatus::getAll();
+        $statuses = ArticleStatus::getAllForDropdown();
         
         return view('admin.articles.articles_list', compact('articles', 'statuses'));
     }
@@ -47,7 +47,7 @@ class ArticlesController extends Controller
      */
     public function create() {
         $tags = Tag::all()->toArray();
-        $statuses = ArticleStatus::getAll();
+        $statuses = ArticleStatus::getAllForDropdown();
 
         return view('admin.articles.articles_create', compact('tags', 'statuses'));
     }
@@ -84,7 +84,7 @@ class ArticlesController extends Controller
         $article = Article::findOrFail($id);
 
         $tags = Tag::all()->toArray();
-        $statuses = ArticleStatus::getAll();
+        $statuses = ArticleStatus::getAllForDropdown();
         
         return view('admin.articles.articles_edit', compact('article', 'tags', 'statuses'));
     }

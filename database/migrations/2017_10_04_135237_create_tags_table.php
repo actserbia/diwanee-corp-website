@@ -17,7 +17,7 @@ class CreateTagsTable extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('type', array_keys(TagType::getAll()));
+            $table->enum('type', TagType::getAll());
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();

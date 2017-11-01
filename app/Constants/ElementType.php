@@ -3,6 +3,8 @@
 namespace App\Constants;
 
 final class ElementType {
+    use ConstantsTrait;
+    
     const Text = 'text';
     const SliderImage = 'slider_image';
     const DiwaneeImage = 'diwanee_image';

@@ -6,6 +6,13 @@ use ReflectionClass;
 
 trait ConstantsTrait {
     public static function getAll() {
+        $refClass = new ReflectionClass(__CLASS__);
+        $all = array_values($refClass->getConstants());
+        
+        return $all;
+    }
+    
+    public static function getAllForDropdown() {
         $all = array();
         
         $refClass = new ReflectionClass(__CLASS__);

@@ -157,8 +157,8 @@ class Article extends Model {
     private function saveTags(array $data) {
         $newTagsIds = array();
         
-        foreach(array_keys(array_intersect_key(TagType::getAll(), $data)) as $type) {
-            if(!empty($data[$type])) {
+        foreach(TagType::getAll() as $type) {
+            if(isset($data[$type]) && !empty($data[$type])) {
                 $newTagsIds[] = $data[$type];
             }
         }

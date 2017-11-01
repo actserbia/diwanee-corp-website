@@ -51,8 +51,8 @@ class CheckSTContent implements Rule
             return false;
         }
 
-        if(!in_array($element->type, ElementType::all)) {
-            $this->message = __('messages.check_sir_trevor_content.type_not_valid', ['type' => $element->type, 'validTypes' => implode(',', ElementType::all)]);
+        if(!in_array($element->type, ElementType::getAll())) {
+            $this->message = __('messages.check_sir_trevor_content.type_not_valid', ['type' => $element->type, 'validTypes' => implode(',', ElementType::getAll())]);
             return false;
         }
 
