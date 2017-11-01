@@ -39,7 +39,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('js/admin.js') }}"></script>
-@endpush
