@@ -22,14 +22,20 @@ Route::post('sirtrevor/upload-image', 'ImagesController@uploadSirTrevorImage')->
 //only admin can access
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function() {
     Route::resource('users', 'UsersController');
+
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'editor', 'namespace' => 'Admin'], function(){
+
     Route::get('/', 'DashboardController@index')->name('admin.home');
 
     Route::resource('tags', 'TagsController');
     Route::resource('articles', 'ArticlesController');
     //Route::resource('users', 'UsersController');
+
+    Route::get('dashboard/log-chart', 'DashboardController@getLogChartData')->name('dashboard.log.chart');
+    Route::get('dashboard/registration-chart', 'DashboardController@getRegistrationChartData')->name('dashboard.registration.chart');
+
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Auth'],function(){
@@ -43,6 +49,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth'],function(){
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
     Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.token');
     Route::post('password/reset', 'ResetPasswordController@reset');
+
 });
 
 

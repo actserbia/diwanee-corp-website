@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Creativeorange\Gravatar\Facades\Gravatar;
+///var/www/vhosts/diwanee-corp-website/vendor/creativeorange/gravatar/src/Gravatar.php
 
 use DB;
 
@@ -55,5 +57,14 @@ class User extends Authenticatable
             DB::rollBack();
             return false;
         }
+    }
+
+    public function getAvatar($size = null) {
+        $size = ($size) ? $size : config('gravatar.default.size');
+        return $this->gravatar()->fallback('/pictures/user.png')->get($this->email, ['size' => $size]);
+    }
+
+    function gravatar() {
+        return app('gravatar');
     }
 }

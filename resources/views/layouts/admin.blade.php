@@ -29,7 +29,7 @@
                     <!-- menu profile quick info -->
                     <div class="profile">
                         <div class="profile_pic">
-                            <img src="{{ asset('pictures/user.png') }}" alt="..." class="img-circle profile_img">
+                            <img src="{{ auth()->user()->getAvatar() }}" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
 
@@ -54,6 +54,9 @@
                                     </ul>
                                 </li>
                                 <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> @lang('blade_templates.admin.sidebar.users') </a></li>
+                                <li><a href="{{ route('admin.index') }}" class="site_title">
+                                    <span>{{ config('app.name') }}</span></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -85,7 +88,6 @@
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         </div>
-
                         @include('blocks.profile')
                     </nav>
                 </div>
