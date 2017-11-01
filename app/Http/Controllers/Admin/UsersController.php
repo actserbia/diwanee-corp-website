@@ -27,7 +27,7 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $roles = Role::all;
+        $roles = Role::getAll();
 
         return view('admin.users.users_create', compact('roles'));
     }
@@ -73,7 +73,7 @@ class UsersController extends Controller
      */
     public function edit($id) {
         $user = User::findOrFail($id);
-        $roles = Role::all;
+        $roles = Role::getAll();
 
         return view('admin.users.users_edit', compact('user', 'roles'));
     }

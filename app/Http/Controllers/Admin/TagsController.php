@@ -48,7 +48,7 @@ class TagsController extends Controller
         $imageUrl =  $imagesConfig['imagesUrl'] . 'test.jpg';
         $image = $thumbnailUrlFactory->url($imageUrl)->resize($settings['width'], $settings['height'])->smartCrop(true);*/
       
-        $types = TagType::all;
+        $types = TagType::getAll();
         
         return view('admin.tags.tags_create', compact('types'));
     }
@@ -83,7 +83,7 @@ class TagsController extends Controller
     public function edit($id) {
         $tag = Tag::findOrFail($id);
         
-        $types = TagType::all;
+        $types = TagType::getAll();
 
         $parentsByType = array();
         $parentsByType['subcategory'] = 'category';

@@ -9,10 +9,12 @@ final class Role {
     const Moderator = 'moderator';
     const Admin = 'admin';
 
-    const all = array(
-        self::User => self::User,
-        self::Brand => self::Brand,
-        self::Moderator => self::Moderator,
-        self::Admin => self::Admin
-    );
+    public static function getAll() {
+        return array(
+            self::User => __('database.role.' . self::User),
+            self::Brand => __('database.role.' . self::Brand),
+            self::Moderator => __('database.role.' . self::Moderator),
+            self::Admin => __('database.role.' . self::Admin)
+        );
+    }
 }

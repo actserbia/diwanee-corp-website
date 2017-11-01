@@ -9,11 +9,13 @@ final class TagType {
     const Subcategory = 'subcategory';
     const Influencer = 'influencer';
 
-    const all = array(
-        self::Publication => 'Publication',
-        self::Brand => 'Brand',
-        self::Category => 'Category',
-        self::Subcategory => 'Subcategory',
-        self::Influencer => 'Influencer'
-    );
+    public static function getAll() {
+        return array(
+            self::Publication => __('database.tag_type.' . self::Publication),
+            self::Brand => __('database.tag_type.' . self::Brand),
+            self::Category => __('database.tag_type.' . self::Category),
+            self::Subcategory => __('database.tag_type.' . self::Subcategory),
+            self::Influencer => __('database.tag_type.' . self::Influencer)
+        );
+    }
 }
