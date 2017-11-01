@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>@lang('messages.templates.global.delete_title') <a href="{{route('articles.index')}}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('messages.templates.global.back') </a></h2>
+                    <h2>@lang('messages.templates.global.delete_title') <a href="{{ route('articles.index') }}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('messages.templates.global.back') </a></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

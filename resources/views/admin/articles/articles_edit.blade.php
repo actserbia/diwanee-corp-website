@@ -1,10 +1,5 @@
 @extends('layouts.admin')
 
-@push('stylesheets')
-    <link rel="stylesheet" href="{{ url('asset/sirtrevorjs/sir-trevor.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{ url('css/sir-trevor-custom.css')}}" type="text/css">
-@endpush
-
 @section('content')
 <div class="">
     <div class="clearfix"></div>
@@ -12,7 +7,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>@lang('messages.templates.admin.articles.edit_article_title') <a href="{{route('articles.index')}}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('messages.templates.global.back') </a></h2>
+                    <h2>@lang('messages.templates.admin.articles.edit_article_title') <a href="{{ route('articles.index') }}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('messages.templates.global.back') </a></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -46,14 +41,14 @@
                         @include('blocks.form_select', ['name' => 'status', 'label' => __('messages.templates.articles.status'), 'items' => $statuses, 'selected' => $article->status, 'required' => true])
 
                         <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-                          <label class="control-label col-md-3 col-sm-2 col-xs-12" for="content">@lang('messages.templates.articles.content')</label>
-                          <div class="col-md-6 col-sm-8 col-xs-12">
+                            <label class="control-label col-md-3 col-sm-2 col-xs-12" for="content">@lang('messages.templates.articles.content')</label>
+                            <div class="col-md-6 col-sm-8 col-xs-12">
 
-                            <textarea id="content" name="content" class="sir-trevor editable">{{ $article->editorContent }}</textarea>
-                            @if ($errors->has('content'))
-                            <span class="help-block">{{ $errors->first('content') }}</span>
-                            @endif
-                          </div>
+                                <textarea id="content" name="content" class="sir-trevor editable">{{ $article->editorContent }}</textarea>
+                                @if ($errors->has('content'))
+                                    <span class="help-block">{{ $errors->first('content') }}</span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="ln_solid"></div>
@@ -72,10 +67,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-    <script src="{{ url('asset/sirtrevorjs/sir-trevor.js')}}" type="text/javascript"></script>
-    <script src="{{ asset('js/sir-trevor.js') }}"></script>
-    <script src="{{ asset('js/admin.js') }}"></script>
-    <script src="{{ asset('js/sir-trevor-custom.js') }}"></script>
-@endpush

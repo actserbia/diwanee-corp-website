@@ -29,7 +29,7 @@
 
                     <!-- Branding Image -->
                     @if(Auth::admin() || Auth::editor())
-                    <a class="navbar-brand" href="{{ url('/admin') }}">
+                    <a class="navbar-brand" href="{{ route('admin.home') }}">
                         @lang('messages.templates.global.admin_panel')
                     </a>
                     @endif

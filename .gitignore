@@ -3,7 +3,6 @@
 /config/images.php
 /public/hot
 /public/storage
-/public/images
 /public/asset
 /storage/*.key
 /vendor
@@ -93,4 +92,8 @@ resources/views/vendor/l5-swagger
 storage/api-docs
 
 public/fonts
+public/css
+public/js
+public/images
+public/pictures
 public/mix-manifest.json

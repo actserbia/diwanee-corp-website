@@ -51,6 +51,10 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
+//exec("npm run dev 2>&1", $output, $return_val);
+//print_r($output);
+//die();
+
 $response = $kernel->handle(
     $request = Illuminate\Http\Request::capture()
 );

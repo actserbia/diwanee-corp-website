@@ -1,34 +1,39 @@
 .image_input_text {
     display: block;
     width: 100%;
-}
-.image_input_text label {
-    margin-bottom: 2px;
-    font-weight: normal;
-}
-.image_input_text input[type="text"], .image_input_text input[type="text"]:active, .image_input_text input[type="text"]:focus {
-    border: 1px solid #e5e5e5 !important;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    padding: .2em;
-    background: #fff;
-    width: 100%;
+    
+    label {
+        margin-bottom: 2px;
+        font-weight: normal;
+    }
+    
+    input[type="text"], input[type="text"]:active, input[type="text"]:focus {
+        border: 1px solid #e5e5e5 !important;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        padding: .2em;
+        background: #fff;
+        width: 100%;
+    }
 }
 .st-block {
     clear: both;
     margin-bottom: 25px;
 }
-.image-additional a {
-    color: #8495a7;
-    font-weight: bold;
-}
 .image-additional {
     padding: 7px;
-}
-.image-additional .fa-chevron:after {
-    content: "\f078";
-}
-.image-additional a.collapsed .fa-chevron:after {
-    content: "\f054";
+    a {
+        color: #8495a7;
+        font-weight: bold;
+    }
+    .fa-chevron:after {
+        content: "\f078";
+    }
+    
+    a.collapsed {
+        .fa-chevron:after {
+            content: "\f054";
+        }
+    }
 }
 .st-top-controls {
    min-height: 2.75em;
@@ -45,26 +50,28 @@
 .st-block-ui-btn__delete {
     right: 0.5em;
 }
-.st-block__editor div {
-    margin-bottom: 7px;
-}
-.st-block__editor div.image-additional {
-    margin-bottom: 3px;
+.st-block__editor {
+    div {
+        margin-bottom: 7px;
+        
+        &.image-additional {
+            margin-bottom: 3px;
+        }
+    }
 }
 .st-block-controls__buttons, .st-block-controls__button {
     background-color: white;
     font-size: 10px;
 }
-.st-block-controls__button .st-icon {
-    width: 40px;
-    height: 38px;
-    display: block;
-    margin: auto;
-    /*fill: #436b92;*/
-}
-
 .st-block-controls__button {
     margin: 0.2em;
+    .st-icon {
+        width: 40px;
+        height: 38px;
+        display: block;
+        margin: auto;
+        /*fill: #436b92;*/
+    }
 }
 .st-block-replacer {
     left: 0px;
@@ -94,7 +101,9 @@
         margin: 0 auto;
     }
     
-    div[data-type="slider image"] .st-block__inner {
-        background-color: #B9D3EE;
+    div[data-type="slider image"] {
+        .st-block__inner {
+            background-color: #B9D3EE;
+        }
     }
 }

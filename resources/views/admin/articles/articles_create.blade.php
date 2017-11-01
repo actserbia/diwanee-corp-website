@@ -1,10 +1,5 @@
 @extends('layouts.admin')
 
-@push('stylesheets')
-    <link rel="stylesheet" href="{{ url('asset/sirtrevorjs/sir-trevor.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{ url('css/sir-trevor-custom.css')}}" type="text/css">
-@endpush
-
 @section('content')
 <div class="">
     <div class="clearfix"></div>
@@ -47,9 +42,9 @@
                         <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">@lang('messages.templates.articles.content')</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                              <textarea id="content" name="content" class="sir-trevor editable">{{ Request::old('content') ?: '' }}</textarea>
+                                <textarea id="content" name="content" class="sir-trevor editable">{{ Request::old('content') ?: '' }}</textarea>
                                 @if ($errors->has('content'))
-                                   <span class="help-block">{{ $errors->first('content') }}</span>
+                                    <span class="help-block">{{ $errors->first('content') }}</span>
                                 @endif
                             </div>
                         </div>
@@ -70,10 +65,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-    <script src="{{ url('asset/sirtrevorjs/sir-trevor.js')}}" type="text/javascript"></script>
-    <script src="{{ asset('js/sir-trevor.js') }}"></script>
-    <script src="{{ asset('js/admin.js') }}"></script>
-    <script src="{{ asset('js/sir-trevor-custom.js') }}"></script>
-@endpush
