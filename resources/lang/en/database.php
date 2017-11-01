@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'article_status' => [
-        'published' => 'Published',
-        'unpublished' => 'Unpublished'
+    'ArticleStatus' => [
+        '1' => 'Published',
+        '0' => 'Unpublished'
     ],
     'role' => [
         'user' => 'User',
@@ -11,7 +11,7 @@ return [
         'moderator' => 'Moderator',
         'admin' => 'Admin'
     ],
-    'tag_type' => [
+    'TagType' => [
         'publication' => 'Publication',
         'brand' => 'Brand',
         'category' => 'Category',
