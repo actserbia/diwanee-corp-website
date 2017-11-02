@@ -1,11 +1,11 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\TagController;
-use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Api\ApiTagsController;
+use App\Http\Controllers\Api\ApiArticlesController;
 
 
 class ApiController extends Controller
@@ -68,10 +68,10 @@ class ApiController extends Controller
     **/
     public function all(Request $request)
     {
-        $articleController = new ArticleController();
+        $articleController = new ApiArticlesController();
         $data['articles'] = $this->formatOutput($articleController->index($request));
 
-        $tagController = new TagController();
+        $tagController = new ApiTagsController();
         $data['tags'] = $this->formatOutput($tagController->index($request));
 
         return $data;

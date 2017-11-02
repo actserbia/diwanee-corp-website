@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
 use App\Validation\Validators;
 
-class TagController extends Controller
+class ApiTagsController extends Controller
 {
     /**
      * Display a listing of the resource.

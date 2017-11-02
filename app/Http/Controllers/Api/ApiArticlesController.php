@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
@@ -9,7 +9,7 @@ use Auth;
 use App\Validation\Validators;
 
 
-class ArticleController extends Controller
+class ApiArticlesController extends Controller
 {
     /**
      * Display a listing of the resource.

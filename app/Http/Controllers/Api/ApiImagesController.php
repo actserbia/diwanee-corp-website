@@ -1,27 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-class ImagesController extends Controller {
-    public function uploadSirTrevorImage(Request $request) {
-        $filename = '';
-
-        if ($request->hasFile('attachment')) {
-            $data = $request->get('attachment');
-            $filename = $data['uid'] . '-' . $data['name'];
-
-            $file = $request->file('attachment');
-            $file['file']->move(base_path() . config('images.imagesFolder'), $filename);
-        }
-
-        return json_encode(array('file' => array('url' => $filename)));
-    }
-
-
+class ApiImagesController extends Controller {
     /**
      * @SWG\Post(
      *     path="/upload-image",

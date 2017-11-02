@@ -6,6 +6,7 @@ return [
     'password.request' => 'Diwanee Corp - Password Request',
     'password.reset' => 'Diwanee Corp - Password Reset',
     'home' => 'Diwanee Corp',
+    'profile' => 'Profile',
     'admin' => [
         'home' => 'Diwanee Corp Admin Panel'
     ],

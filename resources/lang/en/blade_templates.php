@@ -64,6 +64,10 @@ return [
         'dashboard_title' => 'Dashboard',
         'dashboard_text' => 'You are logged in!'
     ],
+    'profile' => [
+        'profile_title' => 'Profile',
+        'edit_profile_button_text' => 'Save changes'
+    ],
     'admin' => [
         'sidebar' => [
             'title' => 'Diwanee Corp Panel',

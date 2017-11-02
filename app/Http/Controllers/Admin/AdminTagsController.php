@@ -10,7 +10,7 @@ use App\Validation\Validators;
 
 //use Thumbor\Url\BuilderFactory;
 
-class TagsController extends Controller
+class AdminTagsController extends Controller
 {
     /**
      * Display a listing of the resource.

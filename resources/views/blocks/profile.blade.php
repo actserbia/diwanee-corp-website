@@ -5,10 +5,11 @@
     @else
         <li>
             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <img src="{{ Auth::user()->getAvatar() }}" alt="..." class="img-circle">
                 {{ Auth::user()->name }} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="#"> @lang('blade_templates.global.profile')</a></li>
+                <li><a href="{{ route('profile') }}"> @lang('blade_templates.global.profile')</a></li>
                 <li>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         @lang('blade_templates.global.logout')

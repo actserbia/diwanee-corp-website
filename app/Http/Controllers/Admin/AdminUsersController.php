@@ -9,7 +9,7 @@ use App\Constants\Role;
 use App\Validation\Validators;
 
 
-class UsersController extends Controller
+class AdminUsersController extends Controller
 {
     /**
      * Display a listing of the resource.

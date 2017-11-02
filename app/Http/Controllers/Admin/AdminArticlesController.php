@@ -11,7 +11,7 @@ use App\Validation\Validators;
 use Auth;
 
 
-class ArticlesController extends Controller
+class AdminArticlesController extends Controller
 {
     /**
      * Display a listing of the resource.
