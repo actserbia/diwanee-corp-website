@@ -14,7 +14,7 @@
 
         @include('blocks.form_input', ['name' => 'password', 'label' => __('blade_templates.users.password'), 'type' => 'password', 'value' => Request::old('password') ?: '', 'required' => true, 'template' => 'app'])
 
-        @include('blocks.form_input', ['name' => 'password_confirmation', 'label' => __('blade_templates.auth.confirm_password'), 'type' => 'password', 'value' => Request::old('confirm_password') ?: '', 'required' => true, 'template' => 'app'])
+        @include('blocks.form_input', ['name' => 'password_confirmation', 'label' => __('blade_templates.auth.confirm_password'), 'type' => 'password', 'value' => Request::old('password_confirmation') ?: '', 'required' => true, 'template' => 'app'])
 
 
         <div class="form-group">

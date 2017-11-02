@@ -44,14 +44,12 @@ class Validators {
     public static function usersFormValidator(array $data, array $additional = []) {
         $emailUnique = isset($additional['id']) ? 'unique:users,id,' . $additional['id'] : 'unique:users';
         $password = isset($data['password']) ? 'required' : 'nullable';
-        $confirmPassword = isset($data['confirm_password']) ? 'required|checkEqual:' . $data['password'] : 'nullable';
 
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|' . $emailUnique . '|max:255',
             'role' => 'required',
-            'password' => $password . '|min:6',
-            'confirm_password' => $confirmPassword
+            'password' => $password . '|confirmed|min:6'
         ]);
     }
 
