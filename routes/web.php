@@ -22,7 +22,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 //only admin can access
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function() {
-    Route::resource('users', 'UsersController');
+    Route::resource('users', 'AdminUsersController');
 
 });
 

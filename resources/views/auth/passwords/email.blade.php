@@ -11,7 +11,7 @@
         @include('blocks.form_input', ['name' => 'email', 'label' => __('blade_templates.users.email'), 'type' => 'email', 'value' => Request::old('email') ?: '', 'required' => true, 'template' => 'app'])
 
         <div class="form-group">
-            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'app') }}">
+            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label', 'app') }}">
                 <button type="submit" class="btn btn-primary">
                     @lang('blade_templates.auth.send_reset_password_link')
                 </button>

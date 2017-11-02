@@ -56,7 +56,7 @@
                         <div class="ln_solid"></div>
 
                         <div class="form-group">
-                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'admin') }}">
+                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label', 'admin') }}">
                                 <input name="_method" type="hidden" value="PUT">
                                 <button type="submit" class="btn btn-success">@lang('blade_templates.admin.articles.edit_article_button_text')</button>
                             </div>

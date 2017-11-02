@@ -28,7 +28,7 @@
                         <div class="ln_solid"></div>
 
                         <div class="form-group">
-                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'admin') }}">
+                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label', 'admin') }}">
                                 <button type="submit" class="btn btn-success">@lang('blade_templates.admin.users.create_user_button_text')</button>
                             </div>
                         </div>

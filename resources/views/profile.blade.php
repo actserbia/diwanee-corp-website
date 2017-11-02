@@ -19,7 +19,7 @@
         <div class="ln_solid"></div>
 
         <div class="form-group">
-            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'app') }}">
+            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label', 'app') }}">
                 <input name="_method" type="hidden" value="PUT">
                 <button type="submit" class="btn btn-primary">@lang('blade_templates.profile.edit_profile_button_text')</button>
             </div>

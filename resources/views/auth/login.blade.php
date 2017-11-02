@@ -23,7 +23,7 @@
         </div>
 
         <div class="form-group">
-            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'app') }}">
+            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label', 'app') }}">
                 <button type="submit" class="btn btn-primary">
                     @lang('blade_templates.auth.login_button_text')
                 </button>
