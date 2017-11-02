@@ -2,13 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User;
-use Arcanedev\LogViewer\Entities\Log;
-use Arcanedev\LogViewer\Entities\LogEntry;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-//use Illuminate\Routing\Route;
 
 class DashboardController extends Controller
 {

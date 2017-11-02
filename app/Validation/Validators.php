@@ -50,8 +50,8 @@ class Validators {
             'name' => 'required|max:255',
             'email' => 'required|email|' . $emailUnique . '|max:255',
             'role' => 'required',
-            'password' => $password . '|min:6',
-            'confirm_password' => $confirmPassword
+            'password' => $password . '|confirmed|min:6'//,
+            //'confirm_password' => $confirmPassword
         ]);
     }
 

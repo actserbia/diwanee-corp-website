@@ -5,7 +5,7 @@ return [
         '1' => 'Published',
         '0' => 'Unpublished'
     ],
-    'role' => [
+    'Role' => [
         'user' => 'User',
         'brand' => 'Brand',
         'moderator' => 'Moderator',
