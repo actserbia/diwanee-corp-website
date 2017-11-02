@@ -15,8 +15,7 @@ class ImagesController extends Controller {
             $filename = $data['uid'] . '-' . $data['name'];
 
             $file = $request->file('attachment');
-            $imagesConfig = config('images');
-            $file['file']->move(base_path() . $imagesConfig['imagesFolder'], $filename);
+            $file['file']->move(base_path() . config('images.imagesFolder'), $filename);
         }
 
         return json_encode(array('file' => array('url' => $filename)));
@@ -53,8 +52,7 @@ class ImagesController extends Controller {
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '-' . $file->getClientOriginalName();
-            $imagesConfig = config('images');
-            $file->move(base_path() . $imagesConfig['imagesFolder'], $filename);
+            $file->move(base_path() . config('images.imagesFolder'), $filename);
         }
 
         return json_encode(array('file' => array('url' => $filename)));

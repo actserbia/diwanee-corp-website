@@ -65,10 +65,14 @@ let mix = require('laravel-mix');
             
             'public/css/admin.css'
         ], 'public/css/admin.css')
-    
+        .copy('resources/assets/_admin_/css/bootstrap.min.css.map', 'public/css/')
+
         .copy('resources/assets/_admin_/fonts/*', 'public/fonts/')
         .copy('resources/assets/_admin_/images/*', 'public/pictures/')
         .copy('node_modules/sir-trevor/build/sir-trevor-icons.svg', 'public/pictures/')
+
+        .webpackConfig({ devtool: "inline-source-map" })
+        .sourceMaps()
 
         .autoload({
             jquery: ['$', 'window.jQuery', 'jQuery', 'window.$', 'jquery', 'window.jquery']

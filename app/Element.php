@@ -36,12 +36,10 @@ class Element extends Model {
     }
     
     private function getImageFullUrl($value) {
-        $imagesConfig = config('images');
-        
         $imageData = is_string($value) ? json_decode($value) : $value;
         
-        if(strpos($imageData->file->url, $imagesConfig['imagesUrl']) === FALSE) {
-            $imageData->file->url = $imagesConfig['imagesUrl'] . $imageData->file->url;
+        if(strpos($imageData->file->url, config('images.imagesUrl')) === FALSE) {
+            $imageData->file->url = config('images.imagesUrl') . $imageData->file->url;
         }
             
         return is_string($value) ? json_encode($imageData) : $imageData;
@@ -72,8 +70,7 @@ class Element extends Model {
         $preparedElementData = $converter->convertElementData($elementData);
         
         if(in_array($this->type, ElementType::imageTypes)) {
-            $imagesConfig = config('images');
-            $preparedElementData['data']['file']['url'] = str_replace($imagesConfig['imagesUrl'], '', $preparedElementData['data']['file']['url']);
+            $preparedElementData['data']['file']['url'] = str_replace(config('images.imagesUrl'), '', $preparedElementData['data']['file']['url']);
         }
         
         return $preparedElementData;

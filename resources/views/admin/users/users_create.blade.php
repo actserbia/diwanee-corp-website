@@ -16,7 +16,7 @@
 
                         @include('blocks.form_input', ['name' => 'name', 'label' => __('blade_templates.users.name'), 'value' => Request::old('name') ?: '', 'required' => true])
 
-                        @include('blocks.form_input', ['name' => 'email', 'label' => __('blade_templates.users.email'), 'value' => Request::old('email') ?: '', 'required' => true])
+                        @include('blocks.form_input', ['name' => 'email', 'label' => __('blade_templates.users.email'), 'type' => 'email', 'value' => Request::old('email') ?: '', 'required' => true])
 
                         @include('blocks.form_input', ['name' => 'password', 'label' => __('blade_templates.users.password'), 'type' => 'password', 'value' => Request::old('password') ?: '', 'required' => true])
 

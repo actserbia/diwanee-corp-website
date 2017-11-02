@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'register' => 'Diwanee Corp - Register',
+    'login' => 'Diwanee Corp - Login',
+    'password.request' => 'Diwanee Corp - Password Request',
+    'password.reset' => 'Diwanee Corp - Password Reset',
+    'home' => 'Diwanee Corp',
     'admin' => [
         'home' => 'Diwanee Corp Admin Panel'
     ],

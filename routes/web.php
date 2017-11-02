@@ -31,28 +31,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'editor', 'namespace' => 'Adm
 
     Route::resource('tags', 'TagsController');
     Route::resource('articles', 'ArticlesController');
-    //Route::resource('users', 'UsersController');
 
     Route::get('dashboard/log-chart', 'DashboardController@getLogChartData')->name('dashboard.log.chart');
     Route::get('dashboard/registration-chart', 'DashboardController@getRegistrationChartData')->name('dashboard.registration.chart');
 
 });
-
-Route::group(['prefix' => 'admin', 'namespace' => 'Auth'],function(){
-    // Authentication Routes...
-    Route::get('login', 'LoginController@showLoginForm')->name('login');
-    Route::post('login', 'LoginController@login');
-    Route::post('logout', 'LoginController@logout')->name('logout');
-
-    // Password Reset Routes...
-    Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
-    Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-    Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.token');
-    Route::post('password/reset', 'ResetPasswordController@reset');
-
-});
-
-
+    
 Route::group(['prefix' => 'ajax'], function() {
     Route::get('/subcategories/{category_id?}', 'AjaxController@subcategories')->name('subcategories');
     Route::get('/tags/{type}', 'AjaxController@tagsByType')->name('tags.by.type');

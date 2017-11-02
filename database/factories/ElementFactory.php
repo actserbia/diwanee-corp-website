@@ -29,8 +29,7 @@ $factory->define(Element::class, function (Faker $faker) {
             break;
           
         case ElementType::DiwaneeImage:
-            $imagesConfig = config('images');
-            $data['file']['url'] = $faker->image(base_path() . $imagesConfig['imagesFolder'], 640, 480, null, false);
+            $data['file']['url'] = $faker->image(base_path() . config('images.imagesFolder'), 640, 480, null, false);
           
             $data['seoname'] = $faker->text(30);
             $data['seoalt'] = $faker->text(30);
@@ -62,8 +61,7 @@ $factory->define(Element::class, function (Faker $faker) {
 $factory->defineAs(Element::class, ElementType::SliderImage, function (Faker $faker) {
     $data = array();
     
-    $imagesConfig = config('images');
-    $data['file']['url'] = $faker->image(base_path() . $imagesConfig['imagesFolder'], 640, 480, null, false);
+    $data['file']['url'] = $faker->image(base_path() . config('images.imagesFolder'), 640, 480, null, false);
     
     $data['alt'] = $faker->text(30);
     $data['seoname'] = $faker->text(30);
