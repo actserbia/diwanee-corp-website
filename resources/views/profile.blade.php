@@ -6,6 +6,8 @@
 
 @section('content')
     <form method="post" action="{{ route('profile.update') }}" data-parsley-validate class="form-horizontal form-label-left">
+        {{ csrf_field() }}
+        
         <img src="{{ Auth::user()->getAvatar() }}" alt="{{ Auth::user()->name }}" class="img-circle">
                         
         @include('blocks.form_input', ['name' => 'name', 'label' => __('blade_templates.users.name'), 'value' => Auth::user()->name, 'required' => true])
@@ -17,8 +19,7 @@
         <div class="ln_solid"></div>
 
         <div class="form-group">
-            <div class="col-md-8 col-md-offset-4">
-                <input type="hidden" name="_token" value="{{ Session::token() }}">
+            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'app') }}">
                 <input name="_method" type="hidden" value="PUT">
                 <button type="submit" class="btn btn-primary">@lang('blade_templates.profile.edit_profile_button_text')</button>
             </div>

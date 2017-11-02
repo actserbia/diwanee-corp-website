@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="">
+<div>
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -13,7 +13,8 @@
                 <div class="x_content">
                     <br />
                     <form method="post" action="{{ route('users.store') }}" data-parsley-validate class="form-horizontal form-label-left">
-
+                        {{ csrf_field() }}
+                        
                         @include('blocks.form_input', ['name' => 'name', 'label' => __('blade_templates.users.name'), 'value' => Request::old('name') ?: '', 'required' => true])
 
                         @include('blocks.form_input', ['name' => 'email', 'label' => __('blade_templates.users.email'), 'type' => 'email', 'value' => Request::old('email') ?: '', 'required' => true])
@@ -27,8 +28,7 @@
                         <div class="ln_solid"></div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <input type="hidden" name="_token" value="{{ Session::token() }}">
+                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'admin') }}">
                                 <button type="submit" class="btn btn-success">@lang('blade_templates.admin.users.create_user_button_text')</button>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="">
+<div>
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -13,6 +13,8 @@
                 <div class="x_content">
                     <br />
                     <form method="post" action="{{ route('articles.store') }}" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        
                         @include('blocks.form_input', ['name' => 'title', 'label' => __('blade_templates.articles.title'), 'value' => Request::old('title') ?: '', 'required' => true])
                         
                         
@@ -40,8 +42,8 @@
                         @include('blocks.form_select', ['name' => 'status', 'label' => __('blade_templates.articles.status'), 'items' => $statuses, 'selected' => '0', 'required' => true])
 
                         <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="content">@lang('blade_templates.articles.content')</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element', 'admin') }}" for="content">@lang('blade_templates.articles.content')</label>
+                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label', 'admin') }}">
                                 <textarea id="content" name="content" class="sir-trevor editable">{{ Request::old('content') ?: '' }}</textarea>
                                 @if ($errors->has('content'))
                                     <span class="help-block">{{ $errors->first('content') }}</span>
@@ -52,8 +54,7 @@
                         <div class="ln_solid"></div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <input type="hidden" name="_token" value="{{ Session::token() }}">
+                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'admin') }}">
                                 <button type="submit" class="btn btn-success">@lang('blade_templates.admin.articles.create_article_button_text')</button>
                             </div>
                         </div>

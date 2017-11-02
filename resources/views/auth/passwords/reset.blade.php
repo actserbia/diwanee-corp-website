@@ -10,49 +10,15 @@
 
         <input type="hidden" name="token" value="{{ $token }}">
 
-        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <label for="email" class="col-md-4 control-label">@lang('blade_templates.users.email')</label>
+        @include('blocks.form_input', ['name' => 'email', 'label' => __('blade_templates.users.email'), 'type' => 'email', 'value' => Request::old('email') ?: '', 'required' => true, 'template' => 'app'])
 
-            <div class="col-md-6">
-                <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
+        @include('blocks.form_input', ['name' => 'password', 'label' => __('blade_templates.users.password'), 'type' => 'password', 'value' => Request::old('password') ?: '', 'required' => true, 'template' => 'app'])
 
-                @if ($errors->has('email'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
+        @include('blocks.form_input', ['name' => 'password_confirmation', 'label' => __('blade_templates.auth.confirm_password'), 'type' => 'password', 'value' => Request::old('confirm_password') ?: '', 'required' => true, 'template' => 'app'])
 
-        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-            <label for="password" class="col-md-4 control-label">@lang('blade_templates.users.password')</label>
-
-            <div class="col-md-6">
-                <input id="password" type="password" class="form-control" name="password" required>
-
-                @if ($errors->has('password'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
-
-        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-            <label for="password-confirm" class="col-md-4 control-label">@lang('blade_templates.auth.confirm_password')</label>
-            <div class="col-md-6">
-                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-
-                @if ($errors->has('password_confirmation'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
 
         <div class="form-group">
-            <div class="col-md-6 col-md-offset-4">
+            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'app') }}">
                 <button type="submit" class="btn btn-primary">
                     @lang('blade_templates.auth.reset_password_button_text')
                 </button>

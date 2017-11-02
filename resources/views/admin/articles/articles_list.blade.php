@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="">
+<div>
 
     <div class="row">
 

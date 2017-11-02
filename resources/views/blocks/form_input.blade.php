@@ -1,14 +1,13 @@
 <div class="form-group{{ $errors->has($name) ? ' has-error' : '' }}">
-    <label class="control-label col-md-3 col-sm-2 col-xs-12" for="{{ $name }}">
+    <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element', !empty($template) ? $template : 'admin') }}" for="{{ $name }}">
         {{ $label }} @if(!empty($required) && $required)<span class="required">*</span>@endif
     </label>
-    <div class="col-md-6 col-sm-8 col-xs-12">
-        <input 
-            @if(!empty($type)) type="{{ $type }}" @else type="text" @endif 
+    <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label', !empty($template) ? $template : 'admin') }}">
+        <input class="form-control"
+            type="{{ !empty($type) ? $type : 'text' }}"
             value="{{ $value }}" 
             id="{{ $name }}" 
             name="{{ $name }}" 
-            class="form-control" 
             @if(!empty($required) && $required) required @endif 
             @if(!empty($readonly) && $readonly) readonly @endif 
         />

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="">
+<div>
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -13,6 +13,8 @@
                 <div class="x_content">
                     <br />
                     <form method="post" action="{{ route('tags.update', ['id' => $tag->id]) }}" data-parsley-validate class="form-horizontal form-label-left">
+                        {{ csrf_field() }}
+                        
                         @include('blocks.form_input', ['name' => 'name', 'label' => __('blade_templates.tags.name'), 'value' => $tag->name, 'required' => true])
 
                         @include('blocks.form_select', ['name' => 'type', 'label' => __('blade_templates.tags.type'), 'items' => $types, 'selected' => $tag->type, 'required' => true])
@@ -26,8 +28,7 @@
                         <div class="ln_solid"></div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <input type="hidden" name="_token" value="{{ Session::token() }}">
+                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('button', 'admin') }}">
                                 <input name="_method" type="hidden" value="PUT">
                                 <button type="submit" class="btn btn-success">@lang('blade_templates.admin.tags.edit_tag_button_text')</button>
                             </div>

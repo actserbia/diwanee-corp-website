@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="">
+<div>
     <div class="clearfix"></div>
 
     <div class="row">
@@ -15,7 +15,7 @@
                     <p>@lang('blade_templates.global.delete_question', ['title' => '<strong>' . $user['name'] . '</strong>'])</p>
 
                     <form method="POST" action="{{ route('users.destroy', ['id' => 1]) }}">
-                        <input type="hidden" name="_token" value="{{ Session::token() }}">
+                        {{ csrf_field() }}
                         <input name="_method" type="hidden" value="DELETE">
                         <button type="submit" class="btn btn-danger">@lang('blade_templates.global.delete_confirm_message')</button>
                     </form>
