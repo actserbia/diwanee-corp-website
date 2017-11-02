@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['user', 'brand', 'moderator', 'admin'])->default('user');
+            $table->tinyInteger('active')->default(1)->unsigned();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

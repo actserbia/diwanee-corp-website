@@ -54,7 +54,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> @lang('blade_templates.admin.sidebar.users') </a></li>
-                                <li><a href="{{ route('admin.index') }}" class="site_title">
+                                <li><a href="{{ route('admin.home') }}" class="site_title">
                                     <span>{{ config('app.name') }}</span></a>
                                 </li>
                             </ul>
