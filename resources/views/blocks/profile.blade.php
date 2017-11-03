@@ -4,8 +4,8 @@
         <li><a href="{{ route('register') }}">@lang('blade_templates.global.register')</a></li>
     @else
         <li>
-            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <img src="{{ Auth::user()->getAvatar() }}" alt="..." class="img-circle">
+            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <img src="{{ Auth::user()->getAvatar() }}" alt="..." >
                 {{ Auth::user()->name }} <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
