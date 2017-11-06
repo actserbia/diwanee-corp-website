@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
 
-class AdminImagesController extends Controller {
+class ImagesController extends Controller {
     public function uploadSirTrevorImage(Request $request) {
         $filename = '';
 

@@ -15,6 +15,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::post('sirtrevor/upload-image', 'ImagesController@uploadSirTrevorImage')->name('sirtrevor.upload.image');
+
 Route::group(['middleware' => 'auth'], function() {
     Route::get('profile', 'UsersController@profile')->name('profile');
     Route::put('profile', 'UsersController@updateProfile')->name('profile.update');
@@ -23,7 +25,6 @@ Route::group(['middleware' => 'auth'], function() {
 //only admin can access
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function() {
     Route::resource('users', 'AdminUsersController');
-
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'editor', 'namespace' => 'Admin'], function(){
@@ -32,8 +33,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'editor', 'namespace' => 'Adm
 
     Route::resource('tags', 'AdminTagsController');
     Route::resource('articles', 'AdminArticlesController');
-    Route::post('sirtrevor/upload-image', 'AdminImagesController@uploadSirTrevorImage')->name('sirtrevor.upload.image');
-
 });
     
 Route::group(['prefix' => 'ajax'], function() {
