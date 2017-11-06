@@ -61,10 +61,7 @@ class AdminArticlesController extends Controller
     public function store(Request $request) {
         $data = $request->all();
 
-        $validator = Validators::articlesFormValidator($data);
-        if ($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
+        Validators::articlesFormValidator($data)->validate();
 
         $article = new Article;
         $data['id_author'] = Auth::id();
@@ -99,10 +96,7 @@ class AdminArticlesController extends Controller
     public function update(Request $request, $id) {
         $data = $request->all();
         
-        $validator = Validators::articlesFormValidator($data);
-        if ($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
+        Validators::articlesFormValidator($data)->validate();
   
         $article = Article::findOrFail($id);
         

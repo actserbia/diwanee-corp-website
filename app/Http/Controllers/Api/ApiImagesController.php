@@ -22,16 +22,14 @@ class ApiImagesController extends Controller {
      *         type="file"
      *     ),
      *     produces={"application/json"},
-     *     @SWG\Response(response="200", description="successful operation")
+     *     @SWG\Response(response=200, description="successful operation"),
+     *     @SWG\Response(response=400, description="validation error")
      * )
      * */
     public function uploadImage(Request $request) {
         $data = $request->all();
 
-        $validator = $this->validator($data);
-        if ($validator->fails()) {
-            return json_encode(array('errors' => $validator->errors()->all()));
-        }
+        $this->validator($data)->validate();
 
         $filename = '';
         if ($request->hasFile('image')) {

@@ -17,11 +17,14 @@ use Illuminate\Http\UploadedFile;
 */
 
 $factory->define(Element::class, function (Faker $faker) {
-    $types = [ElementType::Text, ElementType::DiwaneeImage, ElementType::Video, ElementType::Heading, ElementType::ElementList];
+    $types = [ElementType::Text, ElementType::DiwaneeImage, ElementType::Video, ElementType::Heading, ElementType::ElementList, ElementType::Quote];
     
     $type = $types[$faker->numberBetween(0, count($types) - 1)];
     $data = array();
     switch($type) {
+        case ElementType::Quote:
+            $data['cite'] = $faker->name;
+
         case ElementType::Text:
         case ElementType::Heading:
             $data['text'] = $faker->paragraph;

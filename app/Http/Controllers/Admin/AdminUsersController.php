@@ -41,10 +41,7 @@ class AdminUsersController extends Controller
     public function store(Request $request) {
         $data = $request->all();
 
-        $validator = Validators::usersFormValidator($data);
-        if ($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
+        Validators::usersFormValidator($data)->validate();
 
         $user = new User;
 
@@ -88,10 +85,7 @@ class AdminUsersController extends Controller
     public function update(Request $request, $id) {
         $data = $request->all();
 
-        $validator = Validators::usersFormValidator($data, ['id' => $id]);
-        if ($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
+        Validators::usersFormValidator($data, ['id' => $id])->validate();
 
         $user = User::findOrFail($id);
 

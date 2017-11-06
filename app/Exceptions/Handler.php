@@ -5,6 +5,10 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
 class Handler extends ExceptionHandler
 {
     /**
@@ -49,6 +53,10 @@ class Handler extends ExceptionHandler
 
     public function render($request, Exception $exception)
     {
+        if ($request->is('api/*')) {
+            $request->headers->add(['Accept' => 'application/json']);
+        }
+
         // This will replace our 404 response with
         // a JSON response.
         if ($exception instanceof ModelNotFoundException &&

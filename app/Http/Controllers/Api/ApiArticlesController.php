@@ -58,16 +58,13 @@ class ApiArticlesController extends Controller
     *   ),
     *   @SWG\Response(response=200, description="successful operation"),
     *   @SWG\Response(response=400, description="validation error"),
-    *   @SWG\Response(response=406, description="not acceptable"),
     *   @SWG\Response(response=500, description="internal server error")
     * )
     **/
     public function index(Request $request) {
         $params = $request->all();
-        $validatorData = Validators::validateData('articlesIndexValidator', $params);
-        if (!empty($validatorData)) {
-            return response()->json($validatorData, 400);
-        }
+
+        Validators::articlesIndexValidator($params)->validate();
         
         $articles = Article::with('elements', 'tags')
             ->withTagsIfParamExists($params, 'name')
@@ -106,10 +103,9 @@ class ApiArticlesController extends Controller
      *     required=false,
      *     type="string"
      *   ),
-     *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Article"),),
+     *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Article")),
      *   @SWG\Response(response=400, description="validation error"),
-     *   @SWG\Response(response=405, description="article not exists"),
-     *   @SWG\Response(response=406, description="not acceptable"),
+     *   @SWG\Response(response=404, description="article not found"),
      *   @SWG\Response(response=500, description="internal server error")
      * )
      */
@@ -144,17 +140,14 @@ class ApiArticlesController extends Controller
      *        @SWG\Schema(ref="#/definitions/Article"),
      *    ),
      * @SWG\Response(response=201, description="successful operation")),
-     * @SWG\Response(response=405, description="validation exception"),
+     * @SWG\Response(response=400, description="validation exception"),
      * @SWG\Response(response=500, description="internal server error")
      * )
     **/
     public function store(Request $request) {
         $data = $request->all();
 
-        $validatorData = Validators::validateData('articlesFormValidator', $data);
-        if (!empty($validatorData)) {
-            return response()->json($validatorData, 405);
-        }
+        Validators::articlesFormValidator($data)->validate();
 
         $article = new Article;
         $data['id_author'] = Auth::guard('api')->id();
@@ -193,17 +186,15 @@ class ApiArticlesController extends Controller
      *        @SWG\Schema(ref="#/definitions/Article"),
      *    ),
      * @SWG\Response(response=200, description="successful operation"),
-     * @SWG\Response(response=405, description="validation exception"),
+     * @SWG\Response(response=400, description="validation exception"),
+     * @SWG\Response(response=404, description="article not found"),
      * @SWG\Response(response=500, description="internal server error")
      * )
     **/
     public function update($id, Request $request) {
         $data = $request->all();
         
-        $validatorData = Validators::validateData('articlesFormValidator', $data);
-        if (!empty($validatorData)) {
-            return response()->json($validatorData, 405);
-        }
+        Validators::articlesFormValidator($data)->validate();
 
         $article = Article::find($id);
         if (!$article) {

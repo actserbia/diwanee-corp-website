@@ -42,7 +42,7 @@
     margin-top: 10px;
 }
 .st-block__inner {
-    margin: 0 10px;
+    margin: 0!important;
 }
 .st-block-ui-btn__reorder {
     right: 1em;
@@ -79,6 +79,18 @@
     left: 0px;
 }
 
+.st-block-ui-btn__reorder {
+    right: 0.5em;
+}
+.st-block-ui-btn__delete {
+    right: 0;
+}
+.st-text-block--quote {
+    margin: 0;
+}
+blockquote {
+    padding: 0;
+}
 
 
 /*

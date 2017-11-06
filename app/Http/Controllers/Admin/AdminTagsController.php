@@ -62,10 +62,7 @@ class AdminTagsController extends Controller
     public function store(Request $request) {
         $data = $request->all();
 
-        $validator = Validators::tagsFormValidator($data);
-        if ($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
+        Validators::tagsFormValidator($data)->validate();
 
         $tag = new Tag;
         
@@ -106,10 +103,7 @@ class AdminTagsController extends Controller
     public function update(Request $request, $id) {
         $data = $request->all();
 
-        $validator = Validators::tagsFormValidator($data, ['id' => $id]);
-        if ($validator->fails()) {
-            return back()->withInput()->withErrors($validator);
-        }
+        Validators::tagsFormValidator($data, ['id' => $id])->validate();
 
         $tag = Tag::findOrFail($id);
         

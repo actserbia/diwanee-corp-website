@@ -42,7 +42,7 @@ class Article extends Model {
 
     public function scopeWithActiveIfParamExists($query, $params) {
         if(isset($params['active'])) {
-            $status = $params['active'] ? ArticleStatus::Published : ArticleStatus::Unpublished;
+            $status = $params['active'] == 'true' ? ArticleStatus::Published : ArticleStatus::Unpublished;
             $query = $query->where('status', $status);
         }
         

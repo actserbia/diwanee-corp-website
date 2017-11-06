@@ -26,13 +26,16 @@ class ArticlesTableSeeder extends Seeder
         $categories = Tag::where('type', '=', TagType::Category)->get();
         
         factory(Article::class, 100)->create()->each(function ($article) use ($faker, $publications, $influencers, $brands, $categories) {
-            $count = $faker->numberBetween(1, 7);
+            $count = $faker->numberBetween(1, 10);
             for($index = 1; $index <= $count; $index++) {
-                $element = factory(Element::class)->make();
-                $article->elements()->save($element, ['ordinal_number' => $index]);
+                $slider = $faker->numberBetween(1, 3);
+                if($slider === 1) {
+                    $this->addSlider($article, $faker, $index);
+                } else {
+                    $element = factory(Element::class)->make();
+                    $article->elements()->save($element, ['ordinal_number' => $index]);
+                }
             }
-            
-            $this->addSlider($article, $faker, $index);
 
             $article->tags()->attach($faker->randomElement($publications)['id']);
             $article->tags()->attach($faker->randomElement($influencers)['id']);

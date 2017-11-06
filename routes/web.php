@@ -34,12 +34,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'editor', 'namespace' => 'Adm
     Route::resource('articles', 'AdminArticlesController');
     Route::post('sirtrevor/upload-image', 'AdminImagesController@uploadSirTrevorImage')->name('sirtrevor.upload.image');
 
-    Route::get('dashboard/log-chart', 'DashboardController@getLogChartData')->name('dashboard.log.chart');
-    Route::get('dashboard/registration-chart', 'DashboardController@getRegistrationChartData')->name('dashboard.registration.chart');
-
 });
     
 Route::group(['prefix' => 'ajax'], function() {
-    Route::get('/subcategories/{category_id?}', 'AjaxController@subcategories')->name('subcategories');
+    Route::get('/subcategories/{category_id}', 'AjaxController@subcategories')->name('subcategories');
     Route::get('/tags/{type}', 'AjaxController@tagsByType')->name('tags.by.type');
 });

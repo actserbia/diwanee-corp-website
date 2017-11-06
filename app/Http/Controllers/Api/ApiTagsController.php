@@ -28,7 +28,7 @@ class ApiTagsController extends Controller
     *     type="string"
     *   ),
     *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/Tag"))),
-    *   @SWG\Response(response=405, description="validation exception"),
+    *   @SWG\Response(response=400, description="validation exception"),
     *   @SWG\Response(response=500, description="internal server error")
     * )
     **/
@@ -61,7 +61,8 @@ class ApiTagsController extends Controller
      *     type="integer"
      *   ),
      *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Tag")),
-     *   @SWG\Response(response=405, description="validation exception"),
+     *   @SWG\Response(response=400, description="validation exception"),
+     *   @SWG\Response(response=404, description="tag not found"),
      *   @SWG\Response(response=500, description="internal server error")
      * )
      */
@@ -95,7 +96,7 @@ class ApiTagsController extends Controller
      *        @SWG\Schema(ref="#/definitions/Tag"),
      *    ),
      * @SWG\Response(response=201, description="successful operation", @SWG\Schema(ref="#/definitions/Tag")),
-     * @SWG\Response(response=405, description="validation exception"),
+     * @SWG\Response(response=400, description="validation exception"),
      * @SWG\Response(response=500, description="internal server error")
      * )
     **/
@@ -103,10 +104,7 @@ class ApiTagsController extends Controller
     {
         $data = $request->all();
 
-        $validationData = Validators::validateData('tagsFormValidator', $data);
-        if (!empty($validationData)) {
-            return response()->json($validationData, 405);
-        }
+        Validators::tagsFormValidator($data)->validate();
 
         $tag = new Tag;
         if($tag->saveTag($data)) {
@@ -147,18 +145,15 @@ class ApiTagsController extends Controller
      *     @SWG\Schema(ref="#/definitions/Tag"),
      *     ),
      *     @SWG\Response(response=200, description="successful operation", @SWG\Schema(ref="#/definitions/Tag")),
-     *     @SWG\Response(response=404, description="Tag not found"),
-     *     @SWG\Response(response=405, description="validation exception")
+     *     @SWG\Response(response=404, description="tag not found"),
+     *     @SWG\Response(response=400, description="validation exception")
      * )
     */
     public function update($id, Request $request)
     {
         $data = $request->all();
 
-        $validationData = Validators::validateData('tagsFormValidator', $data, ['id' => $id]);
-        if (!empty($validationData)) {
-            return response()->json($validationData, 405);
-        }
+        Validators::tagsFormValidator($data)->validate();
 
         $tag = Tag::find($id);
         if (!$tag) {

@@ -21,7 +21,7 @@ class Validators {
     
     public static function articlesIndexValidator(array $params, array $additional = []) {
         return Validator::make($params, [
-            'active' => 'nullable|bool',
+            'active' => 'nullable|in:true,false',
             'perPage' => 'nullable|integer',
             'page' => 'nullable|integer',
             'tags.*' => 'nullable|exists:tags,name'
@@ -46,21 +46,10 @@ class Validators {
         $password = isset($data['password']) ? 'required' : 'nullable';
 
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|' . $emailUnique . '|max:255',
-            'role' => 'required',
-            'password' => $password . '|confirmed|min:6'
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|' . $emailUnique,
+            'password' => $password . '|string|min:6|confirmed',
+            'role' => 'required'
         ]);
-    }
-
-    public static function validateData($validatorFunctionName, array $data, array $additional = []) {
-        $validatorData = array();
-
-        $validator = self::$validatorFunctionName($data, $additional);
-        if ($validator->fails()) {
-            $validatorData = array('errors' => $validator->errors()->all());
-        }
-
-        return $validatorData;
     }
 }
