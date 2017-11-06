@@ -98,3 +98,4 @@ public/images
 public/pictures
 public/mix-manifest.json
 composer.lock
+config/images.php
