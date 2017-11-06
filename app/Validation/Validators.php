@@ -24,7 +24,8 @@ class Validators {
             'active' => 'nullable|in:true,false',
             'perPage' => 'nullable|integer',
             'page' => 'nullable|integer',
-            'tags.*' => 'nullable|exists:tags,name'
+            'tags.*' => 'nullable|exists:tags,name',
+            'ids' => 'nullable|string'
         ]);
     }
     

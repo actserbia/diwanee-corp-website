@@ -69,6 +69,7 @@ class ApiArticlesController extends Controller
         $articles = Article::with('elements', 'tags')
             ->withTagsIfParamExists($params, 'name')
             ->withActiveIfParamExists($params)
+            ->WithIdsIfParamExists($params)
             ->orderBy('created_at', 'desc')
             ->paginateIfParamExists($params);
         

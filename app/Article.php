@@ -60,6 +60,14 @@ class Article extends Model {
         return $query;
     }
 
+    public function scopeWithIdsIfParamExists($query, $params) {
+        if(isset($params['ids'])) {
+            $ids = explode(',', $params['ids']);
+            $query = $query->whereIn('id', $ids);
+        }
+        return $query;
+    }
+
 
     public function getPublicationAttribute() {
         return $this->getSelectedTags(TagType::Publication);
