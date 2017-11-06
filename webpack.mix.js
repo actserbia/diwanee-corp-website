@@ -66,7 +66,12 @@ let mix = require('laravel-mix');
             'public/css/admin.css'
         ], 'public/css/admin.css')
         .copy('resources/assets/_admin_/css/bootstrap.min.css.map', 'public/css/')
-        .copy('node_modules/sir-trevor/build/sir-trevor.css', 'public/css/')
+
+        .sass('resources/assets/sass/admin/sir-trevor.scss', 'public/css/sir-trevor.css')
+        .combine([
+            'node_modules/sir-trevor/build/sir-trevor.css',
+            'public/css/sir-trevor.css'
+        ], 'public/css/sir-trevor.css')
 
         .copy('resources/assets/_admin_/fonts/*', 'public/fonts/')
         .copy('resources/assets/_admin_/images/*', 'public/pictures/')
