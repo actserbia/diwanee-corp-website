@@ -20,7 +20,7 @@
     margin-bottom: 25px;
 }
 .image-additional {
-    padding: 7px;
+    padding: 4px;
     a {
         color: #8495a7;
         font-weight: bold;
@@ -53,10 +53,12 @@
 .st-block__editor {
     div {
         margin-bottom: 7px;
-        margin-left: 2px;
         &.image-additional {
             margin-bottom: 3px;
         }
+    }
+    h4 {
+        margin-left: 4px;
     }
 }
 .st-block-controls__buttons {
@@ -108,9 +110,9 @@ blockquote {
 
 @media (min-width: 520px) {
     div[data-type="diwanee image"] .st-block__editor img, div[data-type="slider image"] .st-block__editor img {
-        width: 50%;
+        width: 60%;
         display: block;
-        margin: 0 auto;
+        margin: 7px auto;
     }
     
     div[data-type="slider image"] {

@@ -121,7 +121,7 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
         // Create our image tag
         this.editor.innerHTML = '';
 
-        var div = document.createElement("div");
+        var div = document.createElement("h4");
         var t = document.createTextNode("Slider Image");
         div.appendChild(t);
         this.editor.appendChild(div);
