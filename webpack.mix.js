@@ -39,12 +39,14 @@ let mix = require('laravel-mix');
             'resources/assets/_admin_/js/custom.min.js',
 
             'resources/assets/js/admin/admin-custom.js',
-            'resources/assets/js/admin/admin.js',
-
+            'resources/assets/js/admin/admin.js'
+        ], 'public/js/admin.js')
+        
+        .combine([
             'node_modules/sir-trevor/build/sir-trevor.js',
             'resources/assets/js/admin/sir-trevor-blocks.js',
             'resources/assets/js/admin/sir-trevor-settings.js'
-        ], 'public/js/admin.js')
+        ], 'public/js/sir-trevor.js')
     
         .sass('resources/assets/sass/admin/admin.scss', 'public/css/admin.css')
         .combine([
@@ -60,12 +62,11 @@ let mix = require('laravel-mix');
             'resources/assets/_admin_/css/fixedHeader.bootstrap.min.css',
             'resources/assets/_admin_/css/responsive.bootstrap.min.css',
             'resources/assets/_admin_/css/scroller.bootstrap.min.css',
-
-            'node_modules/sir-trevor/build/sir-trevor.css',
             
             'public/css/admin.css'
         ], 'public/css/admin.css')
         .copy('resources/assets/_admin_/css/bootstrap.min.css.map', 'public/css/')
+        .copy('node_modules/sir-trevor/build/sir-trevor.css', 'public/css/')
 
         .copy('resources/assets/_admin_/fonts/*', 'public/fonts/')
         .copy('resources/assets/_admin_/images/*', 'public/pictures/')

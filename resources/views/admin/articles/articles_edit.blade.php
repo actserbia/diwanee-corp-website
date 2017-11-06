@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@push('stylesheets')
+    <link href="{{ asset('css/sir-trevor.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 <div>
     <div class="clearfix"></div>
@@ -68,3 +72,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/sir-trevor.js') }}"></script>
+@endpush

@@ -86,9 +86,9 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
-#swagger
-public/vendor/l5-swagger
-resources/views/vendor/l5-swagger
+public/vendor
+resources/lang/vendor
+resources/views/vendor
 storage/api-docs
 
 public/fonts
