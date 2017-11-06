@@ -1,5 +1,11 @@
 "use strict";
 
+var kaltura = {
+    partner_id: '676152',
+    uiconf_id: '37639151',
+    player_id: '7503092'
+}
+
 SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
     type: "diwanee image",
     title: function() {
@@ -108,7 +114,6 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
 
 });
 
-
 SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
 
     type: "slider image",
@@ -171,6 +176,54 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
         }
     }
 });
+
+SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
+
+    type: 'diwanee video',
+    icon_name: 'video',
+    title: function() {
+        return 'video';
+    },
+
+    providers: {
+        vimeo: {
+            regex: /(?:http[s]?:\/\/)?(?:www.)?vimeo\.co(?:.+(?:\/)([^\/].*)+$)/,
+            html: "<iframe src=\"<%= protocol %>//player.vimeo.com/video/<%= remote_id %>?title=0&byline=0\" width=\"580\" height=\"320\" frameborder=\"0\"></iframe>"
+        },
+        youtube: {
+            regex: /^.*(?:(?:youtu\.be\/)|(?:youtube\.com)\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*)/,
+            html: "<iframe src=\"<%= protocol %>//www.youtube.com/embed/<%= remote_id %>\" width=\"580\" height=\"320\" frameborder=\"0\" allowfullscreen></iframe>"
+        },
+        vine: {
+            regex: /(?:http[s]?:\/\/)?(?:www.)?vine.co\/v\/([^\W]*)/,
+            html: "<iframe class=\"vine-embed\" src=\"<%= protocol %>//vine.co/v/<%= remote_id %>/embed/simple\" width=\"<%= width %>\" height=\"<%= width %>\" frameborder=\"0\"></iframe><script async src=\"http://platform.vine.co/static/scripts/embed.js\" charset=\"utf-8\"></script>",
+            square: true
+        },
+        dailymotion: {
+            regex: /(?:http[s]?:\/\/)?(?:www.)?dai(?:.ly|lymotion.com\/video)\/([^\W_]*)/,
+            html: "<iframe src=\"<%= protocol %>//www.dailymotion.com/embed/video/<%= remote_id %>\" width=\"580\" height=\"320\" frameborder=\"0\"></iframe>"
+        },
+        kaltura: {
+            regex: /([^\W]*)/,
+            html: "<iframe src=\"http://www.kaltura.com/p/" + kaltura.partner_id + "/sp/" + kaltura.partner_id + "00/embedIframeJs/uiconf_id/" + kaltura.uiconf_id + "/partner_id/" + kaltura.partner_id + "?iframeembed=true&playerId=" + kaltura.player_id + "&entry_id=<%= remote_id %>\" width=\"580\" height=\"320\"></iframe>"
+        }
+    },
+
+    handleDropPaste: function(url){
+        for(var key in this.providers) {
+            if (!this.providers.hasOwnProperty(key)) { continue; }
+            var videoData = this.matchVideoProvider(this.providers[key], key, url);
+
+            if (typeof videoData.remote_id === "undefined") {
+                continue;
+            } else {
+                this.setAndLoadData(videoData);
+                break;
+            }
+        }
+     }
+});
+
 
 
 
