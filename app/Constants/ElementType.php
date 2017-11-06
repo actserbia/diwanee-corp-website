@@ -8,7 +8,7 @@ final class ElementType {
     const Text = 'text';
     const SliderImage = 'slider_image';
     const DiwaneeImage = 'diwanee_image';
-    const Video = 'video';
+    const DiwaneeVideo = 'diwanee_video';
     const ElementList = 'list';
     const Heading = 'heading';
     const Quote = 'quote';

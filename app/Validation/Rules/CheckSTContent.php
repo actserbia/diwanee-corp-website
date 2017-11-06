@@ -83,7 +83,7 @@ class CheckSTContent implements Rule
                 }
                 break;
 
-            case ElementType::Video:
+            case ElementType::DiwaneeVideo:
                 if(!isset($element->data->remote_id) || !isset($element->data->source)) {
                     $this->message = __('messages.check_sir_trevor_content.video_data_missing', ['elementIndex' => $index]);
                     return false;

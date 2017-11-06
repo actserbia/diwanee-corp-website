@@ -17,7 +17,26 @@ use Illuminate\Http\UploadedFile;
 */
 
 $factory->define(Element::class, function (Faker $faker) {
-    $types = [ElementType::Text, ElementType::DiwaneeImage, ElementType::Video, ElementType::Heading, ElementType::ElementList, ElementType::Quote];
+    $types = [ElementType::Text, ElementType::DiwaneeImage, ElementType::DiwaneeVideo, ElementType::Heading, ElementType::ElementList, ElementType::Quote];
+    
+    $videos = array(
+        array(
+            'remote_id' => 'FKUAAZSJiGY',
+            'source' => 'youtube'
+        ),
+        array(
+            'remote_id' => 'x61dos2',
+            'source' => 'dailymotion'
+        ),
+        array(
+            'remote_id' => 'hlnAazxQDqM',
+            'source' => 'vine'
+        ),
+        array(
+            'remote_id' => '1_bxnfpqc7',
+            'source' => 'kaltura'
+        )
+    );
     
     $type = $types[$faker->numberBetween(0, count($types) - 1)];
     $data = array();
@@ -40,9 +59,8 @@ $factory->define(Element::class, function (Faker $faker) {
             $data['copyright'] = $faker->text(30);
             break; 
           
-        case ElementType::Video:
-            $data['remote_id'] = 'FKUAAZSJiGY';
-            $data['source'] = 'youtube';
+        case ElementType::DiwaneeVideo:
+            $data = $faker->randomElement($videos);
             break; 
 
         case ElementType::ElementList:
