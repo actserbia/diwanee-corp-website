@@ -63,7 +63,7 @@ class Article extends Model {
     public function scopeWithIdsIfParamExists($query, $params) {
         if(isset($params['ids'])) {
             $ids = explode(',', $params['ids']);
-            $query = $query->whereIn('id', $ids);
+            $query = $query->whereIn('id', $ids)->orderByRaw('FIELD(id, ' . $params['ids'] . ')');
         }
         return $query;
     }
