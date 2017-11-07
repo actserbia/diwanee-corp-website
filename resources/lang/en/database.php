@@ -3,7 +3,8 @@
 return [
     'ArticleStatus' => [
         '1' => 'Published',
-        '0' => 'Unpublished'
+        '0' => 'Unpublished',
+        '4' => 'Deleted',
     ],
     'Role' => [
         'user' => 'User',

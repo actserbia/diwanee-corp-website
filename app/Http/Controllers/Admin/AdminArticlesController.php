@@ -113,6 +113,8 @@ class AdminArticlesController extends Controller
      */
     public function destroy($id) {
         $article = Article::findOrFail($id);
+        $article->status = ArticleStatus::Deleted;
+        $article->save();
         
         $successName = $article->delete() ? 'success' : 'error';
         return redirect()->route('articles.index')->with($successName, __('messages.articles.destroy_' . $successName, ['title' => $article->title]));
