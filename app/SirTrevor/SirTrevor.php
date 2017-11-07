@@ -4,6 +4,21 @@
   use HTML;
 
   class SirTrevor {
+      public static function stylesheets() {
+        $config = config('sir-trevor');
+
+        $stylesheets = '';
+        if (isset($config['stylesheets']) && is_array($config['stylesheets'])) {
+            foreach ($config['stylesheets'] as $stylesheet) {
+                if (file_exists(public_path($stylesheet))) {
+                    $stylesheets .= HTML::style($stylesheet);
+                }
+            }
+        }
+
+        return $stylesheets;
+    }
+    
       public static function scripts() {
           $config = config('sir-trevor');
           $blockTypes = "'" . implode("', '", $config['blockTypes']) . "'";
@@ -17,6 +32,6 @@
               }
           }
           
-          return $scripts . view('sirtrevor.scripts', ['config' => $config, 'blockTypes' => $blockTypes]);
+          return $scripts . view('sirtrevor.scripts', compact('config', 'blockTypes'));
       }
   }

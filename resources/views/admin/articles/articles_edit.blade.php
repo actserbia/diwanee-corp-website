@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @push('stylesheets')
-    <link href="{{ asset('css/sir-trevor.css') }}" rel="stylesheet">
+    {!! SirTrevor::stylesheets() !!}
 @endpush
 
 @section('content')
