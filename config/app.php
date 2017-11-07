@@ -235,7 +235,8 @@ return [
         'SirTrevorJs' => Caouecs\Sirtrevorjs\SirTrevorJs::class,
         'STConverter' => Caouecs\Sirtrevorjs\SirTrevorJsConverter::class,
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
-        'HtmlElementsClasses'   => App\Utils\HtmlElementsClasses::class
+        'HtmlElementsClasses'   => App\Utils\HtmlElementsClasses::class,
+        'SirTrevor'   => App\SirTrevor\SirTrevor::class
     ],
 
 ];

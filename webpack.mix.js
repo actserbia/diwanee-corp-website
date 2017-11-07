@@ -44,8 +44,7 @@ let mix = require('laravel-mix');
         
         .combine([
             'node_modules/sir-trevor/build/sir-trevor.js',
-            'resources/assets/js/admin/sir-trevor-blocks.js',
-            'resources/assets/js/admin/sir-trevor-settings.js'
+            'resources/assets/js/admin/sir-trevor-blocks.js'
         ], 'public/js/sir-trevor.js')
     
         .sass('resources/assets/sass/admin/admin.scss', 'public/css/admin.css')

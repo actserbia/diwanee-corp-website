@@ -1,10 +1,20 @@
+<script type="text/javascript">
 $(document).ready(function() {
-    SirTrevor.setDefaults({ uploadUrl: "/sirtrevor/upload-image",  iconUrl: "/pictures/sir-trevor-icons.svg" });
+    SirTrevor.setDefaults({
+        uploadUrl: "{{ $config['uploadUrl'] }}",
+        iconUrl: "{{ $config['iconUrl'] }}"
+    });
+    
+    SirTrevor.kaltura = {
+        partner_id: "{{ $config['videos']['providers']['kaltura']['partner_id'] }}",
+        uiconf_id: "{{ $config['videos']['providers']['kaltura']['uiconf_id'] }}",
+        player_id: "{{ $config['videos']['providers']['kaltura']['player_id'] }}"
+    }
 
     window.editor = new SirTrevor.Editor({
-        el:document.querySelector('.sir-trevor'),
-        defaultType: 'Text',
-        blockTypes: [ 'Text', 'Heading', 'Quote', 'List', 'DiwaneeImage', 'DiwaneeVideo', 'SliderImage' ],
+        el: document.querySelector("{{ $config['editorClass'] }}"),
+        defaultType: "{{ $config['defaultType'] }}",
+        blockTypes: [ {!! $blockTypes !!} ],
         formatBar: {
 	      commands: [{
 	        name: "Bold",
@@ -49,3 +59,4 @@ $(document).ready(function() {
     });
 
 });
+</script>

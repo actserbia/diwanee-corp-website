@@ -1,11 +1,5 @@
 "use strict";
 
-var kaltura = {
-    partner_id: '676152',
-    uiconf_id: '37639151',
-    player_id: '7503092'
-}
-
 SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
     type: "diwanee image",
     title: function() {
@@ -205,8 +199,33 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
         },
         kaltura: {
             regex: /([^\W]*)/,
-            html: "<iframe src=\"http://www.kaltura.com/p/" + kaltura.partner_id + "/sp/" + kaltura.partner_id + "00/embedIframeJs/uiconf_id/" + kaltura.uiconf_id + "/partner_id/" + kaltura.partner_id + "?iframeembed=true&playerId=" + kaltura.player_id + "&entry_id=<%= remote_id %>\" width=\"580\" height=\"320\"></iframe>"
+            html: "<iframe src=\"http://www.kaltura.com/p/<%= settings.partner_id %>/sp/<%= settings.partner_id %>00/embedIframeJs/uiconf_id/<%= settings.uiconf_id %>/partner_id/<%= settings.partner_id %>?iframeembed=true&playerId=<%= settings.player_id %>&entry_id=<%= remote_id %>\" width=\"580\" height=\"320\"></iframe>",
         }
+    },
+    
+    loadData: function loadData(data) {
+    
+	if (!this.providers.hasOwnProperty(data.source)) {
+	    return;
+	}
+
+	var source = this.providers[data.source];
+
+	var protocol = window.location.protocol === "file:" ? "http:" : window.location.protocol;
+
+	var aspectRatioClass = source.square ? 'with-square-media' : 'with-sixteen-by-nine-media';
+
+	this.editor.classList.add('st-block__editor--' + aspectRatioClass);
+	this.editor.innerHTML = _.template(source.html, {
+	    protocol: protocol,
+	    remote_id: data.remote_id,
+	    width: this.editor.style.width, // for videos like vine
+            settings: this.getProviderSettings(data.source)
+	});
+    },
+    
+    getProviderSettings: function(providerName) {
+        return (providerName === 'kaltura') ? SirTrevor.kaltura : [];
     },
 
     handleDropPaste: function(url){

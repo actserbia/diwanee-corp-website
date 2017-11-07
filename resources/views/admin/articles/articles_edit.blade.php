@@ -74,5 +74,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/sir-trevor.js') }}"></script>
+    {!! SirTrevor::scripts() !!}
 @endpush

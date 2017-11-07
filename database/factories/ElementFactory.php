@@ -3,7 +3,6 @@
 use Faker\Generator as Faker;
 use App\Element;
 use App\Constants\ElementType;
-use Illuminate\Http\UploadedFile;
 
 /*
 |--------------------------------------------------------------------------
