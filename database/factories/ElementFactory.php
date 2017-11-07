@@ -20,7 +20,7 @@ $factory->define(Element::class, function (Faker $faker) {
     
     $videos = array(
         array(
-            'remote_id' => 'FKUAAZSJiGY',
+            'remote_id' => 'sTO1OxryZuk',
             'source' => 'youtube'
         ),
         array(

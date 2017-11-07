@@ -186,7 +186,7 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
         },
         youtube: {
             //regex: /^.*(?:(?:youtu\.be\/)|(?:youtube\.com)\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*)/,
-            regex: /(?:http[s]?:\/\/)?(?:www.)?youtu\.be|youtube\.com\/v\/|u\/\w\/|embed\/|watch\?v=|\&v=([^\W]*)/,
+            regex: /(?:http[s]?:\/\/)?(?:www.)?youtu\.be|youtube\.com\/v\/|u\/\w\/|embed\/|watch\?v=([^\W]*)/,
             html: "<iframe src=\"<%= protocol %>//www.youtube.com/embed/<%= remote_id %>\" width=\"580\" height=\"320\" frameborder=\"0\" allowfullscreen></iframe>"
         },
         vine: {
@@ -217,12 +217,24 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
 	var aspectRatioClass = source.square ? 'with-square-media' : 'with-sixteen-by-nine-media';
 
 	this.editor.classList.add('st-block__editor--' + aspectRatioClass);
-	this.editor.innerHTML = _.template(source.html, {
+	
+        this.editor.innerHTML = _.template(source.html, {
 	    protocol: protocol,
 	    remote_id: data.remote_id,
 	    width: this.editor.style.width, // for videos like vine
             settings: SirTrevor.providers[data.source]
 	});
+        //var html = source.html
+        //    .replace('<%= protocol %>', protocol)
+        //    .replace('<%= remote_id %>', data.remote_id)
+        //    .replace('<%= width %>', this.editor.style.width); // for videos like vine
+        //var settingName = '';
+        //if (typeof SirTrevor.providers[data.source] !== "undefined") {
+        //    for (settingName in SirTrevor.providers[data.source]) {
+        //        html = html.replace(new RegExp('<%= settings.' + settingName + ' %>', 'g'), SirTrevor.providers[data.source][settingName]);
+        //    }
+        //}
+        //this.editor.innerHTML = html;
     },
 
     handleDropPaste: function(url){
@@ -230,8 +242,8 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
             if (!this.providers.hasOwnProperty(key)) { continue; }
 
             var videoData = this.matchVideoProvider(this.providers[key], key, url);
-
             if (_.isUndefined(videoData.remote_id)) {
+            //if (typeof videoData.remote_id === "undefined") {
                 continue;
             } else {
                 this.setAndLoadData(videoData);
