@@ -5,10 +5,12 @@ $(document).ready(function() {
         iconUrl: "{{ $config['iconUrl'] }}"
     });
     
-    SirTrevor.kaltura = {
-        partner_id: "{{ $config['videos']['providers']['kaltura']['partner_id'] }}",
-        uiconf_id: "{{ $config['videos']['providers']['kaltura']['uiconf_id'] }}",
-        player_id: "{{ $config['videos']['providers']['kaltura']['player_id'] }}"
+    SirTrevor.providers = {
+        kaltura: {
+            partner_id: "{{ $config['videos']['providers']['kaltura']['partner_id'] }}",
+            uiconf_id: "{{ $config['videos']['providers']['kaltura']['uiconf_id'] }}",
+            player_id: "{{ $config['videos']['providers']['kaltura']['player_id'] }}"
+        }
     }
 
     window.editor = new SirTrevor.Editor({

@@ -185,7 +185,8 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
             html: "<iframe src=\"<%= protocol %>//player.vimeo.com/video/<%= remote_id %>?title=0&byline=0\" width=\"580\" height=\"320\" frameborder=\"0\"></iframe>"
         },
         youtube: {
-            regex: /^.*(?:(?:youtu\.be\/)|(?:youtube\.com)\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*)/,
+            //regex: /^.*(?:(?:youtu\.be\/)|(?:youtube\.com)\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*)/,
+            regex: /(?:http[s]?:\/\/)?(?:www.)?youtu\.be|youtube\.com\/v\/|u\/\w\/|embed\/|watch\?v=|\&v=([^\W]*)/,
             html: "<iframe src=\"<%= protocol %>//www.youtube.com/embed/<%= remote_id %>\" width=\"580\" height=\"320\" frameborder=\"0\" allowfullscreen></iframe>"
         },
         vine: {
@@ -220,20 +221,17 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
 	    protocol: protocol,
 	    remote_id: data.remote_id,
 	    width: this.editor.style.width, // for videos like vine
-            settings: this.getProviderSettings(data.source)
+            settings: SirTrevor.providers[data.source]
 	});
-    },
-    
-    getProviderSettings: function(providerName) {
-        return (providerName === 'kaltura') ? SirTrevor.kaltura : [];
     },
 
     handleDropPaste: function(url){
         for(var key in this.providers) {
             if (!this.providers.hasOwnProperty(key)) { continue; }
+
             var videoData = this.matchVideoProvider(this.providers[key], key, url);
 
-            if (typeof videoData.remote_id === "undefined") {
+            if (_.isUndefined(videoData.remote_id)) {
                 continue;
             } else {
                 this.setAndLoadData(videoData);
