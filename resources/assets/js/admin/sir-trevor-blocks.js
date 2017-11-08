@@ -1,5 +1,7 @@
 "use strict";
 
+var _template = require('lodash.template');
+
 SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
     type: "diwanee image",
     title: function() {
@@ -218,23 +220,12 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
 
 	this.editor.classList.add('st-block__editor--' + aspectRatioClass);
 	
-        this.editor.innerHTML = _.template(source.html, {
+        this.editor.innerHTML = _template(source.html, {
 	    protocol: protocol,
 	    remote_id: data.remote_id,
 	    width: this.editor.style.width, // for videos like vine
             settings: SirTrevor.providers[data.source]
 	});
-        //var html = source.html
-        //    .replace('<%= protocol %>', protocol)
-        //    .replace('<%= remote_id %>', data.remote_id)
-        //    .replace('<%= width %>', this.editor.style.width); // for videos like vine
-        //var settingName = '';
-        //if (typeof SirTrevor.providers[data.source] !== "undefined") {
-        //    for (settingName in SirTrevor.providers[data.source]) {
-        //        html = html.replace(new RegExp('<%= settings.' + settingName + ' %>', 'g'), SirTrevor.providers[data.source][settingName]);
-        //    }
-        //}
-        //this.editor.innerHTML = html;
     },
 
     handleDropPaste: function(url){
@@ -243,7 +234,6 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
 
             var videoData = this.matchVideoProvider(this.providers[key], key, url);
             if (_.isUndefined(videoData.remote_id)) {
-            //if (typeof videoData.remote_id === "undefined") {
                 continue;
             } else {
                 this.setAndLoadData(videoData);

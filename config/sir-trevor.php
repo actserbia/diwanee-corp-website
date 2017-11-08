@@ -16,7 +16,6 @@ return [
     ],
   
     'scripts' => [
-        'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js',
         'js/sir-trevor.js'
     ],
   

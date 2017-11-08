@@ -16,6 +16,7 @@
         "jquery": "^3.2.1",
         "laravel-mix": "^1.5.1",
         "lodash": "^4.17.4",
+        "lodash.template": "^2.4.1",
         "vue": "^2.5.3",
         "webpack": "^3.7.1"
     },
