@@ -33,6 +33,7 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
             // Show this image on here
             this.inputs.style.display = 'none';
             this.editor.innerHTML = '';
+            
             var image = document.createElement("img");
             image.setAttribute("src", urlAPI.createObjectURL(file));
             this.editor.appendChild(image);
@@ -119,7 +120,6 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
         div.appendChild(t);
         this.editor.appendChild(div);
 
-        var div = document.createElement("div");
         var image = document.createElement("img");
         image.setAttribute("src", data.file.url);
         this.editor.appendChild(image);
@@ -137,12 +137,12 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
             // Show this image on here
             this.inputs.style.display = 'none';
             this.editor.innerHTML = '';
-
+            
+            var div = document.createElement("h4");
             var t = document.createTextNode("Slider Image");
             div.appendChild(t);
             this.editor.appendChild(div);
 
-            var div = document.createElement("div");
             var image = document.createElement("img");
             image.setAttribute("src", urlAPI.createObjectURL(file));
             this.editor.appendChild(image);
