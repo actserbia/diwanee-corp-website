@@ -1,5 +1,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
+    SirTrevor.config.language = "{{ app()->getLocale() }}";
+
     SirTrevor.setDefaults({
         uploadUrl: "{{ $config['uploadUrl'] }}",
         iconUrl: "{{ $config['iconUrl'] }}"

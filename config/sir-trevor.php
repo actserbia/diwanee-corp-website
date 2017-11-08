@@ -1,5 +1,4 @@
 <?php
-
 return [
     'uploadUrl' => '/sirtrevor/upload-image',
   
@@ -15,9 +14,9 @@ return [
         'css/sir-trevor.css'
     ],
   
-    'scripts' => [
+    'scripts' => array_merge([
         'js/sir-trevor.js'
-    ],
+    ], app()->getLocale() !== 'en' ? ['sirtrevor/' . app()->getLocale() . '.js'] : []),
   
     'videos' => [
         'providers' => [

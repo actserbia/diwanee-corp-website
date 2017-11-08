@@ -2,16 +2,11 @@
 
 var _template = require('lodash.template');
 
+SirTrevor.Locales.en.blocks['diwanee image'] = {'title': 'Image'};
 SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
     type: "diwanee image",
-    title: function() {
-        return "image";
-    },
-
-    droppable: true,
-    uploadable: true,
-
     icon_name: 'image',
+
     textFields: {
         seo_name: {sel: 'seoname', required: false},
         seo_alt: {sel: 'seoalt', required: false},
@@ -110,13 +105,10 @@ SirTrevor.Blocks.DiwaneeImage = SirTrevor.Blocks.Image.extend({
 
 });
 
+SirTrevor.Locales.en.blocks['slider image'] = {'title': 'Slider Image'};
 SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
-
     type: "slider image",
     icon_name: 'iframe',        //'sliderimage',
-    title: function() {
-        return "slider image";
-    },
 
     loadData: function(data){
         // Create our image tag
@@ -146,14 +138,15 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
             this.inputs.style.display = 'none';
             this.editor.innerHTML = '';
 
-            var div = document.createElement("div");
             var t = document.createTextNode("Slider Image");
             div.appendChild(t);
             this.editor.appendChild(div);
 
+            var div = document.createElement("div");
             var image = document.createElement("img");
             image.setAttribute("src", urlAPI.createObjectURL(file));
             this.editor.appendChild(image);
+
             this.imageAddition();
 
             this.editor.style.display = '';
@@ -173,13 +166,10 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
     }
 });
 
+SirTrevor.Locales.en.blocks['diwanee video'] = {'title': 'Video'};
 SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
-
     type: 'diwanee video',
     icon_name: 'video',
-    title: function() {
-        return 'video';
-    },
 
     providers: {
         vimeo: {
