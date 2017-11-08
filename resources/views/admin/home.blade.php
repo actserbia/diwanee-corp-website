@@ -5,9 +5,9 @@
 
 <!-- page content -->
 <!-- top tiles -->
-<div class="row tile_count">
+<div class="row tile_count text-center">
 
-    <div class="col-md-2 col-sm-6 col-xs-6 tile_stats_count">
+    <div class="col-md-3 col-sm-4 col-xs-12 tile_stats_count">
         <span class="count_top"><i class="fa fa-file-text "></i> {{ __('views.admin.dashboard.count_1') }}</span>
         <a href="{{ route('articles.index') }}">
         <div>
@@ -17,11 +17,11 @@
         </div>
         </a>
     </div>
-    <div class="col-md-2 col-sm-6 col-xs-6 tile_stats_count">
+    <div class="col-md-3 col-sm-4 col-xs-12 tile_stats_count">
         <span class="count_top"><i class="fa fa-hashtag"></i> {{ __('views.admin.dashboard.count_3') }}</span>
         <a href="{{ route('tags.index') }}"><div class="count green">{{ $counts['tags'] }}</div></a>
     </div>
-    <div class="col-md-2 col-sm-6 col-xs-6 tile_stats_count">
+    <div class="col-md-3 col-sm-4 col-xs-12 tile_stats_count">
         <span class="count_top"><i class="fa fa-users"></i> {{ __('views.admin.dashboard.count_2') }}</span>
         <a href="{{ route('users.index') }}">
         <div>

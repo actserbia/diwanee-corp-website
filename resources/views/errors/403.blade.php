@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('heading')
-    <h1 class="big-title flex-center">    403    </h1>
+    <h1 class="big-title text-center">    403    </h1>
 @endsection
