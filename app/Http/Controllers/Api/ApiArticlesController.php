@@ -64,16 +64,16 @@ class ApiArticlesController extends Controller
     public function index(Request $request) {
         $params = $request->all();
 
-        Validators::articlesIndexValidator($params)->validate();
+        Validators::articlesValidator($params)->validate();
         
         $articles = Article::with('elements', 'tags')
-            ->withTagsIfParamExists($params, 'name')
-            ->withActiveIfParamExists($params)
-            ->WithIdsIfParamExists($params)
-            ->orderBy('created_at', 'desc')
-            ->paginateIfParamExists($params);
+            ->withAttributesEqual('ids', $params, 'id')
+            ->withTags('tags', $params, 'name')
+            ->withActive($params)
+            ->latest()
+            ->withPagination($params);
         
-        $this->formatArticles($articles, false, true);
+        Article::formatArticles($articles, false, true);
         
         return $articles;
     }
@@ -247,12 +247,6 @@ class ApiArticlesController extends Controller
         } else {
             $data = array('errors' => [__('messages.articles.destroy_error', ['title' => $article->title])]);
             return response()->json($data, 500);
-        }
-    }
-    
-    private function formatArticles($articles, $jsonEncode = true, $toHtml = false) {
-        foreach($articles as $article) {
-            $article->changeFormat($jsonEncode, $toHtml);
         }
     }
 }

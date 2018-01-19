@@ -7,14 +7,11 @@ use ReflectionClass;
 trait ConstantsTrait {
     public static function getAll() {
         $refClass = new ReflectionClass(__CLASS__);
-        $all = array_values($refClass->getConstants());
-        
-        return $all;
+        return array_filter($refClass->getConstants(), function($value) { return !is_array($value); });
     }
     
     public static function getAllForDropdown() {
-        $refClass = new ReflectionClass(__CLASS__);
-        return self::getForDropdown($refClass->getConstants());
+        return self::getForDropdown(self::getAll());
     }
 
     public static function getForDropdown($constants) {

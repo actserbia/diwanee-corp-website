@@ -20,12 +20,14 @@ class ApiTagsController extends Controller
     *     tags={"tags"},
     *     summary="List tags",
     *     operationId="index",
-    * @SWG\Parameter(
-    *     name="type",
+    *   @SWG\Parameter(
+    *     name="types[]",
     *     in="query",
-    *     description="Tag Type",
+    *     description="Tags types to filter by",
     *     required=false,
-    *     type="string"
+    *     type="array",
+    *     @SWG\Items(type="string"),
+    *     collectionFormat="multi"
     *   ),
     *   @SWG\Response(response=200, description="successful operation", @SWG\Schema(type="array", @SWG\Items(ref="#/definitions/Tag"))),
     *   @SWG\Response(response=400, description="validation exception"),
@@ -36,7 +38,13 @@ class ApiTagsController extends Controller
     {
         $params = $request->all();
         
-        $tags = Tag::with('parents', 'children')->withTypeIfParamExists($params)->get();
+        Validators::tagsValidator($params)->validate();
+        
+        $tags = Tag::with('parents', 'children')
+            ->withAttributesEqual('ids', $params, 'id')
+            ->withAttributesEqual('names', $params, 'name', false)
+            ->withAttributesEqual('types', $params, 'type')
+            ->withPagination($params);
 
         return $tags;
     }

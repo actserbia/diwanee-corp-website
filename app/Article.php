@@ -6,20 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Constants\TagType;
-use App\Constants\ArticleStatus;
 use App\Element;
 use App\Tag;
 use App\User;
 use DB;
-use App\Traits\Pagination;
-use App\Traits\MultipleTags;
+use App\Models\Traits\MultipleTags;
+use App\Models\Traits\BaseFilters;
+use App\Models\Traits\ArticlesFilters;
+use App\Models\Traits\Pagination;
 
 
 class Article extends Model {
 
     use SoftDeletes;
-    use Pagination;
     use MultipleTags;
+    use BaseFilters;
+    use ArticlesFilters;
+    use Pagination;
     
     protected $fillable = [
         'title', 'meta_title', 'meta_description', 'meta_keywords', 'content_description', 'external_url', 'status', 'id_author'
@@ -38,36 +41,6 @@ class Article extends Model {
     public function author() {
         return $this->belongsTo(User::class, 'id_author');
     }
-
-
-    public function scopeWithActiveIfParamExists($query, $params) {
-        if(isset($params['active'])) {
-            $status = $params['active'] == 'true' ? ArticleStatus::Published : ArticleStatus::Unpublished;
-            $query = $query->where('status', $status);
-        }
-        
-        return $query;
-    }
-    
-    public function scopeWithTagsIfParamExists($query, $params, $tagAttribute = 'name') {
-        if(isset($params['tags'])) {
-            foreach($params['tags'] as $tag) {
-                $query = $query->whereHas('tags', function($q) use($tag, $tagAttribute) {
-                    $q->where($tagAttribute, '=', $tag);
-                });
-            }
-        }
-        return $query;
-    }
-
-    public function scopeWithIdsIfParamExists($query, $params) {
-        if(isset($params['ids'])) {
-            $ids = explode(',', $params['ids']);
-            $query = $query->whereIn('id', $ids)->orderByRaw('FIELD(id, ' . $params['ids'] . ')');
-        }
-        return $query;
-    }
-
 
     public function getPublicationAttribute() {
         return $this->getSelectedTags(TagType::Publication);
@@ -181,6 +154,12 @@ class Article extends Model {
     public function changeFormat($jsonEncode = true, $toHtml = false) {
         foreach($this->elements as $element) {
             $element->changeFormat($jsonEncode, $toHtml);
+        }
+    }
+    
+    public static function formatArticles($articles, $jsonEncode = true, $toHtml = false) {
+        foreach($articles as $article) {
+            $article->changeFormat($jsonEncode, $toHtml);
         }
     }
 }

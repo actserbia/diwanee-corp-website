@@ -37,4 +37,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::put('tags/{id}', 'ApiTagsController@update')->name('api.tags.update');
         Route::delete('tags/{id}', 'ApiTagsController@destroy')->name('api.tags.destroy');
     });
+    
+    Route::get('/search/articles', 'ApiSearchController@articles')->name('api.search.articles');
+    Route::get('/search/tags', 'ApiSearchController@tags')->name('api.search.tags');
 });

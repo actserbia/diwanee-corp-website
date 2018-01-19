@@ -3,7 +3,9 @@ namespace App\Validation;
 
 use Illuminate\Support\Facades\Validator;
 use App\Validation\Rules\CheckSTContent;
-
+use App\Constants\ElementType;
+use App\Constants\TagType;
+use App\Constants\VideoProvider;
 
 class Validators {
     public static function articlesFormValidator(array $data, array $additional = []) {
@@ -19,13 +21,19 @@ class Validators {
         ]);
     }
     
-    public static function articlesIndexValidator(array $params, array $additional = []) {
+    public static function articlesValidator(array $params, array $additional = []) {
         return Validator::make($params, [
+            'ids' => 'nullable',
             'active' => 'nullable|in:true,false',
+            'tags.*' => 'nullable|exists:tags,name',
             'perPage' => 'nullable|integer',
             'page' => 'nullable|integer',
-            'tags.*' => 'nullable|exists:tags,name',
-            'ids' => 'nullable|string'
+            'elementsTypes.*' => 'nullable|in:' . implode(',', ElementType::getAll()),
+            'videoProviders.*' => 'nullable|in:' . implode(',', VideoProvider::getAll()),
+            'remoteIds.*' => 'nullable|string',
+            'authorsNames.*' => 'nullable|exists:users,name',
+            'authorsEmails.*' => 'nullable|exists:users,email',
+            'authorsRoles.*' => 'nullable|exists:users,role'
         ]);
     }
     
@@ -34,11 +42,19 @@ class Validators {
 
         return Validator::make($data, [
             'name' => 'required|' . $nameUnique . '|max:255',
-            'type' => 'required|exists:tags,type',
+            'type' => 'required|in:' . implode(',', TagType::getAll()),
             'parents.*' => 'exists:tags,id|checkTagType:category',
             'children.*' => 'exists:tags,id|checkTagType:subcategory',
             'parents' => 'checkParentsAndChildren:' . $data['type'],
             'children' => 'checkParentsAndChildren:' . $data['type']
+        ]);
+    }
+    
+    public static function tagsValidator(array $params, array $additional = []) {
+        return Validator::make($params, [
+            'perPage' => 'nullable|integer',
+            'page' => 'nullable|integer',
+            'types.*' => 'nullable|in:' . implode(',', TagType::getAll())
         ]);
     }
     

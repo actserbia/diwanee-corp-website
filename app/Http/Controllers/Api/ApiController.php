@@ -11,8 +11,7 @@ use App\Http\Controllers\Api\ApiArticlesController;
 class ApiController extends Controller
 {
 
-    public function all(Request $request)
-    {
+    public function all(Request $request) {
         $articleController = new ApiArticlesController();
         $data['articles'] = $this->formatOutput($articleController->index($request));
 
@@ -20,7 +19,6 @@ class ApiController extends Controller
         $data['tags'] = $this->formatOutput($tagController->index($request));
 
         return $data;
-
     }
 
     private function formatOutput($items) {

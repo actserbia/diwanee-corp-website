@@ -1,5 +1,5 @@
 <?php
-namespace App\Traits;
+namespace App\Models\Traits;
 
 trait MultipleTags  {
     public function changeTags($newTagsIds, $tagsName, $sortable = false) {

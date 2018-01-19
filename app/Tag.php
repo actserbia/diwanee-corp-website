@@ -8,12 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Article;
 use App\Tag;
 use DB;
-use App\Traits\MultipleTags;
+use App\Models\Traits\MultipleTags;
+use App\Models\Traits\BaseFilters;
+use App\Models\Traits\Pagination;
+
 
 class Tag extends Model {
 
     use SoftDeletes;
     use MultipleTags;
+    use BaseFilters;
+    use Pagination;
 
     protected $fillable = [
         'name', 'type'
@@ -29,14 +34,6 @@ class Tag extends Model {
 
     public function parents() {
         return $this->belongsToMany(Tag::class, 'tag_parent', 'id_tag', 'id_parent');
-    }
-    
-    public function scopeWithTypeIfParamExists($query, $params) {
-        if(isset($params['type'])) {
-            $query = $query->where('type', '=', $params['type']);
-        }
-        
-        return $query;
     }
 
 
