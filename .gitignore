@@ -1,6 +1,5 @@
 ### Laravel ###
 /node_modules
-/config/images.php
 /public/hot
 /public/storage
 /public/asset
@@ -98,4 +97,3 @@ public/images
 public/pictures
 public/mix-manifest.json
 composer.lock
-config/images.php
