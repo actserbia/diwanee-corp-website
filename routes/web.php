@@ -11,6 +11,36 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+  $locale = Request::segment(1);
+  if(in_array($locale, config('app.locales'))) {
+      Route::group(['prefix' => $locale], function() use($locale) {
+          app()->setLocale($locale);
+          setAllWebRoutes();
+      });
+  } else {
+      setAllWebRoutes();
+  }
+
+
+  function setAllWebRoutes() {
+      Auth::routes();
+
+      Route::get('/', 'HomeController@index')->name('home');
+      
+      Route::group(['middleware' => 'auth'], function() {
+          Route::get('profile', 'UsersController@profile')->name('profile');
+          Route::put('profile', 'UsersController@updateProfile')->name('profile.update');
+      });
+      
+      Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function() {
+          Route::resource('users', 'AdminUsersController');
+      });
+      
+      Route::group(['prefix' => 'admin', 'middleware' => 'editor', 'namespace' => 'Admin'], function() {
+          Route::get('/', 'DashboardController@index')->name('admin.home');
+          
+          Route::resource('tags', 'AdminTagsController');
+          Route::resource('tag-types', 'AdminTagTypesController');
+      });
+
+  }
