@@ -42,5 +42,10 @@
           Route::resource('tags', 'AdminTagsController');
           Route::resource('tag-types', 'AdminTagTypesController');
       });
+      
+      Route::group(['prefix' => 'ajax'], function() {
+          Route::get('/model/populate-field', 'AjaxController@modelPopulateField')->name('model.populate.field');
+          Route::get('/model/add-selected-item', 'AjaxController@modelAddSelectedItem')->name('model.add.selected.item');
+      });
 
   }

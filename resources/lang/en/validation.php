@@ -103,6 +103,8 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'parents' => ['check_subtype' => 'The :attribute tags must be of appropriate type.'],
+        'children' => ['check_parent_type' => 'The :attribute tags must be of appropriate type.']
     ],
 
     /*
