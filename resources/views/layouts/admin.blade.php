@@ -59,8 +59,15 @@
                                         <li><a href="{{ route('tags.create') }}">@lang('blade_templates.admin.sidebar.create_tag')</a></li>
                                     </ul>
                                 </li>
-                                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'moderator')
+                                @if(Auth::user()->role === 'admin')
                                     <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> @lang('blade_templates.admin.sidebar.users') </a></li>
+
+                                    <li><a ><i class="fa  fa fa-columns"></i> Graphiql <span class="fa fa-chevron-down"></span> </a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/{{ config('graphiql.routes.ui') }}?type=user">@lang('blade_templates.admin.sidebar.users')</a></li>
+                                            <li><a href="/{{ config('graphiql.routes.ui') }}?type=tag">@lang('blade_templates.admin.sidebar.tags')</a></li>
+                                        </ul>
+                                    </li>
                                 @endif
                             </ul>
                         </div>

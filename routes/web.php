@@ -30,6 +30,7 @@
       Route::group(['middleware' => 'auth'], function() {
           Route::get('profile', 'UsersController@profile')->name('profile');
           Route::put('profile', 'UsersController@updateProfile')->name('profile.update');
+          Route::get('graphiql','GraphiqlController@index')->name('graphiql');
       });
       
       Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function() {

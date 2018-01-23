@@ -168,6 +168,8 @@ return [
          * Package Service Providers...
          */
         Creativeorange\Gravatar\GravatarServiceProvider::class,
+        Rebing\GraphQL\GraphQLServiceProvider::class,
+        Graphiql\GraphiqlServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -229,6 +231,7 @@ return [
       
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
         'HtmlElementsClasses'  => App\Utils\HtmlElementsClasses::class,
+        'GraphQL' => Rebing\GraphQL\Support\Facades\GraphQL::class,
     ],
 
     'locales' => ['en'],
