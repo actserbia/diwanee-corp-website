@@ -49,6 +49,7 @@ let mix = require('laravel-mix');
             'resources/assets/_admin_/js/custom.min.js',
             
             'resources/assets/js/admin/admin.js',
+            'resources/assets/js/admin/tags.js',
             'resources/lang/*/js/datetimepicker.js',
             'resources/assets/js/admin/admin-search.js',
             'resources/assets/js/admin/datatable.js',

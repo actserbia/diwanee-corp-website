@@ -24,6 +24,7 @@ return [
     ],
     'tags' => [
         'index' => 'Diwanee Corp Admin Panel - Tags List',
+        'list' => 'Diwanee Corp Admin Panel - Tags List',
         'create' => 'Diwanee Corp Admin Panel - Create Tag',
         'edit' => 'Diwanee Corp Admin Panel - Edit Tag',
         'show' => 'Diwanee Corp Admin Panel - Delete Tag'

@@ -16,8 +16,6 @@
                         {{ csrf_field() }}
                         
                         @include('blocks.model', ['field' => 'name'])
-                        
-                        @include('blocks.model', ['field' => 'subtype'])
 
                         <div class="ln_solid"></div>
 

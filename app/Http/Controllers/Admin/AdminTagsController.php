@@ -18,11 +18,45 @@ class AdminTagsController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index(Request $request) {
         $tags = Tag::get();
+
         return view('admin.tags.list', compact('tags'));
     }
     
+    public function tags(Request $request) {
+        $data = $request->all();
+
+        $object = new Tag;
+
+        $tags = [];
+        if(isset($data['tagType'])) {
+            $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['tagType'])->get();
+        }
+
+        return view('admin.tags.list', compact('object', 'tags'));
+    }
+
+    public function tagsReorderList(Request $request) {
+        $data = $request->all();
+
+        $tags = [];
+        if(isset($data['type'])) {
+            $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['type'])->get();
+        }
+
+        return view('blocks.tags.tag-list', compact('tags'));
+    }
+
+    public function tagsReorder(Request $request) {
+        $data = $request->all();
+
+        $class = Tag::reorder($data['tags']) ? 'success' : 'error';
+        $message = __('messages.tags_reorder_' . $class);
+
+        return view('blocks.alert', compact('class', 'message'));
+    }
+
     /**
      * Display the specified resource.
      *
@@ -60,7 +94,7 @@ class AdminTagsController extends Controller {
         
         $successName = $tag->saveTag($data) ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.store_' . $successName, ['type' => 'tag', 'name' => $tag->name]));
+        return redirect()->route('tags.list')->with($successName, __('messages.store_' . $successName, ['type' => 'tag', 'name' => $tag->name]));
     }
 
     /**
@@ -91,7 +125,7 @@ class AdminTagsController extends Controller {
         
         $successName = $tag->saveTag($data) ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.update_' . $successName, ['type' => 'tag', 'name' => $tag->name]));
+        return redirect()->route('tags.list')->with($successName, __('messages.update_' . $successName, ['type' => 'tag', 'name' => $tag->name]));
     }
 
     /**

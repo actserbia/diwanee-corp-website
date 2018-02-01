@@ -23,4 +23,14 @@ class Utils {
             return $item !== '';
         });
     }
+
+    public static function autoincrement($type, $autoincrement = true) {
+        if(!isset(self::$autoincrement[$type])) {
+            self::$autoincrement[$type] = 1;
+        } elseif($autoincrement) {
+            self::$autoincrement[$type]++;
+        }
+
+        return self::$autoincrement[$type];
+    }
 }

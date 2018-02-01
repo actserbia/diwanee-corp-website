@@ -232,6 +232,7 @@ return [
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
         'HtmlElementsClasses'  => App\Utils\HtmlElementsClasses::class,
         'GraphQL' => Rebing\GraphQL\Support\Facades\GraphQL::class,
+        'Utils' => App\Utils\Utils::class
     ],
 
     'locales' => ['en'],

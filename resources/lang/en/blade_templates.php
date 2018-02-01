@@ -78,6 +78,7 @@ return [
         ],
         'tags' => [
             'list_title' => 'Tags',
+            'reorder_list_button_text' => 'Reorder Tags',
             'create_title' => 'Create tag',
             'create_button_text' => 'Create tag',
             'edit_title' => 'Edit tag',

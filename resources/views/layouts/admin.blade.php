@@ -61,7 +61,7 @@
                                 </li>
                                 <li><a ><i class="fa fa-hashtag"></i> @lang('blade_templates.admin.sidebar.tags') <span class="fa fa-chevron-down"></span> </a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('tags.index') }}">@lang('blade_templates.admin.sidebar.tags_list')</a></li>
+                                        <li><a href="{{ route('tags.list') }}">@lang('blade_templates.admin.sidebar.tags_list')</a></li>
                                         <li><a href="{{ route('tags.create') }}">@lang('blade_templates.admin.sidebar.create_tag')</a></li>
                                     </ul>
                                 </li>

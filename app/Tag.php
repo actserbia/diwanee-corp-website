@@ -58,12 +58,12 @@ class Tag extends Model {
 
     public function parentsRelationValues($dependsOnValues = null) {
         $tagType = $this->getDependsOnValue('tagType', $dependsOnValues);
-        return isset($tagType->parentType->id) ? Tag::where('tag_type_id', '=', $tagType->parentType->id)->get() : [];
+        return isset($tagType->id) ? Tag::where('tag_type_id', '=', $tagType->id)->where('id', '!=', $this->id)->get() : [];
     }
 
     public function childrenRelationValues($dependsOnValues = null) {
         $tagType = $this->getDependsOnValue('tagType', $dependsOnValues);
-        return isset($tagType->subtype->id) ? Tag::where('tag_type_id', '=', $tagType->subtype->id)->get() : [];
+        return isset($tagType->id) ? Tag::where('tag_type_id', '=', $tagType->id)->where('id', '!=', $this->id)->get() : [];
     }
 
     public function saveTag(array $data) {
@@ -82,5 +82,63 @@ class Tag extends Model {
             DB::rollBack();
             return false;
         }
+    }
+
+    public function relationIds($relation, $withDirect = true) {
+        $ids = [];
+
+        foreach($this->$relation as $relationNode) {
+            if($withDirect) {
+                $ids[] = $relationNode->id;
+            }
+            $ids = array_merge($ids, $relationNode->relationIds($relation));
+        }
+
+        return $ids;
+    }
+
+    public static function reorder($tagsData) {
+        DB::beginTransaction();
+        try {
+            $tagIds = self::getTagsIds($tagsData);
+            DB::table('tag_parent')->whereIn('tag_id', $tagIds)->delete();
+            DB::table('tag_parent')->whereIn('parent_id', $tagIds)->delete();
+
+            self::insertTagChildrens(0, $tagsData);
+
+            DB::commit();
+            return true;
+
+        } catch(Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
+
+    private static function getTagsIds($tagsData) {
+        $tagIds = [];
+        foreach($tagsData as $tagData) {
+            if(isset($tagData['children']) && count($tagData['children']) > 0) {
+              $tagIds = array_merge($tagIds, self::getTagsIds($tagData['children']));
+            }
+            $tagIds[] = $tagData['id'];
+        }
+        return $tagIds;
+    }
+
+    private static function insertTagChildrens($parentId, $childrenData) {
+        foreach($childrenData as $tagData) {
+            if($parentId > 0) {
+                DB::table('tag_parent')->insert([
+                    'tag_id' => $tagData['id'],
+                    'parent_id' => $parentId
+                ]);
+            }
+
+            if(isset($tagData['children']) && count($tagData['children']) > 0) {
+                self::insertTagChildrens($tagData['id'], $tagData['children']);
+            }
+        }
+
     }
 }

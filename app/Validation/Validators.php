@@ -26,20 +26,8 @@ class Validators {
 
         $nameUnique = isset($additional['id']) ? 'unique:tag_types,id,' . $additional['id'] : 'unique:tag_types';
         
-        $subtypeValidation = self::modelRequiredValidation('subtype', $model);
-        if(isset($data['subtype'])) {
-            $subtypeValidation .= '|exists:tag_types,id';
-        } else {
-            $data['subtype'] = 0;
-        }
-        if(isset($additional['id'])) {
-            $data['id'] = $additional['id'];
-            $subtypeValidation .= '|different:id|checkSubtype:' . $additional['id'];
-        }
-        
         return Validator::make($data, [
-            'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
-            'subtype' => $subtypeValidation,
+            'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255'
         ]);
     }
     
@@ -47,12 +35,13 @@ class Validators {
         $model = new Tag;
 
         $nameUnique = isset($additional['id']) ? 'unique:tags,id,' . $additional['id'] : 'unique:tags';
+        $id = isset($additional['id']) ? $additional['id'] : '';
 
         return Validator::make($data, [
             'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
             'tagType' => self::modelRequiredValidation('tagType', $model) . '|exists:tag_types,id',
-            'parents' => 'checkTags:' . $data['tagType'],
-            'children' => 'checkTags:' . $data['tagType']
+            'parents' => 'checkTags:' . $data['tagType'] . ',' . $id . ',' . json_encode($data['children']),
+            'children' => 'checkTags:' . $data['tagType'] . ',' . $id . ',' . json_encode($data['parents'])
         ]);
     }
 

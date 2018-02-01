@@ -63,7 +63,7 @@ trait ModelDataManager {
             $settings['attribute'] = array_shift($params);
             if(!empty($params)) {
                 $settings['json_attribute']['name'] = array_shift($params);
-                $settings['json_attribute']['settings'] = $this->getJsonAttributeFilters($settings['attribute'] . ':' . $settings['json_attribute']['name']);
+                $settings['json_attribute']['settings'] = $model->getJsonAttributeFilters($settings['attribute'] . ':' . $settings['json_attribute']['name']);
             }
         }
 

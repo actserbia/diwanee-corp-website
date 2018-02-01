@@ -41,6 +41,9 @@
           Route::get('/', 'DashboardController@index')->name('admin.home');
           
           Route::resource('tags', 'AdminTagsController');
+          Route::match(['get', 'post'], 'tags-list', 'AdminTagsController@tags')->name('tags.list');
+          Route::get('tags-reorder-list', 'AdminTagsController@tagsReorderList')->name('tags.reorder.list');
+          Route::match(['get', 'post'], 'tags-reorder', 'AdminTagsController@tagsReorder')->name('tags.reorder');
           Route::resource('tag-types', 'AdminTagTypesController');
           Route::resource('types', 'AdminTypesController');
       });

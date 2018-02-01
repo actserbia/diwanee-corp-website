@@ -10,40 +10,14 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <table id="datatable-buttons" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>@lang('blade_templates.global.id')</th>
-                                <th>@lang('models_labels.Tag.name')</th>
-                                <th>@lang('models_labels.Tag.tagType_label')</th>
-                                <th>@lang('blade_templates.global.created')</th>
-                                <th>@lang('blade_templates.global.actions')</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>@lang('blade_templates.global.id')</th>
-                                <th>@lang('models_labels.Tag.name')</th>
-                                <th>@lang('models_labels.Tag.tagType_label')</th>
-                                <th>@lang('blade_templates.global.created')</th>
-                                <th>@lang('blade_templates.global.actions')</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                        @foreach($tags as $tag)
-                        <tr>
-                            <td>{{ $tag->id }}</td>
-                            <td>{{ $tag->name }}</td>
-                            <td>{{ $tag->tagType->name }}</td>
-                            <td>{{ $tag->created_at }}</td>
-                            <td>
-                                <a href="{{ route('tags.edit', ['id' => $tag->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
-                                <a href="{{ route('tags.show', ['id' => $tag->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
-                            </td>
-                        </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                    <br />
+                    @include('blocks.model', ['field' => 'tagType'])
+
+                    <div class="ln_solid"></div>
+
+                    <div id="tag-list">
+                    </div>
+                    <button id="tags-reoder" class="btn btn-success" style="display: none;">@lang('blade_templates.admin.tags.reorder_list_button_text')</button>
                 </div>
             </div>
         </div>
