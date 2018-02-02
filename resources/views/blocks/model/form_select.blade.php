@@ -1,3 +1,7 @@
+<?php
+var_dump($field);
+var_dump($object); die();
+?>
 <div class="form-group{{ $errors->has($field) ? ' has-error' : '' }}">
     <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}" for="{{ $field }}">
         {{ $object->fieldLabel($field) }} @if($object->required($field))<span class="required">*</span>@endif

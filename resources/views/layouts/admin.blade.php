@@ -47,7 +47,13 @@
                             <h3>@lang('blade_templates.admin.sidebar.general')</h3>
                             <ul class="nav side-menu">
                                 <li><a href="{{ route('admin.home') }}"><i class="fa fa-home"></i> @lang('blade_templates.admin.sidebar.home') </a></li>
-                                <li><a ><i class="fa fa-hashtag"></i> @lang('blade_templates.admin.sidebar.tag_types') <span class="fa fa-chevron-down"></span> </a>
+                                <li><a ><i class="fa fa-database"></i> @lang('blade_templates.admin.sidebar.types') <span class="fa fa-chevron-down"></span> </a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('types.index') }}">@lang('blade_templates.admin.sidebar.types_list')</a></li>
+                                        <li><a href="{{ route('types.create') }}">@lang('blade_templates.admin.sidebar.create_type')</a></li>
+                                    </ul>
+                                </li>
+                                <li><a ><i class="fa fa-tags"></i> @lang('blade_templates.admin.sidebar.tag_types') <span class="fa fa-chevron-down"></span> </a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('tag-types.index') }}">@lang('blade_templates.admin.sidebar.tag_types_list')</a></li>
                                         <li><a href="{{ route('tag-types.create') }}">@lang('blade_templates.admin.sidebar.create_tag_type')</a></li>

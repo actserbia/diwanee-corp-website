@@ -16,7 +16,7 @@ class CreateTypesTable extends Migration
         Schema::create('types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 255);
-            $table->enum('status', array(1,2,4));
+            $table->enum('status', TypeStatus::getAll());
 
             $table->timestamps();
             $table->softDeletes();

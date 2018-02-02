@@ -16,7 +16,7 @@ class CreateNodesTable extends Migration
         Schema::create('nodes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 255);
-            $table->enum('status', array(1, 2, 4));
+            $table->enum('status', NodeStatus::getAll());
             $table->unsignedInteger('type_id');
             $table->unsignedInteger('author_id');
             $table->string('meta_title', 255)->nullable();

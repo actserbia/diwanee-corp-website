@@ -42,6 +42,7 @@
           
           Route::resource('tags', 'AdminTagsController');
           Route::resource('tag-types', 'AdminTagTypesController');
+          Route::resource('types', 'AdminTypesController');
       });
       
       Route::group(['prefix' => 'ajax'], function() {

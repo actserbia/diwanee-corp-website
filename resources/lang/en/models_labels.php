@@ -41,4 +41,13 @@ return [
         'children_label' => 'Children',
         'children_count' => 'Children Count'
     ],
+
+    'Type' => [
+        'id' => 'Id',
+        'name' => 'Name',
+        'status' => 'Status',
+        'created_at' => 'Created Date',
+        'updated_at' => 'Updated Date',
+        'deleted_at' => 'Deleted Date'
+    ],
 ];
