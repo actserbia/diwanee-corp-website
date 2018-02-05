@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
+use App\TagType;
 use App\Validation\Validators;
 use App\Utils\HtmlElementsClasses;
 
@@ -41,8 +42,8 @@ class AdminTagsController extends Controller {
         $data = $request->all();
 
         $tags = [];
-        if(isset($data['type'])) {
-            $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['type'])->get();
+        if(isset($data['tag_type_id'])) {
+            $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['tag_type_id'])->get();
         }
 
         return view('blocks.tags.tag-list', compact('tags'));

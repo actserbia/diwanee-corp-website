@@ -16,9 +16,9 @@ class Tag extends Model {
     
     protected $fillable = ['name'];
 
-    protected $fields = ['id', 'name', 'tag_type_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fields = ['id', 'name', 'created_at', 'updated_at', 'deleted_at'];
 
-    protected $required = ['name', 'tag_type_id'];
+    protected $required = ['name', 'tagType'];
 
     protected $attributeType = [
         'parent_id' => Models::AttributeType_Number,
@@ -84,13 +84,11 @@ class Tag extends Model {
         }
     }
 
-    public function relationIds($relation, $withDirect = true) {
+    public function relationIds($relation) {
         $ids = [];
 
         foreach($this->$relation as $relationNode) {
-            if($withDirect) {
-                $ids[] = $relationNode->id;
-            }
+            $ids[] = $relationNode->id;
             $ids = array_merge($ids, $relationNode->relationIds($relation));
         }
 

@@ -24,19 +24,16 @@ class TagType extends Model {
     protected $defaultDropdownColumn = 'name';
 
     protected $relationsSettings = [
-        'subtype' => [
-            'relationType' => 'belongsTo',
-            'model' => 'App\\TagType',
-            'foreignKey' => 'tag_subtype_id'
-        ],
-        'parentType' => [
-            'relationType' => 'hasOne',
-            'model' => 'App\\TagType',
-            'foreignKey' => 'tag_subtype_id',
+        'tags' => [
+            'relationType' => 'hasMany',
+            'model' => 'App\\Tag',
+            'foreignKey' => 'tag_type_id',
             'relationKey' => 'id'
         ]
     ];
     
+    protected $multiple = ['tags'];
+
     protected $dependsOn = [];
 
     public function saveTagType(array $data) {

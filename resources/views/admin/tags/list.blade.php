@@ -9,7 +9,7 @@
                     <h2>@lang('blade_templates.admin.tags.list_title') <a href="{{ route('tags.create') }}" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> @lang('blade_templates.global.create_new') </a></h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div class="x_content form-horizontal">
                     <br />
                     @include('blocks.model', ['field' => 'tagType'])
 

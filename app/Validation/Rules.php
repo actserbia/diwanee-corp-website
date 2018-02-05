@@ -32,7 +32,6 @@ class Rules {
         $tagIds = is_array($value) ? $value : [$value];
         foreach($tagIds as $tagId) {
             $tag = Tag::find($tagId);
-            $id = $tag->tagType->id;
             if(!isset($tag) || $tag->tagType->id != $parameters[0]) {
                 return false;
             }
@@ -45,25 +44,20 @@ class Rules {
         $tagIds = is_array($value) ? $value : [$value];
         
         $relationIds = is_array(json_decode($parameters[2])) ? json_decode($parameters[2]) : [json_decode($parameters[2])];
-        foreach($tagIds as $tagId) {
-            if(in_array($tagId, $relationIds)) {
-                return false;
-            }
+        if(!empty(array_intersect($tagIds, $relationIds))) {
+            return false;
         }
         
         if(empty($parameters[1])) {
             return true;
         }
-        
-        $currentTag = Tag::find($parameters[1]);
-        foreach($tagIds as $tagId) {
-            if(in_array($tagId, $currentTag->relationIds('parents', $attribute !== 'parents'))) {
-                return false;
-            }
 
-            if(in_array($tagId, $currentTag->relationIds('children', $attribute !== 'children'))) {
-                return false;
-            }
+        $currentTag = Tag::find($parameters[1]);
+        if($attribute === 'children' && !empty(array_intersect($tagIds, $currentTag->relationIds('parents')))) {
+            return false;
+        }
+        if($attribute === 'parents' && !empty(array_intersect($tagIds, $currentTag->relationIds('children')))) {
+            return false;
         }
 
         return true;

@@ -51,20 +51,11 @@ let mix = require('laravel-mix');
             'resources/assets/js/admin/admin.js',
             'resources/assets/js/admin/tags.js',
             'resources/lang/*/js/datetimepicker.js',
-            'resources/assets/js/admin/admin-search.js',
             'resources/assets/js/admin/datatable.js',
             'resources/lang/*/js/datatable.js',
             'resources/lang/*/js/html5.js',
             'resources/assets/js/Html5Localization.js'
         ], 'public/js/admin.js')
-        
-        .js('resources/assets/js/admin/sir-trevor-blocks.js', 'public/js/sir-trevor.js')
-        .combine([
-            'node_modules/sir-trevor/build/sir-trevor.js',
-            'public/js/sir-trevor.js',
-            'resources/lang/*/js/sir-trevor.js',
-            //'resources/assets/js/admin/sir-trevor-blocks.js'
-        ], 'public/js/sir-trevor.js')
     
         .sass('resources/assets/sass/admin/admin.scss', 'public/css/admin.css')
         .combine([
@@ -88,13 +79,7 @@ let mix = require('laravel-mix');
         .copy('resources/assets/_admin_/css/green.png', 'public/css/')
         .copy('resources/assets/_admin_/css/green@2x.png', 'public/css/')
 
-        .sass('resources/assets/sass/admin/sir-trevor.scss', 'public/css/sir-trevor.css')
-        .combine([
-            'node_modules/sir-trevor/build/sir-trevor.css',
-            'public/css/sir-trevor.css'
-        ], 'public/css/sir-trevor.css')
-
-       // .minify('public/css/bootstrap.scss')
+        // .minify('public/css/bootstrap.scss')
 
         .copy('resources/assets/_admin_/fonts/*', 'public/fonts/')
         .copy('resources/assets/_admin_/images/*', 'public/pictures/')
