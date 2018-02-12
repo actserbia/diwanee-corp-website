@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\FieldType;
+use App\Utils\Utils;
 use App\Utils\FileFunctions;
 
 class NodeModelGenerator {
@@ -20,7 +21,7 @@ class NodeModelGenerator {
     
     public function __construct($model) {
         $this->model = $model;
-        $this->filepath = self::getFilepath($model->name);
+        $this->filepath = self::getFilepath(Utils::getFormattedName($model->name, ' '));
     }
     
     public function generate() {
@@ -69,7 +70,7 @@ class NodeModelGenerator {
         $this->content .= str_repeat(' ', 4) . 'use App\AppModel;' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use Illuminate\Database\Eloquent\SoftDeletes;' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use App\Constants\Models;' . PHP_EOL . PHP_EOL;
-        $this->content .= str_repeat(' ', 4) . 'class ' . $this->model->name . ' extends AppModel {' . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'class ' . Utils::getFormattedName($this->model->name, ' ') . ' extends AppModel {' . PHP_EOL;
         $this->content .= str_repeat(' ', 8) . 'use SoftDeletes;' . PHP_EOL . PHP_EOL;
         $this->addFormattedList('fillable');
         $this->addFormattedList('allFields');

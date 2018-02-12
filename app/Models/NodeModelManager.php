@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Utils\Utils;
+use Auth;
 
 trait NodeModelManager {
     public function __construct(array $attributes = array()) {
@@ -28,11 +29,11 @@ trait NodeModelManager {
     }
 
     private function populateFieldsData($nodeTypeId = null) {
-        //$nodeType = isset($this->nodeType) ? $this->nodeType : NodeType::find($nodeTypeId);
+        $nodeType = isset($this->nodeType) ? $this->nodeType : NodeType::find($nodeTypeId);
 
         $this->relationsSettings['additionalData'] = [
             'relationType' => 'hasOne',
-            'model' => 'App\\NodeModel\\Article',
+            'model' => 'App\\NodeModel\\' . Utils::getFormattedName($nodeType->name, ' '),
             'foreignKey' => 'node_id',
             'relationKey' => 'id'
         ];
@@ -66,7 +67,8 @@ trait NodeModelManager {
         }
 
         if(isset($this->relationsSettings['additionalData'])) {
-            $model = new $this->relationsSettings['additionalData']['model'];
+            $modelName = $this->relationsSettings['additionalData']['model'];
+            $model = new $modelName;
             foreach($model->getFillableAttributes() as $field) {
                 if(strpos($field, '_id') === false) {
                     $fields[] = $field;
