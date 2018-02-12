@@ -26,7 +26,7 @@ class UsersController extends Controller
             return back()->withInput()->withErrors($validator);
         }
 
-        $successName = $user->saveUser($data) ? 'success' : 'error';
+        $successName = $user->saveObject($data) ? 'success' : 'error';
 
         return redirect()->route('profile')->with($successName, __('messages.users.update_' . $successName, ['name' => $user->name]));
     }

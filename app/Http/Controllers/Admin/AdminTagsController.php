@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Tag;
-use App\TagType;
 use App\Validation\Validators;
 use App\Utils\HtmlElementsClasses;
+use App\Utils\Utils;
 
 class AdminTagsController extends Controller {
     public function __construct() {
         HtmlElementsClasses::$template = 'admin';
+        Utils::$modelType = 'Tag';
     }
 
     /**
@@ -20,12 +21,6 @@ class AdminTagsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request) {
-        $tags = Tag::get();
-
-        return view('admin.tags.list', compact('tags'));
-    }
-    
-    public function tags(Request $request) {
         $data = $request->all();
 
         $object = new Tag;
@@ -46,7 +41,7 @@ class AdminTagsController extends Controller {
             $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['tag_type_id'])->get();
         }
 
-        return view('blocks.tags.tag-list', compact('tags'));
+        return view('blocks.tags-list', compact('tags'));
     }
 
     public function tagsReorder(Request $request) {
@@ -65,8 +60,8 @@ class AdminTagsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $tag = Tag::findOrFail($id);
-        return view('admin.tags.delete', compact('tag'));
+        $object = Tag::findOrFail($id);
+        return view('admin.tags.delete', compact('object'));
     }
 
     /**
@@ -91,11 +86,11 @@ class AdminTagsController extends Controller {
 
         Validators::tagsFormValidator($data)->validate();
 
-        $tag = new Tag;
+        $object = new Tag;
         
-        $successName = $tag->saveTag($data) ? 'success' : 'error';
+        $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tags.list')->with($successName, __('messages.store_' . $successName, ['type' => 'tag', 'name' => $tag->name]));
+        return redirect()->route('tags.index')->with($successName, __('messages.store_' . $successName, ['type' => 'tag', 'name' => $object->name]));
     }
 
     /**
@@ -122,11 +117,11 @@ class AdminTagsController extends Controller {
 
         Validators::tagsFormValidator($data, ['id' => $id])->validate();
 
-        $tag = Tag::findOrFail($id);
+        $object = Tag::findOrFail($id);
         
-        $successName = $tag->saveTag($data) ? 'success' : 'error';
+        $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tags.list')->with($successName, __('messages.update_' . $successName, ['type' => 'tag', 'name' => $tag->name]));
+        return redirect()->route('tags.index')->with($successName, __('messages.update_' . $successName, ['type' => 'tag', 'name' => $object->name]));
     }
 
     /**
@@ -136,10 +131,10 @@ class AdminTagsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        $tag = Tag::findOrFail($id);
+        $object = Tag::findOrFail($id);
         
-        $successName = $tag->delete() ? 'success' : 'error';
+        $successName = $object->delete() ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'tag', 'name' => $tag->name]));
+        return redirect()->route('tags.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'tag', 'name' => $object->name]));
     }
 }

@@ -23,7 +23,7 @@ trait ModelFormManager {
     public function fieldLabel($fullFieldName) {
         $fieldName = $this->getFieldName($fullFieldName);
         if($this->isRelation($fieldName)) {
-            return __('models_labels.' . $this->modelName . '.' . $fieldName . '_label');
+            return Utils::translate('models_labels.' . $this->modelName . '.' . $fieldName . '_label', $fieldName);
         }
         
         $modelManager = $this->getModelManager($fieldName);
@@ -50,7 +50,7 @@ trait ModelFormManager {
 
     public function formValue($fullFieldName) {
         $fieldName = $this->getFieldName($fullFieldName);
-        return Request::old('_token') !== null ? Request::old($fieldName) : $this->$fieldName;
+        return Request::old('_token') !== null ? Request::old($fieldName) : $this->attributeValue($fieldName);
     }
     
     public function formReadonlyValue($fullFieldName) {
@@ -58,7 +58,7 @@ trait ModelFormManager {
         if($this->isRelation($fieldName)) {
             return $this->getRelationItemValue($fieldName, 'id');
         } else {
-            return [$this->$fieldName];
+            return [$this->attributeValue($fieldName)];
         }
     }
     
@@ -68,9 +68,9 @@ trait ModelFormManager {
             $dropdownColumn = ($column !== null) ? $column : $this->getRelationModel($fieldName)->defaultDropdownColumn;
             return $this->getRelationItemValue($fieldName, $dropdownColumn);
         } elseif($this->attributeType($fieldName) === Models::AttributeType_Enum) {
-            return [__('constants.' . $this->modelName . Utils::getFormattedName($fieldName))[$this->$fieldName]];
+            return [__('constants.' . $this->modelName . Utils::getFormattedName($fieldName))[$this->attributeValue($fieldName)]];
         } else {
-            return [$this->$fieldName];
+            return [$this->attributeValue($fieldName)];
         }
     }
     
@@ -94,7 +94,7 @@ trait ModelFormManager {
             return true;
         }
 
-        if($this->$fieldName == $itemValue) {
+        if($this->attributeValue($fieldName) == $itemValue) {
             return true;
         }
 
@@ -131,6 +131,18 @@ trait ModelFormManager {
 
         return false;
     }
+    
+    public function checkFormDisabledRelationValue($relation, $item) {
+        if($this->isMultiple($relation)) {
+            foreach($this->$relation as $relationItem) {
+                if($relationItem->id === $item->id) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     public function formSelectedValues($relation) {
         if(Request::old('_token') !== null) {
@@ -147,6 +159,8 @@ trait ModelFormManager {
 
         return [];
     }
-
-
+    
+    public function formFieldName($fullFieldName, $prefix = '') {
+        return empty($prefix) ? $fullFieldName : $prefix . '_' . $fullFieldName;
+    }
 }

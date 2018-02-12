@@ -3,8 +3,11 @@ namespace App\Validation;
 
 use Illuminate\Support\Facades\Validator;
 use App\User;
-use App\TagType;
+use App\FieldType;
+use App\Field;
+use App\NodeType;
 use App\Tag;
+use App\Node;
 
 class Validators {
     public static function usersFormValidator(array $data, array $additional = []) {
@@ -22,9 +25,9 @@ class Validators {
     }
     
     public static function tagTypesFormValidator(array $data, array $additional = []) {
-        $model = new TagType;
+        $model = new FieldType;
 
-        $nameUnique = isset($additional['id']) ? 'unique:tag_types,id,' . $additional['id'] : 'unique:tag_types';
+        $nameUnique = isset($additional['id']) ? 'unique:field_types,id,' . $additional['id'] : 'unique:field_types';
         
         return Validator::make($data, [
             'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255'
@@ -39,14 +42,47 @@ class Validators {
 
         return Validator::make($data, [
             'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
-            'tagType' => self::modelRequiredValidation('tagType', $model) . '|exists:tag_types,id',
+            'tagType' => self::modelRequiredValidation('tagType', $model) . '|exists:field_types,id',
             'parents' => 'checkTags:' . $data['tagType'] . ',' . $id . ',' . json_encode($data['children']),
             'children' => 'checkTags:' . $data['tagType'] . ',' . $id . ',' . json_encode($data['parents'])
+        ]);
+    }
+    
+    public static function nodeTypesFormValidator(array $data, array $additional = []) {
+        $model = new NodeType;
+
+        $nameUnique = isset($additional['id']) ? 'unique:node_types,id,' . $additional['id'] : 'unique:node_types';
+        
+        return Validator::make($data, [
+            'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
+            'status' => self::modelRequiredValidation('status', $model)
+        ]);
+    }
+    
+    public static function fieldsFormValidator(array $data, array $additional = []) {
+        $model = new Field;
+
+        $titleUnique = isset($additional['id']) ? 'unique:fields,id,' . $additional['id'] : 'unique:fields';
+        
+        return Validator::make($data, [
+            'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255'
+        ]);
+    }
+    
+    public static function nodesFormValidator(array $data, array $additional = []) {
+        $model = new Node;
+
+        $titleUnique = isset($additional['id']) ? 'unique:nodes,id,' . $additional['id'] : 'unique:nodes';
+        $id = isset($additional['id']) ? $additional['id'] : '';
+
+        return Validator::make($data, [
+            'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255',
+            'nodeType' => self::modelRequiredValidation('nodeType', $model) . '|exists:node_types,id'
         ]);
     }
 
 
     private static function modelRequiredValidation($field, $model) {
-        return $model->required($field) ? 'required' : 'nullable';
+        return $model->isRequired($field) ? 'required' : 'nullable';
     }
 }

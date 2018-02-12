@@ -2,26 +2,46 @@
 namespace App\Models\RelationItems;
 
 class SingleRelationItems extends RelationItems {
-    public function saveItems($newItemsIds, $relation) {
+    public function save() {
+        $relationItemId = array_keys($this->relationData)[0];
+        $relationItemData = $this->relationData[$relationItemId];
         
-        if(isset($this->object->$relation) && $this->object->$relation->id != $newItemsIds) {
+        $relation = $this->relation;
+        
+        if(isset($this->object->$relation) && $this->object->$relation->id != $relationItemId) {
             $this->object->$relation()->detach($this->object->$relation->id);
         }
         
-        if(isset($newItemsIds) && !empty($newItemsIds)) {
-            $this->attachItem($newItemsIds, $relation);
+        if($relationItemId > 0) {
+            $this->attach($relation, $newItemId, $relationItemData);
+        }
+    }
+    
+    protected function populateRelationData($data) {
+        $this->relationData = [];
+        
+        if(isset($data[$this->relation])) {
+            $relationItemId = $data[$this->relation];
+            $this->relationData[$relationItemId] = [];
+            
+            foreach($data as $key => $value) {
+                if(strpos($key, $this->relation . '_') !== false) {
+                    $additionalField = str_replace($this->relation . '_', '', $key);
+                    
+                    $itemId = $data[$this->relation];
+                    $this->relationData[$itemId][$additionalField] = $value;
+                }
+            }
         }
     }
 
-    protected function attachNotSortableItem($newItemId, $relation) {
-        if(!isset($this->object->$relation) || $this->object->$relation->id != $newItemId) {
-            $this->object->$relation()->attach($newItemId);
+    protected function attach($relation, $newItemId, $relationItemData) {
+        if($this->object->sortableField($relation) !== null) {
+            $relationItemData[$this->object->sortableField($relation)] = 0;
         }
-    }
-
-    protected function attachSortableItem($newItemId, $relation) {
+        
         if(!isset($this->object->$relation) || $this->object->$relation->id != $newItemId) {
-            $this->object->$relation()->attach([$newItemId => [$this->object->sortableField($relation) => 0]]);
+            $this->object->$relation()->attach([$newItemId => $relationItemData]);
         }
     }
 }

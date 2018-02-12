@@ -7,7 +7,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>@lang('blade_templates.admin.users.list_title') @if(Auth::user()->role == 'admin')<a href="{{ route('users.create') }}" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> @lang('blade_templates.global.create_new') </a>@endif</h2>
+                    <h2>{{ Utils::translateModelDataPlural('blade_templates.admin.global.list_title') }} @if(Auth::user()->role == 'admin')<a href="{{ route('users.create') }}" class="btn btn-primary btn-xs"><i class="fa fa-plus"></i> @lang('blade_templates.global.create_new') </a>@endif</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">

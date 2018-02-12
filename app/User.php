@@ -17,25 +17,15 @@ class User extends Authenticatable
     use SoftDeletes;
     use ModelDataManager;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $fillable = ['name', 'email', 'password', 'role'];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token',];
     
-    protected $fields = ['id', 'name', 'email', 'password', 'role', 'active', 'api_token', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allFields = ['id', 'name', 'email', 'password', 'role', 'active', 'api_token', 'created_at', 'updated_at', 'deleted_at'];
+    
+    protected $allFieldsFromPivots = [];
+    
+    protected $defaultDropdownColumn = 'name';
     
     protected $attributeType = [
         'email' => Models::AttributeType_Email,
@@ -44,28 +34,18 @@ class User extends Authenticatable
         'active' => Models::AttributeType_Enum
     ];
     
-    protected $required = ['name', 'email', 'password', 'role'];
+    protected $requiredFields = ['name', 'email', 'password', 'role'];
      
-    public function saveUser(array $data) {
-        DB::beginTransaction();
-        try {
-            $this->name = $data['name'];
-            $this->email = $data['email'];
-            $this->role = $data['role'];
+    public function saveData(array $data) {
+        $this->name = $data['name'];
+        $this->email = $data['email'];
+        $this->role = $data['role'];
 
-            if(isset($data['password'])) {
-                $this->password = bcrypt($data['password']);
-            }
-
-            $this->save();
-
-            DB::commit();
-            return true;
-
-        } catch(Exception $e) {
-            DB::rollBack();
-            return false;
+        if(isset($data['password'])) {
+            $this->password = bcrypt($data['password']);
         }
+
+        $this->save();
     }
      
      public function getAvatar($size = null) {

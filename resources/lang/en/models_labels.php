@@ -6,6 +6,8 @@ return [
     ],
   
     'User' => [
+        'label_single' => 'user',
+        'label_plural' => 'Users',
         'id' => 'Id',
         'name' => 'Name',
         'email' => 'E-Mail Address',
@@ -20,7 +22,9 @@ return [
         'articles_count' => 'Articles Count'
     ],
   
-    'TagType' => [
+    'FieldType' => [
+        'label_single' => 'field type',
+        'label_plural' => 'Field types',
         'id' => 'Id',
         'name' => 'Name',
         'subtype_label' => 'Subtype',
@@ -29,7 +33,14 @@ return [
         'deleted_at' => 'Deleted Date'
     ],
   
+    'TagType' => [
+        'label_single' => 'tag type',
+        'label_plural' => 'Tag types'
+    ],
+  
     'Tag' => [
+        'label_single' => 'tag',
+        'label_plural' => 'Tags',
         'id' => 'Id',
         'tagType_label' => 'Type',
         'name' => 'Name',
@@ -42,12 +53,44 @@ return [
         'children_count' => 'Children Count'
     ],
 
-    'Type' => [
+    'NodeType' => [
+        'label_single' => 'node type',
+        'label_plural' => 'Node types',
         'id' => 'Id',
         'name' => 'Name',
         'status' => 'Status',
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
-        'deleted_at' => 'Deleted Date'
+        'deleted_at' => 'Deleted Date',
+        'fields_label' => 'Fields',
+        'tags_label' => 'Tags',
+        'sirTrevor_label' => 'Sir Trevor Fields'
     ],
+  
+    'Field' => [
+        'label_single' => 'field',
+        'label_plural' => 'Fields',
+        'id' => 'Id',
+        'title' => 'Title',
+        'fieldType_label' => 'Type',
+        'created_at' => 'Created Date',
+        'updated_at' => 'Updated Date',
+        'deleted_at' => 'Deleted Date',
+        'active' => 'Active',
+        'required' => 'Required',
+        'multiple' => 'Multiple',
+        'sortable' => 'Sortable'
+    ],
+  
+    'Node' => [
+        'label_single' => 'node',
+        'label_plural' => 'Nodes',
+        'id' => 'Id',
+        'title' => 'Title',
+        'status' => 'Status',
+        'created_at' => 'Created Date',
+        'updated_at' => 'Updated Date',
+        'deleted_at' => 'Deleted Date',
+        'nodeType_label' => 'Type'
+    ]
 ];

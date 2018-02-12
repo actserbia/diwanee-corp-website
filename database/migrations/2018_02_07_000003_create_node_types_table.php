@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Constants\NodeTypeStatus;
 
-class CreateTagsTable extends Migration
+class CreateNodeTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +14,16 @@ class CreateTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('node_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('tag_type_id');
             $table->string('name', 255);
+            $table->enum('status', NodeTypeStatus::getAll());
+
             $table->timestamps();
             $table->softDeletes();
         });
-        
-        Schema::table('tags', function($table) {
-            $table->foreign('tag_type_id')->references('id')->on('tag_types');
-        });
     }
+
 
     /**
      * Reverse the migrations.
@@ -33,6 +32,6 @@ class CreateTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('node_types');
     }
 }

@@ -12,9 +12,9 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <p>@lang('blade_templates.global.delete_question', ['title' => '<strong>' . $type->name . '</strong>'])</p>
+                    <p>@lang('blade_templates.global.delete_question', ['title' => '<strong>' . $object->name . '</strong>'])</p>
 
-                    <form method="POST" action="{{ route('types.destroy', ['id' => $type->id]) }}">
+                    <form method="POST" action="{{ route('nodes.destroy', ['id' => $object->id]) }}">
                         {{ csrf_field() }}
                         <input name="_method" type="hidden" value="DELETE">
                         <button type="submit" class="btn btn-danger">@lang('blade_templates.global.delete_confirm_message')</button>

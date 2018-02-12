@@ -3,22 +3,22 @@ namespace App\Models\RelationItems;
 
 class RelationItems {
     protected $object = null;
+    protected $relation = '';
+    protected $relationData = [];
     
-    public function __construct($object) {
-      $this->object = $object;
-    }
-
-    protected function attachItem($newItemId, $relation) {
-        $this->object->sortableField($relation) === null ? $this->attachNotSortableItem($newItemId, $relation)  : $this->attachSortableItem($newItemId, $relation);
+    public function __construct($object, $relation, $data) {
+        $this->object = $object;
+        $this->relation = $relation;
+        $this->populateRelationData($data);
     }
     
-    public static function saveRelationItems($object, $relation, $newItemsIds) {
+    public static function saveRelationItems($object, $relation, $data) {
         if($object->isMultiple($relation)) {
-            $relationItemsObject = new MultipleRelationItems($object);
+            $relationItemsObject = new MultipleRelationItems($object, $relation, $data);
         } else {
-            $relationItemsObject = new SingleRelationItems($object);
+            $relationItemsObject = new SingleRelationItems($object, $relation, $data);
         }
         
-        $relationItemsObject->saveItems($newItemsIds, $relation);
+        $relationItemsObject->save();
     }
 }

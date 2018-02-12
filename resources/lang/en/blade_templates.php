@@ -42,47 +42,43 @@ return [
         'edit_profile_button_text' => 'Save changes'
     ],
     'admin' => [
+        'global' => [
+            'list_title' => ':type',
+            'create_title' => 'Create :type',
+            'create_button_text' => 'Create :type',
+            'edit_title' => 'Edit :type',
+            'edit_button_text' => 'Save :type changes'
+        ],
         'sidebar' => [
             'title' => 'Diwanee Corp Panel',
             'welcome' => 'Welcome,',
             'general' => 'General',
             'home' => 'Home',
             'types' => 'Models',
-            'create_type' => 'Create Type',
-            'types_list' => 'Types List',
+            'create_type' => 'Create Node type',
+            'types_list' => 'Node types List',
+            'create_field' => 'Create Field',
+            'fields_list' => 'Fields List',
             'tag_types' => 'Tag types',
             'create_tag_type' => 'Create Tag type',
             'tag_types_list' => 'Tag types List',
             'tags' => 'Tags',
             'create_tag' => 'Create Tag',
             'tags_list' => 'Tags List',
+            'nodes' => 'Nodes',
+            'create_node' => 'Create Node',
+            'nodes_list' => 'Nodes List',
             'users' => 'Users'
         ],
         'home' => [
             'dashboard_title' => 'Dashboard',
             'dashboard_text' => 'You are logged in!'
         ],
-        'users' => [
-            'list_title' => 'Users',
-            'create_user_title' => 'Create user',
-            'create_user_button_text' => 'Create user',
-            'edit_user_title' => 'Edit user',
-            'edit_user_button_text' => 'Save user changes'
-        ],
-        'tag_types' => [
-            'list_title' => 'Tag types',
-            'create_title' => 'Create tag type',
-            'create_button_text' => 'Create tag type',
-            'edit_title' => 'Edit tag type',
-            'edit_button_text' => 'Save tag type changes'
-        ],
         'tags' => [
-            'list_title' => 'Tags',
-            'reorder_list_button_text' => 'Reorder Tags',
-            'create_title' => 'Create tag',
-            'create_button_text' => 'Create tag',
-            'edit_title' => 'Edit tag',
-            'edit_button_text' => 'Save tag changes'
+            'reorder_list_button_text' => 'Reorder Tags'
+        ],
+        'types' => [
+            'add_field' => 'Add field'
         ]
     ]
 ];

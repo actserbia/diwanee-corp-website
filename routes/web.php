@@ -41,16 +41,17 @@
           Route::get('/', 'DashboardController@index')->name('admin.home');
           
           Route::resource('tags', 'AdminTagsController');
-          Route::match(['get', 'post'], 'tags-list', 'AdminTagsController@tags')->name('tags.list');
-          Route::get('tags-reorder-list', 'AdminTagsController@tagsReorderList')->name('tags.reorder.list');
-          Route::match(['get', 'post'], 'tags-reorder', 'AdminTagsController@tagsReorder')->name('tags.reorder');
+          Route::get('tags-list', 'AdminTagsController@tagsReorderList')->name('tags-list');
+          Route::match(['get', 'post'], 'tags-reorder-tags', 'AdminTagsController@tagsReorder')->name('tags-reorder-tags');
+          
           Route::resource('tag-types', 'AdminTagTypesController');
-          Route::resource('types', 'AdminTypesController');
+          Route::resource('node-types', 'AdminNodeTypesController');
+          Route::resource('fields', 'AdminFieldsController');
+          
+          Route::get('/model/add-relation-item', 'ModelController@modelAddRelationItem')->name('model.add-relation-item');
+          Route::get('/model/populate-field', 'ModelController@modelPopulateField')->name('model.populate-field');
+          
+          Route::resource('nodes', 'AdminNodesController');
+          Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');
       });
-      
-      Route::group(['prefix' => 'ajax'], function() {
-          Route::get('/model/populate-field', 'AjaxController@modelPopulateField')->name('model.populate.field');
-          Route::get('/model/add-selected-item', 'AjaxController@modelAddSelectedItem')->name('model.add.selected.item');
-      });
-
   }

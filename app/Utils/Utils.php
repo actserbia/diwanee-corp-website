@@ -3,6 +3,7 @@ namespace App\Utils;
 
 class Utils {
     private static $autoincrement = [];
+    public static $modelType;
 
     public static function getForDropdown($items, $prefix = '') {
         $dropdownList = array();
@@ -16,6 +17,10 @@ class Utils {
     
     public static function getFormattedName($name, $delimiter = '_') {
         return str_replace($delimiter, '', ucwords($name, $delimiter));
+    }
+    
+    public static function getFormattedDBName($name, $delimiter = '_') {
+        return str_replace(' ', $delimiter, strtolower($name));
     }
 
     public static function removeEmptyValues($list) {
@@ -32,5 +37,18 @@ class Utils {
         }
 
         return self::$autoincrement[$type];
+    }
+    
+    public static function translate($translationLabel, $defaultLabel, $params = []) {
+        $label = __($translationLabel, $params);
+        return ($label !== $translationLabel) ? $label : self::getFormattedName($defaultLabel);
+    }
+    
+    public static function translateModelData($translationLabel) {
+        return __($translationLabel, ['type' => __('models_labels.' .  self::$modelType . '.label_single')]);
+    }
+    
+    public static function translateModelDataPlural($translationLabel) {
+        return __($translationLabel, ['type' => __('models_labels.' .  self::$modelType . '.label_plural')]);
     }
 }

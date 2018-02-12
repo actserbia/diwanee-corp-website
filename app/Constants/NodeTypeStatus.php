@@ -1,7 +1,7 @@
 <?php
 namespace App\Constants;
 
-final class TypeStatus {
+final class NodeTypeStatus {
     use Constants;
     
     const Unpublished = '0';

@@ -13,7 +13,11 @@ trait ModelAttributesManager {
     ];
     
     protected function getAllAttributes() {
-        return $this->fields;
+        return array_merge($this->allFields, $this->allFieldsFromPivots);
+    }
+    
+    public function getFillableAttributes() {
+        return $this->fillable;
     }
 
     public function getModelNameAttribute() {
@@ -28,12 +32,17 @@ trait ModelAttributesManager {
         return $this->defaultDropdownColumn;
     }
     
+    public function getDefaultDropdownColumnValueAttribute() {
+        $defaultDropdownColumn = $this->defaultDropdownColumn;
+        return $this->$defaultDropdownColumn;
+    }
+    
     public function isAttribute($field) {
-        return in_array($field, $this->fields);
+        return in_array($field, $this->getAllAttributes());
     }
 
-    public function required($field) {
-        return in_array($field, $this->required);
+    public function isRequired($field) {
+        return in_array($field, $this->requiredFields);
     }
 
     public function attributeType($fullFieldName) {
@@ -45,5 +54,20 @@ trait ModelAttributesManager {
 
     public function getJsonAttributeFilters($jsonAttribute) {
         return isset($this->jsonCustomAttribute[$jsonAttribute]) ? $this->jsonCustomAttribute[$jsonAttribute] : [];
+    }
+    
+    public function attributeValue($field) {
+        if(isset($this->pivot->$field)) {
+            return $this->pivot->$field;
+        }
+        
+        if(isset($this->$field)) {
+          $test = $this->$field;
+        }
+        return isset($this->$field) ? $this->$field : $this->defaultAttributeValue($field);
+    }
+    
+    private function defaultAttributeValue($field) {
+        return isset($this->defaultFieldsValues[$field]) ? $this->defaultFieldsValues[$field] : null;
     }
 }

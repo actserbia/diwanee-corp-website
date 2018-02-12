@@ -18,26 +18,42 @@ $(document).ready(function() {
             $(object).on('drop', function(e) {
                 e.preventDefault();
                 var dragId = e.originalEvent.dataTransfer.getData('id');
+                
+                var element = e.target;
+                
+                var dropId = '';
+                while(dropId === '') {
+                    $.each(element.classList, function( index, className ) {
+                        if(className === 'tag-item') {
+                            dropId = element.id;
+                        }
+                    });
+                    
+                    if(dropId === '') {
+                        element = element.parentNode;
+                    }
+                }
 
-                var parents = $('div[id=' + e.target.parentNode.id + ']').parents();
+                var parents = $('div[id=' + dropId + ']').parents();
                 var inParents = false;
                 $.each(parents, function( index, parent ) {
                     if(dragId === parent.id) {
                         inParents = true;
                     };
                 });
-                if(inParents === false) {
-                    var startPos = 30 * $('div[id=' + e.target.parentNode.id + ']').data('level');
+                
+                if(inParents === false && dragId !== dropId) {
+                    var startPos = 30 * $('div[id=' + dropId + ']').data('level');
                     if(e.originalEvent.layerX > startPos + 30) {
-                        $('div[id=' + e.target.parentNode.id + '] div[class=tag-list]').first().append($('div[id=' + dragId + ']'));
-                        $('div[id=' + dragId + ']').data('level', $('div[id=' + e.target.parentNode.id + '] div[class=tag-list]').first().data('level') + 1);
+                        $('div[id=' + dropId + '] div[class=tags-list]').first().append($('div[id=' + dragId + ']'));
+                        $('div[id=' + dragId + ']').data('level', $('div[id=' + dropId + '] div[class=tags-list]').first().data('level') + 1);
                     } else {
                         if(e.originalEvent.layerY < 20) {
-                            $('div[id=' + e.target.parentNode.id + ']').before($('div[id=' + dragId + ']'));
+                            $('div[id=' + dropId + ']').before($('div[id=' + dragId + ']'));
                         } else {
-                            $('div[id=' + e.target.parentNode.id + ']').after($('div[id=' + dragId + ']'));
+                            $('div[id=' + dropId + ']').after($('div[id=' + dragId + ']'));
                         }
-                        $('div[id=' + dragId + ']').data('level', $('div[id=' + e.target.parentNode.id + ']').data('level'));
+                        $('div[id=' + dragId + ']').data('level', $('div[id=' + dropId + ']').data('level'));
                     }
                 }
             });
@@ -60,7 +76,7 @@ $(document).ready(function() {
 
         var child = null;
         $.each($(this).children(), function(index, objectChild) {
-            if($(objectChild).hasClass('tag-list')) {
+            if($(objectChild).hasClass('tags-list')) {
                 child = objectChild;
             }
         });
@@ -75,12 +91,12 @@ $(document).ready(function() {
     $('#tagType').change(function() {
         $.ajax({
             type: 'GET',
-            url: '/admin/tags-reorder-list',
+            url: '/admin/tags-list',
             data: {
                 tag_type_id: $(this).val()
             },
             success: function (data) {
-                $('#tag-list').html(data);
+                $('#tags-list').html(data);
                 if($.trim(data) === '') {
                     $('#tags-reoder').attr('style', 'display:none;');
                 } else {
@@ -94,9 +110,9 @@ $(document).ready(function() {
     $('#tags-reoder').click(function() {
         $.ajax({
             type: 'GET',
-            url: '/admin/tags-reorder',
+            url: '/admin/tags-reorder-tags',
             data: {
-                tags: $('#tag-list').getTagsOrder()
+                tags: $('#tags-list').getTagsOrder()
             },
             success: function (data) {
                 $('.right_col').prepend(data);

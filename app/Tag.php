@@ -2,23 +2,22 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Constants\Models;
 use Illuminate\Support\Facades\DB;
-use App\Models\ModelDataManager;
+use App\Constants\FieldTypeCategory;
 
-class Tag extends Model {
-
+class Tag extends AppModel {
     use SoftDeletes;
-    use ModelDataManager;
     
     protected $fillable = ['name'];
 
-    protected $fields = ['id', 'name', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allFields = ['id', 'name', 'created_at', 'updated_at', 'deleted_at', 'tag_type_id'];
+    
+    protected $allFieldsFromPivots = [];
 
-    protected $required = ['name', 'tagType'];
+    protected $requiredFields = ['name', 'tagType'];
 
     protected $attributeType = [
         'parent_id' => Models::AttributeType_Number,
@@ -30,8 +29,9 @@ class Tag extends Model {
     protected $relationsSettings = [
         'tagType' => [
             'relationType' => 'belongsTo',
-            'model' => 'App\\TagType',
-            'foreignKey' => 'tag_type_id'
+            'model' => 'App\\FieldType',
+            'foreignKey' => 'tag_type_id',
+            'filters' => ['category' => [FieldTypeCategory::Tag]]
         ],
         'parents' => [
             'relationType' => 'belongsToMany',
@@ -49,50 +49,21 @@ class Tag extends Model {
         ]
     ];
     
-    protected $multiple = ['parents', 'children'];
+    protected $multipleRelations = ['parents', 'children'];
     
     protected $dependsOn = [
-        'parents' => ['tagType'],
-        'children' => ['tagType']
+        'parents' => ['fieldType'],
+        'children' => ['fieldType']
     ];
 
     public function parentsRelationValues($dependsOnValues = null) {
-        $tagType = $this->getDependsOnValue('tagType', $dependsOnValues);
-        return isset($tagType->id) ? Tag::where('tag_type_id', '=', $tagType->id)->where('id', '!=', $this->id)->get() : [];
+        $fieldType = $this->getDependsOnValue('tagType', $dependsOnValues);
+        return isset($fieldType->id) ? Tag::where('tag_type_id', '=', $fieldType->id)->where('id', '!=', $this->id)->get() : [];
     }
 
     public function childrenRelationValues($dependsOnValues = null) {
-        $tagType = $this->getDependsOnValue('tagType', $dependsOnValues);
-        return isset($tagType->id) ? Tag::where('tag_type_id', '=', $tagType->id)->where('id', '!=', $this->id)->get() : [];
-    }
-
-    public function saveTag(array $data) {
-        DB::beginTransaction();
-        try {
-            $this->fill($data);
-            $this->populateBelongsToRelations($data);
-            $this->save();
-
-            $this->saveBelongsToManyRelations($data);
-
-            DB::commit();
-            return true;
-
-        } catch(Exception $e) {
-            DB::rollBack();
-            return false;
-        }
-    }
-
-    public function relationIds($relation) {
-        $ids = [];
-
-        foreach($this->$relation as $relationNode) {
-            $ids[] = $relationNode->id;
-            $ids = array_merge($ids, $relationNode->relationIds($relation));
-        }
-
-        return $ids;
+        $fieldType = $this->getDependsOnValue('tagType', $dependsOnValues);
+        return isset($fieldType->id) ? Tag::where('tag_type_id', '=', $fieldType->id)->where('id', '!=', $this->id)->get() : [];
     }
 
     public static function reorder($tagsData) {

@@ -7,7 +7,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>@lang('blade_templates.admin.tags.create_title') <a href="{{ route('tags.list') }}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('blade_templates.global.back') </a></h2>
+                    <h2>{{ Utils::translateModelData('blade_templates.admin.global.create_title')}} <a href="{{ route('tags.index') }}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('blade_templates.global.back') </a></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -19,15 +19,15 @@
 
                         @include('blocks.model', ['field' => 'tagType'])
                         
-                        @include('blocks.model', ['field' => 'parents'])
+                        @include('blocks.model', ['field' => 'parents', 'onlyLabel' => true])
                         
-                        @include('blocks.model', ['field' => 'children'])
+                        @include('blocks.model', ['field' => 'children', 'onlyLabel' => true])
 
                         <div class="ln_solid"></div>
 
                         <div class="form-group">
                             <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label') }}">
-                                <button type="submit" class="btn btn-success">@lang('blade_templates.admin.tags.create_button_text')</button>
+                                <button type="submit" class="btn btn-success">{{ Utils::translateModelData('blade_templates.admin.global.create_button_text')}}</button>
                             </div>
                         </div>
                     </form>

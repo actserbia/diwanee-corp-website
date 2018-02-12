@@ -10,6 +10,7 @@
       const AttributeType_Enum = 'enum';
       const AttributeType_Email = 'email';
       const AttributeType_Password = 'password';
+      const AttributeType_Checkbox = 'checkbox';
 
       const FormFieldType_Input = 'form_input';
       const FormFieldType_Date = 'form_date';
@@ -22,6 +23,7 @@
           self::AttributeType_Number => self::FormFieldType_Input,
           self::AttributeType_Email => self::FormFieldType_Input,
           self::AttributeType_Password => self::FormFieldType_Input,
+          self::AttributeType_Checkbox => self::FormFieldType_Input,
           self::AttributeType_Date => self::FormFieldType_Date,
           self::AttributeType_Enum => self::FormFieldType_Select
       ];

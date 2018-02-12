@@ -49,8 +49,10 @@
                                 <li><a href="{{ route('admin.home') }}"><i class="fa fa-home"></i> @lang('blade_templates.admin.sidebar.home') </a></li>
                                 <li><a ><i class="fa fa-database"></i> @lang('blade_templates.admin.sidebar.types') <span class="fa fa-chevron-down"></span> </a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('types.index') }}">@lang('blade_templates.admin.sidebar.types_list')</a></li>
-                                        <li><a href="{{ route('types.create') }}">@lang('blade_templates.admin.sidebar.create_type')</a></li>
+                                        <li><a href="{{ route('node-types.index') }}">@lang('blade_templates.admin.sidebar.types_list')</a></li>
+                                        <li><a href="{{ route('node-types.create') }}">@lang('blade_templates.admin.sidebar.create_type')</a></li>
+                                        <li><a href="{{ route('fields.index') }}">@lang('blade_templates.admin.sidebar.fields_list')</a></li>
+                                        <li><a href="{{ route('fields.create') }}">@lang('blade_templates.admin.sidebar.create_field')</a></li>
                                     </ul>
                                 </li>
                                 <li><a ><i class="fa fa-tags"></i> @lang('blade_templates.admin.sidebar.tag_types') <span class="fa fa-chevron-down"></span> </a>
@@ -61,8 +63,14 @@
                                 </li>
                                 <li><a ><i class="fa fa-hashtag"></i> @lang('blade_templates.admin.sidebar.tags') <span class="fa fa-chevron-down"></span> </a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('tags.list') }}">@lang('blade_templates.admin.sidebar.tags_list')</a></li>
+                                        <li><a href="{{ route('tags.index') }}">@lang('blade_templates.admin.sidebar.tags_list')</a></li>
                                         <li><a href="{{ route('tags.create') }}">@lang('blade_templates.admin.sidebar.create_tag')</a></li>
+                                    </ul>
+                                </li>
+                                <li><a ><i class="fa fa-tags"></i> @lang('blade_templates.admin.sidebar.nodes') <span class="fa fa-chevron-down"></span> </a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('nodes.index') }}">@lang('blade_templates.admin.sidebar.nodes_list')</a></li>
+                                        <li><a href="{{ route('nodes.create') }}">@lang('blade_templates.admin.sidebar.create_node')</a></li>
                                     </ul>
                                 </li>
                                 @if(Auth::user()->role === 'admin')

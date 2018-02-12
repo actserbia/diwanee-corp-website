@@ -91,4 +91,32 @@ trait ModelDataManager {
         }
         $settings['model'] = $this;
     }
+    
+    public static function filter($filterParams, $query = null) {
+        if($query === null) {
+            $query = self::select('*');
+        }
+        
+        foreach($filterParams as $filterField => $filterValues) {
+            if(strpos($filterField, '.') !== false) {
+                $model = new static;
+                $filterFieldNameList = explode('.', $filterField);
+                $filterRelation = $model->getRelationModel($filterFieldNameList[0]);
+                $filterRelationItems = $filterRelation::whereIn($filterFieldNameList[1], $filterValues)->get();
+                
+                $filterRelationSettings = $model->getRelationSettings($filterFieldNameList[0]);
+                
+                $ids = [];
+                foreach($filterRelationItems as $item) {
+                    $ids[] = $item->id;
+                }
+                $query->whereIn($filterRelationSettings['foreignKey'], $ids);
+            } else {
+                $query->whereIn($filterField, $filterValues);
+            }
+        }
+        
+        return $query;
+        
+    }
 }

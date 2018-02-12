@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Validation\Validators;
 use App\Utils\HtmlElementsClasses;
+use App\Utils\Utils;
 
 class AdminUsersController extends Controller {
     public function __construct() {
         HtmlElementsClasses::$template = 'admin';
+        Utils::$modelType = 'User';
     }
 
     /**
@@ -47,7 +49,7 @@ class AdminUsersController extends Controller {
 
         $user = new User;
 
-        $successName = $user->saveUser($data) ? 'success' : 'error';
+        $successName = $user->saveObject($data) ? 'success' : 'error';
 
         return redirect()->route('users.index')->with($successName, __('messages.store_' . $successName, ['type' => 'user', 'name' => $user->name]));
     }
@@ -90,7 +92,7 @@ class AdminUsersController extends Controller {
 
         $user = User::findOrFail($id);
 
-        $successName = $user->saveUser($data) ? 'success' : 'error';
+        $successName = $user->saveObject($data) ? 'success' : 'error';
 
         return redirect()->route('users.index')->with($successName, __('messages.update_' . $successName, ['type' => 'user', 'name' => $user->name]));
     }

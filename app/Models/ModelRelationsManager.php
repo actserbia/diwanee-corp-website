@@ -29,14 +29,14 @@ trait ModelRelationsManager {
     public function relationValues($relation) {
         $relationsSettings = $this->getRelationSettings($relation);
         $modelClass = $relationsSettings['model'];
+        
+        $query = $modelClass::select('*');
         if(isset($relationsSettings['filters'])) {
-            foreach($relationsSettings['filters'] as $filterField => $filterValues) {
-                $query = $modelClass::whereIn($filterField, $filterValues);
-            }
-            return $query->get();
-        } else {
-            return $modelClass::get();
+            $relationModel = $this->getRelationModel($relation);
+            $relationModel::filter($relationsSettings['filters'], $query);
         }
+        
+        return $query->get();
     }
     
     public function getSupportedRelations() {
@@ -75,45 +75,50 @@ trait ModelRelationsManager {
     }
 
     private function getRelationItems($relation) {
-        if($this->isRelation($relation)) {
-            $relationsSettings = $this->getRelationSettings($relation);
-            $relationType = $relationsSettings['relationType'];
-            switch($relationsSettings['relationType']) {
-                case 'belongsToMany':
-                    $query = $this->$relationType($relationsSettings['model'], $relationsSettings['pivot'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                    break;
+        $relationsSettings = $this->getRelationSettings($relation);
+        $relationType = $relationsSettings['relationType'];
+        switch($relationsSettings['relationType']) {
+            case 'belongsToMany':
+                $query = $this->$relationType($relationsSettings['model'], $relationsSettings['pivot'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
+                break;
 
-                case 'belongsTo':
-                    $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey']);
-                    break;
+            case 'belongsTo':
+                $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey']);
+                break;
 
-                case 'hasMany':
-                    $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                    break;
+            case 'hasMany':
+                $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
+                break;
 
-                case 'hasOne':
-                    $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                    break;
-            }
-
-            $this->filterAndSortRelation($query, $relation);
+            case 'hasOne':
+                $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
+                break;
         }
+            
+        if(isset($relationsSettings['filters'])) {
+            $relationModel = $this->getRelationModel($relation);
+            $relationModel::filter($relationsSettings['filters'], $query);
+        }
+
+        $this->relationExtraData($query, $relation);
 
         return $query;
     }
-
-    private function filterAndSortRelation($query, $relation) {
-        $relationsFilters = $this->getRelationFilters($relation);
-        foreach($relationsFilters as $filterField => $filterValues) {
-            $query->whereIn($filterField, $filterValues);
-        }
-
+    
+    private function relationExtraData($query, $relation) {
+        $extraFields = $this->extraFields($relation);
         $sortable = $this->sortableField($relation);
         if(!empty($sortable)) {
-            $query->withPivot([$sortable])->orderBy($sortable);
+            $extraFields[] = $sortable;
         }
-
-        return $query;
+        
+        if(!empty($extraFields)) {
+            $query->withPivot($extraFields);
+        }
+        
+        if(!empty($sortable)) {
+            $query->orderBy($sortable);
+        }
     }
 
     public function getDefaultDropdownColumn($relation) {
@@ -121,12 +126,17 @@ trait ModelRelationsManager {
     }
 
     public function isMultiple($relation) {
-        return isset($this->multiple) && in_array($relation, $this->multiple);
+        return in_array($relation, $this->multipleRelations);
     }
 
     public function sortableField($relation) {
         $relationsSettings = $this->getRelationSettings($relation);
         return isset($relationsSettings['sortBy']) ? $relationsSettings['sortBy'] : null;
+    }
+    
+    public function extraFields($relation) {
+        $relationsSettings = $this->getRelationSettings($relation);
+        return isset($relationsSettings['extraFields']) ? $relationsSettings['extraFields'] : [];
     }
     
     public function isSortable($relation) {
@@ -169,26 +179,49 @@ trait ModelRelationsManager {
         }
     }
     
-    public function saveRelationItems($newItemsIds, $relation) {
-        RelationItems::saveRelationItems($this, $relation, $newItemsIds);
+    public function saveRelationItems($relation, $data) {
+        RelationItems::saveRelationItems($this, $relation, $data);
         $this->load($relation);
     }
     
     public function saveBelongsToManyRelations($data) {
-        foreach($this->relationsSettings as $relation => $relationSettings) {
+        foreach(array_keys($this->relationsSettings) as $relation) {
+            $relationSettings = $this->getRelationSettings($relation);
             if($relationSettings['relationType'] === 'belongsToMany') {
-                RelationItems::saveRelationItems($this, $relation, $data[$relation]);
-                $this->load($relation);
+                $this->saveRelationItems($relation, $data);
             }
         }
     }
     
     public function populateBelongsToRelations($data) {
-        foreach($this->relationsSettings as $relation => $relationSettings) {
+        foreach(array_keys($this->relationsSettings) as $relation) {
+            $relationSettings = $this->getRelationSettings($relation);
             if($relationSettings['relationType'] === 'belongsTo') {
                 $attribute = $relationSettings['foreignKey'];
                 $this->$attribute = $data[$relation];
             }
         }
+    }
+    
+    public function relationIds($relation) {
+        $ids = [];
+
+        foreach($this->$relation as $relationNode) {
+            $ids[] = $relationNode->id;
+            $ids = array_merge($ids, $relationNode->relationIds($relation));
+        }
+
+        return $ids;
+    }
+    
+    public function getFillableRelations() {
+        $relations = [];
+        foreach(array_keys($this->relationsSettings) as $relation) {
+            $relationSettings = $this->getRelationSettings($relation);
+            if(isset($relationSettings['fillable']) && $relationSettings['fillable']) {
+                $relations[] = $relation;
+            }
+        }
+        return $relations;
     }
 }

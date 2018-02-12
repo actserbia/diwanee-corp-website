@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Constants\FieldTypeCategory;
 
-class CreateTypesTable extends Migration
+class CreateFieldTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +14,16 @@ class CreateTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('types', function (Blueprint $table) {
+        Schema::create('field_types', function (Blueprint $table) {
             $table->increments('id');
+            
             $table->string('name', 255);
-            $table->enum('status', TypeStatus::getAll());
-
+            $table->enum('category', FieldTypeCategory::getAll());
+            
             $table->timestamps();
             $table->softDeletes();
         });
     }
-
 
     /**
      * Reverse the migrations.
@@ -31,6 +32,6 @@ class CreateTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('models');
+        Schema::dropIfExists('field_types');
     }
 }

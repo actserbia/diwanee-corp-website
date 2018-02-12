@@ -28,5 +28,24 @@ return [
         'create' => 'Diwanee Corp Admin Panel - Create Tag',
         'edit' => 'Diwanee Corp Admin Panel - Edit Tag',
         'show' => 'Diwanee Corp Admin Panel - Delete Tag'
+    ],
+    'node-types' => [
+        'index' => 'Diwanee Corp Admin Panel - Types List',
+        'create' => 'Diwanee Corp Admin Panel - Create Type',
+        'edit' => 'Diwanee Corp Admin Panel - Edit Type',
+        'show' => 'Diwanee Corp Admin Panel - Delete Type'
+    ],
+    'fields' => [
+        'index' => 'Diwanee Corp Admin Panel - Fields List',
+        'create' => 'Diwanee Corp Admin Panel - Create Field',
+        'edit' => 'Diwanee Corp Admin Panel - Edit Field',
+        'show' => 'Diwanee Corp Admin Panel - Delete Field'
+    ],
+    'nodes' => [
+        'index' => 'Diwanee Corp Admin Panel - Nodes List',
+        'create' => 'Diwanee Corp Admin Panel - Create Node',
+        'create-by-type' => 'Diwanee Corp Admin Panel - Create Node',
+        'edit' => 'Diwanee Corp Admin Panel - Edit Node',
+        'show' => 'Diwanee Corp Admin Panel - Delete Node'
     ]
 ];

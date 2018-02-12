@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\TagType;
+use App\FieldType;
+use App\Constants\FieldTypeCategory;
 use App\Validation\Validators;
 use App\Utils\HtmlElementsClasses;
+use App\Utils\Utils;
 
 class AdminTagTypesController extends Controller {
     public function __construct() {
         HtmlElementsClasses::$template = 'admin';
+        Utils::$modelType = 'TagType';
     }
 
     /**
@@ -19,8 +22,8 @@ class AdminTagTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $tagTypes = TagType::get();
-        return view('admin.tag_types.list', compact('tagTypes'));
+        $objects = FieldType::where('category', '=', FieldTypeCategory::Tag)->get();
+        return view('admin.tag_types.list', compact('objects'));
     }
     
     /**
@@ -30,8 +33,8 @@ class AdminTagTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $tagType = TagType::findOrFail($id);
-        return view('admin.tag_types.delete', compact('tagType'));
+        $object = FieldType::findOrFail($id);
+        return view('admin.tag_types.delete', compact('object'));
     }
 
     /**
@@ -40,7 +43,7 @@ class AdminTagTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $object = new TagType;
+        $object = new FieldType;
         
         return view('admin.tag_types.create', compact('object'));
     }
@@ -55,12 +58,13 @@ class AdminTagTypesController extends Controller {
         $data = $request->all();
 
         Validators::tagTypesFormValidator($data)->validate();
-
-        $tagType = new TagType;
         
-        $successName = $tagType->saveTagType($data) ? 'success' : 'error';
+        $object = new FieldType;
         
-        return redirect()->route('tag-types.index')->with($successName, __('messages.store_' . $successName, ['type' => 'tag type', 'name' => $tagType->name]));
+        $data['category'] = FieldTypeCategory::Tag;
+        $successName = $object->saveObject($data) ? 'success' : 'error';
+        
+        return redirect()->route('tag-types.index')->with($successName, __('messages.store_' . $successName, ['type' => 'tag type', 'name' => $object->name]));
     }
 
     /**
@@ -70,7 +74,7 @@ class AdminTagTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $object = TagType::findOrFail($id);
+        $object = FieldType::findOrFail($id);
 
         return view('admin.tag_types.edit', compact('object'));
     }
@@ -87,11 +91,11 @@ class AdminTagTypesController extends Controller {
 
         Validators::tagTypesFormValidator($data, ['id' => $id])->validate();
 
-        $tagType = TagType::findOrFail($id);
+        $object = FieldType::findOrFail($id);
         
-        $successName = $tagType->saveTagType($data) ? 'success' : 'error';
+        $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tag-types.index')->with($successName, __('messages.update_' . $successName, ['type' => 'tag type', 'name' => $tagType->name]));
+        return redirect()->route('tag-types.index')->with($successName, __('messages.update_' . $successName, ['type' => 'tag type', 'name' => $object->name]));
     }
 
     /**
@@ -101,10 +105,10 @@ class AdminTagTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        $tagType = TagType::findOrFail($id);
+        $object = FieldType::findOrFail($id);
         
-        $successName = $tagType->delete() ? 'success' : 'error';
+        $successName = $object->deleteObject() ? 'success' : 'error';
         
-        return redirect()->route('tag-types.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'tag type', 'name' => $tagType->name]));
+        return redirect()->route('tag-types.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'tag type', 'name' => $object->name]));
     }
 }
