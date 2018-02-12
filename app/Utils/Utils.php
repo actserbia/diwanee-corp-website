@@ -5,6 +5,28 @@ class Utils {
     private static $autoincrement = [];
     public static $modelType;
 
+    public static function getAllDirectClassesFromNamespace($namespace, $shortName = false) {
+        $composer = require base_path() . '/vendor/autoload.php';
+
+        $classes = array_keys($composer->getClassMap());
+        
+        $namespaceClasses = array_filter($classes, function($class) use($namespace) {
+            $classParts = [];
+            if(strpos($class, $namespace) === 0) {
+                $classParts = preg_split('/\\\/', str_replace($namespace . '\\', '', $class));
+            }
+            return (count($classParts) === 1);
+        });
+
+        if($shortName) {
+            array_walk($namespaceClasses, function(&$class) use($namespace) {
+                $class = str_replace($namespace . '\\', '', $class);
+            });
+        }
+
+        return $namespaceClasses;
+    }
+    
     public static function getForDropdown($items, $prefix = '') {
         $dropdownList = array();
 
@@ -20,7 +42,7 @@ class Utils {
     }
     
     public static function getFormattedDBName($name, $delimiter = '_') {
-        return str_replace(' ', $delimiter, strtolower($name));
+        return str_replace(' ', $delimiter, trim(strtolower(preg_replace("([A-Z])", " $0", $name))));
     }
 
     public static function removeEmptyValues($list) {

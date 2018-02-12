@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Constants\NodeStatus;
+use App\Utils\Utils;
 
 class CreateNodesTable extends Migration
 {
@@ -38,8 +39,13 @@ class CreateNodesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
+        $nodeModelNames = Utils::getAllDirectClassesFromNamespace('App\\NodeModel', true);
+        foreach($nodeModelNames as $nodeModelName) {
+            $tableName = Utils::getFormattedDBName($nodeModelName) . 's';
+            Schema::dropIfExists($tableName);
+        }
+        
         Schema::dropIfExists('nodes');
     }
 }
