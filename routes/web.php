@@ -26,7 +26,9 @@
       Auth::routes();
 
       Route::get('/', 'HomeController@index')->name('home');
-      
+
+      Route::post('sirtrevor/upload-image', 'ImagesController@uploadSirTrevorImage')->name('sirtrevor.upload.image');
+
       Route::group(['middleware' => 'auth'], function() {
           Route::get('profile', 'UsersController@profile')->name('profile');
           Route::put('profile', 'UsersController@updateProfile')->name('profile.update');
