@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Constants\NodeStatus;
 use App\Utils\Utils;
+use App\Models\NodeModelGenerator;
 
 class CreateNodesTable extends Migration
 {
@@ -44,6 +45,8 @@ class CreateNodesTable extends Migration
         foreach($nodeModelNames as $nodeModelName) {
             $tableName = Utils::getFormattedDBName($nodeModelName) . 's';
             Schema::dropIfExists($tableName);
+            
+            NodeModelGenerator::delete($nodeModelName);
         }
         
         Schema::dropIfExists('nodes');

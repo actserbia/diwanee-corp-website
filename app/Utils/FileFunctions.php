@@ -43,6 +43,12 @@
       fclose($fileHandle);
     }
     
+    public static function deleteFile($filepath) {
+      if(file_exists($filepath)) {
+          unlink($filepath);
+      }
+    }
+    
     public static function getFilesFromFolderRecursive($folder) {
       $files = array(); 
       

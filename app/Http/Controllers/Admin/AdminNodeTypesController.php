@@ -62,7 +62,7 @@ class AdminNodeTypesController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('node_types.index')->with($successName, __('messages.store_' . $successName, ['type' => 'type', 'name' => $object->name]));
+        return redirect()->route('node-types.index')->with($successName, __('messages.store_' . $successName, ['type' => 'type', 'name' => $object->name]));
     }
 
     /**
@@ -93,7 +93,7 @@ class AdminNodeTypesController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('node_types.index')->with($successName, __('messages.update_' . $successName, ['type' => 'type', 'name' => $object->name]));
+        return redirect()->route('node-types.index')->with($successName, __('messages.update_' . $successName, ['type' => 'type', 'name' => $object->name]));
     }
 
     /**
@@ -107,6 +107,6 @@ class AdminNodeTypesController extends Controller {
         
         $successName = $object->delete() ? 'success' : 'error';
         
-        return redirect()->route('node_types.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'type', 'name' => $object->name]));
+        return redirect()->route('node-types.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'type', 'name' => $object->name]));
     }
 }

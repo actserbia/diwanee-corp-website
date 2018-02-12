@@ -4,11 +4,9 @@ namespace App\Models;
 
 use App\Constants\FieldType;
 use App\Utils\FileFunctions;
-use App\Utils\Utils;
 
 class NodeModelGenerator {
     private $model = null;
-    private $modelName = '';
     
     private $filepath = '';
 
@@ -21,9 +19,8 @@ class NodeModelGenerator {
     private $content = '';
     
     public function __construct($model) {
-        $this->model = $model; 
-        $this->modelName = Utils::getFormattedName(Utils::getFormattedDBName($model->name));
-        $this->filepath = app_path() . '/NodeModel/' . $this->modelName . '.php';
+        $this->model = $model;
+        $this->filepath = self::getFilepath($model->name);
     }
     
     public function generate() {
@@ -72,7 +69,7 @@ class NodeModelGenerator {
         $this->content .= str_repeat(' ', 4) . 'use App\AppModel;' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use Illuminate\Database\Eloquent\SoftDeletes;' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use App\Constants\Models;' . PHP_EOL . PHP_EOL;
-        $this->content .= str_repeat(' ', 4) . 'class ' . $this->modelName . ' extends AppModel {' . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'class ' . $this->model->name . ' extends AppModel {' . PHP_EOL;
         $this->content .= str_repeat(' ', 8) . 'use SoftDeletes;' . PHP_EOL . PHP_EOL;
         $this->addFormattedList('fillable');
         $this->addFormattedList('allFields');
@@ -83,16 +80,28 @@ class NodeModelGenerator {
     }
     
     private function addFormattedList($listName) {
-        $this->content .= str_repeat(' ', 8) . 'protected $' . $listName . ' = [\'' . implode('\', \'', $this->$listName) . '\']' . ';' . PHP_EOL . PHP_EOL;
+        if(!empty($this->$listName)) {
+            $this->content .= str_repeat(' ', 8) . 'protected $' . $listName . ' = [\'' . implode('\', \'', $this->$listName) . '\']' . ';' . PHP_EOL . PHP_EOL;
+        }
     }
     
     private function addFormattedListWithKeys($listName) {
-        $this->content .= str_repeat(' ', 8) . 'protected $attributeType = ' . '[' . PHP_EOL;
-        
-        foreach($this->$listName as $key => $value) {
-            $this->content .= str_repeat(' ', 12) . '\'' . $key . '\' => ' . $value . ',' . PHP_EOL;
+        if(!empty($this->$listName)) {
+            $this->content .= str_repeat(' ', 8) . 'protected $attributeType = ' . '[' . PHP_EOL;
+
+            foreach($this->$listName as $key => $value) {
+                $this->content .= str_repeat(' ', 12) . '\'' . $key . '\' => ' . $value . ',' . PHP_EOL;
+            }
+
+            $this->content .= str_repeat(' ', 8) . ']'  . ';' . PHP_EOL . PHP_EOL;
         }
-        
-        $this->content .= str_repeat(' ', 8) . ']'  . ';' . PHP_EOL . PHP_EOL;
+    }
+    
+    public static function delete($modelName) {
+        FileFunctions::deleteFile(self::getFilepath($modelName));
+    }
+    
+    private static function getFilepath($modelName) {
+        return app_path() . '/NodeModel/' . $modelName . '.php';
     }
 }

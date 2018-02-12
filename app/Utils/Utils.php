@@ -42,7 +42,7 @@ class Utils {
     }
     
     public static function getFormattedDBName($name, $delimiter = '_') {
-        return str_replace(' ', $delimiter, trim(strtolower(preg_replace("([A-Z])", " $0", $name))));
+        return str_replace(' ', $delimiter, trim(strtolower(str_replace('  ', ' ', preg_replace("([A-Z])", " $0", $name)))));
     }
 
     public static function removeEmptyValues($list) {
