@@ -3,7 +3,7 @@ use Illuminate\Database\Seeder;
 use App\FieldType;
 use App\Field;
 use App\Constants\FieldTypeCategory;
-use App\Constants\FieldType;
+use App\Constants\FieldType as FieldTypeList;
 use App\Constants\ElementType;
 
 class FieldTypesTableSeeder extends Seeder
@@ -15,7 +15,7 @@ class FieldTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        $fieldTypes = FieldType::getAll();
+        $fieldTypes = FieldTypeList::getAll();
         foreach($fieldTypes as $fieldType) {
             factory(FieldType::class)->create([
                 'name' => $fieldType,
