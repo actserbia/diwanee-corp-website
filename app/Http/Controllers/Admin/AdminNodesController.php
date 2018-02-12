@@ -44,7 +44,6 @@ class AdminNodesController extends Controller {
      */
     public function show($id) {
         $object = Node::findOrFail($id);
-        $object->populateData();
         return view('admin.nodes.delete', compact('object'));
     }
 
@@ -56,13 +55,12 @@ class AdminNodesController extends Controller {
     public function create(Request $request) {
         $data = $request->all();
         
-        $object = new Node;
-        
         if(isset($data['nodeType'])) {
             $nodeType = $data['nodeType'];
-            $object->populateData($data['nodeType']);
+            $object = new Node(['node_type_id' => $nodeType]);
             return view('admin.nodes.create-by-type', compact('object', 'nodeType'));
         } else {
+            $object = new Node;
             return view('admin.nodes.create', compact('object'));
         }
     }
@@ -82,8 +80,7 @@ class AdminNodesController extends Controller {
         
         Validators::nodesFormValidator($data)->validate();
 
-        $object = new Node;
-        $object->populateData($data['nodeType']);
+        $object = new Node(['node_type_id' => $data['nodeType']]);
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         

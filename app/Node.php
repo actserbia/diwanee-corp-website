@@ -47,10 +47,21 @@ class Node extends AppModel {
 
     protected $multipleRelations = ['tags'];
     
+    public function __construct(array $attributes = array()) {
+        parent::__construct($attributes);
+        
+        if(isset($attributes['node_type_id'])) {
+            $this->populateData($attributes['node_type_id']);
+        }
+    }
+    
     public static function __callStatic($method, $parameters) {
         if(in_array($method, ['findOrFail', 'find'])) {
             $object = (new static)->$method(...$parameters);
             $object->populateData();
+            return $object;
+        } elseif(in_array($method, ['where'])) {
+            $object = (new static)->$method(...$parameters);
             return $object;
         } else {
             return (new static)->$method(...$parameters);

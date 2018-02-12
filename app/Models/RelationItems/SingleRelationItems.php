@@ -13,7 +13,7 @@ class SingleRelationItems extends RelationItems {
         }
         
         if($relationItemId > 0) {
-            $this->attach($relation, $newItemId, $relationItemData);
+            $this->attach($relation, $relationItemId, $relationItemData);
         }
     }
     
@@ -35,13 +35,13 @@ class SingleRelationItems extends RelationItems {
         }
     }
 
-    protected function attach($relation, $newItemId, $relationItemData) {
+    protected function attach($relation, $relationItemId, $relationItemData) {
         if($this->object->sortableField($relation) !== null) {
             $relationItemData[$this->object->sortableField($relation)] = 0;
         }
         
-        if(!isset($this->object->$relation) || $this->object->$relation->id != $newItemId) {
-            $this->object->$relation()->attach([$newItemId => $relationItemData]);
+        if(!isset($this->object->$relation) || $this->object->$relation->id != $relationItemId) {
+            $this->object->$relation()->attach([$relationItemId => $relationItemData]);
         }
     }
 }

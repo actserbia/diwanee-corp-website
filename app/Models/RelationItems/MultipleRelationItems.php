@@ -14,8 +14,8 @@ class MultipleRelationItems extends RelationItems {
         }
         
         $this->index = 0;
-        foreach($this->relationData as $newItemId => $relationItemData) {
-            $this->attach($relation, $newItemId, $relationItemData);
+        foreach($this->relationData as $relationItemId => $relationItemData) {
+            $this->attach($relation, $relationItemId, $relationItemData);
         }
     }
     
@@ -39,15 +39,15 @@ class MultipleRelationItems extends RelationItems {
         }
     }
 
-    protected function attach($relation, $newItemId, $relationItemData) {
+    protected function attach($relation, $relationItemId, $relationItemData) {
         if($this->object->sortableField($relation) !== null) {
             $relationItemData[$this->object->sortableField($relation)] = $this->index++;
         }
         
-        if($this->object->$relation->contains($newItemId)) {
-            $this->object->$relation()->updateExistingPivot($newItemId, $relationItemData);
+        if($this->object->$relation->contains($relationItemId)) {
+            $this->object->$relation()->updateExistingPivot($relationItemId, $relationItemData);
         } else {
-            $this->object->$relation()->attach([$newItemId => $relationItemData]);
+            $this->object->$relation()->attach([$relationItemId => $relationItemData]);
         }
     }
 }
