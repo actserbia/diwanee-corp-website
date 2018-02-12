@@ -76,7 +76,7 @@ class NodeType extends AppModel {
             $this->createDBTable();
         }
         
-        //$this->saveNodeFieldsModel();
+        $this->saveNodeFieldsModel();
     }
     
     private function createDBTable() {

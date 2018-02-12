@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Constants\FieldType;
 use App\Utils\FileFunctions;
+use App\Utils\Utils;
 
 class NodeModelGenerator {
-
     private $model = null;
     private $modelName = '';
     
@@ -16,6 +16,8 @@ class NodeModelGenerator {
     private $allFields = ['id', 'created_at', 'updated_at', 'deleted_at'];
     private $requiredFields = [];
     private $defaultFieldsValues = [];
+    private $attributeType = [];
+    
     private $content = '';
     
     public function __construct($model) {
@@ -25,48 +27,72 @@ class NodeModelGenerator {
     }
     
     public function generate() {
-        $attributeTypeList = '[' . PHP_EOL;
-        foreach($this->fields as $field) {
-            $fillable[] = $field->formattedName;
-            $allFields[] = $field->formattedName;
+        $this->populateData();
+        
+        $this->populateContent();
+
+        FileFunctions::writeToFile($this->content, $this->filepath);
+    }
+    
+    private function populateData() {
+        foreach($this->model->fields as $field) {
+            $this->fillable[] = $field->formattedName;
+            $this->allFields[] = $field->formattedName;
             if($field->pivot->required) {
-                $requiredFields[] = $field->formattedName;
+                $this->requiredFields[] = $field->formattedName;
             }
             
-            switch($field->fieldType->name) {
-                case FieldType::Integer:
-                    $attributeType = 'Models::AttributeType_Number';
-                    break;
-                  
-                case FieldType::Date:
-                    $attributeType = 'Models::AttributeType_Date';
-                    break;
-                  
-                default:
-                    $attributeType = 'Models::AttributeType_Text';
-                    break;
-            }
-            $attributeTypeList .= str_repeat(' ', 12) . '\'' . $field->formattedName . '\' => ' . $attributeType . ',' . PHP_EOL;
+            $this->attributeType[$field->formattedName] = $this->getAttributeType($field);
         }
-        $attributeTypeList .= str_repeat(' ', 8) . '];';
+    }
+    
+    private function getAttributeType($field) {
+        $attributeType = 'Models::AttributeType_Text';
         
+        switch($field->fieldType->name) {
+            case FieldType::Integer:
+                $attributeType = 'Models::AttributeType_Number';
+                break;
+                  
+            case FieldType::Date:
+                $attributeType = 'Models::AttributeType_Date';
+                break;
+                  
+            default:
+                $attributeType = 'Models::AttributeType_Text';
+                break;
+        }
         
+        return $attributeType;
+    }
+    
+    private function populateContent() {
+        $this->content = '<?php' . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'namespace App\NodeModel;' . PHP_EOL . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'use App\AppModel;' . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'use Illuminate\Database\Eloquent\SoftDeletes;' . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'use App\Constants\Models;' . PHP_EOL . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'class ' . $this->modelName . ' extends AppModel {' . PHP_EOL;
+        $this->content .= str_repeat(' ', 8) . 'use SoftDeletes;' . PHP_EOL . PHP_EOL;
+        $this->addFormattedList('fillable');
+        $this->addFormattedList('allFields');
+        $this->addFormattedList('requiredFields');
+        $this->addFormattedList('defaultFieldsValues');
+        $this->addFormattedListWithKeys('attributeType');
+        $this->content .= str_repeat(' ', 4) . '}' . PHP_EOL;
+    }
+    
+    private function addFormattedList($listName) {
+        $this->content .= str_repeat(' ', 8) . 'protected $' . $listName . ' = [\'' . implode('\', \'', $this->$listName) . '\']' . ';' . PHP_EOL . PHP_EOL;
+    }
+    
+    private function addFormattedListWithKeys($listName) {
+        $this->content .= str_repeat(' ', 8) . 'protected $attributeType = ' . '[' . PHP_EOL;
         
-        $content = '<?php' . PHP_EOL;
-        $content .= str_repeat(' ', 4) . 'namespace App\NodeModel;' . PHP_EOL . PHP_EOL;
-        $content .= str_repeat(' ', 4) . 'use App\AppModel;' . PHP_EOL;
-        $content .= str_repeat(' ', 4) . 'use Illuminate\Database\Eloquent\SoftDeletes;' . PHP_EOL;
-        $content .= str_repeat(' ', 4) . 'use App\Constants\Models;' . PHP_EOL . PHP_EOL;
-        $content .= str_repeat(' ', 4) . 'class ' . $this->modelName . ' extends AppModel {' . PHP_EOL;
-        $content .= str_repeat(' ', 8) . 'use SoftDeletes;' . PHP_EOL . PHP_EOL;
-        $content .= str_repeat(' ', 8) . 'protected $fillable = [\'' . implode('\', \'', $fillable) . '\'];' . PHP_EOL . PHP_EOL;
-        $content .= str_repeat(' ', 8) . 'protected $allFields = [\'' . implode('\', \'', $allFields) . '\'];' . PHP_EOL . PHP_EOL;
-        $content .= str_repeat(' ', 8) . 'protected $requiredFields = [\'' . implode('\', \'', $requiredFields) . '\'];' . PHP_EOL . PHP_EOL;
-        $content .= str_repeat(' ', 8) . 'protected $defaultFieldsValues = [\'' . implode('\', \'', $defaultFieldsValues) . '\'];' . PHP_EOL . PHP_EOL;
-        $content .= str_repeat(' ', 8) . 'protected $attributeType = ' . $attributeTypeList . PHP_EOL . PHP_EOL;
-        $content .= str_repeat(' ', 4) . '}' . PHP_EOL;
-
-
-        FileFunctions::writeToFile($content, $this->filepath);
+        foreach($this->$listName as $key => $value) {
+            $this->content .= str_repeat(' ', 12) . '\'' . $key . '\' => ' . $value . ',' . PHP_EOL;
+        }
+        
+        $this->content .= str_repeat(' ', 8) . ']'  . ';' . PHP_EOL . PHP_EOL;
     }
 }

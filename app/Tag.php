@@ -52,8 +52,8 @@ class Tag extends AppModel {
     protected $multipleRelations = ['parents', 'children'];
     
     protected $dependsOn = [
-        'parents' => ['fieldType'],
-        'children' => ['fieldType']
+        'parents' => ['tagType'],
+        'children' => ['tagType']
     ];
 
     public function parentsRelationValues($dependsOnValues = null) {
