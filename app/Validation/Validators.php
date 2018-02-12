@@ -70,7 +70,7 @@ class Validators {
     }
     
     public static function nodesFormValidator(array $data, array $additional = []) {
-        $model = new Node;
+        $model = new Node(['node_type_id' => $data['nodeType']]);
 
         $titleUnique = isset($additional['id']) ? 'unique:nodes,id,' . $additional['id'] : 'unique:nodes';
         $id = isset($additional['id']) ? $additional['id'] : '';

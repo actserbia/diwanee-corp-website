@@ -17,7 +17,9 @@
                         
                         <input name="nodeType" type="hidden" value="{{ $object->nodeType->id }}" />
                         
-                        @include('blocks.model', ['field' => 'title'])
+                        @foreach($object->getFillableFields() as $field)
+                            @include('blocks.model', ['field' => $field])
+                        @endforeach
                         
                         @foreach($object->getFillableRelations() as $relation)
                             @include('blocks.model', ['field' => $relation])

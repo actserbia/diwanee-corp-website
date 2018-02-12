@@ -20,6 +20,10 @@ trait ModelAttributesManager {
         return $this->fillable;
     }
 
+    public function getRequiredAttributes() {
+        return $this->requiredFields;
+    }
+
     public function getModelNameAttribute() {
         return str_replace('App\\', '', $this->getModelClassAttribute());
     }

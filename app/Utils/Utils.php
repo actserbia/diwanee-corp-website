@@ -37,8 +37,8 @@ class Utils {
         return $dropdownList;
     }
     
-    public static function getFormattedName($name, $delimiter = '_') {
-        return str_replace($delimiter, '', ucwords($name, $delimiter));
+    public static function getFormattedName($name, $delimiter = '_', $newDelimiter = '') {
+        return str_replace($delimiter, $newDelimiter, ucwords($name, $delimiter));
     }
     
     public static function getFormattedDBName($name, $delimiter = '_') {
@@ -63,7 +63,7 @@ class Utils {
     
     public static function translate($translationLabel, $defaultLabel, $params = []) {
         $label = __($translationLabel, $params);
-        return ($label !== $translationLabel) ? $label : self::getFormattedName($defaultLabel);
+        return ($label !== $translationLabel) ? $label : self::getFormattedName($defaultLabel, '_', ' ');
     }
     
     public static function translateModelData($translationLabel) {
