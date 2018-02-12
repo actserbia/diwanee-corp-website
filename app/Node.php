@@ -60,9 +60,6 @@ class Node extends AppModel {
             $object = (new static)->$method(...$parameters);
             $object->populateData();
             return $object;
-        } elseif(in_array($method, ['where'])) {
-            $object = (new static)->$method(...$parameters);
-            return $object;
         } else {
             return (new static)->$method(...$parameters);
         }
