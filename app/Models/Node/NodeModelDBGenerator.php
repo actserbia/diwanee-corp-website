@@ -48,7 +48,7 @@ class NodeModelDBGenerator {
             $table->increments('id');
             $table->unsignedInteger('node_id');
 
-            $this->addNotMultipleFields($table);
+            $this->addNodeModelTableFields($table);
 
             $table->timestamps();
             $table->softDeletes();
