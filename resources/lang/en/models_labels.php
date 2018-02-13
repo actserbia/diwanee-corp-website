@@ -91,6 +91,7 @@ return [
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
-        'nodeType_label' => 'Type'
+        'nodeType_label' => 'Type',
+        'content' => 'Content'
     ]
 ];

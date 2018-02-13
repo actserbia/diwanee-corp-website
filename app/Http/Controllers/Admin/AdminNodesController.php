@@ -53,17 +53,9 @@ class AdminNodesController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request) {
-        $data = $request->all();
-        
-        if(isset($data['nodeType'])) {
-            $nodeType = $data['nodeType'];
-            $object = new Node(['node_type_id' => $nodeType]);
-            return view('admin.nodes.create-by-type', compact('object', 'nodeType'));
-        } else {
-            $object = new Node;
-            return view('admin.nodes.new-create', compact('object'));
-        }
+    public function create() {
+        $object = new Node;
+        return view('admin.nodes.new-create', compact('object'));
     }
 
     public function nodeFields(Request $request) {
