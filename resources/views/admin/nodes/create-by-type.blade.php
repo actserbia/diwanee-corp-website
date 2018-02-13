@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@push('stylesheets')
+{!! SirTrevor::stylesheets() !!}
+@endpush
+
 @section('content')
 <div>
     <div class="clearfix"></div>
@@ -25,6 +29,16 @@
                             @include('blocks.model', ['field' => $relation])
                         @endforeach
 
+                        <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
+                            <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}" for="content">@lang('models_labels.Node.content')</label>
+                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
+                                <textarea id="content" name="content" class="sir-trevor editable">{{ Request::old('content') ?: '' }}</textarea>
+                                @if ($errors->has('content'))
+                                <span class="help-block">{{ $errors->first('content') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="ln_solid"></div>
 
                         <div class="form-group">
@@ -39,3 +53,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+{!! SirTrevor::scripts() !!}
+@endpush

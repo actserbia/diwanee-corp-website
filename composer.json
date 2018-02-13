@@ -13,6 +13,7 @@
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "aws/aws-sdk-php": "2.7.18",
         "league/commonmark": "^0.15.6",
         "league/html-to-markdown": "^4.5",
         "arcanedev/log-viewer": "~4.0",

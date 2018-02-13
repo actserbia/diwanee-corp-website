@@ -179,6 +179,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Caouecs\Sirtrevorjs\SirtrevorjsServiceProvider::class,
 
     ],
 
@@ -232,7 +233,12 @@ return [
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
         'HtmlElementsClasses'  => App\Utils\HtmlElementsClasses::class,
         'GraphQL' => Rebing\GraphQL\Support\Facades\GraphQL::class,
-        'Utils' => App\Utils\Utils::class
+        'Utils' => App\Utils\Utils::class,
+        'HTML' => Collective\Html\HtmlFacade::class,
+        'SirTrevorJs' => Caouecs\Sirtrevorjs\SirTrevorJs::class,
+        'STConverter' => Caouecs\Sirtrevorjs\SirTrevorJsConverter::class,
+        'SirTrevor' => App\SirTrevor\SirTrevor::class,
+
     ],
 
     'locales' => ['en'],
