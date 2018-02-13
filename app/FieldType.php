@@ -37,7 +37,7 @@ class FieldType extends AppModel {
         ]
     ];
     
-    protected $multipleRelations = ['fields', 'tags'];
+    protected $multipleFields = ['fields', 'tags'];
 
     protected $dependsOn = [];
 

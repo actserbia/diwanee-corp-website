@@ -64,9 +64,8 @@ class AdminNodesController extends Controller {
         if(isset($data['node_type_id'])) {
             $nodeType = $data['node_type_id'];
             $object = new Node(['node_type_id' => $data['node_type_id']]);
+            return view('blocks.node-fields', compact('object', 'nodeType'));
         }
-
-        return view('blocks.node-fields', compact('object', 'nodeType'));
     }
 
     /**

@@ -18,11 +18,13 @@ class AppModel extends Model {
 
     protected $attributeType = [];
     
+    protected $defaultFieldsValues = [];
+
     protected $defaultDropdownColumn = '';
 
     protected $relationsSettings = [];
     
-    protected $multipleRelations = [];
+    protected $multipleFields = [];
     
     protected $dependsOn = [];
 

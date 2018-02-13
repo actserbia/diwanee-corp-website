@@ -126,7 +126,7 @@ trait ModelRelationsManager {
     }
 
     public function isMultiple($relation) {
-        return in_array($relation, $this->multipleRelations);
+        return in_array($relation, $this->multipleFields);
     }
 
     public function sortableField($relation) {

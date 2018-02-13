@@ -2,6 +2,7 @@
 
 namespace App\Models\Node;
 
+use App\Constants\Settings;
 use App\Constants\FieldType;
 use App\Utils\Utils;
 use App\Utils\FileFunctions;
@@ -15,8 +16,8 @@ class NodeModelClassGenerator {
     private $fillable = [];
     private $allFields = ['id', 'created_at', 'updated_at', 'deleted_at'];
     private $requiredFields = [];
-    private $defaultFieldsValues = [];
     private $attributeType = [];
+    private $defaultFieldsValues = [];
 
     private $relationsSettings = [
         'node' => [
@@ -26,16 +27,22 @@ class NodeModelClassGenerator {
         ]
     ];
 
+    protected $multipleFields = [];
+
     private $content = '';
 
     public function __construct($model, $oldNodeTypeName = null) {
         $this->model = $model;
 
         if(isset($oldNodeTypeName)) {
-            $this->oldFilepath = app_path() . '/NodeModel/' . Utils::getFormattedName($oldNodeTypeName, ' ') . '.php';
+            $this->oldFilepath = app_path() . '/NodeModel/' . $this->getClassName($oldNodeTypeName) . '.php';
         }
 
-        $this->filepath = app_path() . '/NodeModel/' . Utils::getFormattedName($model->name, ' ') . '.php';
+        $this->filepath = app_path() . '/NodeModel/' . $this->getClassName($model->name) . '.php';
+    }
+
+    private function getClassName($modelName) {
+        return ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($modelName, ' ');
     }
 
     public function generate() {
@@ -54,11 +61,16 @@ class NodeModelClassGenerator {
         foreach($this->model->fields as $field) {
             $this->fillable[] = $field->formattedTitle;
             $this->allFields[] = $field->formattedTitle;
+
             if($field->pivot->required) {
                 $this->requiredFields[] = $field->formattedTitle;
             }
 
             $this->attributeType[$field->formattedTitle] = $this->getAttributeType($field);
+
+            if($field->pivot->multiple) {
+                $this->multipleFields[] = $field->formattedTitle;
+            }
         }
     }
 
@@ -88,7 +100,7 @@ class NodeModelClassGenerator {
         $this->content .= str_repeat(' ', 4) . 'use App\AppModel;' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use Illuminate\Database\Eloquent\SoftDeletes;' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use App\Constants\Models;' . PHP_EOL . PHP_EOL;
-        $this->content .= str_repeat(' ', 4) . 'class ' . Utils::getFormattedName($this->model->name, ' ') . ' extends AppModel {' . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'class ' . $this->getClassName($this->model->name) . ' extends AppModel {' . PHP_EOL;
         $this->content .= str_repeat(' ', 8) . 'use SoftDeletes;' . PHP_EOL . PHP_EOL;
 
         $this->addFormattedList('fillable');
@@ -97,6 +109,7 @@ class NodeModelClassGenerator {
         $this->addFormattedList('defaultFieldsValues');
         $this->addFormattedListWithKeys('attributeType');
         $this->addFormattedListWithKeys('relationsSettings');
+        $this->addFormattedList('multipleFields');
 
         $this->content .= str_repeat(' ', 4) . '}' . PHP_EOL;
     }

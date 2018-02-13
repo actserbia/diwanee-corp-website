@@ -52,7 +52,7 @@ class Node extends AppModel {
         ]
     ];
 
-    protected $multipleRelations = ['tags', 'elements'];
+    protected $multipleFields = ['tags', 'elements'];
 
     public function getEditorContentAttribute() {
         $data = array();

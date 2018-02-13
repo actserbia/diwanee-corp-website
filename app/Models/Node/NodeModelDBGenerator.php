@@ -7,6 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use App\Constants\FieldType;
 use App\Utils\Utils;
 use App\NodeType;
+use App\Constants\Settings;
 
 class NodeModelDBGenerator {
     private $model = null;
@@ -20,6 +21,10 @@ class NodeModelDBGenerator {
         if(isset($oldNodeTypeName)) {
             $this->oldTableName = $this->getTableName($oldNodeTypeName);
         }
+    }
+
+    private function getTableName($modelName) {
+        return Settings::NodeModelPrefix . '_' . Utils::getFormattedDBName($modelName) . 's';
     }
 
     public function generate() {
@@ -83,10 +88,6 @@ class NodeModelDBGenerator {
         if(!$field->pivot->required) {
             $tableField->nullable();
         }
-    }
-
-    private function getTableName($modelName) {
-        return Utils::getFormattedDBName($modelName) . 's';
     }
 
     public function changeFieldName($oldFieldName, $newFieldName) {

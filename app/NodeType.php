@@ -60,7 +60,7 @@ class NodeType extends AppModel {
         ]
     ];
     
-    protected $multipleRelations = ['fields', 'tags', 'sirTrevor'];
+    protected $multipleFields = ['fields', 'tags', 'sirTrevor'];
 
     protected $dependsOn = [];
     

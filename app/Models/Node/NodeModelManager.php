@@ -3,6 +3,7 @@ namespace App\Models\Node;
 
 use App\Utils\Utils;
 use Auth;
+use App\Constants\Settings;
 
 trait NodeModelManager {
     public function __construct(array $attributes = array()) {
@@ -33,7 +34,7 @@ trait NodeModelManager {
 
         $this->relationsSettings['additionalData'] = [
             'relationType' => 'hasOne',
-            'model' => 'App\\NodeModel\\' . Utils::getFormattedName($nodeType->name, ' '),
+            'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($nodeType->name, ' '),
             'foreignKey' => 'node_id',
             'relationKey' => 'id'
         ];

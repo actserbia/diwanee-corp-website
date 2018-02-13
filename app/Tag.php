@@ -49,7 +49,7 @@ class Tag extends AppModel {
         ]
     ];
     
-    protected $multipleRelations = ['parents', 'children'];
+    protected $multipleFields = ['parents', 'children'];
     
     protected $dependsOn = [
         'parents' => ['tagType'],
