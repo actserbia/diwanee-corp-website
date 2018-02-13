@@ -65,12 +65,11 @@ class NodeType extends AppModel {
     protected $dependsOn = [];
     
     public function saveData(array $data) {
-        $isNew = !isset($this->id);
         $oldName = $this->name;
 
         parent::saveData($data);
         
-        $dbGenerator = new NodeModelDBGenerator($this, $isNew, $oldName);
+        $dbGenerator = new NodeModelDBGenerator($this, $oldName);
         $dbGenerator->generate();
 
         $classGenerator = new NodeModelClassGenerator($this, $oldName);

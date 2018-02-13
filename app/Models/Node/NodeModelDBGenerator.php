@@ -9,17 +9,26 @@ use App\Utils\Utils;
 
 class NodeModelDBGenerator {
     private $model = null;
-    private $isNew = true;
-    private $oldNodeTypeName = null;
+    private $tableName = null;
+    private $oldTableName = null;
 
-    public function __construct($model, $isNew, $oldNodeTypeName) {
+    public function __construct($model, $oldNodeTypeName) {
         $this->model = $model;
-        $this->isNew = $isNew;
-        $this->oldNodeTypeName = $oldNodeTypeName;
+        $this->tableName = $this->getTableName($this->model->name);
+
+        if(isset($oldNodeTypeName)) {
+            $this->oldTableName = $this->getTableName($oldNodeTypeName);
+        }
     }
 
     public function generate() {
-        if($this->isNew) {
+        if(isset($this->oldTableName)) {
+            if($this->oldTableName !== $this->tableName) {
+                Schema::rename($this->oldTableName, $this->tableName);
+            }
+        }
+
+        if(Schema::hasTable($this->tableName)) {
             $this->createDBTable();
         } else {
             $this->updateDBTable();
@@ -27,7 +36,7 @@ class NodeModelDBGenerator {
     }
 
     private function createDBTable() {
-        Schema::create($this->getTableName($this->model->name), function (Blueprint $table) {
+        Schema::create($this->tableName, function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('node_id');
 
@@ -41,21 +50,14 @@ class NodeModelDBGenerator {
     }
 
     private function updateDBTable() {
-        $oldTableName = $this->getTableName($this->oldNodeTypeName);
-        $newTableName = $this->getTableName($this->model->name);
-
-        if($oldTableName !== $newTableName) {
-            Schema::rename($oldTableName, $newTableName);
-        }
-
-        Schema::table($newTableName, function (Blueprint $table) {
+        Schema::table($this->tableName, function (Blueprint $table) {
             $this->addDBFields($table);
         });
     }
 
     private function addDBFields($table) {
         foreach($this->model->fields as $field) {
-            if(!Schema::hasColumn($this->getTableName($this->model->name), $field->formattedName)) {
+            if(!Schema::hasColumn($this->tableName, $field->formattedName)) {
                 $this->setTableField($table, $field);
             }
         }

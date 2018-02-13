@@ -15,14 +15,12 @@ class CreateNodeElementTable extends Migration
     {
         Schema::create('node_element', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('id_node');
-            $table->unsignedInteger('id_element');
+            $table->unsignedInteger('node_id');
+            $table->unsignedInteger('element_id');
             $table->unsignedTinyInteger('ordinal_number');
-        });
 
-        Schema::table('node_element', function($table) {
-            $table->foreign('id_node')->references('id')->on('nodes');
-            $table->foreign('id_element')->references('id')->on('elements');
+            $table->foreign('node_id')->references('id')->on('nodes');
+            $table->foreign('element_id')->references('id')->on('elements');
         });
     }
 
