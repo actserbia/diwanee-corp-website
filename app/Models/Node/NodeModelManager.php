@@ -52,17 +52,6 @@ trait NodeModelManager {
         }
     }
 
-    public function saveData(array $data) {
-        $data['author'] = isset($this->id) ? $this->author->id : Auth::id();
-
-        parent::saveData($data);
-
-        $additionalData = isset($this->additionalData) ? $this->additionalData : new $this->relationsSettings['additionalData']['model'];
-        $additionalData->node()->associate($this);
-        $additionalData->fill($data);
-        $additionalData->save();
-    }
-
     public function getFillableFields() {
         $fields = [];
 

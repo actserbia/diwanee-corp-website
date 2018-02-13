@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Constants\Models;
 use App\Models\Node\NodeModelManager;
+use Auth;
 
 class Node extends AppModel {
     use SoftDeletes;
@@ -64,6 +65,18 @@ class Node extends AppModel {
         $content['data'] = $data;
 
         return json_encode($content);
+    }
+
+    public function saveData(array $data) {
+        $data['author'] = isset($this->id) ? $this->author->id : Auth::id();
+
+        parent::saveData($data);
+        $this->saveElements($data);
+
+        $additionalData = isset($this->additionalData) ? $this->additionalData : new $this->relationsSettings['additionalData']['model'];
+        $additionalData->node()->associate($this);
+        $additionalData->fill($data);
+        $additionalData->save();
     }
 
     private function saveElements(array $data) {
