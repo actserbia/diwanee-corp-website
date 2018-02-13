@@ -24,7 +24,7 @@
                         <div class="form-group">
                             <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label') }}">
                                 <input name="_method" type="hidden" value="PUT">
-                                <button type="submit" class="btn btn-success">@{{ Utils::translateModelData('blade_templates.admin.global.edit_button_text')}}</button>
+                                <button type="submit" class="btn btn-success">{{ Utils::translateModelData('blade_templates.admin.global.edit_button_text')}}</button>
                             </div>
                         </div>
                     </form>

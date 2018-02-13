@@ -65,9 +65,6 @@ trait ModelAttributesManager {
             return $this->pivot->$field;
         }
         
-        if(isset($this->$field)) {
-          $test = $this->$field;
-        }
         return isset($this->$field) ? $this->$field : $this->defaultAttributeValue($field);
     }
     

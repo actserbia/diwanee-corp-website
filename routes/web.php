@@ -55,5 +55,6 @@
           
           Route::resource('nodes', 'AdminNodesController');
           Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');
+          Route::get('node-fields', 'AdminNodesController@nodeFields')->name('node.fields');
       });
   }

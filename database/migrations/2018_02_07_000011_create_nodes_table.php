@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Constants\NodeStatus;
 use App\Utils\Utils;
-use App\Models\NodeModelGenerator;
 
 class CreateNodesTable extends Migration
 {
@@ -27,9 +26,7 @@ class CreateNodesTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
-        });
 
-        Schema::table('nodes', function($table) {
             $table->foreign('author_id')->references('id')->on('users');
             $table->foreign('node_type_id')->references('id')->on('node_types');
         });
@@ -41,12 +38,15 @@ class CreateNodesTable extends Migration
      * @return void
      */
     public function down() {
-        $nodeModelNames = Utils::getAllDirectClassesFromNamespace('App\\NodeModel', true);
-        foreach($nodeModelNames as $nodeModelName) {
-            $tableName = Utils::getFormattedDBName($nodeModelName) . 's';
-            Schema::dropIfExists($tableName);
-            
-            NodeModelGenerator::delete($nodeModelName);
+        $folder = app_path() . '/NodeModel';
+        $files = glob($folder . '/*');
+        foreach($files as $file) {
+            if(is_file($file)) {
+                unlink($file);
+
+                $tableName = Utils::getFormattedDBName(basename($file, '.php')) . 's';
+                Schema::dropIfExists($tableName);
+            }
         }
         
         Schema::dropIfExists('nodes');

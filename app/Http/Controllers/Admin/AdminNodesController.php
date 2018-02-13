@@ -62,8 +62,19 @@ class AdminNodesController extends Controller {
             return view('admin.nodes.create-by-type', compact('object', 'nodeType'));
         } else {
             $object = new Node;
-            return view('admin.nodes.create', compact('object'));
+            return view('admin.nodes.new-create', compact('object'));
         }
+    }
+
+    public function nodeFields(Request $request) {
+        $data = $request->all();
+
+        if(isset($data['node_type_id'])) {
+            $nodeType = $data['node_type_id'];
+            $object = new Node(['node_type_id' => $data['node_type_id']]);
+        }
+
+        return view('blocks.node-fields', compact('object', 'nodeType'));
     }
 
     /**

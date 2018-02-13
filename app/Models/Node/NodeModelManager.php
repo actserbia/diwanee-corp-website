@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace App\Models\Node;
 
 use App\Utils\Utils;
 use Auth;
@@ -55,6 +55,11 @@ trait NodeModelManager {
         $data['author'] = isset($this->id) ? $this->author->id : Auth::id();
 
         parent::saveData($data);
+
+        $additionalData = isset($this->additionalData) ? $this->additionalData : new $this->relationsSettings['additionalData']['model'];
+        $additionalData->node()->associate($this);
+        $additionalData->fill($data);
+        $additionalData->save();
     }
 
     public function getFillableFields() {
@@ -67,8 +72,7 @@ trait NodeModelManager {
         }
 
         if(isset($this->relationsSettings['additionalData'])) {
-            $modelName = $this->relationsSettings['additionalData']['model'];
-            $model = new $modelName;
+            $model = new $this->relationsSettings['additionalData']['model'];
             foreach($model->getFillableAttributes() as $field) {
                 if(strpos($field, '_id') === false) {
                     $fields[] = $field;
@@ -91,9 +95,21 @@ trait NodeModelManager {
     public function isRequired($field) {
         if(isset($this->relationsSettings['additionalData'])) {
             $model = new $this->relationsSettings['additionalData']['model'];
-            return in_array($field, array_merge($this->requiredFields, $model->getRequiredAttributes()));
+            $requiredFields = array_merge($this->requiredFields, $model->getRequiredAttributes());
         } else {
-            return in_array($field, $this->requiredFields);
+            $requiredFields = $this->requiredFields;
         }
+
+        return in_array($field, $requiredFields);
+    }
+
+    public function attributeValue($field) {
+        if(isset($this->additionalData)) {
+            if($this->additionalData->attributeValue($field) !== null) {
+                return $this->additionalData->attributeValue($field);
+            }
+        }
+
+        return parent::attributeValue($field);
     }
 }

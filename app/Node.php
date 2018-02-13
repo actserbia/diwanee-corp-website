@@ -3,7 +3,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Constants\Models;
-use App\Models\NodeModelManager;
+use App\Models\Node\NodeModelManager;
 
 class Node extends AppModel {
     use SoftDeletes;

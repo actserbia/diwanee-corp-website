@@ -3,13 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
-use App\Constants\FieldType;
-use App\Utils\Utils;
-use App\Models\NodeModelGenerator;
+use App\Models\Node\NodeModelDBGenerator;
+use App\Models\Node\NodeModelClassGenerator;
 
 class NodeType extends AppModel {
     use SoftDeletes;
@@ -69,53 +66,14 @@ class NodeType extends AppModel {
     
     public function saveData(array $data) {
         $isNew = !isset($this->id);
-            
-        parent::saveData($data);
-            
-        if($isNew) {
-            $this->createDBTable();
-        }
-        
-        $this->saveNodeFieldsModel();
-    }
-    
-    private function createDBTable() {
-        $tableName = Utils::getFormattedDBName($this->name) . 's';
-        Schema::create($tableName, function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('node_id');
-            
-            $this->addDBFields($table);
-                
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        $oldName = $this->name;
 
-        Schema::table($tableName, function($table) {
-            $table->foreign('node_id')->references('id')->on('nodes');
-        });
-    }
-    
-    private function addDBFields($table) {
-        foreach($this->fields as $field) {
-            switch($field->fieldType->name) {
-                case FieldType::Text:
-                    $table->string($field->formattedName, 255);
-                    break;
-                      
-                case FieldType::Integer:
-                    $table->unsignedInteger($field->formattedName);
-                    break;
-                  
-                case FieldType::Date:
-                    $table->timestamp($field->formattedName);
-                    break;
-            }
-        }
-    }
-    
-    private function saveNodeFieldsModel() {
-        $generator = new NodeModelGenerator($this);
-        $generator->generate();
+        parent::saveData($data);
+        
+        $dbGenerator = new NodeModelDBGenerator($this, $isNew, $oldName);
+        $dbGenerator->generate();
+
+        $classGenerator = new NodeModelClassGenerator($this, $oldName);
+        $classGenerator->generate();
     }
 }
