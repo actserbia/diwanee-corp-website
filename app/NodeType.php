@@ -34,7 +34,7 @@ class NodeType extends AppModel {
             'relationKey' => 'field_id',
             'filters' => ['fieldType.category' => [FieldTypeCategory::Field]],
             'sortBy' => 'ordinal_number',
-            'extraFields' => ['active', 'required', 'multiple']
+            'extraFields' => ['active', 'required']
         ],
       
         'tags' => [
