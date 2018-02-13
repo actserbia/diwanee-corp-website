@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Constants\FieldType;
 use App\Utils\Utils;
+use App\NodeType;
 
 class NodeModelDBGenerator {
     private $model = null;
     private $tableName = null;
     private $oldTableName = null;
 
-    public function __construct($model, $oldNodeTypeName) {
+    public function __construct($model, $oldNodeTypeName = null) {
         $this->model = $model;
         $this->tableName = $this->getTableName($this->model->name);
 
@@ -29,9 +30,9 @@ class NodeModelDBGenerator {
         }
 
         if(Schema::hasTable($this->tableName)) {
-            $this->createDBTable();
-        } else {
             $this->updateDBTable();
+        } else {
+            $this->createDBTable();
         }
     }
 
@@ -57,7 +58,7 @@ class NodeModelDBGenerator {
 
     private function addDBFields($table) {
         foreach($this->model->fields as $field) {
-            if(!Schema::hasColumn($this->tableName, $field->formattedName)) {
+            if(!Schema::hasColumn($this->tableName, $field->formattedTitle)) {
                 $this->setTableField($table, $field);
             }
         }
@@ -67,15 +68,15 @@ class NodeModelDBGenerator {
         $tableField = null;
         switch($field->fieldType->name) {
             case FieldType::Text:
-                $tableField = $table->string($field->formattedName, 255);
+                $tableField = $table->string($field->formattedTitle, 255);
                 break;
 
             case FieldType::Integer:
-                $tableField = $table->unsignedInteger($field->formattedName);
+                $tableField = $table->unsignedInteger($field->formattedTitle);
                 break;
 
             case FieldType::Date:
-                $tableField = $table->timestamp($field->formattedName);
+                $tableField = $table->timestamp($field->formattedTitle);
                 break;
         }
 
@@ -86,5 +87,19 @@ class NodeModelDBGenerator {
 
     private function getTableName($modelName) {
         return Utils::getFormattedDBName($modelName) . 's';
+    }
+
+    public function changeFieldName($oldFieldName, $newFieldName) {
+        Schema::table($this->tableName, function (Blueprint $table) use ($oldFieldName, $newFieldName) {
+            $table->renameColumn($oldFieldName, $newFieldName);
+        });
+    }
+
+    public static function changeFieldNameInAllNodeTables($oldFieldName, $newFieldName) {
+        $nodeTypes = NodeType::get();
+        foreach($nodeTypes as $nodeType) {
+            $generator = new self($nodeType);
+            $generator->changeFieldName($oldFieldName, $newFieldName);
+        }
     }
 }

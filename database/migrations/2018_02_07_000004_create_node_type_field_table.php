@@ -22,9 +22,7 @@ class CreateNodeTypeFieldTable extends Migration
             $table->boolean('multiple')->default(0);
             $table->boolean('sortable')->default(0);
             $table->unsignedTinyInteger('ordinal_number');
-        });
-        
-        Schema::table('node_type_field', function($table) {
+
             $table->foreign('node_type_id')->references('id')->on('node_types');
             $table->foreign('field_id')->references('id')->on('fields');
         });

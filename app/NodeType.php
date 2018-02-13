@@ -22,7 +22,7 @@ class NodeType extends AppModel {
     protected $defaultDropdownColumn = 'name';
 
     protected $attributeType = [
-        'status' => Models::AttributeType_Enum,
+        'status' => Models::AttributeType_Enum
     ];
 
     protected $relationsSettings = [
@@ -34,7 +34,7 @@ class NodeType extends AppModel {
             'relationKey' => 'field_id',
             'filters' => ['fieldType.category' => [FieldTypeCategory::Field]],
             'sortBy' => 'ordinal_number',
-            'extraFields' => ['active', 'required', 'multiple', 'sortable']
+            'extraFields' => ['active', 'required']
         ],
       
         'tags' => [
@@ -56,7 +56,7 @@ class NodeType extends AppModel {
             'relationKey' => 'field_id',
             'filters' => ['fieldType.category' => [FieldTypeCategory::SirTrevor]],
             'sortBy' => 'ordinal_number',
-            'extraFields' => ['active', 'required', 'multiple', 'sortable']
+            'extraFields' => ['active', 'required']
         ]
     ];
     

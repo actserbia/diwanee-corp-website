@@ -224,4 +224,20 @@ trait ModelRelationsManager {
         }
         return $relations;
     }
+
+    public function getFillableAtributesAndRelations() {
+        $fields = [];
+
+        foreach($this->fillable as $field) {
+            if(strpos($field, '_id') === false) {
+                $fields[] = $field;
+            }
+        }
+
+        foreach(array_keys($this->relationsSettings) as $relation) {
+            $fields[] = $relation;
+        }
+
+        return $fields;
+    }
 }

@@ -3,7 +3,7 @@
     @if (isset($onlyLabel) && $onlyLabel)
         @include('blocks.model.form_label', ['fieldPrefix' => '_', 'field' => $item->defaultDropdownColumn, 'object' => $item])
     @else
-        @foreach ($item->getFillableAttributes() as $itemFieldName)
+        @foreach ($item->getFillableAtributesAndRelations() as $itemFieldName)
             @include('blocks.model', ['readonly' => 'label', 'fieldPrefix' => '_', 'field' => $itemFieldName, 'object' => $item])
         @endforeach
 

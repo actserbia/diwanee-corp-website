@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
 use App\Utils\Utils;
+use App\Models\Node\NodeModelClassGenerator;
+use App\Models\Node\NodeModelDBGenerator;
 
 class Field extends AppModel {
     use SoftDeletes;
@@ -41,7 +43,18 @@ class Field extends AppModel {
 
     protected $dependsOn = [];
     
-    public function getFormattedNameAttribute() {
+    public function getFormattedTitleAttribute() {
         return Utils::getFormattedDBName($this->title);
+    }
+
+    public function saveData(array $data) {
+        $oldTitle = $this->formattedTitle;
+
+        parent::saveData($data);
+
+        if(isset($oldTitle) && $oldTitle !== $this->title) {
+            NodeModelDBGenerator::changeFieldNameInAllNodeTables($oldTitle, $this->formattedTitle);
+            NodeModelClassGenerator::generateAll();
+        }
     }
 }

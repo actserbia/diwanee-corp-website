@@ -5,12 +5,12 @@ namespace App\Models\Node;
 use App\Constants\FieldType;
 use App\Utils\Utils;
 use App\Utils\FileFunctions;
+use App\NodeType;
 
 class NodeModelClassGenerator {
     private $model = null;
-    private $oldNodeTypeName = null;
-
-    private $filepath = '';
+    private $filepath = null;
+    private $oldFilepath = null;
 
     private $fillable = [];
     private $allFields = ['id', 'created_at', 'updated_at', 'deleted_at'];
@@ -28,17 +28,19 @@ class NodeModelClassGenerator {
 
     private $content = '';
 
-    public function __construct($model, $oldNodeTypeName) {
+    public function __construct($model, $oldNodeTypeName = null) {
         $this->model = $model;
-        $this->oldNodeTypeName = $oldNodeTypeName;
+
+        if(isset($oldNodeTypeName)) {
+            $this->oldFilepath = app_path() . '/NodeModel/' . Utils::getFormattedName($oldNodeTypeName, ' ') . '.php';
+        }
 
         $this->filepath = app_path() . '/NodeModel/' . Utils::getFormattedName($model->name, ' ') . '.php';
     }
 
     public function generate() {
-        if($this->oldNodeTypeName !== $this->model->nodeTypeName) {
-            $filepath = app_path() . '/NodeModel/' . Utils::getFormattedName($this->oldNodeTypeName, ' ') . '.php';
-            FileFunctions::deleteFile($filepath);
+        if(isset($this->oldFilepath) && $this->oldFilepath !== $this->filepath) {
+            FileFunctions::deleteFile($this->oldFilepath);
         }
 
         $this->populateData();
@@ -50,13 +52,13 @@ class NodeModelClassGenerator {
 
     private function populateData() {
         foreach($this->model->fields as $field) {
-            $this->fillable[] = $field->formattedName;
-            $this->allFields[] = $field->formattedName;
+            $this->fillable[] = $field->formattedTitle;
+            $this->allFields[] = $field->formattedTitle;
             if($field->pivot->required) {
-                $this->requiredFields[] = $field->formattedName;
+                $this->requiredFields[] = $field->formattedTitle;
             }
 
-            $this->attributeType[$field->formattedName] = $this->getAttributeType($field);
+            $this->attributeType[$field->formattedTitle] = $this->getAttributeType($field);
         }
     }
 
@@ -129,5 +131,13 @@ class NodeModelClassGenerator {
             $this->content .= $listItemValue;
         }
         $this->content .= ',' . PHP_EOL;
+    }
+
+    public static function generateAll() {
+        $nodeTypes = NodeType::get();
+        foreach($nodeTypes as $nodeType) {
+            $generator = new self($nodeType);
+            $generator->generate();
+        }
     }
 }
