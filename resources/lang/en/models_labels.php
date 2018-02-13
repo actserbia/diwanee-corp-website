@@ -54,8 +54,8 @@ return [
     ],
 
     'NodeType' => [
-        'label_single' => 'node type',
-        'label_plural' => 'Node types',
+        'label_single' => 'type',
+        'label_plural' => 'Types',
         'id' => 'Id',
         'name' => 'Name',
         'status' => 'Status',

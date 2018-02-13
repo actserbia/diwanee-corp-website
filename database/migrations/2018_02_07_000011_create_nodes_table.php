@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Constants\NodeStatus;
-use App\Utils\Utils;
+use App\Models\Node\NodeModelClassGenerator;
+use App\Models\Node\NodeModelDBGenerator;
 
 class CreateNodesTable extends Migration
 {
@@ -38,16 +39,8 @@ class CreateNodesTable extends Migration
      * @return void
      */
     public function down() {
-        $folder = app_path() . '/NodeModel';
-        $files = glob($folder . '/*');
-        foreach($files as $file) {
-            if(is_file($file)) {
-                unlink($file);
-
-                $tableName = Utils::getFormattedDBName(basename($file, '.php')) . 's';
-                Schema::dropIfExists($tableName);
-            }
-        }
+        NodeModelClassGenerator::deleteAll();
+        NodeModelDBGenerator::deleteAll();
         
         Schema::dropIfExists('nodes');
     }

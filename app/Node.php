@@ -42,14 +42,16 @@ class Node extends AppModel {
             'pivot' => 'node_tag',
             'foreignKey' => 'node_id',
             'relationKey' => 'tag_id',
-            'sortBy' => 'ordinal_number'
+            'sortBy' => 'ordinal_number',
+            'fillable' => false
         ],
         'elements' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Element',
             'pivot' => 'node_element',
             'foreignKey' => 'node_id',
-            'relationKey' => 'element_id'
+            'relationKey' => 'element_id',
+            'fillable' => false
         ]
     ];
 
