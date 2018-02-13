@@ -16,7 +16,7 @@ use App\Models\ModelDataManager;
 class Element extends Model {
     use ModelDataManager;
 
-    protected $fields = ['id', 'type', 'data', 'created_at', 'updated_at', 'deleted_at', 'id_element'];
+    protected $fields = ['id', 'type', 'data', 'created_at', 'updated_at', 'deleted_at', 'element_id'];
 
     protected $fillable = ['type', 'data'];
 
@@ -28,7 +28,7 @@ class Element extends Model {
         'type' => Models::AttributeType_Enum,
         'data:heading_type' => Models::AttributeType_Enum,
         'data:source' => Models::AttributeType_Enum,
-        'id_element' => Models::AttributeType_Number
+        'element_id' => Models::AttributeType_Number
     ];
 
     protected $jsonCustomAttribute = [
@@ -44,16 +44,16 @@ class Element extends Model {
 
 
     protected $relationsSettings = [
-        'articles' => [
+        'nodes' => [
             'relationType' => 'belongsToMany',
-            'model' => 'App\\Article',
-            'pivot' => 'article_element',
-            'foreignKey' => 'id_element',
-            'relationKey' => 'id_article'
+            'model' => 'App\\Node',
+            'pivot' => 'node_element',
+            'foreignKey' => 'element_id',
+            'relationKey' => 'node_id'
         ]
     ];
 
-    protected $multiple = ['articles'];
+    protected $multiple = ['nodes'];
 
     public function getRelation($relation) {
         return $this->relations[$relation];
@@ -63,8 +63,8 @@ class Element extends Model {
 		return $this->getRelationItems('articles');
     }*/
 
-    public function getArticlesAttribute() {
-        return $this->articles()->get();
+    public function getNodesAttribute() {
+        return $this->nodes()->get();
     }
 
     public function getDataAttribute($value) {
