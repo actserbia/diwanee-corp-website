@@ -59,13 +59,6 @@ class Element extends Model {
         return $this->relations[$relation];
     }
 
-    /*public function articles() {
-		return $this->getRelationItems('articles');
-    }*/
-
-    public function getNodesAttribute() {
-        return $this->nodes()->get();
-    }
 
     public function getDataAttribute($value) {
         $data = json_decode($value);
