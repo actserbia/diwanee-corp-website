@@ -52,7 +52,7 @@ class Field extends AppModel {
 
         parent::saveData($data);
 
-        if(isset($oldTitle) && $oldTitle !== $this->title) {
+        if(!empty($oldTitle) && $oldTitle !== $this->title) {
             NodeModelDBGenerator::changeFieldNameInAllNodeTables($oldTitle, $this->formattedTitle);
             NodeModelClassGenerator::generateAll();
         }
