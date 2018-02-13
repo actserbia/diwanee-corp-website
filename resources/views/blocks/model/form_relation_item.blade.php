@@ -12,9 +12,11 @@
         @endforeach
     @endif
 
-    <a href=":javascript" id="{{ $field }}-remove-selected" class="remove-selected" data-id="{{ $item->id }}" data-field="{{ $field }}">
-        <i class="fa fa-times"></i>
-    </a>
+    @if (isset($isNew) && $isNew)
+        <a href=":javascript" id="{{ $field }}-remove-selected" class="remove-selected" data-id="{{ $item->id }}" data-field="{{ $field }}">
+            <i class="fa fa-times"></i>
+        </a>
+    @endif
     
     @if (!isset($onlyLabel) || !$onlyLabel)
         <div class="ln_solid"></div>
