@@ -44,10 +44,10 @@ class MultipleRelationItems extends RelationItems {
             $relationItemData[$this->object->sortableField($relation)] = $this->index++;
         }
         
-        if($this->object->$relation->contains($relationItemId)) {
-            $this->object->$relation()->updateExistingPivot($relationItemId, $relationItemData);
-        } else {
+        if(!$this->object->$relation->contains($relationItemId)) {
             $this->object->$relation()->attach([$relationItemId => $relationItemData]);
+        } elseif(!empty($relationItemData)) {
+            $this->object->$relation()->updateExistingPivot($relationItemId, $relationItemData);
         }
     }
 }
