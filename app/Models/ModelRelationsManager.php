@@ -47,6 +47,21 @@ trait ModelRelationsManager {
         return isset($this->relationsSettings[$field]);
     }
 
+    public function isTagsRelation($field) {
+        if($this->isRelation($field)) {
+            if($field === 'tags') {
+                return true;
+            }
+
+            $relationsSettings = $this->relationsSettings[$field];
+            if(isset($relationsSettings['parent']) && $relationsSettings['parent'] === 'tags') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getRelationSettings($relation) {
         if($this->isRelation($relation)) {
             $relationsSettings = $this->relationsSettings[$relation];

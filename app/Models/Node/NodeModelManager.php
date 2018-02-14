@@ -2,8 +2,9 @@
 namespace App\Models\Node;
 
 use App\Utils\Utils;
-use Auth;
 use App\Constants\Settings;
+use App\Tag;
+use Request;
 
 trait NodeModelManager {
     public function __construct(array $attributes = array()) {
@@ -99,5 +100,45 @@ trait NodeModelManager {
         }
 
         return parent::attributeValue($field);
+    }
+
+    public function formTagsRelationValues($relation, $tags = null) {
+        if($tags !== null) {
+            return $tags;
+        }
+
+        $relationsSettings = $this->getRelationSettings($relation);
+
+        $query = Tag::select('*');
+        if(isset($relationsSettings['filters'])) {
+            Tag::filter($relationsSettings['filters'], $query);
+        }
+
+        return $query->has('parents', '=', '0')->get();
+    }
+
+    public function formTagsSelectedValues($relation, $tags = null) {
+        if(Request::old('_token') !== null) {
+            $relationItems = [];
+            if(Request::old($relation) !== null) {
+                $relationItems = $this->getRelationModel($relation)::find(Request::old($relation));
+            }
+        } elseif(isset($this->$relation)) {
+            $relationItems = $this->$relation;
+        }
+
+        if($tags === null) {
+            return $relationItems;
+        }
+
+        $tagItems = [];
+        foreach($relationItems as $relationItem) {
+            foreach($tags as $tag) {
+                if($relationItem->id === $tag->id) {
+                    $tagItems[] = $relationItem;
+                }
+            }
+        }
+        return $tagItems;
     }
 }

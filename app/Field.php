@@ -35,7 +35,8 @@ class Field extends AppModel {
         'field_type' => [
             'relationType' => 'belongsTo',
             'model' => 'App\\FieldType',
-            'foreignKey' => 'field_type_id'
+            'foreignKey' => 'field_type_id',
+            'fillable' => true
         ],
         'attribute_field_type' => [
             'relationType' => 'belongsTo',

@@ -13,7 +13,7 @@ trait ModelFormManager {
         
         $fieldName = $this->getFieldName($fullFieldName);
         if($this->isRelation($fieldName)) {
-            return Models::FormFieldType_Relation;
+            return $this->isTagsRelation($fieldName) ? Models::FormFieldType_TagsRelation : Models::FormFieldType_Relation;
         }
         
         $modelManager = $this->getModelManager($fieldName);

@@ -2,8 +2,10 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
 use App\Http\Controllers\Controller;
 use App\Utils\HtmlElementsClasses;
+use App\Tag;
 
 class ModelController extends Controller {
     public function __construct() {
@@ -40,5 +42,22 @@ class ModelController extends Controller {
         $isNew = true;
         
         return view('blocks.model.form_relation_item', compact('object', 'field', 'item', 'fullData', 'isNew'));
+    }
+
+    public function modelAddSubtags(Request $request) {
+        $params = $request->all();
+
+        $field = $params['field'];
+        $object = isset($params['model_id']) ? $params['model']::find($params['model_id']) : new $params['model'];
+        $level = $params['level'] + 1;
+
+        $tags = new Collection([]);
+        $tagsParents = Tag::whereIn('id', $params['tags_id'])->get();
+        foreach($tagsParents as $tagsParent) {
+          $tags = $tags->merge($tagsParent->children);
+        }
+
+
+        return view('blocks.model.form_tags_relation', compact('object', 'field', 'tags', 'level'));
     }
 }

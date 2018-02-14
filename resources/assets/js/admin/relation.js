@@ -11,7 +11,7 @@ $(document).ready(function() {
                     data: {
                         model: $(object).data('model'),
                         model_id: $(object).data('model-id'),
-                        field: $(object).attr('id'),
+                        field: $(object).data('relation'),
                         item_id: selectedItemId,
                         full_data: $(object).data('full-data')
                     },
@@ -60,8 +60,6 @@ $(document).ready(function() {
     
     $.fn.populateItems = function() {
         $(this).each(function(index, object) {
-            var field = $(object).attr('id');
-            
             $(object).empty();
             
             var dependsOnValues = {};
@@ -74,7 +72,7 @@ $(document).ready(function() {
                 url: '/admin/model/populate-field',
                 data: {
                     model: $(object).data('model'),
-                    relation: field,
+                    relation: $(object).data('relation'),
                     dependsOnValues: dependsOnValues,
                     column: $(object).data('column')
                 },

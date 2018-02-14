@@ -49,6 +49,7 @@ let mix = require('laravel-mix');
             'resources/assets/_admin_/js/custom.min.js',
             
             'resources/assets/js/admin/admin.js',
+            'resources/assets/js/admin/tags-relation.js',
             'resources/assets/js/admin/relation.js',
             'resources/assets/js/admin/tags.js',
             'resources/assets/js/admin/nodes.js',

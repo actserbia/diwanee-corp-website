@@ -52,6 +52,7 @@
           
           Route::get('/model/add-relation-item', 'ModelController@modelAddRelationItem')->name('model.add-relation-item');
           Route::get('/model/populate-field', 'ModelController@modelPopulateField')->name('model.populate-field');
+          Route::get('/model/add-subtags', 'ModelController@modelAddSubtags')->name('model.add-subtags');
           
           Route::resource('nodes', 'AdminNodesController');
           Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');
