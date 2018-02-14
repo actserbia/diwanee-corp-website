@@ -19,9 +19,9 @@
 
                         @include('blocks.model', ['field' => 'tag_type'])
                         
-                        @include('blocks.model', ['field' => 'parents', 'onlyLabel' => true])
+                        @include('blocks.model', ['field' => 'parents'])
                         
-                        @include('blocks.model', ['field' => 'children', 'onlyLabel' => true])
+                        @include('blocks.model', ['field' => 'children'])
 
                         <div class="ln_solid"></div>
 

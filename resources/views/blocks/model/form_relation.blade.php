@@ -10,7 +10,7 @@
             data-column="{{ isset($column) ? $column : $object->getDefaultDropdownColumn($field) }}"
             data-depends-on="{{ $object->dependsOn($field) }}"
             data-sortable="{{ $object->isSortable($field) }}"
-            data-only-label="{{ isset($onlyLabel) ?: false }}"
+            data-full-data="{{ isset($fullData) ?: false }}"
             @if($object->isRequired($field) && !$object->isMultiple($field)) required @endif
         >
                 <option value=""></option>

@@ -79,8 +79,7 @@ return [
         'deleted_at' => 'Deleted Date',
         'active' => 'Active',
         'required' => 'Required',
-        'multiple' => 'Multiple',
-        'sortable' => 'Sortable'
+        'multiple' => 'Multiple'
     ],
   
     'Node' => [

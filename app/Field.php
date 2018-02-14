@@ -15,7 +15,7 @@ class Field extends AppModel {
 
     protected $allAttributesFields = ['id', 'title', 'created_at', 'updated_at', 'deleted_at'];
     
-    protected $allFieldsFromPivots = ['active', 'required', 'multiple', 'sortable'];
+    protected $allFieldsFromPivots = ['active', 'required', 'multiple'];
 
     protected $requiredFields = ['title', 'field_type', 'attribute_field_type'];
     
@@ -28,8 +28,7 @@ class Field extends AppModel {
     protected $attributeType = [
         'active' => Models::AttributeType_Checkbox,
         'required' => Models::AttributeType_Checkbox,
-        'multiple' => Models::AttributeType_Checkbox,
-        'sortable' => Models::AttributeType_Checkbox
+        'multiple' => Models::AttributeType_Checkbox
     ];
 
     protected $relationsSettings = [

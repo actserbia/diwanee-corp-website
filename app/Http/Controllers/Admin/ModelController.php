@@ -36,9 +36,9 @@ class ModelController extends Controller {
         $object = isset($params['model_id']) ? $params['model']::find($params['model_id']) : new $params['model'];
         $itemModel = $object->getRelationModel($field);
         $item = $itemModel::find($params['item_id']);
-        $onlyLabel = $params['only_label'];
+        $fullData = $params['full_data'];
         $isNew = true;
         
-        return view('blocks.model.form_relation_item', compact('object', 'field', 'item', 'onlyLabel', 'isNew'));
+        return view('blocks.model.form_relation_item', compact('object', 'field', 'item', 'fullData', 'isNew'));
     }
 }

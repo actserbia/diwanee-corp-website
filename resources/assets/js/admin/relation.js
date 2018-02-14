@@ -13,7 +13,7 @@ $(document).ready(function() {
                         model_id: $(object).data('model-id'),
                         field: $(object).attr('id'),
                         item_id: selectedItemId,
-                        only_label: $(object).data('only-label')
+                        full_data: $(object).data('full-data')
                     },
                     success: function (data) {
                         $('[id=selected-' + $(object).attr('id') + ']').append(data);

@@ -25,11 +25,11 @@ trait NodeModelManager {
     }
 
     public function populateData($nodeTypeId = null) {
-        $this->populateFieldsData($nodeTypeId);
+        $this->populateAttributesFieldsData($nodeTypeId);
         $this->populateTagFieldsData($nodeTypeId);
     }
 
-    private function populateFieldsData($nodeTypeId = null) {
+    private function populateAttributesFieldsData($nodeTypeId = null) {
         $nodeType = isset($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
 
         $this->relationsSettings['additionalData'] = [
@@ -49,6 +49,10 @@ trait NodeModelManager {
                 'fillable' => true
             ];
             $this->relationsSettings[Utils::getFormattedDBName($tagField->title)] = $relationSettings;
+            
+            if($tagField->pivot->multiple) {
+                $this->multipleFields[] = $tagField->formattedTitle;
+            }
         }
     }
 

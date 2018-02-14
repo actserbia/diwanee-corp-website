@@ -22,22 +22,6 @@ return [
         'text' => 'Text',
         'date' => 'Date'
     ],
-    'FieldActive' => [
-        '0' => 'Not Active',
-        '1' => 'Active'
-    ],
-    'FieldRequired' => [
-        '0' => 'Not Required',
-        '1' => 'Required'
-    ],
-    'FieldMultiple' => [
-        '0' => 'Not Multiple',
-        '1' => 'Multiple'
-    ],
-    'FieldSortable' => [
-        '0' => 'Not Sortable',
-        '1' => 'Sortable'
-    ],
     'ElementType' => [
         'text' => 'Text',
         'slider_image' => 'Slider Image',

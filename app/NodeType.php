@@ -45,7 +45,7 @@ class NodeType extends AppModel {
             'relationKey' => 'field_id',
             'filters' => ['field_type.category' => [FieldTypeCategory::Tag]],
             'sortBy' => 'ordinal_number',
-            'extraFields' => ['active', 'required', 'multiple', 'sortable']
+            'extraFields' => ['active', 'required', 'multiple']
         ],
       
         'sir_trevor_fields' => [
