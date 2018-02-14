@@ -4,12 +4,8 @@
                         
     <input name="node_type" type="hidden" value="{{ $nodeType }}" />
                         
-    @foreach($object->getFillableFields() as $field)
+    @foreach($object->getFillableAtributesAndRelations() as $field)
         @include('blocks.model', ['field' => $field])
-    @endforeach
-    
-    @foreach($object->getFillableRelations() as $relation)
-        @include('blocks.model', ['field' => $relation])
     @endforeach
 
     <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">

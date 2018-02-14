@@ -12,7 +12,7 @@
         @include('blocks.model.form_label', ['fieldPrefix' => '_', 'field' => $item->defaultDropdownColumn, 'object' => $item])
     @endif
 
-    @if (isset($isNew) && $isNew)
+    @if (isset($isNew) && $isNew || !isset($fullData) || !$fullData)
         <a href=":javascript" id="{{ $field }}-remove-selected" class="remove-selected" data-id="{{ $item->id }}" data-field="{{ $field }}">
             <i class="fa fa-times"></i>
         </a>

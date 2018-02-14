@@ -56,14 +56,8 @@ trait NodeModelManager {
         }
     }
 
-    public function getFillableFields() {
-        $fields = [];
-
-        foreach($this->fillable as $field) {
-            if(strpos($field, '_id') === false) {
-                $fields[] = $field;
-            }
-        }
+    protected function getFillableAtributes() {
+        $fields = parent::getFillableAtributes();
 
         if(isset($this->relationsSettings['additionalData'])) {
             $model = new $this->relationsSettings['additionalData']['model'];

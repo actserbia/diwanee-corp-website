@@ -213,19 +213,8 @@ trait ModelRelationsManager {
 
         return $ids;
     }
-    
-    public function getFillableRelations() {
-        $relations = [];
-        foreach(array_keys($this->relationsSettings) as $relation) {
-            $relationSettings = $this->getRelationSettings($relation);
-            if(isset($relationSettings['fillable']) && $relationSettings['fillable']) {
-                $relations[] = $relation;
-            }
-        }
-        return $relations;
-    }
 
-    public function getFillableAtributesAndRelations() {
+    protected function getFillableAtributes() {
         $fields = [];
 
         foreach($this->fillable as $field) {
@@ -234,10 +223,23 @@ trait ModelRelationsManager {
             }
         }
 
+        return $fields;
+    }
+    
+    protected function getFillableRelations() {
+        $fields = [];
+
         foreach(array_keys($this->relationsSettings) as $relation) {
-            $fields[] = $relation;
+            $relationSettings = $this->getRelationSettings($relation);
+            if(isset($relationSettings['fillable']) && $relationSettings['fillable']) {
+                $fields[] = $relation;
+            }
         }
 
         return $fields;
+    }
+    
+    public function getFillableAtributesAndRelations() {
+        return array_merge($this->getFillableAtributes(), $this->getFillableRelations());
     }
 }
