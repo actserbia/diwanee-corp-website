@@ -42,7 +42,9 @@ class AppModel extends Model {
     }
     
     public function saveData(array $data) {
-        $this->fill($data);
+        if(count($this->fillable) > 0) {
+            $this->fill($data);
+        }
         $this->populateBelongsToRelations($data);
         $this->save();
 

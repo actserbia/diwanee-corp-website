@@ -202,7 +202,7 @@ trait ModelRelationsManager {
     public function saveBelongsToManyRelations($data) {
         foreach(array_keys($this->relationsSettings) as $relation) {
             $relationSettings = $this->getRelationSettings($relation);
-            if($relationSettings['relationType'] === 'belongsToMany') {
+            if($relationSettings['relationType'] === 'belongsToMany' && (!isset($relationSettings['automaticSave']) || $relationSettings['automaticSave'])) {
                 $this->saveRelationItems($relation, $data);
             }
         }
@@ -229,7 +229,7 @@ trait ModelRelationsManager {
         return $ids;
     }
 
-    protected function getFillableAtributes() {
+    protected function getAutomaticRenderAtributes() {
         $fields = [];
 
         foreach($this->fillable as $field) {
@@ -241,12 +241,12 @@ trait ModelRelationsManager {
         return $fields;
     }
     
-    protected function getFillableRelations() {
+    protected function getAutomaticRenderRelations() {
         $fields = [];
 
         foreach(array_keys($this->relationsSettings) as $relation) {
             $relationSettings = $this->getRelationSettings($relation);
-            if(isset($relationSettings['fillable']) && $relationSettings['fillable']) {
+            if(isset($relationSettings['automaticRender']) && $relationSettings['automaticRender']) {
                 $fields[] = $relation;
             }
         }
@@ -254,7 +254,7 @@ trait ModelRelationsManager {
         return $fields;
     }
     
-    public function getFillableAtributesAndRelations() {
-        return array_merge($this->getFillableAtributes(), $this->getFillableRelations());
+    public function getAutomaticRenderAtributesAndRelations() {
+        return array_merge($this->getAutomaticRenderAtributes(), $this->getAutomaticRenderRelations());
     }
 }

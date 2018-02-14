@@ -21,7 +21,7 @@
                         
                         <input name="node_type" type="hidden" value="{{ $object->node_type->id }}" />
                         
-                        @foreach($object->getFillableAtributesAndRelations() as $field)
+                        @foreach($object->getAutomaticRenderAtributesAndRelations() as $field)
                             @include('blocks.model', ['field' => $field])
                         @endforeach
 

@@ -57,8 +57,8 @@ trait NodeModelManager {
         }
     }
 
-    protected function getFillableAtributes() {
-        $fields = parent::getFillableAtributes();
+    protected function getAutomaticRenderAtributes() {
+        $fields = parent::getAutomaticRenderAtributes();
 
         if(isset($this->relationsSettings['additionalData'])) {
             $model = new $this->relationsSettings['additionalData']['model'];
@@ -114,7 +114,8 @@ trait NodeModelManager {
             Tag::filter($relationsSettings['filters'], $query);
         }
 
-        return $query->has('parents', '=', '0')->get();
+        return $query->get();
+        //return $query->has('parents', '=', '0')->get();
     }
 
     public function formTagsSelectedValues($relation, $tags = null) {

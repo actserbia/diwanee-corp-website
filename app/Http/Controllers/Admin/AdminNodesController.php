@@ -111,7 +111,7 @@ class AdminNodesController extends Controller {
      */
     public function update(Request $request, $id) {
         $data = $request->all();
-
+        
         Validators::nodesFormValidator($data, ['id' => $id])->validate();
 
         $object = Node::findOrFail($id);

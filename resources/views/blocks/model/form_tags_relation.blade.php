@@ -38,7 +38,7 @@
         <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
             <div id="selected-{{ $field }}-{{ isset($level) ? $level : 1 }}">
                 @foreach ($object->formTagsSelectedValues($field, isset($tags) ? $tags : null) as $item)
-                    @include('blocks.model.form_relation_item', ['item' => $item])
+                    @include('blocks.model.form_relation_item', ['item' => $item, 'selectFieldId' => $field . '-' . (isset($level) ? $level : '1')])
                 @endforeach
             </div>
         </div>

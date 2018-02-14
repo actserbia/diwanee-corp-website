@@ -43,14 +43,16 @@ class Node extends AppModel {
             'pivot' => 'node_tag',
             'foreignKey' => 'node_id',
             'relationKey' => 'tag_id',
-            'sortBy' => 'ordinal_number'
+            'sortBy' => 'ordinal_number',
+            'automaticSave' => false
         ],
         'elements' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Element',
             'pivot' => 'node_element',
             'foreignKey' => 'node_id',
-            'relationKey' => 'element_id'
+            'relationKey' => 'element_id',
+            'automaticSave' => false
         ]
     ];
 
@@ -58,7 +60,7 @@ class Node extends AppModel {
 
     public function getEditorContentAttribute() {
         $data = array();
-
+        
         foreach($this->elements as $element) {
             $data[] = $element->editorContent;
         }
@@ -72,11 +74,14 @@ class Node extends AppModel {
         $data['author'] = isset($this->id) ? $this->author->id : Auth::id();
 
         parent::saveData($data);
+        
         $this->saveElements($data);
 
         $additionalData = isset($this->additionalData) ? $this->additionalData : new $this->relationsSettings['additionalData']['model'];
         $additionalData->node()->associate($this);
-        $additionalData->fill($data);
+        if(count($additionalData->fillable) > 0) {
+            $additionalData->fill($data);
+        }        
         $additionalData->save();
     }
 
@@ -106,8 +111,7 @@ class Node extends AppModel {
         $preparedElementData = Element::prepareElementData($elementData);
 
         if(isset($elementData['data']['id'])) {
-
-            $element = $this->elements()->where('element_id', $elementData['data']['id'])->first();
+            $element = $this->elements()->where('element_id', '=', $elementData['data']['id'])->first();
 
             $element->update($preparedElementData);
 

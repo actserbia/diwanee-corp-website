@@ -12,12 +12,12 @@ trait ModelAttributesManager {
         'ordinal_number' => Models::AttributeType_Number
     ];
     
-    protected function getAllAttributes() {
-        return array_merge($this->allAttributesFields, $this->allFieldsFromPivots);
+    protected function getFillableAttributes() {
+        return $this->fillable;
     }
     
-    public function getFillableAttributes() {
-        return $this->fillable;
+    protected function getAllAttributes() {
+        return array_merge($this->allAttributesFields, $this->allFieldsFromPivots);
     }
 
     public function getRequiredAttributes() {
