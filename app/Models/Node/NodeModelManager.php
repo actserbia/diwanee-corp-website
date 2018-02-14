@@ -47,7 +47,8 @@ trait NodeModelManager {
             $relationSettings = [
                 'parent' => 'tags',
                 'filters' => ['tag_type_id' => [$tagField->field_type_id]],
-                'fillable' => true
+                'automaticRender' => true,
+                'automaticSave' => true
             ];
             $this->relationsSettings[Utils::getFormattedDBName($tagField->title)] = $relationSettings;
             
