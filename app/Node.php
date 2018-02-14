@@ -6,6 +6,7 @@ use App\Constants\Models;
 use App\Models\Node\NodeModelManager;
 use Auth;
 
+
 class Node extends AppModel {
     use SoftDeletes;
     use NodeModelManager;
@@ -105,7 +106,9 @@ class Node extends AppModel {
         $preparedElementData = Element::prepareElementData($elementData);
 
         if(isset($elementData['data']['id'])) {
-            $element = $this->elements()->where('element_id', '=', $elementData['data']['id'])->first();
+
+            $element = $this->elements()->where('element_id', $elementData['data']['id'])->first();
+
             $element->update($preparedElementData);
 
             $this->elements()->updateExistingPivot($element->id, ['ordinal_number' => $index + 1]);

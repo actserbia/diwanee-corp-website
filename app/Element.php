@@ -90,7 +90,6 @@ class Element extends Model {
             $preparedElementData['data']['file']['hash'] = ImagesManager::getHashFromS3Path($preparedElementData['data']['file']['url']);
             unset($preparedElementData['data']['file']['url']);
         }
-
         return $preparedElementData;
     }
 
