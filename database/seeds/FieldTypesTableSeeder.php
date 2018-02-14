@@ -19,7 +19,7 @@ class FieldTypesTableSeeder extends Seeder
         foreach($fieldTypes as $fieldType) {
             factory(FieldType::class)->create([
                 'name' => $fieldType,
-                'category' => FieldTypeCategory::Field
+                'category' => FieldTypeCategory::Attribute
             ]);
         }
         

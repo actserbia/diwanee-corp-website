@@ -13,7 +13,7 @@ trait ModelAttributesManager {
     ];
     
     protected function getAllAttributes() {
-        return array_merge($this->allFields, $this->allFieldsFromPivots);
+        return array_merge($this->allAttributesFields, $this->allFieldsFromPivots);
     }
     
     public function getFillableAttributes() {

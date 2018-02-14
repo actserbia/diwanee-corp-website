@@ -11,7 +11,7 @@
                 </div>
                 <div class="x_content form-horizontal">
                     <br />
-                    @include('blocks.model', ['field' => 'tagType'])
+                    @include('blocks.model', ['field' => 'tag_type'])
 
                     <div class="ln_solid"></div>
 

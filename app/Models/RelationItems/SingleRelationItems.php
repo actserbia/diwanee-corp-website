@@ -3,17 +3,19 @@ namespace App\Models\RelationItems;
 
 class SingleRelationItems extends RelationItems {
     public function save() {
-        $relationItemId = array_keys($this->relationData)[0];
-        $relationItemData = $this->relationData[$relationItemId];
-        
-        $relation = $this->relation;
-        
-        if(isset($this->object->$relation) && $this->object->$relation->id != $relationItemId) {
-            $this->object->$relation()->detach($this->object->$relation->id);
-        }
-        
-        if($relationItemId > 0) {
-            $this->attach($relation, $relationItemId, $relationItemData);
+        if(!empty($this->relationData)) {
+            $relationItemId = array_keys($this->relationData)[0];
+            $relationItemData = $this->relationData[$relationItemId];
+
+            $relation = $this->relation;
+
+            if(isset($this->object->$relation) && $this->object->$relation->id != $relationItemId) {
+                $this->object->$relation()->detach($this->object->$relation->id);
+            }
+
+            if($relationItemId > 0) {
+                $this->attach($relation, $relationItemId, $relationItemData);
+            }
         }
     }
     

@@ -196,7 +196,7 @@ trait ModelRelationsManager {
     public function populateBelongsToRelations($data) {
         foreach(array_keys($this->relationsSettings) as $relation) {
             $relationSettings = $this->getRelationSettings($relation);
-            if($relationSettings['relationType'] === 'belongsTo') {
+            if($relationSettings['relationType'] === 'belongsTo' && isset($data[$relation])) {
                 $attribute = $relationSettings['foreignKey'];
                 $this->$attribute = $data[$relation];
             }

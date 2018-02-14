@@ -12,7 +12,7 @@ class FieldType extends AppModel {
     
     protected $fillable = ['name', 'category'];
 
-    protected $allFields = ['id', 'name', 'category', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allAttributesFields = ['id', 'name', 'category', 'created_at', 'updated_at', 'deleted_at'];
     
     protected $allFieldsFromPivots = [];
     
@@ -56,7 +56,7 @@ class FieldType extends AppModel {
             $fieldObject = new Field;
             $fieldData = [
                 'title' => $this->name,
-                'fieldType' => $this->id
+                'field_type' => $this->id
             ];
             $fieldObject->saveData($fieldData);
             $this->load('tags');

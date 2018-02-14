@@ -10,7 +10,7 @@ use App\Models\ModelDataManager;
 class AppModel extends Model {
     use ModelDataManager;
     
-    protected $allFields = [];
+    protected $allAttributesFields = [];
     
     protected $allFieldsFromPivots = [];
 

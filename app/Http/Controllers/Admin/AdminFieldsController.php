@@ -22,7 +22,7 @@ class AdminFieldsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $objects = Field::filter(['fieldType.category' => [FieldTypeCategory::Field]])->get();
+        $objects = Field::filter(['field_type.category' => [FieldTypeCategory::Attribute]])->get();
         return view('admin.fields.list', compact('objects'));
     }
     

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#nodes-list #nodeType').change(function() {
+    $('#nodes-list #node_type').change(function() {
         $.ajax({
             type: 'GET',
             url: '/admin/nodes-list',
@@ -13,7 +13,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#node-create #nodeType').change(function() {
+    $('#node-create #node_type').change(function() {
         $.ajax({
             type: 'GET',
             url: '/admin/node-fields',

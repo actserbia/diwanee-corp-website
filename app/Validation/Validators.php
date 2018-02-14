@@ -42,9 +42,9 @@ class Validators {
 
         return Validator::make($data, [
             'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
-            'tagType' => self::modelRequiredValidation('tagType', $model) . '|exists:field_types,id',
-            'parents' => 'checkTags:' . $data['tagType'] . ',' . $id . ',' . json_encode($data['children']),
-            'children' => 'checkTags:' . $data['tagType'] . ',' . $id . ',' . json_encode($data['parents'])
+            'tag_type' => self::modelRequiredValidation('tag_type', $model) . '|exists:field_types,id',
+            'parents' => 'checkTags:' . $data['tag_type'] . ',' . $id . ',' . json_encode($data['children']),
+            'children' => 'checkTags:' . $data['tag_type'] . ',' . $id . ',' . json_encode($data['parents'])
         ]);
     }
     
@@ -70,14 +70,14 @@ class Validators {
     }
     
     public static function nodesFormValidator(array $data, array $additional = []) {
-        $model = new Node(['node_type_id' => $data['nodeType']]);
+        $model = new Node(['node_type_id' => $data['node_type']]);
 
         $titleUnique = isset($additional['id']) ? 'unique:nodes,id,' . $additional['id'] : 'unique:nodes';
         $id = isset($additional['id']) ? $additional['id'] : '';
 
         return Validator::make($data, [
             'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255',
-            'nodeType' => self::modelRequiredValidation('nodeType', $model) . '|exists:node_types,id'
+            'node_ype' => self::modelRequiredValidation('node_type', $model) . '|exists:node_types,id'
         ]);
     }
 

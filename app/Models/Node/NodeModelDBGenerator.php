@@ -64,7 +64,7 @@ class NodeModelDBGenerator {
     }
 
     private function addNodeModelTableFields($table) {
-        foreach($this->model->fields as $field) {
+        foreach($this->model->attributes_fields as $field) {
             //if(!$field->pivot->multiple && !Schema::hasColumn($this->tableName, $field->formattedTitle)) {
             if(!Schema::hasColumn($this->tableName, $field->formattedTitle)) {
                 $this->setTableField($table, $field);
@@ -99,7 +99,7 @@ class NodeModelDBGenerator {
 
     private function setTableField($table, $field) {
         $tableField = null;
-        switch($field->fieldType->name) {
+        switch($field->field_type->name) {
             case FieldType::Text:
                 $tableField = $table->string($field->formattedTitle, 255);
                 break;
@@ -147,7 +147,7 @@ class NodeModelDBGenerator {
             $tableName = self::getTableName($nodeType->name, Settings::NodeModelPrefix);
             Schema::dropIfExists($tableName);
 
-            foreach($nodeType->fields as $field) {
+            foreach($nodeType->attributes_fields as $field) {
                 $fieldsTableName = self::getTableName($field->formattedTitle, Settings::NodeModelFieldPrefix);
                 Schema::dropIfExists($fieldsTableName);
             }

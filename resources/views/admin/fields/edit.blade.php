@@ -17,7 +17,7 @@
                         
                         @include('blocks.model', ['field' => 'title'])
                         
-                        @include('blocks.model', ['field' => 'fieldType'])
+                        @include('blocks.model', ['field' => 'attribute_field_type'])
 
                         <div class="ln_solid"></div>
 

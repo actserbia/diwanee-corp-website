@@ -106,17 +106,20 @@ trait ModelDataManager {
                 
                 $filterRelationSettings = $model->getRelationSettings($filterFieldNameList[0]);
                 
-                $ids = [];
-                foreach($filterRelationItems as $item) {
-                    $ids[] = $item->id;
-                }
-                $query->whereIn($filterRelationSettings['foreignKey'], $ids);
+                $query->whereIn($filterRelationSettings['foreignKey'], self::getIds($filterRelationItems));
             } else {
                 $query->whereIn($filterField, $filterValues);
             }
         }
         
         return $query;
-        
+    }
+    
+    private static function getIds($items) {
+        $ids = [];
+        foreach($items as $item) {
+            $ids[] = $item->id;
+        }
+        return $ids;
     }
 }

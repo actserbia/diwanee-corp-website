@@ -83,7 +83,7 @@ class AdminNodesController extends Controller {
         
         Validators::nodesFormValidator($data)->validate();
 
-        $object = new Node(['node_type_id' => $data['nodeType']]);
+        $object = new Node(['node_type_id' => $data['node_type']]);
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         

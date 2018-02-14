@@ -26,8 +26,8 @@ class AdminTagsController extends Controller {
         $object = new Tag;
 
         $tags = [];
-        if(isset($data['tagType'])) {
-            $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['tagType'])->get();
+        if(isset($data['tag_type'])) {
+            $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['tag_type'])->get();
         }
 
         return view('admin.tags.list', compact('object', 'tags'));

@@ -15,7 +15,7 @@
                     <form id="data_form" method="post" action="{{ route('nodes.store') }}" data-parsley-validate class="form-horizontal form-label-left">
                         {{ csrf_field() }}
                         
-                        @include('blocks.model', ['field' => 'nodeType'])
+                        @include('blocks.model', ['field' => 'node_type'])
 
                         <div class="ln_solid"></div>
                         

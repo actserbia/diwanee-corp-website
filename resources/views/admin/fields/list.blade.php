@@ -15,7 +15,7 @@
                             <tr>
                                 <th>@lang('blade_templates.global.id')</th>
                                 <th>@lang('models_labels.Field.title')</th>
-                                <th>@lang('models_labels.Field.fieldType_label')</th>
+                                <th>@lang('models_labels.Field.field_type_label')</th>
                                 <th>@lang('blade_templates.global.created')</th>
                                 <th>@lang('blade_templates.global.actions')</th>
                             </tr>
@@ -24,7 +24,7 @@
                             <tr>
                                 <th>@lang('blade_templates.global.id')</th>
                                 <th>@lang('models_labels.Field.title')</th>
-                                <th>@lang('models_labels.Field.fieldType_label')</th>
+                                <th>@lang('models_labels.Field.field_type_label')</th>
                                 <th>@lang('blade_templates.global.created')</th>
                                 <th>@lang('blade_templates.global.actions')</th>
                             </tr>
@@ -34,7 +34,7 @@
                         <tr>
                             <td>{{ $object->id }}</td>
                             <td>{{ $object->title }}</td>
-                            <td>{{ $object->fieldType->name }}</td>
+                            <td>{{ $object->field_type->name }}</td>
                             <td>{{ $object->created_at }}</td>
                             <td>
                                 <a href="{{ route('fields.edit', ['id' => $object->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>

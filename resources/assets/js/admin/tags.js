@@ -88,7 +88,7 @@ $(document).ready(function() {
         return tags;
     };
 
-    $('#tagType').change(function() {
+    $('#tag_type').change(function() {
         $.ajax({
             type: 'GET',
             url: '/admin/tags-list',

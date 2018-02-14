@@ -13,7 +13,7 @@ class NodeType extends AppModel {
 
     protected $fillable = ['name'];
 
-    protected $allFields = ['id', 'name', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allAttributesFields = ['id', 'name', 'created_at', 'updated_at', 'deleted_at'];
     
     protected $allFieldsFromPivots = [];
 
@@ -26,41 +26,41 @@ class NodeType extends AppModel {
     ];
 
     protected $relationsSettings = [
-        'fields' => [
+        'attributes_fields' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Field',
             'pivot' => 'node_type_field',
             'foreignKey' => 'node_type_id',
             'relationKey' => 'field_id',
-            'filters' => ['fieldType.category' => [FieldTypeCategory::Field]],
+            'filters' => ['field_type.category' => [FieldTypeCategory::Attribute]],
             'sortBy' => 'ordinal_number',
             'extraFields' => ['active', 'required']
         ],
       
-        'tags' => [
+        'tags_fields' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Field',
             'pivot' => 'node_type_field',
             'foreignKey' => 'node_type_id',
             'relationKey' => 'field_id',
-            'filters' => ['fieldType.category' => [FieldTypeCategory::Tag]],
+            'filters' => ['field_type.category' => [FieldTypeCategory::Tag]],
             'sortBy' => 'ordinal_number',
             'extraFields' => ['active', 'required', 'multiple', 'sortable']
         ],
       
-        'sirTrevor' => [
+        'sir_trevor_fields' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Field',
             'pivot' => 'node_type_field',
             'foreignKey' => 'node_type_id',
             'relationKey' => 'field_id',
-            'filters' => ['fieldType.category' => [FieldTypeCategory::SirTrevor]],
+            'filters' => ['field_type.category' => [FieldTypeCategory::SirTrevor]],
             'sortBy' => 'ordinal_number',
             'extraFields' => ['active', 'required']
         ]
     ];
     
-    protected $multipleFields = ['fields', 'tags', 'sirTrevor'];
+    protected $multipleFields = ['attributes_fields', 'tags_fields', 'sir_trevor_fields'];
 
     protected $dependsOn = [];
     

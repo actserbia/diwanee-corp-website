@@ -32,7 +32,7 @@ class Rules {
         $tagIds = is_array($value) ? $value : [$value];
         foreach($tagIds as $tagId) {
             $tag = Tag::find($tagId);
-            if(!isset($tag) || $tag->tagType->id != $parameters[0]) {
+            if(!isset($tag) || $tag->tag_type->id != $parameters[0]) {
                 return false;
             }
         }

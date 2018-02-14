@@ -14,7 +14,7 @@ class NodeModelClassGenerator {
     private $oldFilepath = null;
 
     private $fillable = [];
-    private $allFields = ['id', 'created_at', 'updated_at', 'deleted_at'];
+    private $allAttributesFields = ['id', 'created_at', 'updated_at', 'deleted_at'];
     private $requiredFields = [];
     private $attributeType = [];
     private $defaultFieldsValues = [];
@@ -58,9 +58,9 @@ class NodeModelClassGenerator {
     }
 
     private function populateData() {
-        foreach($this->model->fields as $field) {
+        foreach($this->model->attributes_fields as $field) {
             $this->fillable[] = $field->formattedTitle;
-            $this->allFields[] = $field->formattedTitle;
+            $this->allAttributesFields[] = $field->formattedTitle;
 
             if($field->pivot->required) {
                 $this->requiredFields[] = $field->formattedTitle;
@@ -77,7 +77,7 @@ class NodeModelClassGenerator {
     private function getAttributeType($field) {
         $attributeType = 'Models::AttributeType_Text';
 
-        switch($field->fieldType->name) {
+        switch($field->field_type->name) {
             case FieldType::Integer:
                 $attributeType = 'Models::AttributeType_Number';
                 break;
@@ -104,7 +104,7 @@ class NodeModelClassGenerator {
         $this->content .= str_repeat(' ', 8) . 'use SoftDeletes;' . PHP_EOL . PHP_EOL;
 
         $this->addFormattedList('fillable');
-        $this->addFormattedList('allFields');
+        $this->addFormattedList('allAttributesFields');
         $this->addFormattedList('requiredFields');
         $this->addFormattedList('defaultFieldsValues');
         $this->addFormattedListWithKeys('attributeType');

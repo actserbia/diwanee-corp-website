@@ -42,7 +42,7 @@ return [
         'label_single' => 'tag',
         'label_plural' => 'Tags',
         'id' => 'Id',
-        'tagType_label' => 'Type',
+        'tag_type_label' => 'Type',
         'name' => 'Name',
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
@@ -62,9 +62,9 @@ return [
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
-        'fields_label' => 'Fields',
-        'tags_label' => 'Tags',
-        'sirTrevor_label' => 'Sir Trevor Fields'
+        'attributes_fields_label' => 'Fields',
+        'tags_fields_label' => 'Tags',
+        'sir_trevor_fields_label' => 'Sir Trevor Fields'
     ],
   
     'Field' => [
@@ -72,7 +72,8 @@ return [
         'label_plural' => 'Fields',
         'id' => 'Id',
         'title' => 'Title',
-        'fieldType_label' => 'Type',
+        'field_type_label' => 'Type',
+        'attribute_field_type_label' => 'Type',
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
@@ -91,7 +92,7 @@ return [
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
-        'nodeType_label' => 'Type',
+        'node_type_label' => 'Type',
         'content' => 'Content'
     ]
 ];

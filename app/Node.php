@@ -10,7 +10,7 @@ class Node extends AppModel {
     use SoftDeletes;
     use NodeModelManager;
 
-    protected $allFields = ['id', 'title', 'status', 'node_type_id', 'author_id', 'created_at', 'updated_at', 'deleted_at', 'elements_count'];
+    protected $allAttributesFields = ['id', 'title', 'status', 'node_type_id', 'author_id', 'created_at', 'updated_at', 'deleted_at', 'elements_count'];
 
     protected $fillable = ['title', 'status', 'node_type_id', 'author_id'];
 
@@ -26,7 +26,7 @@ class Node extends AppModel {
     protected $defaultDropdownColumn = 'title';
 
     protected $relationsSettings = [
-        'nodeType' => [
+        'node_type' => [
             'relationType' => 'belongsTo',
             'model' => 'App\\NodeType',
             'foreignKey' => 'node_type_id'
@@ -42,16 +42,14 @@ class Node extends AppModel {
             'pivot' => 'node_tag',
             'foreignKey' => 'node_id',
             'relationKey' => 'tag_id',
-            'sortBy' => 'ordinal_number',
-            'fillable' => false
+            'sortBy' => 'ordinal_number'
         ],
         'elements' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Element',
             'pivot' => 'node_element',
             'foreignKey' => 'node_id',
-            'relationKey' => 'element_id',
-            'fillable' => false
+            'relationKey' => 'element_id'
         ]
     ];
 

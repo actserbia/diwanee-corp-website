@@ -13,11 +13,11 @@ class Field extends AppModel {
 
     protected $fillable = ['title'];
 
-    protected $allFields = ['id', 'title', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allAttributesFields = ['id', 'title', 'created_at', 'updated_at', 'deleted_at'];
     
     protected $allFieldsFromPivots = ['active', 'required', 'multiple', 'sortable'];
 
-    protected $requiredFields = ['title', 'fieldType'];
+    protected $requiredFields = ['title', 'field_type', 'attribute_field_type'];
     
     protected $defaultFieldsValues = [
         'active' => '1'
@@ -33,11 +33,16 @@ class Field extends AppModel {
     ];
 
     protected $relationsSettings = [
-        'fieldType' => [
+        'field_type' => [
+            'relationType' => 'belongsTo',
+            'model' => 'App\\FieldType',
+            'foreignKey' => 'field_type_id'
+        ],
+        'attribute_field_type' => [
             'relationType' => 'belongsTo',
             'model' => 'App\\FieldType',
             'foreignKey' => 'field_type_id',
-            'filters' => ['category' => [FieldTypeCategory::Field]]
+            'filters' => ['category' => [FieldTypeCategory::Attribute]]
         ]
     ];
 

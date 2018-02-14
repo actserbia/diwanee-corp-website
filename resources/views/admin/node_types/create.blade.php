@@ -17,11 +17,11 @@
                         
                         @include('blocks.model', ['field' => 'name'])
                         
-                        @include('blocks.model', ['field' => 'fields'])
+                        @include('blocks.model', ['field' => 'attributes_fields'])
                         
-                        @include('blocks.model', ['field' => 'tags'])
+                        @include('blocks.model', ['field' => 'tags_fields'])
                         
-                        @include('blocks.model', ['field' => 'sirTrevor'])
+                        @include('blocks.model', ['field' => 'sir_trevor_fields'])
 
                         <div class="ln_solid"></div>
 

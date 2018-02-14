@@ -13,11 +13,11 @@ class Tag extends AppModel {
     
     protected $fillable = ['name'];
 
-    protected $allFields = ['id', 'name', 'created_at', 'updated_at', 'deleted_at', 'tag_type_id'];
+    protected $allAttributesFields = ['id', 'name', 'created_at', 'updated_at', 'deleted_at', 'tag_type_id'];
     
     protected $allFieldsFromPivots = [];
 
-    protected $requiredFields = ['name', 'tagType'];
+    protected $requiredFields = ['name', 'tag_type'];
 
     protected $attributeType = [
         'parent_id' => Models::AttributeType_Number,
@@ -27,7 +27,7 @@ class Tag extends AppModel {
     protected $defaultDropdownColumn = 'name';
 
     protected $relationsSettings = [
-        'tagType' => [
+        'tag_type' => [
             'relationType' => 'belongsTo',
             'model' => 'App\\FieldType',
             'foreignKey' => 'tag_type_id',
@@ -52,17 +52,17 @@ class Tag extends AppModel {
     protected $multipleFields = ['parents', 'children'];
     
     protected $dependsOn = [
-        'parents' => ['tagType'],
-        'children' => ['tagType']
+        'parents' => ['tag_type'],
+        'children' => ['tag_type']
     ];
 
     public function parentsRelationValues($dependsOnValues = null) {
-        $fieldType = $this->getDependsOnValue('tagType', $dependsOnValues);
+        $fieldType = $this->getDependsOnValue('tag_type', $dependsOnValues);
         return isset($fieldType->id) ? Tag::where('tag_type_id', '=', $fieldType->id)->where('id', '!=', $this->id)->get() : [];
     }
 
     public function childrenRelationValues($dependsOnValues = null) {
-        $fieldType = $this->getDependsOnValue('tagType', $dependsOnValues);
+        $fieldType = $this->getDependsOnValue('tag_type', $dependsOnValues);
         return isset($fieldType->id) ? Tag::where('tag_type_id', '=', $fieldType->id)->where('id', '!=', $this->id)->get() : [];
     }
 

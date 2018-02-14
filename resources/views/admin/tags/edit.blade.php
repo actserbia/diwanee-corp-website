@@ -17,7 +17,7 @@
                         
                         @include('blocks.model', ['field' => 'name'])
 
-                        @include('blocks.model', ['field' => 'tagType'])
+                        @include('blocks.model', ['field' => 'tag_type'])
 
                         @include('blocks.model', ['field' => 'parents', 'onlyLabel' => true])
                         

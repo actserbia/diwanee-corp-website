@@ -21,7 +21,7 @@ class User extends Authenticatable
 
     protected $hidden = ['password', 'remember_token',];
     
-    protected $allFields = ['id', 'name', 'email', 'password', 'role', 'active', 'api_token', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allAttributesFields = ['id', 'name', 'email', 'password', 'role', 'active', 'api_token', 'created_at', 'updated_at', 'deleted_at'];
     
     protected $allFieldsFromPivots = [];
     

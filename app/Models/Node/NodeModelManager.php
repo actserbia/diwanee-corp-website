@@ -30,7 +30,7 @@ trait NodeModelManager {
     }
 
     private function populateFieldsData($nodeTypeId = null) {
-        $nodeType = isset($this->nodeType) ? $this->nodeType : NodeType::find($nodeTypeId);
+        $nodeType = isset($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
 
         $this->relationsSettings['additionalData'] = [
             'relationType' => 'hasOne',
@@ -41,8 +41,8 @@ trait NodeModelManager {
     }
 
     private function populateTagFieldsData($nodeTypeId = null) {
-        $nodeType = isset($this->nodeType) ? $this->nodeType : NodeType::find($nodeTypeId);
-        foreach($nodeType->tags as $tagField) {
+        $nodeType = isset($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
+        foreach($nodeType->tags_fields as $tagField) {
             $relationSettings = [
                 'parent' => 'tags',
                 'filters' => ['tag_type_id' => [$tagField->field_type_id]],
@@ -76,9 +76,9 @@ trait NodeModelManager {
     protected function getAllAttributes() {
         if(isset($this->relationsSettings['additionalData'])) {
             $model = new $this->relationsSettings['additionalData']['model'];
-            return array_merge($this->allFields, $model->getAllAttributes());
+            return array_merge($this->allAttributesFields, $model->getAllAttributes());
         } else {
-            return $this->allFields;
+            return $this->allAttributesFields;
         }
     }
 
