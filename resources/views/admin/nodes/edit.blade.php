@@ -55,5 +55,5 @@
 @endsection
 
 @push('scripts')
-{!! SirTrevor::scripts($stFields) !!}
+{!! SirTrevor::scripts($stFields, $stReqFields) !!}
 @endpush

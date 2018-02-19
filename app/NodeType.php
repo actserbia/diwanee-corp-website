@@ -75,4 +75,22 @@ class NodeType extends AppModel {
         $classGenerator = new NodeModelClassGenerator($this, $oldName);
         $classGenerator->generate();
     }
+
+    public function getSTFieldsArray() {
+        $stFields = array();
+        foreach($this->sir_trevor_fields as $field) {
+            $stFields[] = str_replace(' ', '', $field->title);
+        }
+        return $stFields;
+    }
+
+    public function getRequiredSTFieldsArray() {
+        $reqFields = array();
+        foreach($this->sir_trevor_fields as $field) {
+            if($field->pivot->required) {
+                $reqFields[] = str_replace(' ', '', $field->title);
+            }
+        }
+        return $reqFields;
+    }
 }

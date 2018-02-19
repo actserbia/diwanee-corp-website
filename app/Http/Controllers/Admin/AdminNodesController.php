@@ -65,8 +65,9 @@ class AdminNodesController extends Controller {
         if(isset($data['node_type_id'])) {
             $nodeType = $data['node_type_id'];
             $object = new Node(['node_type_id' => $data['node_type_id']]);
-            $stFields = $this->getSTFieldsArray($object);
-            return view('blocks.node-fields', compact('object', 'nodeType', 'stFields'));
+            $stFields = $object->node_type->getSTFieldsArray();
+            $stReqFields = $object->node_type->getRequiredSTFieldsArray();
+            return view('blocks.node-fields', compact('object', 'nodeType', 'stFields', 'stReqFields'));
         }
     }
 
@@ -100,9 +101,10 @@ class AdminNodesController extends Controller {
      */
     public function edit($id) {
         $object = Node::findOrFail($id);
-        $stFields = $this->getSTFieldsArray($object);
+        $stFields = $object->node_type->getSTFieldsArray();
+        $stReqFields = $object->node_type->getRequiredSTFieldsArray();
 
-        return view('admin.nodes.edit', compact('object', 'stFields'));
+        return view('admin.nodes.edit', compact('object', 'stFields', 'stReqFields'));
     }
 
     /**
@@ -138,11 +140,4 @@ class AdminNodesController extends Controller {
         return redirect()->route('nodes.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'node', 'name' => $object->name]));
     }
 
-    public function getSTFieldsArray($node) {
-        $stFields = array();
-        foreach($node->node_type->sir_trevor_fields as $field) {
-            $stFields[] = str_replace(' ', '', $field->title);
-        }
-        return $stFields;
-    }
 }
