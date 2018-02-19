@@ -167,7 +167,7 @@ SirTrevor.Blocks.SliderImage = SirTrevor.Blocks.DiwaneeImage.extend({
 });
 
 SirTrevor.Locales.en.blocks['diwanee video'] = {'title': 'Video'};
-SirTrevor.Locales.en.general.paste = 'Paste Youtube URL or Kaltura ID here';
+SirTrevor.Locales.en.general.paste = 'Paste Youtube/Vimeo/Vine/Dailymotion URL or Kaltura ID here';
 SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
     type: 'diwanee video',
     icon_name: 'video',
@@ -175,25 +175,25 @@ SirTrevor.Blocks.DiwaneeVideo = SirTrevor.Blocks.Video.extend({
     droppable: false,
 
     providers: {
-//        vimeo: {
-//            regex: /(?:http[s]?:\/\/)?(?:www.)?vimeo\.co(?:.+(?:\/)([^\/].*)+$)/,
-//            html: "<iframe src=\"<%= protocol %>//player.vimeo.com/video/<%= remote_id %>?title=0&byline=0\" width=\"580\" height=\"320\" frameborder=\"0\"></iframe>"
-//        },
+        vimeo: {
+            regex: /(?:http[s]?:\/\/)?(?:www.)?vimeo\.co(?:.+(?:\/)([^\/].*)+$)/,
+            html: "<iframe src=\"<%= protocol %>//player.vimeo.com/video/<%= remote_id %>?title=0&byline=0\" width=\"580\" height=\"320\" frameborder=\"0\"></iframe>"
+        },
         youtube: {
             //regex: /^.*(?:(?:youtu\.be\/)|(?:youtube\.com)\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*)/,
             //regex: /(?:http[s]?:\/\/)?(?:www.)?youtu\.be|youtube\.com\/v\/|u\/\w\/|embed\/|watch\?v=([^\W]*)/,
             regex: /(?:http[s]?:\/\/)?(?:www.)?(?:(?:(?:youtu\.be)|(?:youtube\.com))\/(?:v\/|u\/\w\/|embed\/|watch\?v=|\&v=)?)([^#\&\?]*)/,
             html: "<iframe src=\"<%= protocol %>//www.youtube.com/embed/<%= remote_id %>\" width=\"580\" height=\"320\" frameborder=\"0\" allowfullscreen></iframe>"
         },
-//        vine: {
-//            regex: /(?:http[s]?:\/\/)?(?:www.)?vine.co\/v\/([^\W]*)/,
-//            html: "<iframe class=\"vine-embed\" src=\"<%= protocol %>//vine.co/v/<%= remote_id %>/embed/simple\" width=\"<%= width %>\" height=\"<%= width %>\" frameborder=\"0\"></iframe><script async src=\"http://platform.vine.co/static/scripts/embed.js\" charset=\"utf-8\"></script>",
-//            square: true
-//        },
-//        dailymotion: {
-//            regex: /(?:http[s]?:\/\/)?(?:www.)?dai(?:.ly|lymotion.com\/video)\/([^\W_]*)/,
-//            html: "<iframe src=\"<%= protocol %>//www.dailymotion.com/embed/video/<%= remote_id %>\" width=\"580\" height=\"320\" frameborder=\"0\"></iframe>"
-//        },
+        vine: {
+            regex: /(?:http[s]?:\/\/)?(?:www.)?vine.co\/v\/([^\W]*)/,
+            html: "<iframe class=\"vine-embed\" src=\"<%= protocol %>//vine.co/v/<%= remote_id %>/embed/simple\" width=\"<%= width %>\" height=\"<%= width %>\" frameborder=\"0\"></iframe><script async src=\"http://platform.vine.co/static/scripts/embed.js\" charset=\"utf-8\"></script>",
+            square: true
+        },
+        dailymotion: {
+            regex: /(?:http[s]?:\/\/)?(?:www.)?dai(?:.ly|lymotion.com\/video)\/([^\W_]*)/,
+            html: "<iframe src=\"<%= protocol %>//www.dailymotion.com/embed/video/<%= remote_id %>\" width=\"580\" height=\"320\" frameborder=\"0\"></iframe>"
+        },
         kaltura: {
             regex: /([^\W]*)/,
             html: "<iframe src=\"http://www.kaltura.com/p/<%= settings.partner_id %>/sp/<%= settings.partner_id %>00/embedIframeJs/uiconf_id/<%= settings.uiconf_id %>/partner_id/<%= settings.partner_id %>?iframeembed=true&playerId=<%= settings.player_id %>&entry_id=<%= remote_id %>\" width=\"580\" height=\"320\"></iframe>",
