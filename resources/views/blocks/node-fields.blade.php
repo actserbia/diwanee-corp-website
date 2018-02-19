@@ -26,4 +26,4 @@
         </div>
     </div>
 </form>
-{!! SirTrevor::scripts() !!}
+{!! SirTrevor::scripts($stFields) !!}
