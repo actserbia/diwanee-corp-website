@@ -5,6 +5,7 @@ use App\Field;
 use App\Constants\FieldTypeCategory;
 use App\Constants\FieldType as FieldTypeList;
 use App\Constants\ElementType;
+use App\Utils\Utils;
 
 class FieldTypesTableSeeder extends Seeder
 {
@@ -27,12 +28,12 @@ class FieldTypesTableSeeder extends Seeder
         $elementTypes = ElementType::getAll();
         foreach($elementTypes as $elementType) {
             $fieldType = factory(FieldType::class)->create([
-                'name' => __('constants.ElementType.' . $elementType),
+                'name' => Utils::getFormattedName($elementType, '_', ' '),
                 'category' => FieldTypeCategory::SirTrevor
             ]);
             
             factory(Field::class)->create([
-                'title' => __('constants.ElementType.' . $elementType),
+                'title' => Utils::getFormattedName($elementType, '_', ' '),
                 'field_type_id' => $fieldType->id
             ]);
         }

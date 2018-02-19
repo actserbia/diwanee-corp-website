@@ -115,8 +115,7 @@ trait NodeModelManager {
             Tag::filter($relationsSettings['filters'], $query);
         }
 
-        return $query->get();
-        //return $query->has('parents', '=', '0')->get();
+        return $query->has('parents', '=', '0')->get();
     }
 
     public function formTagsSelectedValues($relation, $tags = null) {
@@ -129,13 +128,11 @@ trait NodeModelManager {
             $relationItems = $this->$relation;
         }
 
-        if($tags === null) {
-            return $relationItems;
-        }
+        $tagsFromLevel = $this->formTagsRelationValues($relation, $tags);
 
         $tagItems = [];
         foreach($relationItems as $relationItem) {
-            foreach($tags as $tag) {
+            foreach($tagsFromLevel as $tag) {
                 if($relationItem->id === $tag->id) {
                     $tagItems[] = $relationItem;
                 }

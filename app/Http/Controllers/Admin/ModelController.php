@@ -36,12 +36,14 @@ class ModelController extends Controller {
 
         $field = $params['field'];
         $object = isset($params['model_id']) ? $params['model']::find($params['model_id']) : new $params['model'];
-        $itemModel = $object->getRelationModel($field);
+        $itemModel = $object->getRelationModel($params['field']);
         $item = $itemModel::find($params['item_id']);
         $fullData = $params['full_data'];
         $isNew = true;
         
-        return view('blocks.model.form_relation_item', compact('object', 'field', 'item', 'fullData', 'isNew'));
+        $template = ($params['type'] === 'tags') ? 'form_tags_relation_item' : 'form_relation_item';
+        
+        return view('blocks.model.' . $template, compact('object', 'field', 'item', 'fullData', 'isNew'));
     }
 
     public function modelAddSubtags(Request $request) {

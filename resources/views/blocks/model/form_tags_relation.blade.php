@@ -4,7 +4,7 @@
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
         <select class="form-control relation tags-relation {{$object->isMultiple($field) ? 'relation-multiple' : ''}}"
-            id="{{ $field }}-{{ isset($level) ? $level : 1 }}" name="{{ $field }}"
+            id="{{ $field }}-{{ isset($level) ? $level : 1 }}" name="{{ $field }}{{ $object->isMultiple($field) ? '[]' : '' }}"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
             data-model-id="{{ $object->id }}"
@@ -12,6 +12,7 @@
             data-sortable="1"
             data-full-data="0"
             data-level="{{ isset($level) ? $level : 1 }}"
+            data-selected-values="1"
             @if($object->isRequired($field) && !$object->isMultiple($field)) required @endif
         >
                 <option value=""></option>
@@ -38,7 +39,7 @@
         <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
             <div id="selected-{{ $field }}-{{ isset($level) ? $level : 1 }}">
                 @foreach ($object->formTagsSelectedValues($field, isset($tags) ? $tags : null) as $item)
-                    @include('blocks.model.form_relation_item', ['item' => $item, 'selectFieldId' => $field . '-' . (isset($level) ? $level : '1')])
+                    @include('blocks.model.form_tags_relation_item', ['item' => $item])
                 @endforeach
             </div>
         </div>

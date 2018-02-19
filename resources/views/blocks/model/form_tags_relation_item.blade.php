@@ -1,4 +1,4 @@
-<div id="relation-item-{{ $field }}-{{ $item->id }}" class="relation-item" @if($object->isSortable($field)) draggable="true" @endif>
+<div id="relation-item-{{ $field }}-{{ isset($level) ? $level : 1}}-{{ $item->id }}" class="relation-item" @if($object->isSortable($field)) draggable="true" @endif>
     <input type="hidden" value="{{ $item->id }}" id="{{ $field }}" name="{{ $field }}[]" />
     @if (isset($fullData) && $fullData)
         @foreach ($item->getAutomaticRenderAtributesAndRelations() as $itemFieldName)
@@ -17,7 +17,8 @@
             id="{{ $field }}-remove-selected" 
             class="remove-selected" 
             data-id="{{ $item->id }}" 
-            data-field="{{ $field }}">
+            data-field="{{ $field }}"
+            data-level="{{ isset($level) ? $level : 1}}">
             <i class="fa fa-times"></i>
         </a>
     @endif

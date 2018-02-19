@@ -3,7 +3,8 @@ $(document).ready(function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
                 var selectedItemId = $(object).val();
-                $(object).val('');
+                console.log(selectedItemId);
+                //$(object).val('');
                 
                 $.ajax({
                     type: 'GET',
@@ -13,7 +14,8 @@ $(document).ready(function() {
                         model_id: $(object).data('model-id'),
                         field: $(object).data('relation'),
                         item_id: selectedItemId,
-                        full_data: $(object).data('full-data')
+                        full_data: $(object).data('full-data'),
+                        type: $(object).hasClass('tags-relation') ? 'tags' : ''
                     },
                     success: function (data) {
                         $('[id=selected-' + $(object).attr('id') + ']').append(data);
@@ -31,6 +33,9 @@ $(document).ready(function() {
     $.fn.addRemoveSelectedEventsAndDisableSelected = function() {
         $(this).each(function(index, object) {
             var selectFieldName = $(object).data('field');
+            if(typeof $(object).data('level') !== 'undefined') {
+                selectFieldName += '-' + $(object).data('level');
+            }
             
             $(object).click(function() {
                 $('option[value="' + $(object).data('id') + '"]', $('select[id=' + selectFieldName + ']')).removeAttr('disabled');
@@ -207,4 +212,18 @@ $(document).ready(function() {
     $('.relation-multiple').showOrHide();
     
     $('.relation-item[draggable=true]').setRelationItemsDraggableAndDroppable();
+    
+    
+    
+    $.fn.setSelected = function() {
+        $(this).each(function(index, object) {
+            var selectedValue = $(object).data('selected-values');
+            $(object).val(selectedValue);
+            
+             var selectedItemId = $(object).val();
+                console.log(selectedItemId);
+            $(object).trigger('change');
+        });
+    };
+    $('.tags-relation').setSelected();
 });

@@ -24,7 +24,9 @@ class MultipleRelationItems extends RelationItems {
         
         if(isset($data[$this->relation])) {
             foreach($data[$this->relation] as $relationItemId) {
-                $this->relationData[$relationItemId] = [];
+                if(!empty($relationItemId)) {
+                    $this->relationData[$relationItemId] = [];
+                }
             }
             
             foreach($data as $key => $values) {

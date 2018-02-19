@@ -3,6 +3,7 @@ $(document).ready(function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
                 var selectedTagsIds = [$(object).val()];
+                console.log(selectedTagsIds);
                 
                 //$('a[data-id=' + selectedItemId + ']', $('[id=selected-' + $(object).attr('id') + ']')).addRemoveSelectedEventsAndDisableSelected();
 
