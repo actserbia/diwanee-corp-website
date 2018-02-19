@@ -52,6 +52,7 @@ class Node extends AppModel {
             'pivot' => 'node_element',
             'foreignKey' => 'node_id',
             'relationKey' => 'element_id',
+            'sortBy' => 'ordinal_number',
             'automaticSave' => false
         ]
     ];
