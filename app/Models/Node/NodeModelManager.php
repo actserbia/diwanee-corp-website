@@ -4,7 +4,6 @@ namespace App\Models\Node;
 use App\Utils\Utils;
 use App\Constants\Settings;
 use App\Tag;
-use Request;
 use Illuminate\Database\Eloquent\Collection;
 
 trait NodeModelManager {
@@ -51,9 +50,13 @@ trait NodeModelManager {
                 'automaticRender' => true,
                 'automaticSave' => true
             ];
-            $this->relationsSettings[Utils::getFormattedDBName($tagField->title)] = $relationSettings;
+            $this->relationsSettings[$tagField->formattedTitle] = $relationSettings;
             
-            $this->multipleFields[Utils::getFormattedDBName($tagField->title)] = $tagField->pivot->multiple ? [false, true, true, true, true] : [false, false, false, false, false];
+            if($tagField->pivot->required) {
+                $this->requiredFields[] = $tagField->formattedTitle;
+            }
+            
+            $this->multipleFields[$tagField->formattedTitle] = $tagField->pivot->multiple ? [false, true, true, true, true] : [false, false, false, false, false];
         }
     }
 
@@ -168,5 +171,4 @@ trait NodeModelManager {
         }
         return $items;
     }
-
 }

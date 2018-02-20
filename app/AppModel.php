@@ -47,8 +47,8 @@ class AppModel extends Model {
         }
         $this->populateBelongsToRelations($data);
         $this->save();
-
-        $this->saveBelongsToManyRelations($data);
+        
+        $this->saveRelations($data);
     }
     
     protected function deleteRelationItems($relation) {

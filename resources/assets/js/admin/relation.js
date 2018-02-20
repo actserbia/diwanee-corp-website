@@ -13,7 +13,7 @@ $(document).ready(function() {
                         url: '/admin/model/add-relation-item',
                         data: {
                             itemId: selectedItemId,
-                            type: $(object).hasClass('tags-relation') ? 'tags' : '',
+                            type: $(object).hasClass('node-tags-relation') ? 'tags' : '',
                             data: $(object).data()
                         },
                         success: function (data) {
@@ -227,5 +227,5 @@ $(document).ready(function() {
             });
         });
     };
-    $('.tags-relation').setSelectedValues();
+    $('.node-tags-relation').setSelectedValues();
 });

@@ -38,7 +38,7 @@
         <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
             <div id="selected-{{ $field }}">
                 @foreach ($object->formSelectedValues($field) as $item)
-                    @include('blocks.model.form_relation_item', ['item' => $item])
+                    @include('blocks.model.relation.form_relation_item', ['item' => $item])
                 @endforeach
             </div>
         </div>

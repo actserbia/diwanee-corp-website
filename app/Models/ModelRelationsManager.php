@@ -91,24 +91,8 @@ trait ModelRelationsManager {
 
     private function getRelationItems($relation) {
         $relationsSettings = $this->getRelationSettings($relation);
-        $relationType = $relationsSettings['relationType'];
-        switch($relationsSettings['relationType']) {
-            case 'belongsToMany':
-                $query = $this->$relationType($relationsSettings['model'], $relationsSettings['pivot'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                break;
-
-            case 'belongsTo':
-                $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey']);
-                break;
-
-            case 'hasMany':
-                $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                break;
-
-            case 'hasOne':
-                $query = $this->$relationType($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                break;
-        }
+        
+        $query = $this->getAllRelationItemsQuery($relationsSettings);
             
         if(isset($relationsSettings['filters'])) {
             $relationModel = $this->getRelationModel($relation);
@@ -117,6 +101,28 @@ trait ModelRelationsManager {
 
         $this->relationExtraData($query, $relation);
 
+        return $query;
+    }
+    
+    private function getAllRelationItemsQuery($relationsSettings) {
+        switch($relationsSettings['relationType']) {
+            case 'belongsToMany':
+                $query = $this->belongsToMany($relationsSettings['model'], $relationsSettings['pivot'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
+                break;
+
+            case 'belongsTo':
+                $query = $this->belongsTo($relationsSettings['model'], $relationsSettings['foreignKey']);
+                break;
+
+            case 'hasMany':
+                $query = $this->hasMany($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
+                break;
+
+            case 'hasOne':
+                $query = $this->hasOne($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
+                break;
+        }
+        
         return $query;
     }
     
@@ -206,16 +212,12 @@ trait ModelRelationsManager {
         }
     }
     
-    public function saveRelationItems($relation, $data) {
-        RelationItems::saveRelationItems($this, $relation, $data);
-        $this->load($relation);
-    }
-    
-    public function saveBelongsToManyRelations($data) {
+    public function saveRelations($data) {
         foreach(array_keys($this->relationsSettings) as $relation) {
             $relationSettings = $this->getRelationSettings($relation);
-            if($relationSettings['relationType'] === 'belongsToMany' && (!isset($relationSettings['automaticSave']) || $relationSettings['automaticSave'])) {
-                $this->saveRelationItems($relation, $data);
+            if(in_array($relationSettings['relationType'], ['belongsToMany', 'hasOne']) && (!isset($relationSettings['automaticSave']) || $relationSettings['automaticSave'])) {
+                RelationItems::save($this, $relation, $data);
+                $this->load($relation);
             }
         }
     }
@@ -223,22 +225,11 @@ trait ModelRelationsManager {
     public function populateBelongsToRelations($data) {
         foreach(array_keys($this->relationsSettings) as $relation) {
             $relationSettings = $this->getRelationSettings($relation);
-            if($relationSettings['relationType'] === 'belongsTo' && isset($data[$relation])) {
+            if($relationSettings['relationType'] === 'belongsTo' && (!isset($relationSettings['automaticSave']) || $relationSettings['automaticSave']) && isset($data[$relation])) {
                 $attribute = $relationSettings['foreignKey'];
                 $this->$attribute = $data[$relation];
             }
         }
-    }
-    
-    public function relationIds($relation) {
-        $ids = [];
-
-        foreach($this->$relation as $relationNode) {
-            $ids[] = $relationNode->id;
-            $ids = array_merge($ids, $relationNode->relationIds($relation));
-        }
-
-        return $ids;
     }
     
     protected function getAutomaticRenderRelations() {

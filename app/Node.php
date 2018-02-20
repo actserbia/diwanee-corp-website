@@ -80,13 +80,6 @@ class Node extends AppModel {
         parent::saveData($data);
         
         $this->saveElements($data);
-
-        $additionalData = isset($this->additionalData) ? $this->additionalData : new $this->relationsSettings['additionalData']['model'];
-        $additionalData->node()->associate($this);
-        if(count($additionalData->fillable) > 0) {
-            $additionalData->fill($data);
-        }        
-        $additionalData->save();
     }
 
     private function saveElements(array $data) {

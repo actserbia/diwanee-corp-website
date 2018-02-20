@@ -4,7 +4,7 @@ namespace App\Models\RelationItems;
 class MultipleRelationItems extends RelationItems {
     private $index = 0;
     
-    public function save() {
+    public function saveRelation() {
         $relation = $this->relation;
         
         foreach($this->object->$relation as $item) {

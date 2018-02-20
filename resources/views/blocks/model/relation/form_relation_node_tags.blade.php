@@ -1,9 +1,12 @@
 <div class="form-group{{ $errors->has($field) ? ' has-error' : '' }}">
     <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}" for="{{ $field }}">
-        {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
+        @if(!isset($level) || $level === 1)
+            {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
+        @endif
     </label>
+    
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-        <select class="form-control relation tags-relation {{$object->hasMultipleValues($field, isset($level) ? $level : 1) ? 'relation-multiple' : ''}}"
+        <select class="form-control relation node-tags-relation {{$object->hasMultipleValues($field, isset($level) ? $level : 1) ? 'relation-multiple' : ''}}"
             id="{{ $field }}-{{ isset($level) ? $level : 1 }}" name="{{ $field }}[]"
             data-relation="{{ $field }}"
             data-model-id="{{ $object->id }}"
@@ -41,7 +44,7 @@
         <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
             <div id="selected-{{ $field }}-{{ isset($level) ? $level : 1 }}">
                 @foreach ($object->formTagsSelectedValuesByLevel($field, isset($level) ? $level : 1, isset($checkSelected) ? $checkSelected : true) as $item)
-                    @include('blocks.model.form_relation_node_tags_item', ['item' => $item])
+                    @include('blocks.model.relation.form_relation_node_tags_item', ['item' => $item])
                 @endforeach
             </div>
         </div>

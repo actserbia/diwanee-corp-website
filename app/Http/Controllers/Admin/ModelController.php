@@ -46,8 +46,9 @@ class ModelController extends Controller {
         $itemModel = $object->getRelationModel($data['relation']);
         $item = $itemModel::find($params['itemId']);
         $fullData = $data['fullData'];
+        $isNew = true;
         
-        return view('blocks.model.form_relation_item', compact('object', 'field', 'item', 'fullData'));
+        return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData', 'isNew'));
     }
 
     private function modelNodeTagsAddTagItem($params) {
@@ -61,7 +62,7 @@ class ModelController extends Controller {
         $fullData = $data['fullData'];
         $isNew = true;
 
-        return view('blocks.model.form_relation_node_tags_item', compact('object', 'field', 'item', 'fullData', 'isNew', 'level'));
+        return view('blocks.model.relation.form_relation_node_tags_item', compact('object', 'field', 'item', 'fullData', 'isNew', 'level'));
     }
 
     public function modelNodeTagsAddTagSubtags(Request $request) {
@@ -81,7 +82,7 @@ class ModelController extends Controller {
             }
         }
 
-        return ($tags->count() === 0) ? '' : view('blocks.model.form_relation_node_tags', compact('object', 'field', 'tags', 'level', 'checkSelected'));
+        return ($tags->count() === 0) ? '' : view('blocks.model.relation.form_relation_node_tags', compact('object', 'field', 'tags', 'level', 'checkSelected'));
     }
 
     public function modelGetTagChildren(Request $request) {

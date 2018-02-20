@@ -2,7 +2,7 @@
 namespace App\Models\RelationItems;
 
 class SingleRelationItems extends RelationItems {
-    public function save() {
+    public function saveRelation() {
         if(!empty($this->relationData)) {
             $relationItemId = array_keys($this->relationData)[0];
             $relationItemData = $this->relationData[$relationItemId];

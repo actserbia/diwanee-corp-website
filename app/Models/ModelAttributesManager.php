@@ -12,7 +12,7 @@ trait ModelAttributesManager {
         'ordinal_number' => Models::AttributeType_Number
     ];
     
-    protected function getFillableAttributes() {
+    public function getFillableAttributes() {
         return $this->fillable;
     }
     

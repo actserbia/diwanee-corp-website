@@ -23,7 +23,7 @@ $(document).ready(function() {
             success: function (data) {
                 $('#node-fields').html(data);
 
-                $('.tags-relation').addAddSubtagsEvents();
+                $('.node-tags-relation').addAddSubtagsEvents();
                 $('.remove-selected').addRemoveSubtagsEvents();
 
                 $('.relation-multiple').addAddRelationItemSelectedEvents();

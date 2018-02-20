@@ -111,6 +111,16 @@ class Tag extends AppModel {
                 self::insertTagChildrens($tagData['id'], $tagData['children']);
             }
         }
+    }
+    
+    public function relationIds($relation) {
+        $ids = [];
 
+        foreach($this->$relation as $relationNode) {
+            $ids[] = $relationNode->id;
+            $ids = array_merge($ids, $relationNode->relationIds($relation));
+        }
+
+        return $ids;
     }
 }

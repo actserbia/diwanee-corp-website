@@ -111,6 +111,6 @@ $(document).ready(function() {
         });
     };
 
-    $('.tags-relation').addAddSubtagsEvents();
+    $('.node-tags-relation').addAddSubtagsEvents();
     $('.remove-selected').addRemoveSubtagsEvents();
 });
