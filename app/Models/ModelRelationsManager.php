@@ -240,18 +240,6 @@ trait ModelRelationsManager {
 
         return $ids;
     }
-
-    protected function getAutomaticRenderAtributes() {
-        $fields = [];
-
-        foreach($this->fillable as $field) {
-            if(strpos($field, '_id') === false) {
-                $fields[] = $field;
-            }
-        }
-
-        return $fields;
-    }
     
     protected function getAutomaticRenderRelations() {
         $fields = [];

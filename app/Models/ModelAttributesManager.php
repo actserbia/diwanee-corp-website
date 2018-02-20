@@ -71,4 +71,16 @@ trait ModelAttributesManager {
     private function defaultAttributeValue($field) {
         return isset($this->defaultFieldsValues[$field]) ? $this->defaultFieldsValues[$field] : null;
     }
+    
+    protected function getAutomaticRenderAtributes() {
+        $fields = [];
+
+        foreach($this->fillable as $field) {
+            if(strpos($field, '_id') === false) {
+                $fields[] = $field;
+            }
+        }
+
+        return $fields;
+    }
 }
