@@ -59,17 +59,19 @@ class NodeModelClassGenerator {
 
     private function populateData() {
         foreach($this->model->attributes_fields as $field) {
-            $this->fillable[] = $field->formattedTitle;
-            $this->allAttributesFields[] = $field->formattedTitle;
+            if($field->pivot->active) {
+                $this->fillable[] = $field->formattedTitle;
+                $this->allAttributesFields[] = $field->formattedTitle;
 
-            if($field->pivot->required) {
-                $this->requiredFields[] = $field->formattedTitle;
-            }
+                if($field->pivot->required) {
+                    $this->requiredFields[] = $field->formattedTitle;
+                }
 
-            $this->attributeType[$field->formattedTitle] = $this->getAttributeType($field);
+                $this->attributeType[$field->formattedTitle] = $this->getAttributeType($field);
 
-            if($field->pivot->multiple) {
-                $this->multipleFields[] = $field->formattedTitle;
+                if($field->pivot->multiple) {
+                    $this->multipleFields[$field->formattedTitle] = true;
+                }
             }
         }
     }
@@ -109,7 +111,7 @@ class NodeModelClassGenerator {
         $this->addFormattedList('defaultFieldsValues');
         $this->addFormattedListWithKeys('attributeType');
         $this->addFormattedListWithKeys('relationsSettings');
-        $this->addFormattedList('multipleFields');
+        $this->addFormattedListWithKeys('multipleFields');
 
         $this->content .= str_repeat(' ', 4) . '}' . PHP_EOL;
     }

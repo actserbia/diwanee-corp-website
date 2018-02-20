@@ -13,16 +13,16 @@
     @endif
 
     @if (isset($isNew) && $isNew || !isset($fullData) || !$fullData)
-        <a href=":javascript" 
-            id="{{ $field }}-remove-selected" 
-            class="remove-selected" 
-            data-id="{{ $item->id }}" 
+        <a href=":javascript"
+            id="{{ $field }}-remove-selected"
+            class="remove-selected"
+            data-id="{{ $item->id }}"
             data-field="{{ $field }}"
             data-level="{{ isset($level) ? $level : 1}}">
             <i class="fa fa-times"></i>
         </a>
     @endif
-    
+
     @if (isset($fullData) && $fullData)
         <div class="ln_solid"></div>
     @endif

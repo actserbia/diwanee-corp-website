@@ -3,29 +3,29 @@ $(document).ready(function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
                 var selectedItemId = $(object).val();
-                console.log(selectedItemId);
-                //$(object).val('');
+                if($(object).hasClass('relation-multiple')) {
+                    $(object).val('');
+                }
                 
-                $.ajax({
-                    type: 'GET',
-                    url: '/admin/model/add-relation-item',
-                    data: {
-                        model: $(object).data('model'),
-                        model_id: $(object).data('model-id'),
-                        field: $(object).data('relation'),
-                        item_id: selectedItemId,
-                        full_data: $(object).data('full-data'),
-                        type: $(object).hasClass('tags-relation') ? 'tags' : ''
-                    },
-                    success: function (data) {
-                        $('[id=selected-' + $(object).attr('id') + ']').append(data);
-                        $('a[data-id=' + selectedItemId + ']', $('[id=selected-' + $(object).attr('id') + ']')).addRemoveSelectedEventsAndDisableSelected();
-                        if($(object).data('sortable')) {
-                            $('div[id=relation-item-' + $(object).attr('id') + '-' + selectedItemId + ']').setRelationItemsDraggableAndDroppable();
+                if(selectedItemId.length) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/admin/model/add-relation-item',
+                        data: {
+                            itemId: selectedItemId,
+                            type: $(object).hasClass('tags-relation') ? 'tags' : '',
+                            data: $(object).data()
+                        },
+                        success: function (data) {
+                            $('[id=selected-' + $(object).attr('id') + ']').append(data);
+                            $('a[data-id=' + selectedItemId + ']', $('[id=selected-' + $(object).attr('id') + ']')).addRemoveSelectedEventsAndDisableSelected();
+                            if($(object).data('sortable')) {
+                                $('div[id=relation-item-' + $(object).attr('id') + '-' + selectedItemId + ']').setRelationItemsDraggableAndDroppable();
+                            }
+
                         }
-                        
-                    }
-                });
+                    });
+                }
             });
         });
     };
@@ -47,6 +47,8 @@ $(document).ready(function() {
             
             $('option[value="' + $(object).data('id') + '"]', $('select[id=' + selectFieldName + ']')).attr('disabled', 'disabled');
         });
+
+        $(this).addRemoveSubtagsEvents();
     };
     
     
@@ -76,10 +78,8 @@ $(document).ready(function() {
                 type: 'GET',
                 url: '/admin/model/populate-field',
                 data: {
-                    model: $(object).data('model'),
-                    relation: $(object).data('relation'),
-                    dependsOnValues: dependsOnValues,
-                    column: $(object).data('column')
+                    data: $(object).data(),
+                    dependsOnValues: dependsOnValues
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -215,15 +215,17 @@ $(document).ready(function() {
     
     
     
-    $.fn.setSelected = function() {
+    $.fn.setSelectedValues = function() {
         $(this).each(function(index, object) {
-            var selectedValue = $(object).data('selected-values');
-            $(object).val(selectedValue);
+            var selectedValues = $(object).data('selected-values');
+            $.each(selectedValues, function (index, selectedValue) {
+                $(object).val(selectedValue).trigger('change');
+            });
             
-             var selectedItemId = $(object).val();
-                console.log(selectedItemId);
-            $(object).trigger('change');
+            $(object).click(function() {
+                $(object).data('selected-values', '');
+            });
         });
     };
-    $('.tags-relation').setSelected();
+    $('.tags-relation').setSelectedValues();
 });

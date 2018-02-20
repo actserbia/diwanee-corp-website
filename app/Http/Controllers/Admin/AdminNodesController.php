@@ -55,8 +55,7 @@ class AdminNodesController extends Controller {
      */
     public function create() {
         $object = new Node;
-
-        return view('admin.nodes.new-create', compact('object'));
+        return view('admin.nodes.create', compact('object'));
     }
 
     public function nodeFields(Request $request) {

@@ -18,7 +18,7 @@ trait ModelRelationsManager {
                 return $this->relations[$key];
             }
 
-            $relationItems = $this->isMultiple($key) ? $this->$key()->get() : $this->$key()->first();
+            $relationItems = $this->hasMultipleValues($key) ? $this->$key()->get() : $this->$key()->first();
             $this->setRelation($key, $relationItems);
             return $relationItems;
         } else {
@@ -47,8 +47,8 @@ trait ModelRelationsManager {
         return isset($this->relationsSettings[$field]);
     }
 
-    public function isTagsRelation($field) {
-        if($this->isRelation($field)) {
+    public function isNodeTagsRelation($field) {
+        if(get_class($this) === 'App\\Node' && $this->isRelation($field)) {
             if($field === 'tags') {
                 return true;
             }
@@ -140,8 +140,20 @@ trait ModelRelationsManager {
         return $this->getRelationModel($relation)->defaultDropdownColumn;
     }
 
-    public function isMultiple($relation) {
-        return in_array($relation, $this->multipleFields);
+    public function hasMultipleValues($relation, $level = null) {
+        if(!isset($this->multipleFields[$relation])) {
+            return false;
+        }
+
+        if(is_bool($this->multipleFields[$relation])) {
+            return $this->multipleFields[$relation];
+        }
+
+        if(is_array($this->multipleFields[$relation])) {
+            return $level === null || !isset($this->multipleFields[$relation][$level - 1]) || $this->multipleFields[$relation][$level - 1];
+        }
+
+        return false;
     }
 
     public function sortableField($relation) {
@@ -155,7 +167,7 @@ trait ModelRelationsManager {
     }
     
     public function isSortable($relation) {
-        return $this->isMultiple($relation) && $this->sortableField($relation) !== null;
+        return $this->hasMultipleValues($relation) && $this->sortableField($relation) !== null;
     }
 
     public function checkDependsOn($relation) {

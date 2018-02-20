@@ -5,6 +5,7 @@ use App\Utils\Utils;
 use App\Constants\Settings;
 use App\Tag;
 use Request;
+use Illuminate\Database\Eloquent\Collection;
 
 trait NodeModelManager {
     public function __construct(array $attributes = array()) {
@@ -52,9 +53,7 @@ trait NodeModelManager {
             ];
             $this->relationsSettings[Utils::getFormattedDBName($tagField->title)] = $relationSettings;
             
-            if($tagField->pivot->multiple) {
-                $this->multipleFields[] = $tagField->formattedTitle;
-            }
+            $this->multipleFields[Utils::getFormattedDBName($tagField->title)] = $tagField->pivot->multiple ? [false, true, true, true, true] : [false, false, false, false, false];
         }
     }
 
@@ -103,7 +102,29 @@ trait NodeModelManager {
         return parent::attributeValue($field);
     }
 
-    public function formTagsRelationValues($relation, $tags = null) {
+
+    public function formTagsRelationValuesIdsList($relation, $level = 1) {
+        $tagsIds = [];
+
+        $selectedTags = $this->formTagsSelectedValuesByLevel($relation, $level);
+        foreach($selectedTags as $tag) {
+            $tagsIds[] = $tag->id;
+        }
+
+        return json_encode($tagsIds);
+    }
+
+
+    public function formTagsSelectedValuesByLevel($relation, $level = 1, $checkRelationItems = true) {
+        if(!$checkRelationItems) {
+            return [];
+        }
+
+        $relationItems = isset($this->$relation) ? $this->$relation : null;
+        return $this->formTagsRelationValuesByLevel($relation, $level, null, $relationItems);
+    }
+
+    public function formTagsRelationValuesByLevel($relation, $level = 1, $tags = null, $relationItems = null) {
         if($tags !== null) {
             return $tags;
         }
@@ -115,29 +136,37 @@ trait NodeModelManager {
             Tag::filter($relationsSettings['filters'], $query);
         }
 
-        return $query->has('parents', '=', '0')->get();
-    }
-
-    public function formTagsSelectedValues($relation, $tags = null) {
-        if(Request::old('_token') !== null) {
-            $relationItems = [];
-            if(Request::old($relation) !== null) {
-                $relationItems = $this->getRelationModel($relation)::find(Request::old($relation));
+        $currentTags = $query->has('parents', '=', '0')->get();
+        $currentRelationItems = $this->getRelationSelectedItemsWhichAreInList($currentTags, $relationItems);
+        $currentLevel = 1;
+        while($currentLevel < $level) {
+            $currentTags = new Collection([]);
+            foreach($currentRelationItems as $currentRelationItem) {
+                $currentTags = $currentTags->merge($currentRelationItem->children);
             }
-        } elseif(isset($this->$relation)) {
-            $relationItems = $this->$relation;
+
+            $currentRelationItems = $this->getRelationSelectedItemsWhichAreInList($currentTags, $relationItems);
+
+            $currentLevel++;
         }
 
-        $tagsFromLevel = $this->formTagsRelationValues($relation, $tags);
+        return $currentRelationItems;
+    }
 
-        $tagItems = [];
+    private function getRelationSelectedItemsWhichAreInList($itemsList, $relationItems = null) {
+        if($relationItems === null) {
+            return $itemsList;
+        }
+
+        $items = [];
         foreach($relationItems as $relationItem) {
-            foreach($tagsFromLevel as $tag) {
-                if($relationItem->id === $tag->id) {
-                    $tagItems[] = $relationItem;
+            foreach($itemsList as $item) {
+                if($relationItem->id === $item->id) {
+                    $items[] = $relationItem;
                 }
             }
         }
-        return $tagItems;
+        return $items;
     }
+
 }

@@ -13,7 +13,7 @@ class RelationItems {
     }
     
     public static function saveRelationItems($object, $relation, $data) {
-        if($object->isMultiple($relation)) {
+        if($object->hasMultipleValues($relation)) {
             $relationItemsObject = new MultipleRelationItems($object, $relation, $data);
         } else {
             $relationItemsObject = new SingleRelationItems($object, $relation, $data);

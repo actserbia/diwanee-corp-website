@@ -60,7 +60,11 @@ class NodeType extends AppModel {
         ]
     ];
     
-    protected $multipleFields = ['attributes_fields', 'tags_fields', 'sir_trevor_fields'];
+    protected $multipleFields = [
+        'attributes_fields' => true,
+        'tags_fields' => true,
+        'sir_trevor_fields' => true
+    ];
 
     protected $dependsOn = [];
     

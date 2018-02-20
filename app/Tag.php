@@ -49,7 +49,10 @@ class Tag extends AppModel {
         ]
     ];
     
-    protected $multipleFields = ['parents', 'children'];
+    protected $multipleFields = [
+        'parents' => true,
+        'children' => true
+    ];
     
     protected $dependsOn = [
         'parents' => ['tag_type'],

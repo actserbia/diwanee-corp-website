@@ -16,7 +16,7 @@
       const FormFieldType_Date = 'form_date';
       const FormFieldType_Select = 'form_select';
       const FormFieldType_Relation = 'form_relation';
-      const FormFieldType_TagsRelation = 'form_tags_relation';
+      const FormFieldType_Relation_NodeTags = 'form_relation_node_tags';
       const FormFieldType_Readonly = 'form_readonly';
 
       const FormFieldTypesList = [

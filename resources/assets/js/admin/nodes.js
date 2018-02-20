@@ -22,6 +22,17 @@ $(document).ready(function() {
             },
             success: function (data) {
                 $('#node-fields').html(data);
+
+                $('.tags-relation').addAddSubtagsEvents();
+                $('.remove-selected').addRemoveSubtagsEvents();
+
+                $('.relation-multiple').addAddRelationItemSelectedEvents();
+                $('.remove-selected').addRemoveSelectedEventsAndDisableSelected();
+
+                $('.depending-field').addDependingEvents();
+                $('.relation-multiple').showOrHide();
+
+                $('.relation-item[draggable=true]').setRelationItemsDraggableAndDroppable();
             }
         });
     });

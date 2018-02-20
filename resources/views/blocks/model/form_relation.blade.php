@@ -3,7 +3,7 @@
         {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-        <select class="form-control {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->isRelation($field) ? 'relation' : ''}} {{$object->isMultiple($field) ? 'relation-multiple' : ''}}"
+        <select class="form-control {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->isRelation($field) ? 'relation' : ''}} {{$object->hasMultipleValues($field) ? 'relation-multiple' : ''}}"
             id="{{ $field }}" name="{{ $field }}"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
@@ -12,7 +12,7 @@
             data-depends-on="{{ $object->dependsOn($field) }}"
             data-sortable="{{ $object->isSortable($field) }}"
             data-full-data="{{ isset($fullData) ?: false }}"
-            @if($object->isRequired($field) && !$object->isMultiple($field)) required @endif
+            @if($object->isRequired($field) && !$object->hasMultipleValues($field)) required @endif
         >
                 <option value=""></option>
                 @foreach ($object->formRelationValues($field) as $item)
@@ -32,7 +32,7 @@
 </div>
 
 
-@if ($object->isMultiple($field))
+@if ($object->hasMultipleValues($field))
     <div class="form-group">
         <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}"></label>
         <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">

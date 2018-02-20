@@ -10,23 +10,13 @@
                     <h2>{{ Utils::translateModelData('blade_templates.admin.global.create_title')}} <a href="{{ route('nodes.index') }}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('blade_templates.global.back') </a></h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div id="node-create" class="x_content form-horizontal">
                     <br />
-                    <form id="data_form" method="post" action="{{ route('nodes.store') }}" data-parsley-validate class="form-horizontal form-label-left">
-                        {{ csrf_field() }}
-                        
-                        @include('blocks.model', ['field' => 'node_type'])
+                    @include('blocks.model', ['field' => 'node_type'])
 
-                        <div class="ln_solid"></div>
-                        
-                        <input name="firstStep" type="hidden" value="true" />
+                    <div class="ln_solid"></div>
 
-                        <div class="form-group">
-                            <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label') }}">
-                                <button type="submit" class="btn btn-success">{{ Utils::translateModelData('blade_templates.admin.global.create_button_text')}}</button>
-                            </div>
-                        </div>
-                    </form>
+                    <div id="node-fields"></div>
                 </div>
             </div>
         </div>

@@ -13,7 +13,7 @@ trait ModelFormManager {
         
         $fieldName = $this->getFieldName($fullFieldName);
         if($this->isRelation($fieldName)) {
-            return $this->isTagsRelation($fieldName) ? Models::FormFieldType_TagsRelation : Models::FormFieldType_Relation;
+            return $this->isNodeTagsRelation($fieldName) ? Models::FormFieldType_Relation_NodeTags : Models::FormFieldType_Relation;
         }
         
         $modelManager = $this->getModelManager($fieldName);
@@ -77,7 +77,7 @@ trait ModelFormManager {
     private function getRelationItemValue($relation, $attribute) {
         $values = [];
         
-        if($this->isMultiple($relation)) {
+        if($this->hasMultipleValues($relation)) {
             foreach($this->$relation as $value) {
                 $values[] = $value->$attribute;
             }
@@ -120,20 +120,28 @@ trait ModelFormManager {
         return $this->getRelationValues($relation, $items);
     }
 
-    public function checkFormSelectRelationValue($relation, $item) {
-        if(Request::old('_token') !== null && Request::old($relation) == $item->id) {
-            return true;
-        }
+    public function checkFormSelectRelationValue($relation, $item, $level = null) {
+        if($level === null) {
+            if(Request::old('_token') !== null && Request::old($relation) == $item->id) {
+                return true;
+            }
 
-        if(isset($this->$relation->id) && $this->$relation->id == $item->id) {
-            return true;
+            if(isset($this->$relation->id) && $this->$relation->id == $item->id) {
+                return true;
+            }
+        } elseif(!$this->hasMultipleValues($relation, $level)) {
+            foreach($this->$relation as $relationItem) {
+                if($relationItem->id === $item->id) {
+                    return true;
+                }
+            }
         }
 
         return false;
     }
     
-    public function checkFormDisabledRelationValue($relation, $item) {
-        if($this->isMultiple($relation)) {
+    public function checkFormDisabledRelationValue($relation, $item, $level = null) {
+        if($this->hasMultipleValues($relation, $level)) {
             foreach($this->$relation as $relationItem) {
                 if($relationItem->id === $item->id) {
                     return true;

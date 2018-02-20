@@ -53,7 +53,7 @@ class Element extends Model {
         ]
     ];
 
-    protected $multiple = ['nodes'];
+    protected $multipleFields = ['nodes'];
 
     public function getRelation($relation) {
         return $this->relations[$relation];

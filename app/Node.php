@@ -57,7 +57,10 @@ class Node extends AppModel {
         ]
     ];
 
-    protected $multipleFields = ['tags', 'elements'];
+    protected $multipleFields = [
+        'tags' => true,
+        'elements' => true
+    ];
 
     public function getEditorContentAttribute() {
         $data = array();

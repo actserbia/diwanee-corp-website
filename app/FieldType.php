@@ -37,7 +37,10 @@ class FieldType extends AppModel {
         ]
     ];
     
-    protected $multipleFields = ['fields', 'tags'];
+    protected $multipleFields = [
+        'fields' => true,
+        'tags' => true
+    ];
 
     protected $dependsOn = [];
 
