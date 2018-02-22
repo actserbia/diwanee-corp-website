@@ -23,6 +23,10 @@ trait ModelAttributesManager {
     public function getRequiredAttributes() {
         return $this->requiredFields;
     }
+    
+    public function getAllAttributesTypes() {
+        return array_merge($this->globalAttributeType, $this->attributeType);
+    }
 
     public function getModelNameAttribute() {
         return str_replace('App\\', '', $this->getModelClassAttribute());
@@ -46,13 +50,13 @@ trait ModelAttributesManager {
     }
 
     public function isRequired($field) {
-        return in_array($field, $this->requiredFields);
+        return in_array($field, $this->getRequiredAttributes());
     }
 
     public function attributeType($fullFieldName) {
         $fieldName = str_replace('_confirmation', '', $this->getFieldName($fullFieldName));
         
-        $attributesTypes = array_merge($this->globalAttributeType, $this->attributeType);
+        $attributesTypes = $this->getAllAttributesTypes();
         return isset($attributesTypes[$fieldName]) ? $attributesTypes[$fieldName] : Models::AttributeType_Text;
     }
 

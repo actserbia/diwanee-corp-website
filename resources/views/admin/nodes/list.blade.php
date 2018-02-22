@@ -15,7 +15,7 @@
 
                     <div class="ln_solid"></div>
                     
-                    <div id="nodes-list"></div>
+                    <div id="nodes-list-content"></div>
                 </div>
             </div>
         </div>

@@ -38,12 +38,26 @@ $(document).ready(function() {
         });
     };
     
+    
+    
+    $.fn.populateDatePickers = function() {
+        $(this).each(function(index, object) {
+            $(object).datetimepicker({
+                dayViewHeaderFormat: "MMMM YYYY",
+                format: "YYYY-MM-DD",
+                locale: $('html').attr('lang')
+            });
+        });
+    };
+    
     ModelManager = {
         initialize: function() {
             $('.add-checkbox').addAddCheckboxEvents();
             $('.remove-checkbox').addRemoveCheckboxEvents();
             
             $('.add-checkbox').setAddCheckboxVisibility();
+            
+            $('.date').populateDatePickers(); 
         }
     };
 });

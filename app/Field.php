@@ -78,7 +78,7 @@ class Field extends AppModel {
     }
     
     public function checkIfCanRemove() {
-        if($this->pivot->pivotParent->modelClass === 'App\\NodeType') {
+        if(isset($this->pivot) && $this->pivot->pivotParent->modelClass === 'App\\NodeType') {
             return $this->pivot->pivotParent->checkIfCanRemoveSelectedRelationItem($this->field_type->category . '_fields');
         }
         

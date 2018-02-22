@@ -84,23 +84,36 @@ trait NodeModelManager {
     }
 
     protected function getAllAttributes() {
+        $attributes = parent::getAllAttributes();
+        
         if(isset($this->relationsSettings['additionalData'])) {
             $model = new $this->relationsSettings['additionalData']['model'];
-            return array_merge($this->allAttributesFields, $model->getAllAttributes());
-        } else {
-            return $this->allAttributesFields;
+            $attributes = array_merge($attributes, $model->getAllAttributes());
         }
+        
+        return $attributes;
     }
 
-    public function isRequired($field) {
+    public function getRequiredAttributes() {
+        $requiredFields = parent::getRequiredAttributes();
+        
         if(isset($this->relationsSettings['additionalData'])) {
             $model = new $this->relationsSettings['additionalData']['model'];
-            $requiredFields = array_merge($this->requiredFields, $model->getRequiredAttributes());
-        } else {
-            $requiredFields = $this->requiredFields;
+            $requiredFields = array_merge($requiredFields, $model->getRequiredAttributes());
         }
 
-        return in_array($field, $requiredFields);
+        return $requiredFields;
+    }
+    
+    public function getAllAttributesTypes() {
+        $attributesTypes = parent::getAllAttributesTypes();
+        
+        if(isset($this->relationsSettings['additionalData'])) {
+            $model = new $this->relationsSettings['additionalData']['model'];
+            $attributesTypes = array_merge($attributesTypes, $model->getAllAttributesTypes());
+        }
+        
+        return $attributesTypes;
     }
 
     public function attributeValue($field) {

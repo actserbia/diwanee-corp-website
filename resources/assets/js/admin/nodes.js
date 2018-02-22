@@ -7,7 +7,7 @@ $(document).ready(function() {
                 node_type_id: $(this).val()
             },
             success: function (data) {
-                $('#nodes-list').html(data);
+                $('#nodes-list-content').html(data);
                 TableManageButtons.init();
             }
         });
