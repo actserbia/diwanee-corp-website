@@ -1,12 +1,12 @@
 <?php
 namespace App\Models;
 
-use App\Models\RelationItems\RelationItems;
+use App\Models\RelationManager\RelationManager;
 
 trait ModelRelationsManager {
     public function __call($method, $parameters) {
         if($this->isRelation($method)) {
-            return $this->getRelationItems($method);
+            return RelationManager::getRelationItems($this, $method);
         } else {
             return parent::__call($method, $parameters);
         }
@@ -48,7 +48,7 @@ trait ModelRelationsManager {
     }
 
     public function isNodeTagsRelation($field) {
-        if(get_class($this) === 'App\\Node' && $this->isRelation($field)) {
+        if($this->modelClass === 'App\\Node' && $this->isRelation($field)) {
             if($field === 'tags') {
                 return true;
             }
@@ -88,45 +88,8 @@ trait ModelRelationsManager {
         $relationsSettings = $this->getRelationSettings($relation);
         return isset($relationsSettings['filters']) ? $relationsSettings['filters'] : [];
     }
-
-    private function getRelationItems($relation) {
-        $relationsSettings = $this->getRelationSettings($relation);
-        
-        $query = $this->getAllRelationItemsQuery($relationsSettings);
-            
-        if(isset($relationsSettings['filters'])) {
-            $relationModel = $this->getRelationModel($relation);
-            $relationModel::filter($relationsSettings['filters'], $query);
-        }
-
-        $this->relationExtraData($query, $relation);
-
-        return $query;
-    }
     
-    private function getAllRelationItemsQuery($relationsSettings) {
-        switch($relationsSettings['relationType']) {
-            case 'belongsToMany':
-                $query = $this->belongsToMany($relationsSettings['model'], $relationsSettings['pivot'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                break;
-
-            case 'belongsTo':
-                $query = $this->belongsTo($relationsSettings['model'], $relationsSettings['foreignKey']);
-                break;
-
-            case 'hasMany':
-                $query = $this->hasMany($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                break;
-
-            case 'hasOne':
-                $query = $this->hasOne($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
-                break;
-        }
-        
-        return $query;
-    }
-    
-    private function relationExtraData($query, $relation) {
+    public function relationExtraData($query, $relation) {
         $extraFields = $this->extraFields($relation);
         $sortable = $this->sortableField($relation);
         if(!empty($sortable)) {
@@ -156,7 +119,7 @@ trait ModelRelationsManager {
         }
 
         if(is_array($this->multipleFields[$relation])) {
-            return $level === null || !isset($this->multipleFields[$relation][$level - 1]) || $this->multipleFields[$relation][$level - 1];
+            return $level === null || (isset($this->multipleFields[$relation][$level - 1]) && $this->multipleFields[$relation][$level - 1]);
         }
 
         return false;
@@ -214,11 +177,7 @@ trait ModelRelationsManager {
     
     public function saveRelations($data) {
         foreach(array_keys($this->relationsSettings) as $relation) {
-            $relationSettings = $this->getRelationSettings($relation);
-            if(in_array($relationSettings['relationType'], ['belongsToMany', 'hasOne']) && (!isset($relationSettings['automaticSave']) || $relationSettings['automaticSave'])) {
-                RelationItems::save($this, $relation, $data);
-                $this->load($relation);
-            }
+            RelationManager::save($this, $relation, $data);
         }
     }
     
@@ -233,19 +192,32 @@ trait ModelRelationsManager {
     }
     
     protected function getAutomaticRenderRelations() {
-        $fields = [];
+        $relations = [];
 
         foreach(array_keys($this->relationsSettings) as $relation) {
             $relationSettings = $this->getRelationSettings($relation);
             if(isset($relationSettings['automaticRender']) && $relationSettings['automaticRender']) {
-                $fields[] = $relation;
+                $relations[] = $relation;
             }
         }
 
-        return $fields;
+        return $relations;
     }
     
     public function getAutomaticRenderAtributesAndRelations() {
         return array_merge($this->getAutomaticRenderAtributes(), $this->getAutomaticRenderRelations());
+    }
+    
+    protected function checkIfItemIsInRelation($relation, $item) {
+        $found = false;
+        
+        foreach($this->$relation as $relationItem) {
+            if($relationItem->id === $item->id) {
+                $found = true;
+                break;
+            }
+        }
+        
+        return $found;
     }
 }

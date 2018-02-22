@@ -43,7 +43,7 @@ class Validators {
         return Validator::make($data, [
             'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
             'tag_type' => self::modelRequiredValidation('tag_type', $model) . '|exists:field_types,id',
-            'parents' => 'checkTags:' . $data['tag_type'] . ',' . $id . ',' . json_encode($data['children']),
+            'parents' => 'checkTags:' . $data['tag_type'] . ',' . $id . ',' . json_encode($data['children']) . '|' . 'checkTagMaxLevel:' . json_encode($data['children']),
             'children' => 'checkTags:' . $data['tag_type'] . ',' . $id . ',' . json_encode($data['parents'])
         ]);
     }
@@ -77,7 +77,7 @@ class Validators {
 
         return Validator::make($data, [
             'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255',
-            'node_ype' => self::modelRequiredValidation('node_type', $model) . '|exists:node_types,id'
+            'node_type' => self::modelRequiredValidation('node_type', $model) . '|exists:node_types,id'
         ]);
     }
 

@@ -6,7 +6,7 @@ $(document).ready(function() {
                 if(e.originalEvent.layerX < startPos || e.originalEvent.layerX > startPos + 30) {
                     e.preventDefault();
                 }
-                if($('div[id=' + e.target.id + ']').data('parents-count') < 2) {
+                if($('div[id=' + e.target.id + ']').data('moving-disabled') == '0') {
                     e.originalEvent.dataTransfer.setData('id', e.target.id);
                 }
             });
@@ -60,7 +60,6 @@ $(document).ready(function() {
         });
     };
 
-
     $.fn.getTagsOrder = function() {
         var tags = [];
         $.each($(this).children(), function(index, object){
@@ -88,35 +87,43 @@ $(document).ready(function() {
         return tags;
     };
 
-    $('#tag_type').change(function() {
-        $.ajax({
-            type: 'GET',
-            url: '/admin/tags-list',
-            data: {
-                tag_type_id: $(this).val()
-            },
-            success: function (data) {
-                $('#tags-list').html(data);
-                if($.trim(data) === '') {
-                    $('#tags-reoder').attr('style', 'display:none;');
-                } else {
-                    $('#tags-reoder').attr('style', 'display:block;');
-                }
-                $('.tag-item[draggable=true]').setTagsDraggableAndDroppable();
-            }
-        });
-    });
-
-    $('#tags-reoder').click(function() {
-        $.ajax({
-            type: 'GET',
-            url: '/admin/tags-reorder-tags',
-            data: {
-                tags: $('#tags-list').getTagsOrder()
-            },
-            success: function (data) {
-                $('.right_col').prepend(data);
-            }
-        });
-    });
+    
+    TagsManager = {
+        initialize: function() {
+            $('#tag_type').change(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/admin/tags-list',
+                    data: {
+                        tag_type_id: $(this).val()
+                    },
+                    success: function (data) {
+                        $('#tags-list').html(data);
+                        if($.trim(data) === '') {
+                            $('#tags-reoder').attr('style', 'display:none;');
+                        } else {
+                            $('#tags-reoder').attr('style', 'display:block;');
+                        }
+                        $('.tag-item[draggable=true]').setTagsDraggableAndDroppable();
+                    }
+                });
+            });
+            
+            $('#tags-reoder').click(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/admin/tags-reorder-tags',
+                    data: {
+                        tags: $('#tags-list').getTagsOrder()
+                    },
+                    success: function (data) {
+                        $('.alert').remove();
+                        $('.right_col').prepend(data);
+                    }
+                });
+            });
+        }
+    }
+    
+    TagsManager.initialize();
 });

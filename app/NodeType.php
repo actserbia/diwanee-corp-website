@@ -26,44 +26,48 @@ class NodeType extends AppModel {
     ];
 
     protected $relationsSettings = [
-        'attributes_fields' => [
+        'fields' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Field',
             'pivot' => 'node_type_field',
-            'foreignKey' => 'node_type_id',
-            'relationKey' => 'field_id',
+            'pivotModel' => 'App\\NodeTypeField',
             'filters' => ['field_type.category' => [FieldTypeCategory::Attribute]],
             'sortBy' => 'ordinal_number',
-            'extraFields' => ['active', 'required']
+            'extraFields' => ['active', 'required'],
+            'automaticSave' => false
         ],
-      
-        'tags_fields' => [
-            'relationType' => 'belongsToMany',
-            'model' => 'App\\Field',
-            'pivot' => 'node_type_field',
-            'foreignKey' => 'node_type_id',
-            'relationKey' => 'field_id',
+        FieldTypeCategory::Attribute . '_fields' => [
+            'parent' => 'fields',
+            'filters' => ['field_type.category' => [FieldTypeCategory::Attribute]],
+            'automaticSave' => true
+        ],
+        FieldTypeCategory::Tag . '_fields' => [
+            'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::Tag]],
-            'sortBy' => 'ordinal_number',
-            'extraFields' => ['active', 'required', 'multiple']
+            'extraFields' => ['active', 'required', 'multiple_list'],
+            'automaticSave' => true
+        ],
+        FieldTypeCategory::SirTrevor . '_fields' => [
+            'parent' => 'fields',
+            'filters' => ['field_type.category' => [FieldTypeCategory::SirTrevor]],
+            'automaticSave' => true
         ],
       
-        'sir_trevor_fields' => [
-            'relationType' => 'belongsToMany',
-            'model' => 'App\\Field',
-            'pivot' => 'node_type_field',
+        'nodes' => [
+            'relationType' => 'hasMany',
+            'model' => 'App\\Node',
             'foreignKey' => 'node_type_id',
-            'relationKey' => 'field_id',
-            'filters' => ['field_type.category' => [FieldTypeCategory::SirTrevor]],
-            'sortBy' => 'ordinal_number',
-            'extraFields' => ['active', 'required']
+            'relationKey' => 'id',
+            'automaticSave' => false
         ]
     ];
     
     protected $multipleFields = [
-        'attributes_fields' => true,
-        'tags_fields' => true,
-        'sir_trevor_fields' => true
+        'fields' => true,
+        FieldTypeCategory::Attribute . '_fields' => true,
+        FieldTypeCategory::Tag . '_fields' => true,
+        FieldTypeCategory::SirTrevor . '_fields' => true,
+        'nodes' => true
     ];
 
     protected $dependsOn = [];
@@ -82,7 +86,8 @@ class NodeType extends AppModel {
 
     public function getSTFieldsArray() {
         $stFields = array();
-        foreach($this->sir_trevor_fields as $field) {
+        $sirTrevorRelationName = FieldTypeCategory::SirTrevor;
+        foreach($this->$sirTrevorRelationName as $field) {
             $stFields[] = str_replace(' ', '', $field->title);
         }
         return $stFields;
@@ -90,11 +95,20 @@ class NodeType extends AppModel {
 
     public function getRequiredSTFieldsArray() {
         $reqFields = array();
-        foreach($this->sir_trevor_fields as $field) {
+        $sirTrevorRelationName = FieldTypeCategory::SirTrevor;
+        foreach($this->$sirTrevorRelationName as $field) {
             if($field->pivot->required) {
                 $reqFields[] = str_replace(' ', '', $field->title);
             }
         }
         return $reqFields;
+    }
+    
+    protected function checkIfCanRemoveRelationItem($relation) {
+        if(strpos($relation, 'fields') !== false) {
+            return (count($this->nodes) === 0);
+        }
+        
+        return true;
     }
 }

@@ -3,6 +3,7 @@ namespace App\Validation;
 
 use Illuminate\Support\Facades\Validator;
 use App\Tag;
+use App\Constants\Settings;
 
 
 class Rules {
@@ -21,6 +22,14 @@ class Rules {
             }
             
             if(!self::checkTagParentsAndChildren($attribute, $value, $parameters)) {
+                return false;
+            }
+            
+            return true;
+        });
+        
+        Validator::extend('checkTagMaxLevel', function ($attribute, $value, $parameters) {
+            if(!self::checkTagMaxLevel($attribute, $value, $parameters)) {
                 return false;
             }
 
@@ -57,6 +66,33 @@ class Rules {
             return false;
         }
         if($attribute === 'parents' && !empty(array_intersect($tagIds, $currentTag->relationIds('children')))) {
+            return false;
+        }
+
+        return true;
+    }
+    
+    private static function checkTagMaxLevel($attribute, $value, $parameters) {
+        $tagIds = is_array($value) ? $value : [$value];
+        
+        $relationIds = is_array(json_decode($parameters[0])) ? json_decode($parameters[0]) : [json_decode($parameters[0])];
+        
+        $tags = Tag::whereIn('id', $tagIds)->get();
+        $relationTags = Tag::whereIn('id', $relationIds)->get();
+        
+        $relationAttribute = ($attribute === 'children') ? 'parents' : 'children';
+        
+        $tagsMaxLevel = Tag::relationMaxLevelsCount($attribute, $tags);
+        $relationMaxLevel = Tag::relationMaxLevelsCount($relationAttribute, $relationTags);
+        
+        $levels = $tagsMaxLevel + $relationMaxLevel;
+        if(!empty($tagIds)) {
+            $levels++;
+        }
+        if(!empty($relationIds)) {
+            $levels++;
+        }
+        if($levels > Settings::MaximumTagsLevelsCount) {
             return false;
         }
 

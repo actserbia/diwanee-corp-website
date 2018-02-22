@@ -135,6 +135,7 @@
         </div>
     </div>
 
+    @include('scripts.admin')
     <script src="{{ asset('js/admin.js') }}"></script>
     @stack('scripts')
 </body>

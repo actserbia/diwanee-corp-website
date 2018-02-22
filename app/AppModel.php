@@ -63,4 +63,25 @@ class AppModel extends Model {
         
         return $areAllDeleted;
     }
+    
+    public function checkIfCanRemoveSelectedRelationItem($relation, $item = null) {
+        if($item !== null && !$this->checkIfItemIsInRelation($relation, $item)) {
+            return true;
+        }
+        
+        if(method_exists($this, 'checkIfCanRemoveRelationItem')) {
+            return $this->checkIfCanRemoveRelationItem($relation);
+        }
+        
+        return true;
+    }
+    
+    public function checkIfCanRemoveItem() {
+      
+        if(method_exists($this, 'checkIfCanRemove')) {
+            return $this->checkIfCanRemove();
+        }
+        
+        return true;
+    }
 }

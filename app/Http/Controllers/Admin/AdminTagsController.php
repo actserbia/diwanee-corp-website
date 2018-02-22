@@ -8,6 +8,7 @@ use App\Tag;
 use App\Validation\Validators;
 use App\Utils\HtmlElementsClasses;
 use App\Utils\Utils;
+use App\Constants\Settings;
 
 class AdminTagsController extends Controller {
     public function __construct() {
@@ -46,9 +47,14 @@ class AdminTagsController extends Controller {
 
     public function tagsReorder(Request $request) {
         $data = $request->all();
-
-        $class = Tag::reorder($data['tags']) ? 'success' : 'error';
-        $message = __('messages.tags_reorder_' . $class);
+        
+        if(Tag::tagsListMaxLevelsCount($data['tags']) > Settings::MaximumTagsLevelsCount) {
+            $class = 'error';
+            $message = __('messages.check_tags_list_max_level');
+        } else {
+            $class = Tag::reorder($data['tags']) ? 'success' : 'error';
+            $message = __('messages.tags_reorder_' . $class);
+        }
 
         return view('blocks.alert', compact('class', 'message'));
     }

@@ -9,5 +9,6 @@ return [
     'destroy_success' => 'The :type <strong>:name</strong> has successfully been archived.',
     'destroy_error' => 'The :type <strong>:name</strong> has not successfully been archived.',
     'tags_reorder_success' => 'Tags have successfully been reordered.',
-    'tags_reorder_error' => 'Tags have not successfully been reordered.'
+    'tags_reorder_error' => 'Tags have not successfully been reordered.',
+    'check_tags_list_max_level' => 'Maximum levels count exceeded.'
 ];

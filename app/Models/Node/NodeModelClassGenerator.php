@@ -7,6 +7,7 @@ use App\Constants\FieldType;
 use App\Utils\Utils;
 use App\Utils\FileFunctions;
 use App\NodeType;
+use App\Constants\FieldTypeCategory;
 
 class NodeModelClassGenerator {
     private $model = null;
@@ -58,7 +59,8 @@ class NodeModelClassGenerator {
     }
 
     private function populateData() {
-        foreach($this->model->attributes_fields as $field) {
+        $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
+        foreach($this->model->$attributeFieldsRelationName as $field) {
             if($field->pivot->active) {
                 $this->fillable[] = $field->formattedTitle;
                 $this->allAttributesFields[] = $field->formattedTitle;

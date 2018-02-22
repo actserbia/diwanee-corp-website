@@ -1,8 +1,20 @@
 <?php
-namespace App\Models\RelationItems;
+namespace App\Models\RelationManager;
 
-class SingleRelationItems extends RelationItems {
-    public function saveRelation() {
+class SingleRelationManager extends RelationManager {
+    protected function getAllRelationItemsQuery($relationsSettings) {
+        if(isset($relationsSettings['pivotModel'])) {
+            $query = $this->object->belongsToMany($relationsSettings['model'], $relationsSettings['pivot'])->using($relationsSettings['pivotModel']);
+        } else {
+            $query = $this->object->belongsToMany($relationsSettings['model'], $relationsSettings['pivot'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
+        }
+        
+        return $query;
+    }
+    
+    public function saveRelation($data) {
+        $this->populateRelationData($data);
+        
         if(!empty($this->relationData)) {
             $relationItemId = array_keys($this->relationData)[0];
             $relationItemData = $this->relationData[$relationItemId];
@@ -27,10 +39,11 @@ class SingleRelationItems extends RelationItems {
             $this->relationData[$relationItemId] = [];
             
             foreach($data as $key => $value) {
-                if(strpos($key, $this->relation . '_') !== false) {
-                    $additionalField = str_replace($this->relation . '_', '', $key);
+                $keyParts = explode('__', $key);
+                if(isset($keyParts[2]) && $keyParts[0] === $this->relation) {
+                    $itemId = $keyParts[1];
+                    $additionalField = $keyParts[2];
                     
-                    $itemId = $data[$this->relation];
                     $this->relationData[$itemId][$additionalField] = $value;
                 }
             }

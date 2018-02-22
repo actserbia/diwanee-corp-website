@@ -11,13 +11,15 @@
       const AttributeType_Email = 'email';
       const AttributeType_Password = 'password';
       const AttributeType_Checkbox = 'checkbox';
+      const AttributeType_CheckboxList = 'checkbox_list';
 
       const FormFieldType_Input = 'form_input';
       const FormFieldType_Date = 'form_date';
       const FormFieldType_Select = 'form_select';
-      const FormFieldType_Relation = 'form_relation';
-      const FormFieldType_Relation_NodeTags = 'form_relation_node_tags';
+      const FormFieldType_Relation = 'relation.form_relation';
+      const FormFieldType_Relation_NodeTags = 'relation.form_relation_node_tags';
       const FormFieldType_Readonly = 'form_readonly';
+      const FormFieldType_CheckboxList = 'form_checkbox_list';
 
       const FormFieldTypesList = [
           self::AttributeType_Text => self::FormFieldType_Input,
@@ -26,7 +28,8 @@
           self::AttributeType_Password => self::FormFieldType_Input,
           self::AttributeType_Checkbox => self::FormFieldType_Input,
           self::AttributeType_Date => self::FormFieldType_Date,
-          self::AttributeType_Enum => self::FormFieldType_Select
+          self::AttributeType_Enum => self::FormFieldType_Select,
+          self::AttributeType_CheckboxList => self::FormFieldType_CheckboxList
       ];
 
       const FieldType_Attribute = 'attribute';

@@ -7,7 +7,7 @@
             type="{{ $object->attributeType($field) }}"
             value="{{ $object->formValue($field) }}"
             id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}" 
-            name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}{{ isset($multiple) ? '[]' : '' }}" 
+            name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}" 
             @if($object->isRequired($field)) required @endif
             @if($object->attributeType($field) === 'checkbox' && $object->formValue($field)) checked @endif
         />

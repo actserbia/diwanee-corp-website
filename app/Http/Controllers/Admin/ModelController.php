@@ -46,9 +46,8 @@ class ModelController extends Controller {
         $itemModel = $object->getRelationModel($data['relation']);
         $item = $itemModel::find($params['itemId']);
         $fullData = $data['fullData'];
-        $isNew = true;
         
-        return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData', 'isNew'));
+        return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData'));
     }
 
     private function modelNodeTagsAddTagItem($params) {
@@ -60,9 +59,8 @@ class ModelController extends Controller {
         $itemModel = $object->getRelationModel($data['relation']);
         $item = $itemModel::find($params['itemId']);
         $fullData = $data['fullData'];
-        $isNew = true;
 
-        return view('blocks.model.relation.form_relation_node_tags_item', compact('object', 'field', 'item', 'fullData', 'isNew', 'level'));
+        return view('blocks.model.relation.form_relation_node_tags_item', compact('object', 'field', 'item', 'fullData', 'level'));
     }
 
     public function modelNodeTagsAddTagSubtags(Request $request) {
@@ -102,5 +100,19 @@ class ModelController extends Controller {
         }
 
         return json_encode($itemsOutput);
+    }
+    
+    public function modelAddCheckbox(Request $request) {
+        $params = $request->all();
+
+        $data = $params['data'];
+        
+        $object = isset($data['modelId']) ? $data['model']::find($data['modelId']) : new $data['model'];
+        $fieldPrefix = $data['fieldPrefix'];
+        $field = $data['field'];
+        $itemFieldValue = false;
+        $removeCheckbox = true;
+        
+        return view('blocks.model.form_checkbox_list_item', compact('object', 'fieldPrefix', 'field', 'itemFieldValue', 'removeCheckbox'));
     }
 }

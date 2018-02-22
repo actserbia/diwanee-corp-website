@@ -54,6 +54,7 @@
           Route::get('/model/populate-field', 'ModelController@modelPopulateField')->name('model.populate-field');
           Route::get('/model/node-tags/add-tag-subtags', 'ModelController@modelNodeTagsAddTagSubtags')->name('model.node-tags.add-tag-subtags');
           Route::get('/model/tag/get-children', 'ModelController@modelGetTagChildren')->name('model.tag.get-children');
+          Route::get('/model/add-checkbox', 'ModelController@modelAddCheckbox')->name('model.add-checkbox');
           
           Route::resource('nodes', 'AdminNodesController');
           Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');

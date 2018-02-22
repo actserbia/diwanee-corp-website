@@ -48,7 +48,7 @@ let mix = require('laravel-mix');
             'resources/assets/_admin_/js/vfs_fonts.js',
             'resources/assets/_admin_/js/custom.min.js',
             
-            'resources/assets/js/admin/admin.js',
+            'resources/assets/js/admin/model.js',
             'resources/assets/js/admin/relation-node-tags.js',
             'resources/assets/js/admin/relation.js',
             'resources/assets/js/admin/tags.js',
@@ -57,7 +57,8 @@ let mix = require('laravel-mix');
             'resources/assets/js/admin/datatable.js',
             'resources/lang/*/js/datatable.js',
             'resources/lang/*/js/html5.js',
-            'resources/assets/js/Html5Localization.js'
+            'resources/assets/js/Html5Localization.js',
+            'resources/assets/js/admin/admin.js'
         ], 'public/js/admin.js')
 
          .js('resources/assets/js/admin/sir-trevor-blocks.js', 'public/js/sir-trevor.js')

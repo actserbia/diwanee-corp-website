@@ -1,11 +1,17 @@
 <?php
-namespace App\Models\RelationItems;
+namespace App\Models\RelationManager;
 
 use App\Utils\Utils;
 use ReflectionClass;
 
-class HasOneRelationItems extends RelationItems {
-    public function saveRelation() {
+class HasOneRelationManager extends RelationManager {
+    protected function getAllRelationItemsQuery($relationsSettings) {
+        return $this->object->hasOne($relationsSettings['model'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
+    }
+    
+    public function saveRelation($data) {
+        $this->populateRelationData($data);
+        
         $relation = $this->relation;
         
         $relationSettings = $this->object->getRelationSettings($relation);

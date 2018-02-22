@@ -17,9 +17,9 @@
                         
                         @include('blocks.model', ['field' => 'name'])
                         
-                        @include('blocks.model', ['field' => 'attributes_fields', 'fullData' => true])
+                        @include('blocks.model', ['field' => 'attribute_fields', 'fullData' => true])
                         
-                        @include('blocks.model', ['field' => 'tags_fields', 'fullData' => true])
+                        @include('blocks.model', ['field' => 'tag_fields', 'fullData' => true])
                         
                         @include('blocks.model', ['field' => 'sir_trevor_fields', 'fullData' => true])
 

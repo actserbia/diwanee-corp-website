@@ -13,7 +13,7 @@ trait ModelFormManager {
         
         $fieldName = $this->getFieldName($fullFieldName);
         if($this->isRelation($fieldName)) {
-            return $this->isNodeTagsRelation($fieldName) ? 'relation.' . Models::FormFieldType_Relation_NodeTags : 'relation.' . Models::FormFieldType_Relation;
+            return $this->isNodeTagsRelation($fieldName) ? Models::FormFieldType_Relation_NodeTags : Models::FormFieldType_Relation;
         }
         
         $modelManager = $this->getModelManager($fieldName);
@@ -169,6 +169,6 @@ trait ModelFormManager {
     }
     
     public function formFieldName($fullFieldName, $prefix = '') {
-        return empty($prefix) ? $fullFieldName : $prefix . '_' . $fullFieldName;
+        return empty($prefix) ? $fullFieldName : $prefix . '__' . $fullFieldName;
     }
 }

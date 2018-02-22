@@ -7,6 +7,7 @@ use App\Constants\FieldTypeCategory;
 use App\Utils\Utils;
 use App\Models\Node\NodeModelClassGenerator;
 use App\Models\Node\NodeModelDBGenerator;
+use App\Tag;
 
 class Field extends AppModel {
     use SoftDeletes;
@@ -15,7 +16,7 @@ class Field extends AppModel {
 
     protected $allAttributesFields = ['id', 'title', 'created_at', 'updated_at', 'deleted_at'];
     
-    protected $allFieldsFromPivots = ['active', 'required', 'multiple'];
+    protected $allFieldsFromPivots = ['active', 'required', 'multiple', 'multiple_list'];
 
     protected $requiredFields = ['title', 'field_type', 'attribute_field_type'];
     
@@ -28,7 +29,8 @@ class Field extends AppModel {
     protected $attributeType = [
         'active' => Models::AttributeType_Checkbox,
         'required' => Models::AttributeType_Checkbox,
-        'multiple' => Models::AttributeType_Checkbox
+        'multiple' => Models::AttributeType_Checkbox,
+        'multiple_list' => Models::AttributeType_CheckboxList
     ];
 
     protected $relationsSettings = [
@@ -61,5 +63,25 @@ class Field extends AppModel {
             NodeModelDBGenerator::changeFieldNameInAllNodeTables($oldTitle, $this->formattedTitle);
             NodeModelClassGenerator::generateAll();
         }
+    }
+    
+    public function attributeValue($field) {
+        $value = parent::attributeValue($field);
+        if($field === 'multiple_list' && $this->field_type->category === FieldTypeCategory::Tag) {
+            $tags = Tag::where('tag_type_id', '=', $this->field_type->id)->get();
+            $maxLevelsCount = Tag::relationMaxLevelsCount('children', $tags);
+            for($index = count($value); $index < $maxLevelsCount; $index++) {
+                $value[] = false;
+            }
+        }
+        return $value;
+    }
+    
+    public function checkIfCanRemove() {
+        if($this->pivot->pivotParent->modelClass === 'App\\NodeType') {
+            return $this->pivot->pivotParent->checkIfCanRemoveSelectedRelationItem($this->field_type->category . '_fields');
+        }
+        
+        return true;
     }
 }

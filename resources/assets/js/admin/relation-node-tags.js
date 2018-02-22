@@ -110,7 +110,30 @@ $(document).ready(function() {
             });
         });
     };
-
-    $('.node-tags-relation').addAddSubtagsEvents();
-    $('.remove-selected').addRemoveSubtagsEvents();
+    
+    
+    $.fn.setSelectedValues = function() {
+        $(this).each(function(index, object) {
+            var selectedValues = $(object).data('selected-values');
+            $.each(selectedValues, function (index, selectedValue) {
+                $(object).val(selectedValue).trigger('change');
+            });
+            
+            $(object).click(function() {
+                $(object).data('selected-values', '');
+            });
+        });
+    };
+    
+    
+    RelationsNodeTagsManager = {
+        initialize: function() {
+            $('.node-tags-relation').addAddSubtagsEvents();
+            $('.remove-selected').addRemoveSubtagsEvents();
+        },
+        
+        setSelectedValues: function() {
+            $('.node-tags-relation').setSelectedValues();
+        }
+    };
 });

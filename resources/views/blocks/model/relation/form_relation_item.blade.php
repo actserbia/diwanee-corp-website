@@ -6,13 +6,13 @@
         @endforeach
 
         @foreach ($object->extraFields($field) as $itemFieldName)
-            @include('blocks.model', ['multiple' => true, 'fieldPrefix' => $field, 'field' => $itemFieldName, 'object' => $item])
+            @include('blocks.model', ['fieldPrefix' => $field . '__' . $item->id, 'field' => $itemFieldName, 'object' => $item])
         @endforeach
     @else
         @include('blocks.model.form_label', ['fieldPrefix' => '_', 'field' => $item->defaultDropdownColumn, 'object' => $item])
     @endif
 
-    @if (isset($isNew) && $isNew || !isset($fullData) || !$fullData)
+    @if ($object->checkIfCanRemoveSelectedRelationItem($field, $item))
         <a href=":javascript" 
             id="{{ $field }}-remove-selected" 
             class="remove-selected" 

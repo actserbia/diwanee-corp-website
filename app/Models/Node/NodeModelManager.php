@@ -5,6 +5,7 @@ use App\Utils\Utils;
 use App\Constants\Settings;
 use App\Tag;
 use Illuminate\Database\Eloquent\Collection;
+use App\Constants\FieldTypeCategory;
 
 trait NodeModelManager {
     public function __construct(array $attributes = array()) {
@@ -43,7 +44,14 @@ trait NodeModelManager {
 
     private function populateTagFieldsData($nodeTypeId = null) {
         $nodeType = isset($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
-        foreach($nodeType->tags_fields as $tagField) {
+        $tagFieldsRelationName = FieldTypeCategory::Tag . '_fields';
+        foreach($nodeType->$tagFieldsRelationName as $tagField) {
+            $this->populateTagFieldData($tagField);
+        }
+    }
+    
+    private function populateTagFieldData($tagField) {
+        if($tagField->pivot->active) {
             $relationSettings = [
                 'parent' => 'tags',
                 'filters' => ['tag_type_id' => [$tagField->field_type_id]],
@@ -51,12 +59,12 @@ trait NodeModelManager {
                 'automaticSave' => true
             ];
             $this->relationsSettings[$tagField->formattedTitle] = $relationSettings;
-            
+
             if($tagField->pivot->required) {
                 $this->requiredFields[] = $tagField->formattedTitle;
             }
-            
-            $this->multipleFields[$tagField->formattedTitle] = $tagField->pivot->multiple ? [false, true, true, true, true] : [false, false, false, false, false];
+
+            $this->multipleFields[$tagField->formattedTitle] = $tagField->pivot->multiple_list;
         }
     }
 

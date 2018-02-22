@@ -8,6 +8,7 @@ use App\Constants\FieldType;
 use App\Utils\Utils;
 use App\NodeType;
 use App\Constants\Settings;
+use App\Constants\FieldTypeCategory;
 
 class NodeModelDBGenerator {
     private $model = null;
@@ -64,7 +65,8 @@ class NodeModelDBGenerator {
     }
 
     private function addNodeModelTableFields($table) {
-        foreach($this->model->attributes_fields as $field) {
+        $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
+        foreach($this->model->$attributeFieldsRelationName as $field) {
             //if(!$field->pivot->multiple && !Schema::hasColumn($this->tableName, $field->formattedTitle)) {
             if(!Schema::hasColumn($this->tableName, $field->formattedTitle)) {
                 $this->setTableField($table, $field);
@@ -147,7 +149,8 @@ class NodeModelDBGenerator {
             $tableName = self::getTableName($nodeType->name, Settings::NodeModelPrefix);
             Schema::dropIfExists($tableName);
 
-            foreach($nodeType->attributes_fields as $field) {
+            $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
+            foreach($nodeType->$attributeFieldsRelationName as $field) {
                 $fieldsTableName = self::getTableName($field->formattedTitle, Settings::NodeModelFieldPrefix);
                 Schema::dropIfExists($fieldsTableName);
             }

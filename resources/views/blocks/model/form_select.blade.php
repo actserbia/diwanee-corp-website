@@ -5,7 +5,7 @@
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
         <select class="form-control" 
             id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
-            name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}{{ isset($multiple) ? '[]' : '' }}"
+            name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
             @if($object->isRequired($field)) required @endif
         >
             <option value=""></option>

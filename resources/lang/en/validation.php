@@ -103,7 +103,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-        'parents' => ['check_tags' => 'The :attribute tags should not be in children or grandparents tags.'],
+        'parents' => [
+            'check_tags' => 'The :attribute tags should not be in children or grandparents tags.',
+            'check_tag_max_level' => 'Maximum levels count exceeded.'
+        ],
         'children' => ['check_tags' => 'The :attribute tags should not be in parents or grandchildren tags.']
     ],
 

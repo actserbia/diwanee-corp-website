@@ -9,7 +9,7 @@
             @else
                 <input class="form-control" type="text" value="{{ $value }}"
                     id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}_text" 
-                    name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}_text{{ isset($multiple) ? '[]' : '' }}"
+                    name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}_text"
                     readonly
                 />
             @endif
@@ -18,7 +18,7 @@
         @foreach ($object->formReadonlyValue($field) as $value)
             <input class="form-control" type="hidden" value="{{ $value }}" 
                 id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
-                name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}{{ isset($multiple) ? '[]' : '' }}"
+                name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
             />
         @endforeach
     </div>

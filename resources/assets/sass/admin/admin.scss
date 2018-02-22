@@ -108,10 +108,23 @@
   }
 }
 
-.moving-disable {
-    color: red;
-}
-
 .tag-item {
     margin-left: 30px;
+    
+    .moving-disable {
+        color: red;
+    }
+}
+
+.checkbox-item-container {
+    clear: both;
+    
+    .checkbox-item {
+        width: unset;
+        float: left;
+    }
+}
+
+.checkbox-add {
+    margin-top: 30px;
 }

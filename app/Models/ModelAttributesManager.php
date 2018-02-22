@@ -63,9 +63,9 @@ trait ModelAttributesManager {
     public function attributeValue($field) {
         if(isset($this->pivot->$field)) {
             return $this->pivot->$field;
+        } else {
+            return isset($this->$field) ? $this->$field : $this->defaultAttributeValue($field);
         }
-        
-        return isset($this->$field) ? $this->$field : $this->defaultAttributeValue($field);
     }
     
     private function defaultAttributeValue($field) {

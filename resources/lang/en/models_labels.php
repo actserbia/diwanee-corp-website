@@ -1,4 +1,6 @@
 <?php
+  
+use App\Constants\FieldTypeCategory;
 
 return [
     'global' => [
@@ -62,9 +64,9 @@ return [
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
-        'attributes_fields_label' => 'Fields',
-        'tags_fields_label' => 'Tags',
-        'sir_trevor_fields_label' => 'Sir Trevor Fields'
+        FieldTypeCategory::Attribute . '_fields_label' => 'Fields',
+        FieldTypeCategory::Tag . '_fields_label' => 'Tags',
+        FieldTypeCategory::SirTrevor . '_fields_label' => 'Sir Trevor Fields'
     ],
   
     'Field' => [
@@ -79,7 +81,8 @@ return [
         'deleted_at' => 'Deleted Date',
         'active' => 'Active',
         'required' => 'Required',
-        'multiple' => 'Multiple'
+        'multiple' => 'Multiple',
+        'multiple_list' => 'Multiple'
     ],
   
     'Node' => [

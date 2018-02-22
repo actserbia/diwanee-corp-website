@@ -1,6 +1,8 @@
 <?php
 namespace App\Utils;
 
+use App\Constants\Settings;
+
 class Utils {
     private static $autoincrement = [];
     public static $modelType;
@@ -72,5 +74,9 @@ class Utils {
     
     public static function translateModelDataPlural($translationLabel) {
         return __($translationLabel, ['type' => __('models_labels.' .  self::$modelType . '.label_plural')]);
+    }
+    
+    public static function getMaximumTagsLevelsCount() {
+        return Settings::MaximumTagsLevelsCount;
     }
 }
