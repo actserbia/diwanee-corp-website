@@ -12,6 +12,7 @@ $(document).ready(function() {
                         $(object).parent().before(data);
                         $('.remove-checkbox').addRemoveCheckboxEvents();
                         $(object).setAddCheckboxVisibility();
+                        FormManager.beautifyCheckboxes();
                     }
                 });
             });
@@ -30,7 +31,7 @@ $(document).ready(function() {
     
     $.fn.setAddCheckboxVisibility = function() {
         $(this).each(function(index, object) {
-            if($('input.checkbox-item[data-model-id=' + $(object).data('model-id') + ']').length >= maximumTagsLevelsCount) {
+            if($('input.checkbox-item[data-model-id=' + $(object).data('model-id') + ']').length >= $(object).data('maximum-count')) {
                 $(object).attr('style', 'display:none;');
             } else {
                 $(object).attr('style', 'display:block;');

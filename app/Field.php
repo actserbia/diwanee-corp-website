@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
+use App\Constants\Settings;
 use App\Utils\Utils;
 use App\Models\Node\NodeModelClassGenerator;
 use App\Models\Node\NodeModelDBGenerator;
@@ -80,6 +81,14 @@ class Field extends AppModel {
     public function checkIfCanRemove() {
         if(isset($this->pivot) && $this->pivot->pivotParent->modelClass === 'App\\NodeType') {
             return $this->pivot->pivotParent->checkIfCanRemoveSelectedRelationItem($this->field_type->category . '_fields');
+        }
+        
+        return true;
+    }
+    
+    public function getMaximumCheckboxItemsCount($field) {
+        if($field === 'multiple_list' && $this->field_type->category === FieldTypeCategory::Tag) {
+            return Settings::MaximumTagsLevelsCount;
         }
         
         return true;

@@ -73,10 +73,21 @@
                                         <li><a href="{{ route('nodes.create') }}">@lang('blade_templates.admin.sidebar.create_node')</a></li>
                                     </ul>
                                 </li>
-                                @if(Auth::user()->role === 'admin')
+                                
+                                @if(Auth::admin())
                                     <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> @lang('blade_templates.admin.sidebar.users') </a></li>
-
-                                    <li><a ><i class="fa  fa fa-columns"></i> Graphiql <span class="fa fa-chevron-down"></span> </a>
+                                @endif
+                                
+                                @if(Auth::admin())
+                                    <li><a ><i class="fa fa-search"></i> @lang('blade_templates.admin.sidebar.search')  <span class="fa fa-chevron-down"></span> </a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="{{ route('admin.search.nodes') }}">@lang('blade_templates.admin.sidebar.nodes')</a></li>
+                                            <li><a href="{{ route('admin.search.tags') }}">@lang('blade_templates.admin.sidebar.tags')</a></li>
+                                            <li><a href="{{ route('admin.search.elements') }}">@lang('blade_templates.admin.sidebar.elements')</a></li>
+                                            <li><a href="{{ route('admin.search.users') }}">@lang('blade_templates.admin.sidebar.users')</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a ><i class="fa  fa fa-columns"></i> @lang('blade_templates.admin.sidebar.graphiql') <span class="fa fa-chevron-down"></span> </a>
                                         <ul class="nav child_menu">
                                             <li><a href="/{{ config('graphiql.routes.ui') }}?type=user">@lang('blade_templates.admin.sidebar.users')</a></li>
                                             <li><a href="/{{ config('graphiql.routes.ui') }}?type=tag">@lang('blade_templates.admin.sidebar.tags')</a></li>
@@ -135,7 +146,6 @@
         </div>
     </div>
 
-    @include('scripts.admin')
     <script src="{{ asset('js/admin.js') }}"></script>
     @stack('scripts')
 </body>

@@ -59,5 +59,17 @@
           Route::resource('nodes', 'AdminNodesController');
           Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');
           Route::get('node-fields', 'AdminNodesController@nodeFields')->name('node.fields');
+          
+          Route::group(['prefix' => 'search'], function() {
+              Route::match(['get', 'post'], 'users', 'AdminSearchController@users')->name('admin.search.users');
+              Route::match(['get', 'post'], 'tags', 'AdminSearchController@tags')->name('admin.search.tags');
+              Route::match(['get', 'post'], 'nodes', 'AdminSearchController@nodes')->name('admin.search.nodes');
+              Route::match(['get', 'post'], 'elements', 'AdminSearchController@elements')->name('admin.search.elements');
+
+              Route::match(['get'], 'typeahead', 'AdminSearchController@typeahead')->name('admin.search.typeahead');
+              Route::get('add-filter', 'AdminSearchController@searchAddFilter')->name('admin.search.add.filter');
+              Route::get('add-input', 'AdminSearchController@searchAddInput')->name('admin.search.add.input');
+              Route::get('nodes-list', 'AdminSearchController@nodesList')->name('admin.search.nodes.list');
+          });
       });
   }

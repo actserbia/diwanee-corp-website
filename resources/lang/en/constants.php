@@ -30,5 +30,24 @@ return [
         'list' => 'List',
         'heading' => 'Heading',
         'quote' => 'Quote'
+    ],
+    'UserActive' => [
+        '1' => 'Active',
+        '0' => 'Not Active'
+    ],
+    'Filters' => [
+        'equal' => 'Equal',
+        'like' => 'Contains',
+        'empty_or_null' => 'Empty',
+        'greater' => 'Greater',
+        'greater_or_equal' => 'Greater or equal',
+        'not_equal' => 'Not Equal',
+        'not_like' => 'Not Contains',
+        'not_empty_or_null' => 'Not Empty',
+        'less_or_equal' => 'Less or equal',
+        'less' => 'Less',
+
+        'and' => 'And',
+        'or' => 'Or'
     ]
 ];

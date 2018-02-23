@@ -68,7 +68,10 @@ return [
             'nodes' => 'Nodes',
             'create_node' => 'Create Node',
             'nodes_list' => 'Nodes List',
-            'users' => 'Users'
+            'users' => 'Users',
+            'search' => 'Search',
+            'elements' => 'Elements',
+            'graphiql' => 'Graphiql'
         ],
         'home' => [
             'dashboard_title' => 'Dashboard',
@@ -79,6 +82,17 @@ return [
         ],
         'types' => [
             'add_field' => 'Add field'
-        ]
+        ],
+        'search' => [
+            'search_label' => 'Add search filter',
+            'search_button_text' => 'Search',
+            'users' => 'Search Users',
+            'tags' => 'Search Tags',
+            'nodes' => 'Search Nodes',
+            'elements' => 'Search Elements',
+            'negation' => 'Not',
+            'start_date' => 'Start Date',
+            'end_date' => 'End Date'
+        ],
     ]
 ];

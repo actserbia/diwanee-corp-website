@@ -48,6 +48,7 @@ let mix = require('laravel-mix');
             'resources/assets/_admin_/js/vfs_fonts.js',
             'resources/assets/_admin_/js/custom.min.js',
             
+            'resources/assets/js/admin/form.js',
             'resources/assets/js/admin/model.js',
             'resources/assets/js/admin/relation-node-tags.js',
             'resources/assets/js/admin/relation.js',
@@ -58,6 +59,7 @@ let mix = require('laravel-mix');
             'resources/lang/*/js/datatable.js',
             'resources/lang/*/js/html5.js',
             'resources/assets/js/Html5Localization.js',
+            'resources/assets/js/admin/admin-search.js',
             'resources/assets/js/admin/admin.js'
         ], 'public/js/admin.js')
 

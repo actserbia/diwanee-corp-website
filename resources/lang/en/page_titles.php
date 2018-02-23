@@ -8,7 +8,13 @@ return [
     'home' => 'Diwanee Corp',
     'profile' => 'Profile',
     'admin' => [
-        'home' => 'Diwanee Corp Admin Panel'
+        'home' => 'Diwanee Corp Admin Panel',
+        'search' => [
+            'users' => 'Diwanee Corp Admin Panel - Search Users',
+            'tags' => 'Diwanee Corp Admin Panel - Search Tags',
+            'nodes' => 'Diwanee Corp Admin Panel - Search Nodes',
+            'elements' => 'Diwanee Corp Admin Panel - Search Elements'
+        ]
     ],
     'users' => [
         'index' => 'Diwanee Corp Admin Panel - Users List',

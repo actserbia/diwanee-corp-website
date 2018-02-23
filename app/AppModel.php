@@ -3,18 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Support\Facades\DB;
 use App\Models\ModelDataManager;
+use App\Models\Search;
 
 class AppModel extends Model {
     use ModelDataManager;
+    use Search;
     
     protected $allAttributesFields = [];
     
     protected $allFieldsFromPivots = [];
 
     protected $requiredFields = [];
+    
+    protected $filterFields = [];
 
     protected $attributeType = [];
     
@@ -45,6 +48,7 @@ class AppModel extends Model {
         if(count($this->fillable) > 0) {
             $this->fill($data);
         }
+        
         $this->populateBelongsToRelations($data);
         $this->save();
         
@@ -77,7 +81,6 @@ class AppModel extends Model {
     }
     
     public function checkIfCanRemoveItem() {
-      
         if(method_exists($this, 'checkIfCanRemove')) {
             return $this->checkIfCanRemove();
         }

@@ -16,6 +16,29 @@ class Node extends AppModel {
     protected $fillable = ['title', 'status', 'node_type_id', 'author_id'];
 
     protected $requiredFields = ['title', 'status', 'node_type_id'];
+    
+    protected $filterFields = [
+        'id' => false,
+        'title' => true,
+        'status' => true,
+        'tags:tag_id' => false,
+        'tags:name' => false,
+        'tags:created_at' => false,
+        'tags:updated_at' => false,
+        'tags:deleted_at' => false,
+        'created_at' => true,
+        'updated_at' => true,
+        'deleted_at' => false,
+        'author_id' => false,
+        'author:name' => true,
+        'author:email' => true,
+        'author:role' => true,
+        'author:active' => false,
+        'author:api_token' => false,
+        'author:created_at' => false,
+        'author:updated_at' => false,
+        'author:deleted_at' => false
+    ];
 
     protected $attributeType = [
         'status' => Models::AttributeType_Enum,
@@ -61,6 +84,8 @@ class Node extends AppModel {
         'tags' => true,
         'elements' => true
     ];
+    
+    protected $nodeType = null;
 
     public function getEditorContentAttribute() {
         $data = array();
@@ -127,5 +152,28 @@ class Node extends AppModel {
         foreach($nodes as $node) {
             Element::formatElements($node->elements, $jsonEncode, $toHtml);
         }
+    }
+    
+    public function modelTypeIdValue() {
+        return isset($this->nodeType->id) ? $this->nodeType->id : '';
+    }
+    
+    protected function getFilterFields() {
+        $filterFields = [];
+        if(isset($this->relationsSettings['additional_data'])) {
+            $relationFilterFields = $this->getRelationModel('additional_data')->getFilterFields();
+            foreach($relationFilterFields as $relationFilterField => $visibility) {
+                $filterFields['additional_data' . ':' . $relationFilterField] = $visibility;
+            }
+            
+            foreach(array_keys($this->relationsSettings) as $relation) {
+                if($this->checkRelationType($relation, 'App\\Node', 'tags')) {
+                    $filterFields[$relation . ':name'] = true;
+                }
+            }
+            
+            $filterFields = array_merge($filterFields, $this->filterFields);
+        }
+        return $filterFields;
     }
 }

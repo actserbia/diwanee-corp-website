@@ -13,11 +13,30 @@ class Tag extends AppModel {
     
     protected $fillable = ['name'];
 
-    protected $allAttributesFields = ['id', 'name', 'created_at', 'updated_at', 'deleted_at', 'tag_type_id'];
+    protected $allAttributesFields = ['id', 'name', 'tag_type_id', 'created_at', 'updated_at', 'deleted_at'];
     
-    protected $allFieldsFromPivots = [];
+    protected $allFieldsFromPivots = ['tag_id', 'parent_id'];
 
     protected $requiredFields = ['name', 'tag_type'];
+    
+    protected $filterFields = [
+        'id' => false,
+        'name' => true,
+        'tag_type:name' => true,
+        'created_at' => true,
+        'updated_at' => true,
+        'deleted_at' => false,
+        'parents:parent_id' => false,
+        'parents:name' => false,
+        'parents:created_at' => false,
+        'parents:updated_at' => false,
+        'parents:deleted_at' => false,
+        'children:tag_id' => false,
+        'children:name' => false,
+        'children:created_at' => false,
+        'children:updated_at' => false,
+        'children:deleted_at' => false
+    ];
 
     protected $attributeType = [
         'parent_id' => Models::AttributeType_Number,

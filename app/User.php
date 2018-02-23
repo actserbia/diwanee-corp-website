@@ -6,16 +6,16 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Creativeorange\Gravatar\Facades\Gravatar;
-
+use App\Models\Search;
 use App\Constants\Models;
 use App\Models\ModelDataManager;
-use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
     use ModelDataManager;
+    use Search;
 
     protected $fillable = ['name', 'email', 'password', 'role'];
 
@@ -24,6 +24,18 @@ class User extends Authenticatable
     protected $allAttributesFields = ['id', 'name', 'email', 'password', 'role', 'active', 'api_token', 'created_at', 'updated_at', 'deleted_at'];
     
     protected $allFieldsFromPivots = [];
+    
+    protected $filterFields = [
+        'id' => false,
+        'name' => true,
+        'email' => true,
+        'role' => false,
+        'active' => false,
+        'api_token' => false,
+        'created_at' => true,
+        'updated_at' => true,
+        'deleted_at' => false
+    ];
     
     protected $defaultDropdownColumn = 'name';
     

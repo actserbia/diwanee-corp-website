@@ -87,4 +87,8 @@ trait ModelAttributesManager {
 
         return $fields;
     }
+    
+    public function modelTypeIdValue() {
+        return '';
+    }
 }

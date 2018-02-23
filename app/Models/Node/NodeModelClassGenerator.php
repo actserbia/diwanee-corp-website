@@ -15,8 +15,9 @@ class NodeModelClassGenerator {
     private $oldFilepath = null;
 
     private $fillable = [];
-    private $allAttributesFields = ['id', 'created_at', 'updated_at', 'deleted_at'];
+    private $allAttributesFields = ['id'];
     private $requiredFields = [];
+    private $filterFields = [];
     private $attributeType = [];
     private $defaultFieldsValues = [];
 
@@ -64,6 +65,7 @@ class NodeModelClassGenerator {
             if($field->pivot->active) {
                 $this->fillable[] = $field->formattedTitle;
                 $this->allAttributesFields[] = $field->formattedTitle;
+                $this->filterFields[$field->formattedTitle] = 'true';
 
                 if($field->pivot->required) {
                     $this->requiredFields[] = $field->formattedTitle;
@@ -102,14 +104,13 @@ class NodeModelClassGenerator {
         $this->content = '<?php' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'namespace App\NodeModel;' . PHP_EOL . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use App\AppModel;' . PHP_EOL;
-        $this->content .= str_repeat(' ', 4) . 'use Illuminate\Database\Eloquent\SoftDeletes;' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use App\Constants\Models;' . PHP_EOL . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'class ' . $this->getClassName($this->model->name) . ' extends AppModel {' . PHP_EOL;
-        $this->content .= str_repeat(' ', 8) . 'use SoftDeletes;' . PHP_EOL . PHP_EOL;
 
         $this->addFormattedList('fillable');
         $this->addFormattedList('allAttributesFields');
         $this->addFormattedList('requiredFields');
+        $this->addFormattedListWithKeys('filterFields');
         $this->addFormattedList('defaultFieldsValues');
         $this->addFormattedListWithKeys('attributeType');
         $this->addFormattedListWithKeys('relationsSettings');

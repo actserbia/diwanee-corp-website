@@ -238,6 +238,8 @@ return [
         'SirTrevorJs' => Caouecs\Sirtrevorjs\SirTrevorJs::class,
         'STConverter' => Caouecs\Sirtrevorjs\SirTrevorJsConverter::class,
         'SirTrevor' => App\SirTrevor\SirTrevor::class,
+        'Filters' => App\Constants\Filters::class,
+        'FiltersUtils' => App\Models\Filters\FiltersUtils::class
 
     ],
 

@@ -13,6 +13,7 @@
                 data-model-id="{{ $object->id }}"
                 data-field="{{ $field }}"
                 data-field-prefix="{{ $fieldPrefix }}"
+                data-maximum-count="{{ $object->getMaximumCheckboxItemsCount($field) }}"
             ><i class="fa fa-plus" aria-hidden="true"></i></a>
         </div>
         

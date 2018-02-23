@@ -20,8 +20,7 @@ return [
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
-        'articles_label' => 'Articles',
-        'articles_count' => 'Articles Count'
+        'nodes_label' => 'Articles'
     ],
   
     'FieldType' => [
@@ -95,6 +94,37 @@ return [
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
         'node_type_label' => 'Type',
-        'content' => 'Content'
-    ]
+        'content' => 'Content',
+        'author_label' => 'Author'
+    ],
+  
+    'Element' => [
+        'id' => 'Id',
+        'id_element' => 'Element Id',
+        'type' => 'Type',
+        'data' => [
+            'text' => 'Text',
+            'heading' => 'Heading',
+            'heading_h1' => 'Heading H1',
+            'heading_h2' => 'Heading H2',
+            'heading_h3' => 'Heading H3',
+            'heading_h4' => 'Heading H4',
+            'heading_h5' => 'Heading H5',
+            'heading_type' => 'Heading Type',
+            'quote' => 'Quote',
+            'cite' => 'Quote Credit',
+            'list' => 'List',
+            'seoname' => 'Image Seoname',
+            'seoalt' => 'Image Seoalt',
+            'caption' => 'Image Caption',
+            'copyright' => 'Image Copyright',
+            'hash' => 'Image Hash',
+            'source' => 'Video Provider',
+            'remote_id' => 'Video Remote Id'
+        ],
+        'data_label' => 'Data',
+        'created_at' => 'Created Date',
+        'updated_at' => 'Updated Date',
+        'nodes_label' => 'Node'
+    ],
 ];

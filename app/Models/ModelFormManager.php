@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Constants\Models;
 use App\Utils\Utils;
 use Request;
+use Auth;
 
 trait ModelFormManager {
     public function formFieldType($fullFieldName, $readonly = false) {
@@ -13,7 +14,7 @@ trait ModelFormManager {
         
         $fieldName = $this->getFieldName($fullFieldName);
         if($this->isRelation($fieldName)) {
-            return $this->isNodeTagsRelation($fieldName) ? Models::FormFieldType_Relation_NodeTags : Models::FormFieldType_Relation;
+            return $this->checkRelationType($fieldName, 'App\\Node', 'tags') ? Models::FormFieldType_Relation_NodeTags : Models::FormFieldType_Relation;
         }
         
         $modelManager = $this->getModelManager($fieldName);
@@ -170,5 +171,18 @@ trait ModelFormManager {
     
     public function formFieldName($fullFieldName, $prefix = '') {
         return empty($prefix) ? $fullFieldName : $prefix . '__' . $fullFieldName;
+    }
+    
+    public function getFieldsWithLabels() {
+        $fieldsWithLabels = [];
+
+        $fields = $this->getFilterFields();
+        foreach($fields as $fullFieldName => $visible) {
+            if (Auth::admin() || $visible === true) {
+                $fieldsWithLabels[$fullFieldName] = $this->fieldLabel($fullFieldName);
+            }
+        }
+
+        return $fieldsWithLabels;
     }
 }

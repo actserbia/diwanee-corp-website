@@ -30,8 +30,7 @@ class AdminNodesController extends Controller {
 
         $objects = [];
         if(isset($data['node_type_id'])) {
-            $nodeObject = new Node(['node_type_id' => $data['node_type_id']]);
-            $objects = $nodeObject::where('node_type_id', '=', $data['node_type_id'])->get();
+            $objects = Node::where('node_type_id', '=', $data['node_type_id'])->get();
         }
 
         return view('blocks.nodes-list', compact('objects'));

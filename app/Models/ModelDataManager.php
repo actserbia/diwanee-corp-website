@@ -57,6 +57,10 @@ trait ModelDataManager {
         if(!empty($params) && $this->isRelation($this->getFieldName($params[0]))) {
             $model = $this->getRelationModel($this->getFieldName($params[0]));
             $settings['relation'] = array_shift($params);
+            
+            if(empty($params)) {
+                $params[] = 'id';
+            }
         }
         
         if(!empty($params) && $model->isAttribute(str_replace('_confirmation', '', $this->getFieldName($params[0])))) {
@@ -82,7 +86,7 @@ trait ModelDataManager {
     }
     
     private function populateFieldType(&$settings) {
-        if(strpos($settings['attribute'], 'count') !== false) {
+        if(strpos($settings['attribute'], '_count') !== false) {
             $settings['field_type'] = Models::FieldType_AttributeAggregate;
         } elseif(isset($settings['relation'])) {
             $settings['field_type'] = isset($settings['json_attribute']) ? Models::FieldType_RelationJson : Models::FieldType_Relation;

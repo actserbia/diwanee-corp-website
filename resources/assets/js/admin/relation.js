@@ -7,7 +7,7 @@ $(document).ready(function() {
                     $(object).val('');
                 }
                 
-                if(selectedItemId.length) {
+                if(selectedItemId !== null) {
                     $.ajax({
                         type: 'GET',
                         url: '/admin/model/add-relation-item',
@@ -23,6 +23,7 @@ $(document).ready(function() {
                                 $('div[id=relation-item-' + $(object).attr('id') + '-' + selectedItemId + ']').setRelationItemsDraggableAndDroppable();
                             }
                             $('.add-checkbox', '#selected-' + $(object).attr('id')).addAddCheckboxEvents();
+                            FormManager.beautifyCheckboxes();
                         }
                     });
                 }

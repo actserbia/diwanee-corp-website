@@ -50,9 +50,8 @@ class NodeModelDBGenerator {
             $table->unsignedInteger('node_id');
 
             $this->addNodeModelTableFields($table);
-
+            
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('node_id')->references('id')->on('nodes');
         });

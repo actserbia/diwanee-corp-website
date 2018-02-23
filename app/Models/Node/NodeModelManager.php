@@ -4,6 +4,7 @@ namespace App\Models\Node;
 use App\Utils\Utils;
 use App\Constants\Settings;
 use App\Tag;
+use App\NodeType;
 use Illuminate\Database\Eloquent\Collection;
 use App\Constants\FieldTypeCategory;
 
@@ -21,31 +22,32 @@ trait NodeModelManager {
             $object = (new static)->$method(...$parameters);
             $object->populateData();
             return $object;
+        } elseif(isset(end($parameters)['node_type_id'])) {
+            return (new static(array_pop($parameters)))->$method(...$parameters);
         } else {
             return (new static)->$method(...$parameters);
         }
     }
 
     public function populateData($nodeTypeId = null) {
-        $this->populateAttributesFieldsData($nodeTypeId);
-        $this->populateTagFieldsData($nodeTypeId);
+        $this->nodeType = !empty($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
+        
+        $this->populateAttributesFieldsData($this->xxx);
+        $this->populateTagFieldsData($this->xxx);
     }
 
-    private function populateAttributesFieldsData($nodeTypeId = null) {
-        $nodeType = isset($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
-
-        $this->relationsSettings['additionalData'] = [
+    private function populateAttributesFieldsData() {
+        $this->relationsSettings['additional_data'] = [
             'relationType' => 'hasOne',
-            'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($nodeType->name, ' '),
+            'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($this->nodeType->name, ' '),
             'foreignKey' => 'node_id',
             'relationKey' => 'id'
         ];
     }
 
-    private function populateTagFieldsData($nodeTypeId = null) {
-        $nodeType = isset($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
+    private function populateTagFieldsData() {
         $tagFieldsRelationName = FieldTypeCategory::Tag . '_fields';
-        foreach($nodeType->$tagFieldsRelationName as $tagField) {
+        foreach($this->nodeType->$tagFieldsRelationName as $tagField) {
             $this->populateTagFieldData($tagField);
         }
     }
@@ -71,8 +73,8 @@ trait NodeModelManager {
     protected function getAutomaticRenderAtributes() {
         $fields = parent::getAutomaticRenderAtributes();
 
-        if(isset($this->relationsSettings['additionalData'])) {
-            $model = new $this->relationsSettings['additionalData']['model'];
+        if(isset($this->relationsSettings['additional_data'])) {
+            $model = new $this->relationsSettings['additional_data']['model'];
             foreach($model->getFillableAttributes() as $field) {
                 if(strpos($field, '_id') === false) {
                     $fields[] = $field;
@@ -86,8 +88,8 @@ trait NodeModelManager {
     protected function getAllAttributes() {
         $attributes = parent::getAllAttributes();
         
-        if(isset($this->relationsSettings['additionalData'])) {
-            $model = new $this->relationsSettings['additionalData']['model'];
+        if(isset($this->relationsSettings['additional_data'])) {
+            $model = new $this->relationsSettings['additional_data']['model'];
             $attributes = array_merge($attributes, $model->getAllAttributes());
         }
         
@@ -97,8 +99,8 @@ trait NodeModelManager {
     public function getRequiredAttributes() {
         $requiredFields = parent::getRequiredAttributes();
         
-        if(isset($this->relationsSettings['additionalData'])) {
-            $model = new $this->relationsSettings['additionalData']['model'];
+        if(isset($this->relationsSettings['additional_data'])) {
+            $model = new $this->relationsSettings['additional_data']['model'];
             $requiredFields = array_merge($requiredFields, $model->getRequiredAttributes());
         }
 
@@ -108,8 +110,8 @@ trait NodeModelManager {
     public function getAllAttributesTypes() {
         $attributesTypes = parent::getAllAttributesTypes();
         
-        if(isset($this->relationsSettings['additionalData'])) {
-            $model = new $this->relationsSettings['additionalData']['model'];
+        if(isset($this->relationsSettings['additional_data'])) {
+            $model = new $this->relationsSettings['additional_data']['model'];
             $attributesTypes = array_merge($attributesTypes, $model->getAllAttributesTypes());
         }
         
@@ -117,15 +119,14 @@ trait NodeModelManager {
     }
 
     public function attributeValue($field) {
-        if(isset($this->additionalData)) {
-            if($this->additionalData->attributeValue($field) !== null) {
-                return $this->additionalData->attributeValue($field);
+        if(isset($this->additional_data)) {
+            if($this->additional_data->attributeValue($field) !== null) {
+                return $this->additional_data->attributeValue($field);
             }
         }
 
         return parent::attributeValue($field);
     }
-
 
     public function formTagsRelationValuesIdsList($relation, $level = 1) {
         $tagsIds = [];

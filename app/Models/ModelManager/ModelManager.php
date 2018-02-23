@@ -34,7 +34,7 @@ abstract class ModelManager {
         }
         
         if(isset($this->relation)) {
-            $label .= Utils::translate('models_labels.' . $this->model->modelName . '.' . $this->relation . '_label', $this->relation);
+            $label .= Utils::translate('models_labels.' . $this->model->modelName . '.' . $this->relation . '_label', $this->relation) . ' ';
         }
         
         $label .=  $this->getTranslatedLabel('models_labels.' . $this->fieldModel->modelName . '.' . $this->attributeTranslationName());

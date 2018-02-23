@@ -46,15 +46,15 @@ trait ModelRelationsManager {
     public function isRelation($field) {
         return isset($this->relationsSettings[$field]);
     }
-
-    public function isNodeTagsRelation($field) {
-        if($this->modelClass === 'App\\Node' && $this->isRelation($field)) {
-            if($field === 'tags') {
+    
+    public function checkRelationType($field, $mainModelName, $relationName) {
+        if($this->modelClass === $mainModelName && $this->isRelation($field)) {
+            if($field === $relationName) {
                 return true;
             }
 
             $relationsSettings = $this->relationsSettings[$field];
-            if(isset($relationsSettings['parent']) && $relationsSettings['parent'] === 'tags') {
+            if(isset($relationsSettings['parent']) && $relationsSettings['parent'] === $relationName) {
                 return true;
             }
         }

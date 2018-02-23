@@ -10,6 +10,7 @@
                     <h2>{{ Utils::translateModelData('blade_templates.admin.global.create_title')}} <a href="{{ route('nodes.index') }}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('blade_templates.global.back') </a></h2>
                     <div class="clearfix"></div>
                 </div>
+                
                 <div id="node-create" class="x_content form-horizontal">
                     <br />
                     @include('blocks.model', ['field' => 'node_type'])
