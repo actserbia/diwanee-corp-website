@@ -36,7 +36,13 @@ class User extends Authenticatable
         'api_token' => false,
         'created_at' => true,
         'updated_at' => true,
-        'deleted_at' => false
+        'deleted_at' => false,
+        'nodes:id' => false,
+        'nodes:title' => true,
+        'nodes:status' => false,
+        'nodes:created_at' => false,
+        'nodes:updated_at' => false,
+        'nodes:deleted_at' => false
     ];
     
     protected $statisticFields = [
@@ -53,6 +59,15 @@ class User extends Authenticatable
     ];
     
     protected $requiredFields = ['name', 'email', 'password', 'role'];
+    
+    protected $relationsSettings = [
+        'nodes' => [
+            'relationType' => 'hasMany',
+            'model' => 'App\\Node',
+            'foreignKey' => 'author_id',
+            'relationKey' => 'id'
+        ]
+    ];
      
     public function saveData(array $data) {
         $this->name = $data['name'];

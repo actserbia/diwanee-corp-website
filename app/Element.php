@@ -39,7 +39,12 @@ class Element extends AppModel {
         'data:source' => true,
         'data:remote_id' => true,
         'created_at' => true,
-        'updated_at' => true
+        'updated_at' => true,
+        'nodes:title' => true,
+        'nodes:status' => true,
+        'nodes:created_at' => false,
+        'nodes:updated_at' => false,
+        'nodes:deleted_at' => false
     ];
     
     protected $statisticFields = [

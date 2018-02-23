@@ -35,7 +35,12 @@ class Tag extends AppModel {
         'children:name' => false,
         'children:created_at' => false,
         'children:updated_at' => false,
-        'children:deleted_at' => false
+        'children:deleted_at' => false,
+        'nodes:title' => true,
+        'nodes:status' => true,
+        'nodes:created_at' => false,
+        'nodes:updated_at' => false,
+        'nodes:deleted_at' => false
     ];
     
     protected $statisticFields = [
