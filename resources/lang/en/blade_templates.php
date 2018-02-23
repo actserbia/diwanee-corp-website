@@ -70,6 +70,7 @@ return [
             'nodes_list' => 'Nodes List',
             'users' => 'Users',
             'search' => 'Search',
+            'statistics' => 'Statistics',
             'elements' => 'Elements',
             'graphiql' => 'Graphiql'
         ],
@@ -94,5 +95,14 @@ return [
             'start_date' => 'Start Date',
             'end_date' => 'End Date'
         ],
+        'statistics' => [
+            'count' => 'Count',
+            'statistic_label' => 'Statistic',
+            'statistics_button_text' => 'Statistic',
+            'users' => 'Users Statistics',
+            'tags' => 'Tags Statistics',
+            'nodes' => 'Nodes Statistics',
+            'elements' => 'Elements Statistics'
+        ]
     ]
 ];

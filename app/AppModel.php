@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\ModelDataManager;
 use App\Models\Search;
+use App\Models\Statistics;
 
 class AppModel extends Model {
     use ModelDataManager;
     use Search;
+    use Statistics;
     
     protected $allAttributesFields = [];
     
@@ -18,6 +20,8 @@ class AppModel extends Model {
     protected $requiredFields = [];
     
     protected $filterFields = [];
+    
+    protected $statisticFields = [];
 
     protected $attributeType = [];
     

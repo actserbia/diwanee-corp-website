@@ -41,6 +41,12 @@ class Element extends AppModel {
         'created_at' => true,
         'updated_at' => true
     ];
+    
+    protected $statisticFields = [
+        'type',
+        'data:heading_type',
+        'data:source'
+    ];
 
     protected $casts = [
         'data' => 'array'

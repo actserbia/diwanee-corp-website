@@ -87,6 +87,14 @@
                                             <li><a href="{{ route('admin.search.users') }}">@lang('blade_templates.admin.sidebar.users')</a></li>
                                         </ul>
                                     </li>
+                                    <li><a ><i class="fa fa-bar-chart"></i> @lang('blade_templates.admin.sidebar.statistics')  <span class="fa fa-chevron-down"></span> </a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="{{ route('admin.statistics.nodes') }}">@lang('blade_templates.admin.sidebar.nodes')</a></li>
+                                            <li><a href="{{ route('admin.statistics.tags') }}">@lang('blade_templates.admin.sidebar.tags')</a></li>
+                                            <li><a href="{{ route('admin.statistics.elements') }}">@lang('blade_templates.admin.sidebar.elements')</a></li>
+                                            <li><a href="{{ route('admin.statistics.users') }}">@lang('blade_templates.admin.sidebar.users')</a></li>
+                                        </ul>
+                                    </li>
                                     <li><a ><i class="fa  fa fa-columns"></i> @lang('blade_templates.admin.sidebar.graphiql') <span class="fa fa-chevron-down"></span> </a>
                                         <ul class="nav child_menu">
                                             <li><a href="/{{ config('graphiql.routes.ui') }}?type=user">@lang('blade_templates.admin.sidebar.users')</a></li>

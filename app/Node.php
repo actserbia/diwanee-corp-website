@@ -39,6 +39,15 @@ class Node extends AppModel {
         'author:updated_at' => false,
         'author:deleted_at' => false
     ];
+    
+    protected $statisticFields = [
+        'status',
+        'created_at',
+        'author:name',
+        'author:email',
+        'elements:data:heading_type',
+        'elements:data:source'
+    ];
 
     protected $attributeType = [
         'status' => Models::AttributeType_Enum,
@@ -153,21 +162,35 @@ class Node extends AppModel {
     }
     
     protected function getFilterFields() {
-        $filterFields = [];
+        $fields = [];
         if(isset($this->relationsSettings['additional_data'])) {
-            $relationFilterFields = $this->getRelationModel('additional_data')->getFilterFields();
-            foreach($relationFilterFields as $relationFilterField => $visibility) {
-                $filterFields['additional_data' . ':' . $relationFilterField] = $visibility;
+            $relationFields = $this->getRelationModel('additional_data')->getFilterFields();
+            foreach($relationFields as $relationField => $visibility) {
+                $fields['additional_data' . ':' . $relationField] = $visibility;
             }
             
             foreach(array_keys($this->relationsSettings) as $relation) {
                 if($this->checkRelationType($relation, 'App\\Node', 'tags')) {
-                    $filterFields[$relation . ':name'] = true;
+                    $fields[$relation . ':name'] = true;
                 }
             }
             
-            $filterFields = array_merge($filterFields, $this->filterFields);
+            $fields = array_merge($fields, $this->filterFields);
         }
-        return $filterFields;
+        return $fields;
+    }
+    
+    protected function getStatisticFields() {
+        $fields = [];
+        if(isset($this->relationsSettings['additional_data'])) {
+            foreach(array_keys($this->relationsSettings) as $relation) {
+                if($this->checkRelationType($relation, 'App\\Node', 'tags')) {
+                    $fields[] = $relation . ':name';
+                }
+            }
+            
+            $fields = array_merge($fields, $this->statisticFields);
+        }
+        return $fields;
     }
 }

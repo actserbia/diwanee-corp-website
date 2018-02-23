@@ -14,6 +14,12 @@ return [
             'tags' => 'Diwanee Corp Admin Panel - Search Tags',
             'nodes' => 'Diwanee Corp Admin Panel - Search Nodes',
             'elements' => 'Diwanee Corp Admin Panel - Search Elements'
+        ],
+        'statistics' => [
+            'users' => 'Diwanee Corp Admin Panel - Users Statistics',
+            'tags' => 'Diwanee Corp Admin Panel - Tags Statistics',
+            'nodes' => 'Diwanee Corp Admin Panel - Articles Statistics',
+            'elements' => 'Diwanee Corp Admin Panel - Elements Statistics'
         ]
     ],
     'users' => [

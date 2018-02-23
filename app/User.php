@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Creativeorange\Gravatar\Facades\Gravatar;
 use App\Models\Search;
+use App\Models\Statistics;
 use App\Constants\Models;
 use App\Models\ModelDataManager;
 
@@ -16,6 +17,7 @@ class User extends Authenticatable
     use SoftDeletes;
     use ModelDataManager;
     use Search;
+    use Statistics;
 
     protected $fillable = ['name', 'email', 'password', 'role'];
 
@@ -35,6 +37,10 @@ class User extends Authenticatable
         'created_at' => true,
         'updated_at' => true,
         'deleted_at' => false
+    ];
+    
+    protected $statisticFields = [
+        'role'
     ];
     
     protected $defaultDropdownColumn = 'name';

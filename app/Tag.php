@@ -37,6 +37,12 @@ class Tag extends AppModel {
         'children:updated_at' => false,
         'children:deleted_at' => false
     ];
+    
+    protected $statisticFields = [
+        'tag_type:name',
+        'parents:name',
+        'children:name'
+    ];
 
     protected $attributeType = [
         'parent_id' => Models::AttributeType_Number,

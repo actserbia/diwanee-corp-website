@@ -71,5 +71,14 @@
               Route::get('add-input', 'AdminSearchController@searchAddInput')->name('admin.search.add.input');
               Route::get('nodes-list', 'AdminSearchController@nodesList')->name('admin.search.nodes.list');
           });
+          
+          Route::group(['prefix' => 'statistics'], function() {
+              Route::match(['get', 'post'], 'nodes', 'AdminStatisticsController@nodes')->name('admin.statistics.nodes');
+              Route::match(['get', 'post'], 'elements', 'AdminStatisticsController@elements')->name('admin.statistics.elements');
+              Route::match(['get', 'post'], 'tags', 'AdminStatisticsController@tags')->name('admin.statistics.tags');
+              Route::match(['get', 'post'], 'users', 'AdminStatisticsController@users')->name('admin.statistics.users');
+              
+              Route::get('nodes-list', 'AdminStatisticsController@nodesList')->name('admin.statistics.nodes.list');
+          });
       });
   }

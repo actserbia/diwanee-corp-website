@@ -59,7 +59,8 @@ let mix = require('laravel-mix');
             'resources/lang/*/js/datatable.js',
             'resources/lang/*/js/html5.js',
             'resources/assets/js/Html5Localization.js',
-            'resources/assets/js/admin/admin-search.js',
+            'resources/assets/js/admin/search.js',
+            'resources/assets/js/admin/statistics.js',
             'resources/assets/js/admin/admin.js'
         ], 'public/js/admin.js')
 

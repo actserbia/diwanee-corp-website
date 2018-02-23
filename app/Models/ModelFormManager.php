@@ -4,7 +4,6 @@ namespace App\Models;
 use App\Constants\Models;
 use App\Utils\Utils;
 use Request;
-use Auth;
 
 trait ModelFormManager {
     public function formFieldType($fullFieldName, $readonly = false) {
@@ -171,18 +170,5 @@ trait ModelFormManager {
     
     public function formFieldName($fullFieldName, $prefix = '') {
         return empty($prefix) ? $fullFieldName : $prefix . '__' . $fullFieldName;
-    }
-    
-    public function getFieldsWithLabels() {
-        $fieldsWithLabels = [];
-
-        $fields = $this->getFilterFields();
-        foreach($fields as $fullFieldName => $visible) {
-            if (Auth::admin() || $visible === true) {
-                $fieldsWithLabels[$fullFieldName] = $this->fieldLabel($fullFieldName);
-            }
-        }
-
-        return $fieldsWithLabels;
     }
 }
