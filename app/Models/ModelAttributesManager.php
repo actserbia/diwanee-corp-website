@@ -89,6 +89,6 @@ trait ModelAttributesManager {
     }
     
     public function modelTypeIdValue() {
-        return '';
+        return isset($this->modelType->id) ? $this->modelType->id : '';
     }
 }

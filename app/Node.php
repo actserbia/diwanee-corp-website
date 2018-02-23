@@ -84,8 +84,6 @@ class Node extends AppModel {
         'tags' => true,
         'elements' => true
     ];
-    
-    protected $nodeType = null;
 
     public function getEditorContentAttribute() {
         $data = array();
@@ -152,10 +150,6 @@ class Node extends AppModel {
         foreach($nodes as $node) {
             Element::formatElements($node->elements, $jsonEncode, $toHtml);
         }
-    }
-    
-    public function modelTypeIdValue() {
-        return isset($this->nodeType->id) ? $this->nodeType->id : '';
     }
     
     protected function getFilterFields() {

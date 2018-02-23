@@ -30,6 +30,8 @@ class AppModel extends Model {
     protected $multipleFields = [];
     
     protected $dependsOn = [];
+    
+    protected $modelType = null;
 
     public function saveObject(array $data) {
         DB::beginTransaction();

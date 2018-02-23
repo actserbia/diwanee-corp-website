@@ -30,16 +30,16 @@ trait NodeModelManager {
     }
 
     public function populateData($nodeTypeId = null) {
-        $this->nodeType = !empty($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
+        $this->modelType = !empty($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
         
-        $this->populateAttributesFieldsData($this->xxx);
-        $this->populateTagFieldsData($this->xxx);
+        $this->populateAttributesFieldsData();
+        $this->populateTagFieldsData();
     }
 
     private function populateAttributesFieldsData() {
         $this->relationsSettings['additional_data'] = [
             'relationType' => 'hasOne',
-            'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($this->nodeType->name, ' '),
+            'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($this->modelType->name, ' '),
             'foreignKey' => 'node_id',
             'relationKey' => 'id'
         ];
@@ -47,7 +47,7 @@ trait NodeModelManager {
 
     private function populateTagFieldsData() {
         $tagFieldsRelationName = FieldTypeCategory::Tag . '_fields';
-        foreach($this->nodeType->$tagFieldsRelationName as $tagField) {
+        foreach($this->modelType->$tagFieldsRelationName as $tagField) {
             $this->populateTagFieldData($tagField);
         }
     }
