@@ -85,8 +85,8 @@ return [
     ],
   
     'NodeList' => [
-        'label_single' => 'Node list',
-        'label_plural' => 'Node lists',
+        'label_single' => 'List',
+        'label_plural' => 'Lists',
         'id' => 'Id',
         'name' => 'Name',
         'created_at' => 'Created Date',
