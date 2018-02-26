@@ -46,6 +46,12 @@ class Field extends AppModel {
             'model' => 'App\\FieldType',
             'foreignKey' => 'field_type_id',
             'filters' => ['category' => [FieldTypeCategory::Attribute]]
+        ],
+        'tag_field_type' => [
+            'relationType' => 'belongsTo',
+            'model' => 'App\\FieldType',
+            'foreignKey' => 'field_type_id',
+            'filters' => ['category' => [FieldTypeCategory::Tag]]
         ]
     ];
 

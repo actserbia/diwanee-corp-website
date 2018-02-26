@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Models\RelationManager\RelationManager;
+use App\Utils\Utils;
 
 trait ModelRelationsManager {
     public function __call($method, $parameters) {
@@ -167,7 +168,7 @@ trait ModelRelationsManager {
     }
 
     public function getRelationValues($relation, $dependsOnValues = null) {
-        $relationValuesMethod = $relation . 'RelationValues';
+        $relationValuesMethod = Utils::getFormattedName($relation) . 'RelationValues';
         if(method_exists($this, $relationValuesMethod)) {
             return $this->$relationValuesMethod($dependsOnValues);
         } else {

@@ -1,7 +1,7 @@
 <?php
 namespace App\Constants;
 
-final class FieldType {
+final class AttributeFieldType {
     use Constants;
     
     const Text = 'Text';

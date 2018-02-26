@@ -4,7 +4,7 @@ namespace App\Models\Node;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use App\Constants\FieldType;
+use App\Constants\AttributeFieldType;
 use App\Utils\Utils;
 use App\NodeType;
 use App\Constants\Settings;
@@ -101,15 +101,15 @@ class NodeModelDBGenerator {
     private function setTableField($table, $field) {
         $tableField = null;
         switch($field->field_type->name) {
-            case FieldType::Text:
+            case AttributeFieldType::Text:
                 $tableField = $table->string($field->formattedTitle, 255);
                 break;
 
-            case FieldType::Integer:
+            case AttributeFieldType::Integer:
                 $tableField = $table->unsignedInteger($field->formattedTitle);
                 break;
 
-            case FieldType::Date:
+            case AttributeFieldType::Date:
                 $tableField = $table->timestamp($field->formattedTitle);
                 break;
         }

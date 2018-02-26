@@ -3,7 +3,7 @@ use Illuminate\Database\Seeder;
 use App\FieldType;
 use App\Field;
 use App\Constants\FieldTypeCategory;
-use App\Constants\FieldType as FieldTypeList;
+use App\Constants\AttributeFieldType;
 use App\Constants\ElementType;
 use App\Utils\Utils;
 
@@ -14,12 +14,31 @@ class FieldTypesTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        $fieldTypes = FieldTypeList::getAll();
-        foreach($fieldTypes as $fieldType) {
+    public function run() {
+        $attributeFieldTypes = AttributeFieldType::getAll();
+        foreach($attributeFieldTypes as $attributeFieldTypeName) {
+            $attributeFieldType = factory(FieldType::class)->create([
+                'name' => $attributeFieldTypeName,
+                'category' => FieldTypeCategory::GlobalAttribute
+            ]);
+            
+            if($attributeFieldTypeName === AttributeFieldType::Text) {
+                factory(Field::class)->create([
+                    'title' => 'Title',
+                    'field_type_id' => $attributeFieldType->id
+                ]);
+            }
+            
+            if($attributeFieldTypeName === AttributeFieldType::Date) {
+                factory(Field::class)->create([
+                    'title' => 'Created Date',
+                    'field_type_id' => $attributeFieldType->id
+                ]);
+            }
+        }
+        foreach($attributeFieldTypes as $attributeFieldType) {
             factory(FieldType::class)->create([
-                'name' => $fieldType,
+                'name' => $attributeFieldType,
                 'category' => FieldTypeCategory::Attribute
             ]);
         }

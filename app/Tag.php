@@ -100,6 +100,7 @@ class Tag extends AppModel {
     public function getMovingDisabledAttribute() {
         return count($this->parents) > 1 || count($this->nodes) > 0;
     }
+    
     public function parentsRelationValues($dependsOnValues = null) {
         $fieldType = $this->getDependsOnValue('tag_type', $dependsOnValues);
         return isset($fieldType->id) ? Tag::where('tag_type_id', '=', $fieldType->id)->where('id', '!=', $this->id)->get() : [];

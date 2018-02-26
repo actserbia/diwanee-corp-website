@@ -17,8 +17,8 @@ class CreateNodeListsTable extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->unsignedInteger('node_type_id');
-            $table->unsignedInteger('order_by_field_id');
-            $table->boolean('order')->default(0);
+            $table->unsignedInteger('order_by_field_id')->nullable();
+            $table->boolean('order')->nullable();
             $table->unsignedTinyInteger('limit')->default(0);
 
             $table->timestamps();

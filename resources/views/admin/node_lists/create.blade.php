@@ -18,9 +18,11 @@
                         @include('blocks.model', ['field' => 'name'])
 
                         @include('blocks.model', ['field' => 'node_type'])
+                        
+                        @include('blocks.model', ['field' => 'tags'])
 
                         @include('blocks.model', ['field' => 'order_by_field'])
-
+                        
                         @include('blocks.model', ['field' => 'order'])
 
                         @include('blocks.model', ['field' => 'limit'])

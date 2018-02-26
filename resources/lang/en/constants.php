@@ -35,7 +35,7 @@ return [
         '1' => 'Active',
         '0' => 'Not Active'
     ],
-    'NodeList' => [
+    'NodeListOrder' => [
         '1' => 'Accending',
         '0' => 'Descending'
     ],

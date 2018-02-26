@@ -93,9 +93,14 @@ trait ModelFormManager {
         if(Request::old('_token') !== null && Request::old($fieldName) == $itemValue) {
             return true;
         }
-
-        if($this->attributeValue($fieldName) == $itemValue) {
+        
+        if(Request::post('_token') !== null && Request::post($fieldName) == $itemValue) {
             return true;
+        }
+
+        $attributeValue = $this->attributeValue($fieldName);
+        if($this->attributeValue($fieldName) == $itemValue) {
+            return $attributeValue !== null;
         }
 
         return false;

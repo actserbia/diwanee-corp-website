@@ -3,7 +3,7 @@
 namespace App\Models\Node;
 
 use App\Constants\Settings;
-use App\Constants\FieldType;
+use App\Constants\AttributeFieldType;
 use App\Utils\Utils;
 use App\Utils\FileFunctions;
 use App\NodeType;
@@ -84,11 +84,11 @@ class NodeModelClassGenerator {
         $attributeType = 'Models::AttributeType_Text';
 
         switch($field->field_type->name) {
-            case FieldType::Integer:
+            case AttributeFieldType::Integer:
                 $attributeType = 'Models::AttributeType_Number';
                 break;
 
-            case FieldType::Date:
+            case AttributeFieldType::Date:
                 $attributeType = 'Models::AttributeType_Date';
                 break;
 
