@@ -36,18 +36,18 @@ class NodeType extends AppModel {
             'extraFields' => ['active', 'required'],
             'automaticSave' => false
         ],
-        FieldTypeCategory::Attribute . '_fields' => [
+        'attribute_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::Attribute]],
             'automaticSave' => true
         ],
-        FieldTypeCategory::Tag . '_fields' => [
+        'tag_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::Tag]],
             'extraFields' => ['active', 'required', 'multiple_list'],
             'automaticSave' => true
         ],
-        FieldTypeCategory::SirTrevor . '_fields' => [
+        'sir_trevor_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::SirTrevor]],
             'automaticSave' => true
@@ -64,9 +64,9 @@ class NodeType extends AppModel {
     
     protected $multipleFields = [
         'fields' => true,
-        FieldTypeCategory::Attribute . '_fields' => true,
-        FieldTypeCategory::Tag . '_fields' => true,
-        FieldTypeCategory::SirTrevor . '_fields' => true,
+        'attribute_fields' => true,
+        'tag_fields' => true,
+        'sir_trevor_fields' => true,
         'nodes' => true
     ];
 
