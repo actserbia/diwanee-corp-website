@@ -281,3 +281,52 @@ SirTrevor.Blocks.Heading = SirTrevor.Blocks.Heading.extend({
 SirTrevor.Blocks.Quote = SirTrevor.Blocks.Quote.extend({
     toolbarEnabled: true
 });
+
+
+SirTrevor.Locales.en.blocks['diwanee node'] = {'title': 'Node'};
+
+SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
+    type: 'diwanee node',
+    icon_name: 'add-block',
+
+    droppable: false,
+    textable: false,
+
+    editorHTML : '<div class="st-node-block">'+
+                    '<div class="type_options"> </div>'+
+                 '</div>',
+
+    onBlockRender: function () {
+        var data = this.getData();
+        this.setTypeSelect(data.data, this);
+    },
+
+    setTypeSelect: function(node_data, that) {
+        var block_id = this.blockID;
+        var list = '<select id="node-type-'+block_id+ '" name="type" >';
+            //'onChange="$(\'#node-'+block_id+'\').addClass(\'typeahead\');addTypeahead(this.options[this.selectedIndex].value)">';
+        list += '<option value="0">Select content type</option>';
+        var node = (node_data.node !== undefined) ? node_data.node : '';
+        $.ajax({
+            dataType: "json",
+            url: '/api/types/typeahead',
+            success: function (data) {
+                var types =  data;
+                $.each(types, function(i, element) {
+                    list += '<option value="' + element.id + '"';
+                    if(element.id == node_data.type) {
+                        list += ' selected';
+                    }
+                    list += '>'+element.name+'</option>';
+                });
+                list += '</select>';
+                list += '<input type="text" name="node" id="node-'+block_id+ '"' +
+                    ' onfocus="$(\'#node-'+block_id+'\').addClass(\'typeahead\'); addTypeahead($(\'#node-type-'+block_id+'\').val())" ' +
+                    'data-provide="typeahead" value="'+node+'">';
+                that.$('.type_options')[0].innerHTML = list;
+            }
+        });
+    }
+
+
+});

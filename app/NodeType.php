@@ -52,7 +52,7 @@ class NodeType extends AppModel {
             'filters' => ['field_type.category' => [FieldTypeCategory::SirTrevor]],
             'automaticSave' => true
         ],
-      
+
         'nodes' => [
             'relationType' => 'hasMany',
             'model' => 'App\\Node',

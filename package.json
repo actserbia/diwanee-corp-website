@@ -17,7 +17,7 @@
     "dependencies": {
         "axios": "^0.16.2",
         "bootstrap": "^3.3.7",
-        "bootstrap-3-typeahead": "^4.0.2",
+        "bootstrap-3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master",
         "bootstrap-datepicker": "^1.7.1",
         "bootstrap-sass": "^3.3.7",
         "cross-env": "^5.1.1",
@@ -30,14 +30,14 @@
         "eonasdan-bootstrap-datetimepicker": "^4.17.47",
         "fastclick": "^1.0.6",
         "icheck": "^1.0.2",
-        "jquery": "^3.2.1",
+        "jquery": "^3.3.1",
         "laravel-mix": "^1.5.1",
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.5",
         "lodash.template": "^2.4.1",
         "moment": "^2.19.2",
         "pdfmake": "^0.1.34",
         "sir-trevor": "^0.6.6",
         "vue": "^2.5.4",
-        "webpack": "^3.7.1"
+        "webpack": "^3.11.0"
     }
 }

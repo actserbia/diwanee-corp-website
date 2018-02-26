@@ -66,9 +66,11 @@ let mix = require('laravel-mix');
 
          .js('resources/assets/js/admin/sir-trevor-blocks.js', 'public/js/sir-trevor.js')
          .combine([
+             //'node_modules/bootstrap/dist/js/bootstrap.min.js',
+             //'node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.min.js',
              'node_modules/sir-trevor/build/sir-trevor.js',
              'public/js/sir-trevor.js',
-             'resources/lang/*/js/sir-trevor.js',
+             'resources/lang/*/js/sir-trevor.js'
          ], 'public/js/sir-trevor.js')
     
         .sass('resources/assets/sass/admin/admin.scss', 'public/css/admin.css')

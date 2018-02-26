@@ -8,10 +8,11 @@ final class ElementType {
     const SliderImage = 'slider_image';
     const DiwaneeImage = 'diwanee_image';
     const DiwaneeVideo = 'diwanee_video';
+    const DiwaneeNode = 'diwanee_node';
     const ElementList = 'list';
     const Heading = 'heading';
     const Quote = 'quote';
 
-    const textTypes = array(self::Text, self::Heading, self::Quote);
+    const textTypes = array(self::Text, self::Heading, self::Quote, self::DiwaneeNode);
     const imageTypes = array(self::DiwaneeImage, self::SliderImage);
 }
