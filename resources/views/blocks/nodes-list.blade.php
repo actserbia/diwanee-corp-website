@@ -4,7 +4,7 @@
             <tr>
                 <th>@lang('blade_templates.global.id')</th>
                 <th>@lang('models_labels.Node.title')</th>
-                <th>@lang('models_labels.Node.node_type_label')</th>
+                <th>@lang('models_labels.Node.model_type_label')</th>
                 <th>@lang('blade_templates.global.created')</th>
                 <th>@lang('models_labels.Node.author_label')</th>
                 <th>@lang('blade_templates.global.actions')</th>
@@ -14,7 +14,7 @@
             <tr>
                 <th>@lang('blade_templates.global.id')</th>
                 <th>@lang('models_labels.Node.title')</th>
-                <th>@lang('models_labels.Node.node_type_label')</th>
+                <th>@lang('models_labels.Node.model_type_label')</th>
                 <th>@lang('blade_templates.global.created')</th>
                 <th>@lang('models_labels.Node.author_label')</th>
                 <th>@lang('blade_templates.global.actions')</th>
@@ -25,7 +25,7 @@
                 <tr>
                     <td>{{ $object->id }}</td>
                     <td>{{ $object->title }}</td>
-                    <td>{{ $object->node_type->name }}</td>
+                    <td>{{ $object->model_type->name }}</td>
                     <td>{{ $object->created_at }}</td>
                     <td>{{ $object->author->name }}</td>
                     <td>

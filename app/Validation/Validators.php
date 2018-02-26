@@ -70,14 +70,14 @@ class Validators {
     }
     
     public static function nodesFormValidator(array $data, array $additional = []) {
-        $model = new Node(['node_type_id' => $data['node_type']]);
+        $model = new Node(['model_type_id' => $data['model_type']]);
 
         $titleUnique = isset($additional['id']) ? 'unique:nodes,id,' . $additional['id'] : 'unique:nodes';
         $id = isset($additional['id']) ? $additional['id'] : '';
 
         return Validator::make($data, [
             'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255',
-            'node_type' => self::modelRequiredValidation('node_type', $model) . '|exists:node_types,id'
+            'model_type' => self::modelRequiredValidation('model_type', $model) . '|exists:node_types,id'
         ]);
     }
 

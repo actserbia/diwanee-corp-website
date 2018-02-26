@@ -13,7 +13,7 @@
                 
                 <div id="node-create" class="x_content form-horizontal">
                     <br />
-                    @include('blocks.model', ['field' => 'node_type'])
+                    @include('blocks.model', ['field' => 'model_type'])
 
                     <div class="ln_solid"></div>
 

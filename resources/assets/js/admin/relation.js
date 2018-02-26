@@ -7,7 +7,7 @@ $(document).ready(function() {
                     $(object).val('');
                 }
                 
-                if(selectedItemId !== null) {
+                if(selectedItemId !== null && selectedItemId !== '') {
                     $.ajax({
                         type: 'GET',
                         url: '/admin/model/add-relation-item',

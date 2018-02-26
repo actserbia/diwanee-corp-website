@@ -17,7 +17,7 @@
                     <form id="search_form" method="post" action="{{ route('admin.search.nodes') }}" data-parsley-validate class="form-horizontal form-label-left">
                         {{ csrf_field() }}
                         
-                        @include('blocks.model', ['field' => 'node_type', 'object' => $model])
+                        @include('blocks.model', ['field' => 'model_type', 'object' => $model])
                     
                         <div class="ln_solid"></div>
                         
@@ -40,7 +40,7 @@
                                 <tr>
                                     <th>@lang('blade_templates.global.id')</th>
                                     <th>@lang('models_labels.Node.title')</th>
-                                    <th>@lang('models_labels.Node.node_type_label')</th>
+                                    <th>@lang('models_labels.Node.model_type_label')</th>
                                     <th>@lang('blade_templates.global.created')</th>
                                     <th>@lang('models_labels.Node.author_label')</th>
                                     <th>@lang('blade_templates.global.actions')</th>
@@ -50,7 +50,7 @@
                                 <tr>
                                     <th>@lang('blade_templates.global.id')</th>
                                     <th>@lang('models_labels.Node.title')</th>
-                                    <th>@lang('models_labels.Node.node_type_label')</th>
+                                    <th>@lang('models_labels.Node.model_type_label')</th>
                                     <th>@lang('blade_templates.global.created')</th>
                                     <th>@lang('models_labels.Node.author_label')</th>
                                     <th>@lang('blade_templates.global.actions')</th>
@@ -62,7 +62,7 @@
                                     <tr @if($node->deleted_at != null) class="deleted" @endif>
                                         <td>{{ $node->id }}</td>
                                         <td>{{ $node->title }}</td>
-                                        <td>{{ $node->node_type->name }}</td>
+                                        <td>{{ $node->model_type->name }}</td>
                                         <td>{{ $node->created_at }}</td>
                                         <td>{{ $node->author->name }}</td>
                                         <td>

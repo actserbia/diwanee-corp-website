@@ -13,32 +13,15 @@ class AdminSearchController extends Controller {
     }
     
     public function nodes(Request $request) {
-        $params = $request->all();
-        
-        $items = [];
-        if(isset($params['node_type'])) {
-            $nodeTypeId = $params['node_type'];
-            
-            $model = new Node(['node_type_id' => $nodeTypeId]);
-            
-            $params = FiltersUtils::prepareParams($request->all());
-            $items = Node::withAll(['node_type_id' => $nodeTypeId])
-                ->filterByAllParams($params)
-                ->where('node_type_id', '=', $nodeTypeId)
-                ->get();
-        } else {
-            $model = new Node;
-        }
-        
-        return view('admin.search.nodes', compact('items', 'model'));
+        return $this->getFiltersView($request, 'Node');
     }
     
     public function nodesList(Request $request) {
         $params = $request->all();
         
         $filterFields = [];
-        if(!empty($params['node_type_id'])) {
-            $object = new Node(['node_type_id' => $params['node_type_id']]);
+        if(!empty($params['model_type_id'])) {
+            $object = new Node(['model_type_id' => $params['model_type_id']]);
             $filterFields = [['value' => '', 'text' => '']];
             foreach($object->getFilterFieldsWithLabels() as $field => $fieldTitle) {
                 $filterFields[] = array(
@@ -64,14 +47,27 @@ class AdminSearchController extends Controller {
     }
 
     private function getFiltersView(Request $request, $modelName) {
-        $params = FiltersUtils::prepareParams($request->all());
+        $params = $request->all();
 
         $modelClass = 'App\\' . $modelName;
-        $model = new $modelClass;
+        if(isset($params['model_type'])) {
+            $modelTypeId = $params['model_type'];
+            $model = new $modelClass(['model_type_id' => $modelTypeId]);
+            $attributes = ['model_type_id' => $modelTypeId];
+        } else {
+            $modelTypeId = '';
+            $model = new $modelClass;
+            $attributes = [];
+        }
 
-        $items = $modelClass::withAll()
-            ->filterByAllParams($params)
-            ->get();
+        $items = [];
+        if(!$modelClass::hasModelTypes() || isset($params['model_type'])) {
+            $params = FiltersUtils::prepareParams($request->all());
+            $items = $model::withAll($attributes)
+                ->filterByAllParams($params)
+                ->filterByModelType($modelTypeId)
+                ->get();
+        }
 
         return view('admin.search.' . strtolower($modelName) . 's', compact('items', 'model'));
     }
@@ -79,13 +75,7 @@ class AdminSearchController extends Controller {
     public function typeahead(Request $request) {
         $params = $request->all();
         
-        $data = $params['data'];
-        
-        if($data['model'] === 'App\\Node') {
-            $model = new Node(['node_type_id' => $data['modelType']]);
-        } else {
-            $model = new $data['model'];
-        }
+        $model = $this->getModelFromData($params['data']);
         
         return $model->getTypeaheadItems($params['param']);
     }
@@ -93,47 +83,27 @@ class AdminSearchController extends Controller {
     public function searchAddFilter(Request $request) {
         $params = $request->all();
         
-        $data = $params['data'];
-        
-        if($data['model'] === 'App\\Node') {
-            return $this->searchAddFilterNodes($params);
-        }
-
+        $model = $this->getModelFromData($params['data']);
         $field = $params['field'];
-        $model = new $data['model'];
 
-        return view('blocks.search.' . $model->formFieldType($field), compact('field', 'model'));
-    }
-    
-    private function searchAddFilterNodes($params) {
-        $data = $params['data'];
-        
-        $field = $params['field'];
-        $model = new Node(['node_type_id' => $data['modelType']]);
-        
         return view('blocks.search.' . $model->formFieldType($field), compact('field', 'model'));
     }
 
     public function searchAddInput(Request $request) {
         $params = $request->all();
         
-        $data = $params['data'];
-        if($data['model'] === 'App\\Node') {
-            return $this->searchAddInputNodes($params);
-        }
-
-        $field = $data['field'];
-        $model = new $data['model'];
+        $model = $this->getModelFromData($params['data']);
+        $field = $params['data']['field'];
 
         return view('blocks.search.form_input_detail', compact('field', 'model'));
     }
     
-    private function searchAddInputNodes($params) {
-        $data = $params['data'];
-        
-        $field = $data['field'];
-        $model = new Node(['node_type_id' => $data['modelType']]);
-
-        return view('blocks.search.form_input_detail', compact('field', 'model'));
+    private function getModelFromData($data) {
+        $modelClass = $data['model'];
+        if($modelClass::hasModelTypes()) {
+            return new $modelClass(['model_type_id' => $data['modelType']]);
+        } else {
+            return new $modelClass;
+        }
     }
 }

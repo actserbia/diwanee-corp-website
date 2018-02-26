@@ -29,8 +29,8 @@ class AdminNodesController extends Controller {
         $data = $request->all();
 
         $objects = [];
-        if(isset($data['node_type_id'])) {
-            $objects = Node::where('node_type_id', '=', $data['node_type_id'])->get();
+        if(isset($data['model_type_id'])) {
+            $objects = Node::filterByModelType($data['model_type_id'])->get();
         }
 
         return view('blocks.nodes-list', compact('objects'));
@@ -60,12 +60,12 @@ class AdminNodesController extends Controller {
     public function nodeFields(Request $request) {
         $data = $request->all();
 
-        if(isset($data['node_type_id'])) {
-            $nodeType = $data['node_type_id'];
-            $object = new Node(['node_type_id' => $data['node_type_id']]);
-            $stFields = $object->node_type->getSTFieldsArray();
-            $stReqFields = $object->node_type->getRequiredSTFieldsArray();
-            return view('blocks.node-fields', compact('object', 'nodeType', 'stFields', 'stReqFields'));
+        if(isset($data['model_type_id'])) {
+            $modelType = $data['model_type_id'];
+            $object = new Node(['model_type_id' => $data['model_type_id']]);
+            $stFields = $object->modelType->getSTFieldsArray();
+            $stReqFields = $object->modelType->getRequiredSTFieldsArray();
+            return view('blocks.node-fields', compact('object', 'modelType', 'stFields', 'stReqFields'));
         }
     }
 
@@ -79,12 +79,12 @@ class AdminNodesController extends Controller {
         $data = $request->all();
         
         if(isset($data['firstStep'])) {
-            return redirect()->route('nodes.create', ['nodeType' => $data['nodeType']]);
+            return redirect()->route('nodes.create', ['modelType' => $data['modelType']]);
         }
         
         Validators::nodesFormValidator($data)->validate();
 
-        $object = new Node(['node_type_id' => $data['node_type']]);
+        $object = new Node(['model_type_id' => $data['model_type']]);
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
@@ -99,8 +99,8 @@ class AdminNodesController extends Controller {
      */
     public function edit($id) {
         $object = Node::findOrFail($id);
-        $stFields = $object->node_type->getSTFieldsArray();
-        $stReqFields = $object->node_type->getRequiredSTFieldsArray();
+        $stFields = $object->model_type->getSTFieldsArray();
+        $stReqFields = $object->model_type->getRequiredSTFieldsArray();
 
         return view('admin.nodes.edit', compact('object', 'stFields', 'stReqFields'));
     }

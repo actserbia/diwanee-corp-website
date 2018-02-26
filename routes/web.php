@@ -78,7 +78,7 @@
               Route::match(['get', 'post'], 'tags', 'AdminStatisticsController@tags')->name('admin.statistics.tags');
               Route::match(['get', 'post'], 'users', 'AdminStatisticsController@users')->name('admin.statistics.users');
               
-              Route::get('nodes-list', 'AdminStatisticsController@nodesList')->name('admin.statistics.nodes.list');
+              Route::get('items-list', 'AdminStatisticsController@itemsList')->name('admin.statistics.items.list');
           });
       });
   }

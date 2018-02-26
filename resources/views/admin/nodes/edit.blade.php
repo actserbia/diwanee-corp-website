@@ -19,7 +19,7 @@
                     <form id="data_form" method="post" action="{{ route('nodes.update', ['id' => $object->id]) }}" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         
-                        <input name="node_type" type="hidden" value="{{ $object->node_type->id }}" />
+                        <input name="model_type" type="hidden" value="{{ $object->model_type->id }}" />
                         
                         @foreach($object->getAutomaticRenderAtributesAndRelations() as $field)
                             @include('blocks.model', ['field' => $field])

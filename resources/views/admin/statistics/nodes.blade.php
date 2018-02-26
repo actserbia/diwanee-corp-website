@@ -17,7 +17,7 @@
                     <form id="statistics_form" method="post" action="{{ route('admin.statistics.nodes') }}" data-parsley-validate class="form-horizontal form-label-left">
                         {{ csrf_field() }}
                         
-                        @include('blocks.model', ['field' => 'node_type', 'object' => $model])
+                        @include('blocks.model', ['field' => 'model_type', 'object' => $model])
                     
                         <div class="ln_solid"></div>
 

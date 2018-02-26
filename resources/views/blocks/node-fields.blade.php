@@ -2,7 +2,7 @@
 <form id="data_form" method="post" action="{{ route('nodes.store') }}" data-parsley-validate class="form-horizontal form-label-left">
     {{ csrf_field() }}
                         
-    <input name="node_type" type="hidden" value="{{ $nodeType }}" />
+    <input name="model_type" type="hidden" value="{{ $modelType }}" />
                         
     @foreach($object->getAutomaticRenderAtributesAndRelations() as $field)
         @include('blocks.model', ['field' => $field])

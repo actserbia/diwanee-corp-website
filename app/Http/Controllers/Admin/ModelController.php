@@ -55,7 +55,7 @@ class ModelController extends Controller {
         
         $field = $data['relation'];
         $level = isset($data['level']) ? $data['level'] : 1;
-        $object = isset($data['modelId']) ? Node::find($data['modelId']) : new Node(['node_type_id' => $data['nodeType']]);
+        $object = isset($data['modelId']) ? Node::find($data['modelId']) : new Node(['model_type_id' => $data['modelType']]);
         $itemModel = $object->getRelationModel($data['relation']);
         $item = $itemModel::find($params['itemId']);
         $fullData = $data['fullData'];
@@ -68,7 +68,7 @@ class ModelController extends Controller {
 
         $data = $params['data'];
         $field = $data['relation'];
-        $object = isset($data['modelId']) ? Node::find($data['modelId']) : new Node(['node_type_id' => $data['nodeType']]);
+        $object = isset($data['modelId']) ? Node::find($data['modelId']) : new Node(['model_type_id' => $data['modelType']]);
         $level = $data['level'] + 1;
         $checkSelected = isset($params['checkSelected']) && !empty($params['checkSelected']);
 

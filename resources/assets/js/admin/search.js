@@ -93,12 +93,12 @@ $(document).ready(function() {
     };
     
     
-    $('#nodes-search #node_type').change(function() {
+    $('#nodes-search #model_type').change(function() {
         $.ajax({
             type: 'GET',
             url: '/admin/search/nodes-list',
             data: {
-                node_type_id: $(this).val()
+                model_type_id: $(this).val()
             },
             dataType: 'json',
             context: this,

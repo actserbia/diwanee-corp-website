@@ -12,33 +12,16 @@ class AdminStatisticsController extends Controller {
     }
 
     public function nodes(Request $request) {
-        $params = $request->all();
-        
-        if(isset($params['node_type'])) {
-            $nodeTypeId = $params['node_type'];
-            
-            $model = new Node(['node_type_id' => $nodeTypeId]);
-            
-            if(isset($params['statistic'])) {
-                $statisticName = $params['statistic'];
-                $statistics = Node::withAll(['node_type_id' => $nodeTypeId])
-                    ->filterByAllParams($params, false)
-                    ->where('node_type_id', '=', $nodeTypeId)
-                    ->statistics($statisticName);
-            }
-        } else {
-            $model = new Node;
-        }
-
-        return view('admin.statistics.nodes', compact('model', 'statistics', 'statisticName'));
+        return $this->getStatisticsView($request, 'Node');
     }
     
-    public function nodesList(Request $request) {
+    public function itemsList(Request $request) {
         $params = $request->all();
         
         $fields = [];
-        if(!empty($params['node_type_id'])) {
-            $object = new Node(['node_type_id' => $params['node_type_id']]);
+        if(!empty($params['model_type_id'])) {
+            $modelClass = $params['data']['model'];
+            $object = new $modelClass(['model_type_id' => $params['model_type_id']]);
             $fields = [['value' => '', 'text' => '']];
             foreach($object->getStatisticFieldsWithLabels() as $field => $fieldTitle) {
                 $fields[] = array(
@@ -67,13 +50,24 @@ class AdminStatisticsController extends Controller {
         $params = $request->all();
         
         $modelClass = 'App\\' . $modelName;
-        $model = new $modelClass;
+        if(isset($params['model_type'])) {
+            $model = new $modelClass(['model_type_id' => $params['model_type']]);
+            $attributes = ['model_type_id' => $params['model_type']];
+        } else {
+            $model = new $modelClass;
+            $attributes = [];
+        }
         
         if(isset($params['statistic'])) {
             $statisticName = $params['statistic'];
-            $statistics = $modelClass::withAll()
-                ->filterByAllParams($params, false)
-                ->statistics($statisticName);
+            $statisticsFilter = $modelClass::withAll($attributes)
+                ->filterByAllParams($params, false);
+
+            if(isset($params['model_type'])) {
+                $statisticsFilter = $statisticsFilter->filterByModelType($params['model_type']);
+            }
+
+            $statistics = $statisticsFilter->statistics($statisticName);
         }
 
         return view('admin.statistics.' . strtolower($modelName) . 's', compact('model', 'statistics', 'statisticName'));

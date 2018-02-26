@@ -10,7 +10,7 @@
             id="{{ $field }}-{{ isset($level) ? $level : 1 }}" name="{{ $field }}[]"
             data-relation="{{ $field }}"
             data-model-id="{{ $object->id }}"
-            data-node-type="{{ isset($nodeType) ? $nodeType : 1 }}"
+            data-model-type="{{ $object->modelTypeIdValue() }}"
             data-column="{{ isset($column) ? $column : $object->getDefaultDropdownColumn($field) }}"
             data-sortable="1"
             data-full-data="0"

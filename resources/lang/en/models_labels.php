@@ -93,7 +93,7 @@ return [
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
-        'node_type_label' => 'Type',
+        'model_type_label' => 'Type',
         'content' => 'Content',
         'author_label' => 'Author'
     ],

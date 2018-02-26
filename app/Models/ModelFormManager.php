@@ -126,6 +126,10 @@ trait ModelFormManager {
                 return true;
             }
 
+            if(Request::post('_token') !== null && Request::post($relation) == $item->id) {
+                return true;
+            }
+
             if(isset($this->$relation->id) && $this->$relation->id == $item->id) {
                 return true;
             }

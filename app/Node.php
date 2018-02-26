@@ -59,7 +59,7 @@ class Node extends AppModel {
     protected $defaultDropdownColumn = 'title';
 
     protected $relationsSettings = [
-        'node_type' => [
+        'model_type' => [
             'relationType' => 'belongsTo',
             'model' => 'App\\NodeType',
             'foreignKey' => 'node_type_id'
@@ -93,6 +93,8 @@ class Node extends AppModel {
         'tags' => true,
         'elements' => true
     ];
+
+    protected static $modelTypeField = 'node_type_id';
 
     public function getEditorContentAttribute() {
         $data = array();

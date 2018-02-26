@@ -9,28 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Constants\FieldTypeCategory;
 
 trait NodeModelManager {
-    public function __construct(array $attributes = array()) {
-        parent::__construct($attributes);
-
-        if(isset($attributes['node_type_id'])) {
-            $this->populateData($attributes['node_type_id']);
-        }
-    }
-
-    public static function __callStatic($method, $parameters) {
-        if(in_array($method, ['findOrFail', 'find'])) {
-            $object = (new static)->$method(...$parameters);
-            $object->populateData();
-            return $object;
-        } elseif(isset(end($parameters)['node_type_id'])) {
-            return (new static(array_pop($parameters)))->$method(...$parameters);
-        } else {
-            return (new static)->$method(...$parameters);
-        }
-    }
-
-    public function populateData($nodeTypeId = null) {
-        $this->modelType = !empty($this->node_type) ? $this->node_type : NodeType::find($nodeTypeId);
+    public function populateDataByModelType($modelTypeId = null) {
+        $this->modelType = !empty($this->model_type) ? $this->model_type : NodeType::find($modelTypeId);
         
         $this->populateAttributesFieldsData();
         $this->populateTagFieldsData();
