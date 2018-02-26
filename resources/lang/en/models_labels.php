@@ -84,6 +84,16 @@ return [
         'multiple_list' => 'Multiple'
     ],
   
+    'NodeList' => [
+        'label_single' => 'Node list',
+        'label_plural' => 'Node lists',
+        'id' => 'Id',
+        'name' => 'Name',
+        'created_at' => 'Created Date',
+        'updated_at' => 'Updated Date',
+        'deleted_at' => 'Deleted Date'
+    ],
+
     'Node' => [
         'label_single' => 'node',
         'label_plural' => 'Nodes',

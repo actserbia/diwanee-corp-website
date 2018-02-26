@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\NodeType;
+use App\NodeList;
 use App\Validation\Validators;
 use App\Utils\HtmlElementsClasses;
 use App\Utils\Utils;
 
-class AdminNodeTypesController extends Controller {
+class AdminNodeListsController extends Controller {
     public function __construct() {
         HtmlElementsClasses::$template = 'admin';
-        Utils::$modelType = 'NodeType';
+        Utils::$modelType = 'NodeList';
     }
 
     /**
@@ -21,10 +21,10 @@ class AdminNodeTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $objects = NodeType::get();
-        return view('admin.node_types.list', compact('objects'));
+        $objects = NodeList::get();
+        return view('admin.node_lists.list', compact('objects'));
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -32,8 +32,8 @@ class AdminNodeTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        $object = NodeType::findOrFail($id);
-        return view('admin.node_types.delete', compact('object'));
+        $object = NodeList::findOrFail($id);
+        return view('admin.node_lists.delete', compact('object'));
     }
 
     /**
@@ -42,9 +42,9 @@ class AdminNodeTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $object = new NodeType;
-        
-        return view('admin.node_types.create', compact('object'));
+        $object = new NodeList;
+
+        return view('admin.node_lists.create', compact('object'));
     }
 
     /**
@@ -55,14 +55,14 @@ class AdminNodeTypesController extends Controller {
      */
     public function store(Request $request) {
         $data = $request->all();
-        
+
         Validators::nodeTypesFormValidator($data)->validate();
 
-        $object = new NodeType;
-        
+        $object = new NodeList;
+
         $successName = $object->saveObject($data) ? 'success' : 'error';
-        
-        return redirect()->route('node-types.index')->with($successName, __('messages.store_' . $successName, ['type' => 'type', 'name' => $object->name]));
+
+        return redirect()->route('node-lists.index')->with($successName, __('messages.store_' . $successName, ['type' => 'node_list', 'name' => $object->name]));
     }
 
     /**
@@ -72,9 +72,9 @@ class AdminNodeTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $object = NodeType::findOrFail($id);
+        $object = NodeList::findOrFail($id);
 
-        return view('admin.node_types.edit', compact('object'));
+        return view('admin.node_lists.edit', compact('object'));
     }
 
     /**
@@ -89,11 +89,11 @@ class AdminNodeTypesController extends Controller {
 
         Validators::nodeTypesFormValidator($data, ['id' => $id])->validate();
 
-        $object = NodeType::findOrFail($id);
-        
+        $object = NodeList::findOrFail($id);
+
         $successName = $object->saveObject($data) ? 'success' : 'error';
-        
-        return redirect()->route('node-types.index')->with($successName, __('messages.update_' . $successName, ['type' => 'type', 'name' => $object->name]));
+
+        return redirect()->route('node-lists.index')->with($successName, __('messages.update_' . $successName, ['type' => 'node_list', 'name' => $object->name]));
     }
 
     /**
@@ -103,10 +103,10 @@ class AdminNodeTypesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        $object = NodeType::findOrFail($id);
-        
+        $object = NodeList::findOrFail($id);
+
         $successName = $object->delete() ? 'success' : 'error';
-        
-        return redirect()->route('node-types.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'type', 'name' => $object->name]));
+
+        return redirect()->route('node-lists.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'node_list', 'name' => $object->name]));
     }
 }

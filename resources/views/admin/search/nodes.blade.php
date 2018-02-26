@@ -12,7 +12,7 @@
                 </div>
 
 
-                <div id="nodes-search" class="x_content form-horizontal">
+                <div class="x_content form-horizontal">
                     <br />
                     <form id="search_form" method="post" action="{{ route('admin.search.nodes') }}" data-parsley-validate class="form-horizontal form-label-left">
                         {{ csrf_field() }}

@@ -55,16 +55,18 @@
                                         <li><a href="{{ route('fields.create') }}">@lang('blade_templates.admin.sidebar.create_field')</a></li>
                                     </ul>
                                 </li>
-                                <li><a ><i class="fa fa-tags"></i> @lang('blade_templates.admin.sidebar.tag_types') <span class="fa fa-chevron-down"></span> </a>
+                                <li><a ><i class="fa fa-hashtag"></i> @lang('blade_templates.admin.sidebar.tags') <span class="fa fa-chevron-down"></span> </a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('tag-types.index') }}">@lang('blade_templates.admin.sidebar.tag_types_list')</a></li>
                                         <li><a href="{{ route('tag-types.create') }}">@lang('blade_templates.admin.sidebar.create_tag_type')</a></li>
-                                    </ul>
-                                </li>
-                                <li><a ><i class="fa fa-hashtag"></i> @lang('blade_templates.admin.sidebar.tags') <span class="fa fa-chevron-down"></span> </a>
-                                    <ul class="nav child_menu">
                                         <li><a href="{{ route('tags.index') }}">@lang('blade_templates.admin.sidebar.tags_list')</a></li>
                                         <li><a href="{{ route('tags.create') }}">@lang('blade_templates.admin.sidebar.create_tag')</a></li>
+                                    </ul>
+                                </li>
+                                <li><a ><i class="fa fa-tags"></i> @lang('blade_templates.admin.sidebar.node_lists') <span class="fa fa-chevron-down"></span> </a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('node-lists.index') }}">@lang('blade_templates.admin.sidebar.node_lists_list')</a></li>
+                                        <li><a href="{{ route('node-lists.create') }}">@lang('blade_templates.admin.sidebar.create_node_list')</a></li>
                                     </ul>
                                 </li>
                                 <li><a ><i class="fa fa-tags"></i> @lang('blade_templates.admin.sidebar.nodes') <span class="fa fa-chevron-down"></span> </a>

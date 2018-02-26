@@ -49,6 +49,7 @@
           Route::resource('tag-types', 'AdminTagTypesController');
           Route::resource('node-types', 'AdminNodeTypesController');
           Route::resource('fields', 'AdminFieldsController');
+          Route::resource('node-lists', 'AdminNodeListsController');
           
           Route::get('/model/add-relation-item', 'ModelController@modelAddRelationItem')->name('model.add-relation-item');
           Route::get('/model/populate-field', 'ModelController@modelPopulateField')->name('model.populate-field');

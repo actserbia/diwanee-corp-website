@@ -35,6 +35,10 @@ return [
         '1' => 'Active',
         '0' => 'Not Active'
     ],
+    'NodeList' => [
+        '1' => 'Accending',
+        '0' => 'Descending'
+    ],
     'Filters' => [
         'equal' => 'Equal',
         'like' => 'Contains',

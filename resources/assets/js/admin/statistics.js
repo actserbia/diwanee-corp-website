@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#nodes-statistics #model_type').change(function() {
+    $('#statistics_form #model_type').change(function() {
         $.ajax({
             type: 'GET',
             url: '/admin/statistics/items-list',

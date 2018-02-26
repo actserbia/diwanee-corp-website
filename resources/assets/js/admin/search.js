@@ -93,7 +93,7 @@ $(document).ready(function() {
     };
     
     
-    $('#nodes-search #model_type').change(function() {
+    $('#search_form #model_type').change(function() {
         $.ajax({
             type: 'GET',
             url: '/admin/search/nodes-list',

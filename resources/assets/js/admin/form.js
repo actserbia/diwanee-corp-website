@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    $('form').submit(function () {
+    $('#data_form').submit(function () {
         var form = $(this);
 
-        form.find('input.checkbox-item').each( function () {
+        form.find('input[type=checkbox]').each( function () {
             var checkbox = $(this);
             
             if(checkbox.is(":checked") || checkbox.is(":disabled")) {

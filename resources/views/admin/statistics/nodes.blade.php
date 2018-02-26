@@ -12,7 +12,7 @@
                 </div>
 
 
-                <div id="nodes-statistics" class="x_content">
+                <div class="x_content">
                     <br />
                     <form id="statistics_form" method="post" action="{{ route('admin.statistics.nodes') }}" data-parsley-validate class="form-horizontal form-label-left">
                         {{ csrf_field() }}
