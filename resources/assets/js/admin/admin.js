@@ -8,6 +8,7 @@ $(document).ready(function() {
 
 function addTypeahead() {
     $('.typeahead').each(function() {
+        $(this).removeClass('typeahead');
         var type_id = $(this).parent().find('select  > option:selected').val();
         var input_hidden = $(this).parent().find('input[name="id_node"]');
         $.ajax({
@@ -26,7 +27,9 @@ function addTypeahead() {
                         input_hidden.val(selected.id);
                     }
                 });
-                $(this).removeClass('typeahead');
+            },
+            error: function (data) {
+                $(this).addClass('typeahead');
             }
         });
     });
