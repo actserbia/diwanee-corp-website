@@ -149,19 +149,18 @@ blockquote {
 
   margin: 45px 0;
 
-  .st-block-ui-btn__reorder {
-    top: 0.1em!important;
-  }
-  
   select {
     height: 35px;
-    font-size: 15px;
+    font-size: 14px;
     border-color: #cbd0d5;
     background-color: aliceblue;
     margin-right: 10px;
+    width: 90%;
   }
   input[type="text"] {
     border: 1px solid #cbd0d5;
     height: 35px;
+    font-size: 14px;
+    width: 90%;
   }
 }
