@@ -67,7 +67,7 @@ return [
             'create_tag' => 'Create Tag',
             'tags_list' => 'Tags',
             'node_lists' => 'Lists',
-            'create_node_list' => 'Create',
+            'create_node_list' => 'Create List',
             'node_lists_list' => 'Lists',
             'nodes' => 'Nodes',
             'create_node' => 'Create Node',
