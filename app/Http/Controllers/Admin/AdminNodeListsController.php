@@ -109,4 +109,21 @@ class AdminNodeListsController extends Controller {
 
         return redirect()->route('node-lists.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'node list', 'name' => $object->name]));
     }
+
+
+    public function view($id) {
+        $object = NodeList::findOrFail($id);
+
+        return view('admin.node_lists.view', compact('object'));
+    }
+
+    public function nodeListTags(Request $request) {
+        $data = $request->all();
+
+        if(isset($data['model_type_id'])) {
+            $modelType = $data['model_type_id'];
+            $object = new NodeList(['model_type_id' => $data['model_type_id']]);
+            return view('blocks.node-list-tags', compact('object', 'modelType'));
+        }
+    }
 }

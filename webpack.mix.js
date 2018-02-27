@@ -50,10 +50,11 @@ let mix = require('laravel-mix');
             
             'resources/assets/js/admin/form.js',
             'resources/assets/js/admin/model.js',
-            'resources/assets/js/admin/relation-node-tags.js',
+            'resources/assets/js/admin/relation-tags-parenting.js',
             'resources/assets/js/admin/relation.js',
             'resources/assets/js/admin/tags.js',
             'resources/assets/js/admin/nodes.js',
+            'resources/assets/js/admin/lists.js',
             'resources/lang/*/js/datetimepicker.js',
             'resources/assets/js/admin/datatable.js',
             'resources/lang/*/js/datatable.js',

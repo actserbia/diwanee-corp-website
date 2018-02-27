@@ -4,12 +4,14 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Constants\Models;
 use App\Models\Node\NodeModelManager;
+use App\Models\ModelParentingTagsManager;
 use Auth;
 
 
 class Node extends AppModel {
     use SoftDeletes;
     use NodeModelManager;
+    use ModelParentingTagsManager;
 
     protected $allAttributesFields = ['id', 'title', 'status', 'node_type_id', 'author_id', 'created_at', 'updated_at', 'deleted_at', 'elements_count'];
 
@@ -17,6 +19,10 @@ class Node extends AppModel {
 
     protected $requiredFields = ['title', 'status', 'node_type_id'];
     
+    protected $defaultFieldsValues = [
+        'status' => '0'
+    ];
+
     protected $filterFields = [
         'id' => false,
         'title' => true,
@@ -172,7 +178,7 @@ class Node extends AppModel {
             }
             
             foreach(array_keys($this->relationsSettings) as $relation) {
-                if($this->checkRelationType($relation, 'App\\Node', 'tags')) {
+                if($this->checkRelationType($relation, ['App\\Node'], 'tags')) {
                     $fields[$relation . ':name'] = true;
                 }
             }
@@ -186,7 +192,7 @@ class Node extends AppModel {
         $fields = [];
         if(isset($this->relationsSettings['additional_data'])) {
             foreach(array_keys($this->relationsSettings) as $relation) {
-                if($this->checkRelationType($relation, 'App\\Node', 'tags')) {
+                if($this->checkRelationType($relation, ['App\\Node'], 'tags')) {
                     $fields[] = $relation . ':name';
                 }
             }

@@ -48,8 +48,8 @@ trait ModelRelationsManager {
         return isset($this->relationsSettings[$field]);
     }
     
-    public function checkRelationType($field, $mainModelName, $relationName) {
-        if($this->modelClass === $mainModelName && $this->isRelation($field)) {
+    public function checkRelationType($field, $mainModelNames, $relationName) {
+        if(in_array($this->modelClass, $mainModelNames) && $this->isRelation($field)) {
             if($field === $relationName) {
                 return true;
             }
@@ -192,7 +192,7 @@ trait ModelRelationsManager {
         }
     }
     
-    protected function getAutomaticRenderRelations() {
+    public function getAutomaticRenderRelations() {
         $relations = [];
 
         foreach(array_keys($this->relationsSettings) as $relation) {

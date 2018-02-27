@@ -13,7 +13,7 @@ $(document).ready(function() {
                         url: '/admin/model/add-relation-item',
                         data: {
                             itemId: selectedItemId,
-                            type: $(object).hasClass('node-tags-relation') ? 'tags' : '',
+                            type: $(object).hasClass('tags-parenting-relation') ? 'tags_parenting' : '',
                             data: $(object).data()
                         },
                         success: function (data) {
@@ -135,17 +135,6 @@ $(document).ready(function() {
         });
     };
     
-    $.fn.addDependingEvents = function() {
-        $(this).each(function(index, dependingObject) {
-            $.each($(dependingObject).data('depends-on'), function( index, dependsOnField ){
-                $('[id=' + dependsOnField + ']').data('depending', $(dependingObject).attr('id'));
-                $('[id=' + dependsOnField + ']').change(function() {
-                    $('[id=' + $(dependingObject).attr('id') + ']').populateItems();
-                });
-            });
-        });
-    };
-
     $.fn.syncronizeSelectedMultipleItems = function() {
         $(this).each(function(index, object) {
             $('[id=' + $(object).attr('id') + '-remove-selected]').each(function(index, removeSelectedObject) {

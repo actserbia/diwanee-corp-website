@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Http\Controllers\Controller;
 use App\Utils\HtmlElementsClasses;
 use App\Tag;
-use App\Node;
 
 class ModelController extends Controller {
     public function __construct() {
@@ -33,11 +32,11 @@ class ModelController extends Controller {
         return json_encode($itemsOutput);
     }
     
-    public function modelAddRelationItem(Request $request) {
+    public function modelAddRelationItemOLD(Request $request) {
         $params = $request->all();
 
-        if(($params['type'] === 'tags')) {
-            return $this->modelNodeTagsAddTagItem($request);
+        if(($params['type'] === 'tags_parenting')) {
+            return $this->modelTagsParentingAddTagItem($request);
         }
 
         $data = $params['data'];
@@ -50,25 +49,30 @@ class ModelController extends Controller {
         return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData'));
     }
 
-    private function modelNodeTagsAddTagItem($params) {
-        $data = $params['data'];
+    public function modelAddRelationItem(Request $request) {
+        $params = $request->all();
         
+        $data = $params['data'];
         $field = $data['relation'];
         $level = isset($data['level']) ? $data['level'] : 1;
-        $object = isset($data['modelId']) ? Node::find($data['modelId']) : new Node(['model_type_id' => $data['modelType']]);
+        $object = isset($data['modelId']) ? $data['model']::find($data['modelId']) : new $data['model'](['model_type_id' => $data['modelType']]);
         $itemModel = $object->getRelationModel($data['relation']);
         $item = $itemModel::find($params['itemId']);
         $fullData = $data['fullData'];
 
-        return view('blocks.model.relation.form_relation_node_tags_item', compact('object', 'field', 'item', 'fullData', 'level'));
+        if(($params['type'] === 'tags_parenting')) {
+            return view('blocks.model.relation.form_relation_tags_parenting_item', compact('object', 'field', 'item', 'fullData', 'level'));
+        } else {
+            return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData'));
+        }
     }
 
-    public function modelNodeTagsAddTagSubtags(Request $request) {
+    public function modelTagsParentingAddTagSubtags(Request $request) {
         $params = $request->all();
 
         $data = $params['data'];
         $field = $data['relation'];
-        $object = isset($data['modelId']) ? Node::find($data['modelId']) : new Node(['model_type_id' => $data['modelType']]);
+        $object = isset($data['modelId']) ? $data['model']::find($data['modelId']) : new $data['model'](['model_type_id' => $data['modelType']]);
         $level = $data['level'] + 1;
         $checkSelected = isset($params['checkSelected']) && !empty($params['checkSelected']);
 
@@ -80,7 +84,7 @@ class ModelController extends Controller {
             }
         }
 
-        return ($tags->count() === 0) ? '' : view('blocks.model.relation.form_relation_node_tags', compact('object', 'field', 'tags', 'level', 'checkSelected'));
+        return ($tags->count() === 0) ? '' : view('blocks.model.relation.form_relation_tags_parenting', compact('object', 'field', 'tags', 'level', 'checkSelected'));
     }
 
     public function modelGetTagChildren(Request $request) {

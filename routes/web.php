@@ -49,11 +49,14 @@
           Route::resource('tag-types', 'AdminTagTypesController');
           Route::resource('node-types', 'AdminNodeTypesController');
           Route::resource('fields', 'AdminFieldsController');
+
           Route::resource('node-lists', 'AdminNodeListsController');
+          Route::get('node-lists/{id}/view', 'AdminNodeListsController@view')->name('node-lists.view');
+          Route::get('node-list-tags', 'AdminNodeListsController@nodeListTags')->name('node-list.tags');
           
           Route::get('/model/add-relation-item', 'ModelController@modelAddRelationItem')->name('model.add-relation-item');
           Route::get('/model/populate-field', 'ModelController@modelPopulateField')->name('model.populate-field');
-          Route::get('/model/node-tags/add-tag-subtags', 'ModelController@modelNodeTagsAddTagSubtags')->name('model.node-tags.add-tag-subtags');
+          Route::get('/model/tags-parenting/add-tag-subtags', 'ModelController@modelTagsParentingAddTagSubtags')->name('model.tags-parenting.add-tag-subtags');
           Route::get('/model/tag/get-children', 'ModelController@modelGetTagChildren')->name('model.tag.get-children');
           Route::get('/model/add-checkbox', 'ModelController@modelAddCheckbox')->name('model.add-checkbox');
           

@@ -61,6 +61,10 @@ class Field extends AppModel {
         return Utils::getFormattedDBName($this->title);
     }
 
+    public function getFieldTypeCategoryAttribute() {
+        return $this->field_type->category;
+    }
+
     public function saveData(array $data) {
         $oldTitle = $this->formattedTitle;
 

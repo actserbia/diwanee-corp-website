@@ -7,6 +7,8 @@ use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
 use App\Models\Node\NodeModelDBGenerator;
 use App\Models\Node\NodeModelClassGenerator;
+use App\Constants\Settings;
+use App\Utils\Utils;
 
 class NodeType extends AppModel {
     use SoftDeletes;
@@ -72,12 +74,17 @@ class NodeType extends AppModel {
 
     protected $dependsOn = [];
     
+    public function getAdditionalDataTableNameAttribute() {
+        return Settings::NodeModelPrefix . '_' . Utils::getFormattedDBName($this->name) . 's';
+    }
+
     public function saveData(array $data) {
         $oldName = $this->name;
+        $oldAdditionalDataTableName = $this->additionalDataTableName;
 
         parent::saveData($data);
         
-        $dbGenerator = new NodeModelDBGenerator($this, $oldName);
+        $dbGenerator = new NodeModelDBGenerator($this, $oldAdditionalDataTableName);
         $dbGenerator->generate();
 
         $classGenerator = new NodeModelClassGenerator($this, $oldName);

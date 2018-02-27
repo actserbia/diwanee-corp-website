@@ -15,17 +15,13 @@ class NodeModelDBGenerator {
     private $tableName = null;
     private $oldTableName = null;
 
-    public function __construct($model, $oldNodeTypeName = null) {
+    public function __construct($model, $oldTableName = null) {
         $this->model = $model;
-        $this->tableName = self::getTableName($this->model->name, Settings::NodeModelPrefix);
+        $this->tableName = $this->model->additionalDataTableName;
 
-        if(isset($oldNodeTypeName)) {
-            $this->oldTableName = self::getTableName($oldNodeTypeName, Settings::NodeModelPrefix);
+        if(isset($oldTableName)) {
+            $this->oldTableName = $oldTableName;
         }
-    }
-
-    private static function getTableName($modelName, $prefix) {
-        return $prefix . '_' . Utils::getFormattedDBName($modelName) . 's';
     }
 
     public function generate() {

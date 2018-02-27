@@ -2,28 +2,27 @@ $(document).ready(function() {
     $.fn.addAddSubtagsEvents = function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
-                var selectedTagId = $(object).val();
-                var selectedTagsIds = [];
+                var selectedValue = $(object).val();
+                var selectedValues = [];
 
-                if(selectedTagId !== '') {
-                    selectedTagsIds.push(selectedTagId);
+                if(selectedValue !== '') {
+                    selectedValues.push(selectedValue);
                 }
 
                 if($(object).hasClass('relation-multiple')) {
                     $('a[id=' + $(object).data('relation') + '-remove-selected]', $('[id=selected-' + $(object).attr('id') + ']')).each(function(index, aObject) {
-                        selectedTagsIds.push($(aObject).data('id'));
+                        selectedValues.push($(aObject).data('id'));
                     });
                 }
 
                 var nextLevel = $(object).data('level') + 1;
                 var nextLevelSelect = $(object).data('relation') + '-' + nextLevel;
-
                 if($('#' + nextLevelSelect).length) {
                     $.ajax({
                         type: 'GET',
                         url: '/admin/model/tag/get-children',
                         data: {
-                            tag_id: selectedTagId
+                            tag_id: selectedValue
                         },
                         dataType: 'json',
                         success: function (data) {
@@ -55,22 +54,7 @@ $(document).ready(function() {
                         }
                     });
                 } else {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/admin/model/node-tags/add-tag-subtags',
-                        data: {
-                            data: $(object).data(),
-                            tagsIds: selectedTagsIds,
-                            checkSelected: $('#' + $(object).data('relation') + '-1').data('selected-values')
-                        },
-                        success: function (data) {
-                            $('[id=separator-' + $(object).attr('id') + ']').after(data);
-                            $('#' + nextLevelSelect).addAddSubtagsEvents();
-                            $('#' + nextLevelSelect).addAddRelationItemSelectedEvents();
-                            $('.remove-selected', '#selected-' + nextLevelSelect).addRemoveSelectedEventsAndDisableSelected();
-                            $('#' + nextLevelSelect).setSelectedValues();
-                        }
-                    });
+                    $(object).setSelectedValues(selectedValues);
                 }
             });
         });
@@ -110,30 +94,53 @@ $(document).ready(function() {
             });
         });
     };
-    
-    
-    $.fn.setSelectedValues = function() {
+
+
+    $.fn.setSelectedValuesFromData = function() {
         $(this).each(function(index, object) {
             var selectedValues = $(object).data('selected-values');
-            $.each(selectedValues, function (index, selectedValue) {
-                $(object).val(selectedValue).trigger('change');
-            });
-            
+            $(object).setSelectedValues(selectedValues);
+
             $(object).click(function() {
                 $(object).data('selected-values', '');
             });
         });
     };
-    
-    
-    RelationsNodeTagsManager = {
+
+    $.fn.setSelectedValues = function(selectedValues) {
+        $(this).each(function(index, object) {
+            if(selectedValues.length > 0) {
+                var nextLevel = $(object).data('level') + 1;
+                var nextLevelSelect = $(object).data('relation') + '-' + nextLevel;
+                $.ajax({
+                    type: 'GET',
+                    url: '/admin/model/tags-parenting/add-tag-subtags',
+                    data: {
+                        data: $(object).data(),
+                        tagsIds: selectedValues,
+                        checkSelected: $('#' + $(object).data('relation') + '-1').data('selected-values')
+                    },
+                    success: function (data) {
+                        $('[id=separator-' + $(object).attr('id') + ']').after(data);
+                        $('#' + nextLevelSelect).addAddSubtagsEvents();
+                        $('#' + nextLevelSelect).addAddRelationItemSelectedEvents();
+                        $('.remove-selected', '#selected-' + nextLevelSelect).addRemoveSelectedEventsAndDisableSelected();
+                        $('#' + nextLevelSelect).setSelectedValues();
+                    }
+                });
+            }
+        });
+    };
+
+
+    RelationsTagsParentingManager = {
         initialize: function() {
-            $('.node-tags-relation').addAddSubtagsEvents();
+            $('.tags-parenting-relation').addAddSubtagsEvents();
             $('.remove-selected').addRemoveSubtagsEvents();
         },
-        
+
         setSelectedValues: function() {
-            $('.node-tags-relation').setSelectedValues();
+            $('.tags-parenting-relation').setSelectedValuesFromData();
         }
     };
 });

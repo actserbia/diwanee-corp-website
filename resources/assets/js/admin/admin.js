@@ -1,8 +1,8 @@
 $(document).ready(function() {
     ModelManager.initialize();
-    RelationsNodeTagsManager.initialize();
+    RelationsTagsParentingManager.initialize();
     RelationsManager.initialize();
-    RelationsNodeTagsManager.setSelectedValues();
+    RelationsTagsParentingManager.setSelectedValues();
     FormManager.beautifyCheckboxes();
 });
 

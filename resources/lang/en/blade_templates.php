@@ -8,6 +8,7 @@ return [
         'actions' => 'Actions',
         'edit' => 'Edit',
         'delete' => 'Delete',
+        'view' => 'View',
         'create_new' => 'Create new',
         'delete_title' => 'Confirm delete record',
         'delete_question' => 'Are you sure you want to delete :title',

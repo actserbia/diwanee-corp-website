@@ -10,7 +10,7 @@
                     <h2>{{ Utils::translateModelData('blade_templates.admin.global.create_title')}} <a href="{{ route('node-lists.index') }}" class="btn btn-info btn-xs"><i class="fa fa-chevron-left"></i> @lang('blade_templates.global.back') </a></h2>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div id="node-list" class="x_content">
                     <br />
                     <form id="data_form" method="post" action="{{ route('node-lists.store') }}" data-parsley-validate class="form-horizontal form-label-left">
                         {{ csrf_field() }}
@@ -19,7 +19,7 @@
 
                         @include('blocks.model', ['field' => 'node_type'])
                         
-                        @include('blocks.model', ['field' => 'tags'])
+                        <div id="node-list-tags"></div>
 
                         @include('blocks.model', ['field' => 'order_by_field'])
                         

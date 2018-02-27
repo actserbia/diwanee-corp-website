@@ -67,7 +67,7 @@ class AppModel extends Model {
             }
         }
 
-        return (new static)->$method(...$parameters);
+        return parent::__callStatic($method, $parameters);
     }
 
     public function saveObject(array $data) {

@@ -12,14 +12,16 @@
                 </div>
                 <div class="x_content">
                     <br />
-                    <form id="data_form" method="post" action="{{ route('node-lists.update', ['id' => $object->id]) }}" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="node-list" id="data_form" method="post" action="{{ route('node-lists.update', ['id' => $object->id]) }}" data-parsley-validate class="form-horizontal form-label-left">
                         {{ csrf_field() }}
 
                         @include('blocks.model', ['field' => 'name'])
 
                         @include('blocks.model', ['field' => 'node_type'])
                         
-                        @include('blocks.model', ['field' => 'tags'])
+                        <div id="node-list-tags">
+                            @include('blocks.node-list-tags')
+                        </div>
 
                         @include('blocks.model', ['field' => 'order_by_field'])
 

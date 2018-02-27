@@ -54,10 +54,11 @@ return [
         'show' => 'Diwanee Corp Admin Panel - Delete Field'
     ],
     'node-lists' => [
-        'index' => 'Diwanee Corp Admin Panel - Node Lists List',
-        'create' => 'Diwanee Corp Admin Panel - Create Node List',
-        'edit' => 'Diwanee Corp Admin Panel - Edit Node List',
-        'show' => 'Diwanee Corp Admin Panel - Delete Node List'
+        'index' => 'Diwanee Corp Admin Panel - Lists',
+        'create' => 'Diwanee Corp Admin Panel - Create List',
+        'edit' => 'Diwanee Corp Admin Panel - Edit List',
+        'show' => 'Diwanee Corp Admin Panel - Delete List',
+        'view' => 'Diwanee Corp Admin Panel - View List'
     ],
     'nodes' => [
         'index' => 'Diwanee Corp Admin Panel - Nodes List',

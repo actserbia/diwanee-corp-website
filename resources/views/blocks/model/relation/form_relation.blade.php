@@ -7,6 +7,7 @@
             id="{{ $field }}" name="{{ $field }}"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
+            data-model-type="{{ $object->modelTypeIdValue() }}"
             data-model-id="{{ $object->id }}"
             data-column="{{ isset($column) ? $column : $object->getDefaultDropdownColumn($field) }}"
             data-depends-on="{{ $object->dependsOn($field) }}"

@@ -17,7 +17,7 @@
       const FormFieldType_Date = 'form_date';
       const FormFieldType_Select = 'form_select';
       const FormFieldType_Relation = 'relation.form_relation';
-      const FormFieldType_Relation_NodeTags = 'relation.form_relation_node_tags';
+      const FormFieldType_Relation_TagsParenting = 'relation.form_relation_tags_parenting';
       const FormFieldType_Readonly = 'form_readonly';
       const FormFieldType_CheckboxList = 'form_checkbox_list';
 
