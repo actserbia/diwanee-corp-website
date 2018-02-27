@@ -108,8 +108,8 @@ $(document).ready(function() {
     };
 
     $.fn.setSelectedValues = function(selectedValues) {
-        $(this).each(function(index, object) {
-            if(selectedValues.length > 0) {
+        if(typeof selectedValues !== 'undefined' && selectedValues.length > 0) {
+            $(this).each(function(index, object) {
                 var nextLevel = $(object).data('level') + 1;
                 var nextLevelSelect = $(object).data('relation') + '-' + nextLevel;
                 $.ajax({
@@ -128,8 +128,8 @@ $(document).ready(function() {
                         $('#' + nextLevelSelect).setSelectedValues();
                     }
                 });
-            }
-        });
+            });
+        }
     };
 
 
