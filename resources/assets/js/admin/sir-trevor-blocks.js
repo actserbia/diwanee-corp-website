@@ -305,7 +305,7 @@ SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
         var block_id = this.blockID;
         var list = '<select id="node-type-'+block_id+ '" name="type" '+
             'onChange="$(\'#node-'+block_id+'\').addClass(\'typeahead\');addTypeahead()">';
-        list += '<option value="0">Select content type</option>';
+        list += '<option value="0">Choose content type</option>';
         var node = (node_data.node !== undefined) ? node_data.node : '';
         $.ajax({
             dataType: "json",

@@ -144,3 +144,24 @@ blockquote {
 .st-block[data-type="heading"] .st-block-ui-btn__delete {
     display: block;
 }
+
+.type_options {
+
+  margin: 45px 0;
+
+  .st-block-ui-btn__reorder {
+    top: 0.1em!important;
+  }
+  
+  select {
+    height: 35px;
+    font-size: 15px;
+    border-color: #cbd0d5;
+    background-color: aliceblue;
+    margin-right: 10px;
+  }
+  input[type="text"] {
+    border: 1px solid #cbd0d5;
+    height: 35px;
+  }
+}
