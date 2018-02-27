@@ -303,8 +303,8 @@ SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
 
     setTypeSelect: function(node_data, that) {
         var block_id = this.blockID;
-        var list = '<select id="node-type-'+block_id+ '" name="type" >';
-            //'onChange="$(\'#node-'+block_id+'\').addClass(\'typeahead\');addTypeahead(this.options[this.selectedIndex].value)">';
+        var list = '<select id="node-type-'+block_id+ '" name="type" '+
+            'onChange="$(\'#node-'+block_id+'\').addClass(\'typeahead\');addTypeahead()">';
         list += '<option value="0">Select content type</option>';
         var node = (node_data.node !== undefined) ? node_data.node : '';
         $.ajax({
@@ -321,9 +321,10 @@ SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
                 });
                 list += '</select>';
                 list += '<input type="text" name="node" id="node-'+block_id+ '"' +
-                    ' onfocus="$(\'#node-'+block_id+'\').addClass(\'typeahead\'); addTypeahead($(\'#node-type-'+block_id+'\').val())" ' +
-                    'data-provide="typeahead" value="'+node+'">';
+                    'data-provide="typeahead" class="typeahead node" value="'+node+'">';
+                list += '<input type="hidden" name="id_node" class="node-id" id="node-id-'+block_id+ '"' +' value="'+node_data.id_node+ '">';
                 that.$('.type_options')[0].innerHTML = list;
+                addTypeahead();
             }
         });
     }

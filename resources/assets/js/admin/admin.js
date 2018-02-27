@@ -6,8 +6,10 @@ $(document).ready(function() {
     FormManager.beautifyCheckboxes();
 });
 
-function addTypeahead(type_id) {
+function addTypeahead() {
     $('.typeahead').each(function() {
+        var type_id = $(this).parent().find('select  > option:selected').val();
+        var input_hidden = $(this).parent().find('input[name="id_node"]');
         $.ajax({
             type: 'GET',
             url: '/api/nodes/typeahead/'+type_id,
@@ -19,11 +21,13 @@ function addTypeahead(type_id) {
                     hint: true,
                     highlight: true,
                     minLength: 1,
-                    source: data
+                    source: data,
+                    afterSelect: function(selected) {
+                        input_hidden.val(selected.id);
+                    }
                 });
                 $(this).removeClass('typeahead');
             }
         });
     });
-
 }
