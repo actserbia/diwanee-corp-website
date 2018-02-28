@@ -21,32 +21,16 @@ class ModelController extends Controller {
 
         $items = $model->getRelationValues($data['relation'], isset($params['dependsOnValues']) ? $params['dependsOnValues'] : []);
 
-        $itemsOutput = [['value' => '', 'text' => '']];
+        $itemsOutput = [['value' => '', 'text' => '', 'selected' => '']];
         foreach($items as $item) {
             $itemsOutput[] = array(
                 'value' => $item->id,
-                'text' => $item->$column
+                'text' => $item->$column,
+                'selected' => $model->defaultAttributeValue($data['relation']) == $item->id ? 'selected' : ''
             );
         }
 
         return json_encode($itemsOutput);
-    }
-    
-    public function modelAddRelationItemOLD(Request $request) {
-        $params = $request->all();
-
-        if(($params['type'] === 'tags_parenting')) {
-            return $this->modelTagsParentingAddTagItem($request);
-        }
-
-        $data = $params['data'];
-        $field = $data['relation'];
-        $object = isset($data['modelId']) ? $data['model']::find($data['modelId']) : new $data['model'];
-        $itemModel = $object->getRelationModel($data['relation']);
-        $item = $itemModel::find($params['itemId']);
-        $fullData = $data['fullData'];
-        
-        return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData'));
     }
 
     public function modelAddRelationItem(Request $request) {

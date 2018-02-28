@@ -72,7 +72,7 @@ trait ModelAttributesManager {
         }
     }
     
-    private function defaultAttributeValue($field) {
+    public function defaultAttributeValue($field) {
         return isset($this->defaultFieldsValues[$field]) ? $this->defaultFieldsValues[$field] : null;
     }
     

@@ -5,9 +5,7 @@ namespace App\Models\Node;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Constants\AttributeFieldType;
-use App\Utils\Utils;
 use App\NodeType;
-use App\Constants\Settings;
 use App\Constants\FieldTypeCategory;
 
 class NodeModelDBGenerator {
@@ -36,8 +34,6 @@ class NodeModelDBGenerator {
         } else {
             $this->createNodeModelTable();
         }
-
-        //$this->addMultipleFields();
     }
 
     private function createNodeModelTable() {
@@ -62,37 +58,11 @@ class NodeModelDBGenerator {
     private function addNodeModelTableFields($table) {
         $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
         foreach($this->model->$attributeFieldsRelationName as $field) {
-            //if(!$field->pivot->multiple && !Schema::hasColumn($this->tableName, $field->formattedTitle)) {
             if(!Schema::hasColumn($this->tableName, $field->formattedTitle)) {
                 $this->setTableField($table, $field);
             }
         }
     }
-
-    /*private function addMultipleFields() {
-        foreach($this->model->fields as $field) {
-            $fieldsTableName = self::getTableName($field->formattedTitle, Settings::NodeModelFieldPrefix);
-            if($field->pivot->multiple && !Schema::hasTable($fieldsTableName)) {
-                $this->createNodeModelFieldsTable($fieldsTableName, $field);
-            }
-        }
-    }
-
-    private function createNodeModelFieldsTable($fieldsTableName, $field) {
-        Schema::create($fieldsTableName, function (Blueprint $table) use ($field) {
-            $table->increments('id');
-            $table->unsignedInteger('node_id');
-            $table->unsignedInteger('field_id');
-
-            $this->setTableField($table, $field);
-
-            $table->timestamps();
-            $table->softDeletes();
-
-            $table->foreign('node_id')->references('id')->on('nodes');
-            $table->foreign('field_id')->references('id')->on('fields');
-        });
-    }*/
 
     private function setTableField($table, $field) {
         $tableField = null;
@@ -121,15 +91,6 @@ class NodeModelDBGenerator {
             $generator = new self($nodeType);
             $generator->changeFieldName($oldFieldName, $newFieldName);
         }
-
-        /*$oldFieldsTableName = self::getTableName($oldFieldName, Settings::NodeModelFieldPrefix);
-        $newFieldsTableName = self::getTableName($newFieldName, Settings::NodeModelFieldPrefix);
-        if(Schema::hasTable($oldFieldsTableName)) {
-            Schema::rename($oldFieldsTableName, $newFieldsTableName);
-            Schema::table($newFieldsTableName, function (Blueprint $table) use ($oldFieldName, $newFieldName) {
-                $table->renameColumn($oldFieldName, $newFieldName);
-            });
-        }*/
     }
 
     public function changeFieldName($oldFieldName, $newFieldName) {
@@ -141,14 +102,8 @@ class NodeModelDBGenerator {
     public static function deleteAll() {
         $nodeTypes = NodeType::get();
         foreach($nodeTypes as $nodeType) {
-            $tableName = self::getTableName($nodeType->name, Settings::NodeModelPrefix);
+            $tableName = $nodeType->additionalDataTableName;
             Schema::dropIfExists($tableName);
-
-            $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
-            foreach($nodeType->$attributeFieldsRelationName as $field) {
-                $fieldsTableName = self::getTableName($field->formattedTitle, Settings::NodeModelFieldPrefix);
-                Schema::dropIfExists($fieldsTableName);
-            }
         }
     }
 }

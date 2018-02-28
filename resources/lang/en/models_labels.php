@@ -100,6 +100,7 @@ return [
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
         'deleted_at' => 'Deleted Date',
+        'additional_data_label' => '',
         'model_type_label' => 'Type',
         'content' => 'Content',
         'author_label' => 'Author'

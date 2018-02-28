@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('form#node-list #node_type').change(function() {
+    $('#node-list #node_type').change(function() {
         $.ajax({
             type: 'GET',
             url: '/admin/node-list-tags',

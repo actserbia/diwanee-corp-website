@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Constants\Models;
+use App\Utils\Utils;
 
 trait ModelDataManager {
     use ModelAttributesManager;
@@ -18,7 +19,7 @@ trait ModelDataManager {
     }
 
     public static function scopeFilterByModelType($query, $modelTypeId) {
-        if(static::hasModelTypes()) {
+        if(!empty(static::$modelTypeField)) {
             $query->where(static::$modelTypeField, '=', $modelTypeId);
         }
     }
@@ -26,20 +27,20 @@ trait ModelDataManager {
     public function __construct(array $attributes = array()) {
         parent::__construct($attributes);
 
-        if(static::hasModelTypes() && isset($attributes['model_type_id'])) {
-            $this->populateDataByModelType($attributes['model_type_id']);
+        if(method_exists($this, 'populateData')) {
+            $this->populateData($attributes);
         }
     }
 
     public static function __callStatic($method, $parameters) {
-        if(static::hasModelTypes()) {
-            if(in_array($method, ['findOrFail', 'find'])) {
-                $object = (new static)->$method(...$parameters);
-                $object->populateDataByModelType();
-                return $object;
-            } elseif(isset(end($parameters)['model_type_id'])) {
-                return (new static(array_pop($parameters)))->$method(...$parameters);
+        if(in_array($method, ['findOrFail', 'find'])) {
+            $object = (new static)->$method(...$parameters);
+            if(method_exists($object, 'populateData')) {
+                $object->populateData();
             }
+            return $object;
+        } elseif(isset(end($parameters)['model_type_id'])) {
+            return (new static(array_pop($parameters)))->$method(...$parameters);
         }
 
         return parent::__callStatic($method, $parameters);
@@ -145,20 +146,12 @@ trait ModelDataManager {
                 
                 $filterRelationSettings = $model->getRelationSettings($filterFieldNameList[0]);
                 
-                $query->whereIn($filterRelationSettings['foreignKey'], self::getIds($filterRelationItems));
+                $query->whereIn($filterRelationSettings['foreignKey'], Utils::getItemsIds($filterRelationItems));
             } else {
                 $query->whereIn($filterField, $filterValues);
             }
         }
         
         return $query;
-    }
-    
-    private static function getIds($items) {
-        $ids = [];
-        foreach($items as $item) {
-            $ids[] = $item->id;
-        }
-        return $ids;
     }
 }

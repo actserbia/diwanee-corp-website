@@ -10,7 +10,7 @@ $(document).ready(function() {
             dataType: 'json',
             context: this,
             success: function (data) {
-                $('#statistic').html('');
+                $('#statistic').empty();
                 $.each(data, function (index, item) {
                     $('#statistic').append($('<option>', {
                         value: item.value,

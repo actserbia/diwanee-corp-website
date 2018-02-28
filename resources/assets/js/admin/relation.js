@@ -85,10 +85,15 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function (data) {
                     $.each(data, function (index, item) {
-                        $(object).append($('<option>', {
+                        var option = {
                             value: item.value,
                             text: item.text
-                        }));
+                        }
+                        if(item.selected === 'selected') {
+                            option.selected = 'selected';
+                        }
+                    
+                        $(object).append($('<option>', option));
                     });
 
                     $(object).syncronizeSelectedMultipleItems();

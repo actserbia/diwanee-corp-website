@@ -7,11 +7,13 @@ use App\NodeType;
 use App\Constants\FieldTypeCategory;
 
 trait NodeModelManager {
-    public function populateDataByModelType($modelTypeId = null) {
-        $this->modelType = !empty($this->model_type) ? $this->model_type : NodeType::find($modelTypeId);
-        
-        $this->populateAttributesFieldsData();
-        $this->populateTagFieldsData();
+    public function populateData($attributes = null) {
+        if(isset($this->id) || isset($attributes['model_type_id'])) {
+            $this->modelType = isset($this->id) ? $this->model_type : NodeType::find($attributes['model_type_id']);
+            
+            $this->populateAttributesFieldsData();
+            $this->populateTagFieldsData();
+        }
     }
 
     private function populateAttributesFieldsData() {

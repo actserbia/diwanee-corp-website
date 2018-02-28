@@ -78,6 +78,10 @@ class Field extends AppModel {
     public function attributeValue($field) {
         $value = parent::attributeValue($field);
         if($field === 'multiple_list' && $this->field_type->category === FieldTypeCategory::Tag) {
+            if(!isset($value)) {
+                $value = [];
+            }
+            
             $tags = Tag::where('tag_type_id', '=', $this->field_type->id)->get();
             $maxLevelsCount = Tag::relationMaxLevelsCount('children', $tags);
             for($index = count($value); $index < $maxLevelsCount; $index++) {

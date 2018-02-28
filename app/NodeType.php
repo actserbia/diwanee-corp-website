@@ -75,7 +75,7 @@ class NodeType extends AppModel {
     protected $dependsOn = [];
     
     public function getAdditionalDataTableNameAttribute() {
-        return Settings::NodeModelPrefix . '_' . Utils::getFormattedDBName($this->name) . 's';
+        return empty($this->name) ? $this->name : Settings::NodeModelPrefix . '_' . Utils::getFormattedDBName($this->name) . 's';
     }
 
     public function saveData(array $data) {

@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Constants\NodeListRelationType;
 
-class CreateNodeListTagTable extends Migration
+class CreateNodeListRelationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +14,16 @@ class CreateNodeListTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('node_list_tag', function (Blueprint $table) {
+        Schema::create('node_list_relation', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('node_list_id');
-            $table->unsignedInteger('tag_id');
-            $table->unsignedTinyInteger('ordinal_number');
+            $table->unsignedInteger('relation_id');
+            $table->enum('type', NodeListRelationType::getAll());
         });
 
-        Schema::table('node_list_tag', function($table) {
+        Schema::table('node_list_relation', function($table) {
             $table->foreign('node_list_id')->references('id')->on('node_lists');
-            $table->foreign('tag_id')->references('id')->on('tags');
+            //$table->foreign('relation_id')->references('id')->on('tags');
         });
     }
 
@@ -33,6 +34,6 @@ class CreateNodeListTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('node_list_tag');
+        Schema::dropIfExists('node_list_relation');
     }
 }

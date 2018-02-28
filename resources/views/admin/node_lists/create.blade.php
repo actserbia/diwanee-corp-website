@@ -20,6 +20,8 @@
                         @include('blocks.model', ['field' => 'node_type'])
                         
                         <div id="node-list-tags"></div>
+                        
+                        @include('blocks.model', ['field' => 'authors'])
 
                         @include('blocks.model', ['field' => 'order_by_field'])
                         

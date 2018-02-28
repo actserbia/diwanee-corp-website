@@ -35,16 +35,10 @@ class SingleRelationManager extends RelationManager {
         $this->relationData = [];
         
         if(isset($data[$this->relation])) {
-            $relationItemId = $data[$this->relation];
-            $this->relationData[$relationItemId] = [];
-            
+            $this->relationData = $data[$this->relation];
             foreach($data as $key => $value) {
-                $keyParts = explode('__', $key);
-                if(isset($keyParts[2]) && $keyParts[0] === $this->relation) {
-                    $itemId = $keyParts[1];
-                    $additionalField = $keyParts[2];
-                    
-                    $this->relationData[$itemId][$additionalField] = $value;
+                if(strpos($key, 'pivot_' . $this->relation) === 0) {
+                    $this->relationData = $value;
                 }
             }
         }

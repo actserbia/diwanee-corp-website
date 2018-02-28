@@ -31,7 +31,7 @@ class FieldTypesTableSeeder extends Seeder
             
             if($attributeFieldTypeName === AttributeFieldType::Date) {
                 factory(Field::class)->create([
-                    'title' => 'Created Date',
+                    'title' => 'Created At',
                     'field_type_id' => $attributeFieldType->id
                 ]);
             }

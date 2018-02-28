@@ -11,6 +11,16 @@ class MultipleRelationManager extends RelationManager {
             $query = $this->object->belongsToMany($relationsSettings['model'], $relationsSettings['pivot'], $relationsSettings['foreignKey'], $relationsSettings['relationKey']);
         }
         
+        return $this->getRelationItemsWithPivotFiltersQuery($query, $relationsSettings);
+    }
+    
+    private function getRelationItemsWithPivotFiltersQuery($query, $relationsSettings) {
+        if(isset($relationsSettings['pivotFilters'])) {
+            foreach($relationsSettings['pivotFilters'] as $key => $values) {
+                $query = $query->whereIn($key, $values);
+            }
+        }
+        
         return $query;
     }
     
@@ -36,19 +46,10 @@ class MultipleRelationManager extends RelationManager {
         $this->relationData = [];
         
         if(isset($data[$this->relation])) {
-            foreach($data[$this->relation] as $relationItemId) {
-                if(!empty($relationItemId)) {
-                    $this->relationData[$relationItemId] = [];
-                }
-            }
-            
+            $this->relationData = $data[$this->relation];
             foreach($data as $key => $value) {
-                $keyParts = explode('__', $key);
-                if(isset($keyParts[2]) && $keyParts[0] === $this->relation) {
-                    $itemId = $keyParts[1];
-                    $additionalField = $keyParts[2];
-                    
-                    $this->relationData[$itemId][$additionalField] = $value;
+                if(strpos($key, 'pivot_' . $this->relation) === 0) {
+                    $this->relationData = $value;
                 }
             }
         }

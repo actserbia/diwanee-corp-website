@@ -4,7 +4,6 @@ namespace App\Constants;
 
 final class Settings {
     const NodeModelPrefix = 'nm';
-    const NodeModelFieldPrefix = 'nmf';
     
     const MaximumTagsLevelsCount = 5;
 

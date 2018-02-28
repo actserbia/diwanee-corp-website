@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    var typeaheadList = {};
+    SearchManager = {};
+    SearchManager.typeaheadList = {};
 
     $.fn.populateStartDatePickers = function() {
         $(this).each(function(index, object) {
@@ -53,26 +54,29 @@ $(document).ready(function() {
             }
         });
 
-
         $('.search-remove').click(function() {
             $(this).parent().remove();
         });
         
-        $('.typeahead').each(function() {
-            if($(this).attr('id') in typeaheadList) {
-                $(this).addTypehead();
+        $('.typeahead').each(function(index, object) {
+            $(object).removeClass('typeahead');
+            if($(object).attr('id') in SearchManager.typeaheadList) {
+                $(object).addTypehead();
             } else {
                 $.ajax({
                     type: 'GET',
                     url: '/admin/search/typeahead',
                     data: {
-                        data: $(this).data(),
-                        param: $(this).attr('id')
+                        data: $(object).data(),
+                        param: $(object).attr('id')
                     },
-                    context: this,
+                    context: object,
                     success: function (data) {
-                        typeaheadList[$(this).attr('id')] = data;
-                        $(this).addTypehead();
+                        SearchManager.typeaheadList[$(object).attr('id')] = data;
+                        $(object).addTypehead();
+                    },
+                    error: function() {
+                        $(object).addClass('typeahead');
                     }
                 });
             }
@@ -87,9 +91,8 @@ $(document).ready(function() {
             hint: true,
             highlight: true,
             minLength: 1,
-            source: typeaheadList[$(this).attr('id')]
+            source: SearchManager.typeaheadList[$(this).attr('id')]
         });
-        $(this).removeClass('typeahead');
     };
     
     
@@ -103,7 +106,7 @@ $(document).ready(function() {
             dataType: 'json',
             context: this,
             success: function (data) {
-                $('#search').html('');
+                $('#search').empty();
                 $.each(data, function (index, item) {
                     $('#search').append($('<option>', {
                         value: item.value,

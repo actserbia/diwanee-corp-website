@@ -36,7 +36,7 @@ return [
         '0' => 'Not Active'
     ],
     'NodeListOrder' => [
-        '1' => 'Accending',
+        '1' => 'Ascending',
         '0' => 'Descending'
     ],
     'Filters' => [

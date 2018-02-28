@@ -34,7 +34,7 @@ $(document).ready(function() {
                                 $('#separator-' + nextLevelSelect).remove();
                             } else {
                                 if(!$(object).hasClass('relation-multiple')) {
-                                    $('#' + nextLevelSelect).html('');
+                                    $('#' + nextLevelSelect).empty();
                                     $('#' + nextLevelSelect).append($('<option>', {
                                         value: '',
                                         text: ''
