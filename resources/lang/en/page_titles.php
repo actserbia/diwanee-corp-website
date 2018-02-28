@@ -13,7 +13,8 @@ return [
             'users' => 'Diwanee Corp Admin Panel - Search Users',
             'tags' => 'Diwanee Corp Admin Panel - Search Tags',
             'nodes' => 'Diwanee Corp Admin Panel - Search Nodes',
-            'elements' => 'Diwanee Corp Admin Panel - Search Elements'
+            'elements' => 'Diwanee Corp Admin Panel - Search Elements',
+            'node-lists' => 'Diwanee Corp Admin Panel - Search Lists'
         ],
         'statistics' => [
             'users' => 'Diwanee Corp Admin Panel - Users Statistics',

@@ -46,7 +46,12 @@ class MultipleRelationManager extends RelationManager {
         $this->relationData = [];
         
         if(isset($data[$this->relation])) {
-            $this->relationData = $data[$this->relation];
+            foreach($data[$this->relation] as $itemId) {
+                if(!empty($itemId)) {
+                    $this->relationData[$itemId] = [];
+                }
+            }
+
             foreach($data as $key => $value) {
                 if(strpos($key, 'pivot_' . $this->relation) === 0) {
                     $this->relationData = $value;

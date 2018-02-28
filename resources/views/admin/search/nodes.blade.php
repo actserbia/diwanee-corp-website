@@ -58,17 +58,17 @@
                             </tfoot>
 
                             <tbody>
-                                @foreach($items as $node)
-                                    <tr @if($node->deleted_at != null) class="deleted" @endif>
-                                        <td>{{ $node->id }}</td>
-                                        <td>{{ $node->title }}</td>
-                                        <td>{{ $node->model_type->name }}</td>
-                                        <td>{{ $node->created_at }}</td>
-                                        <td>{{ $node->author->name }}</td>
+                                @foreach($items as $object)
+                                    <tr @if($object->deleted_at != null) class="deleted" @endif>
+                                        <td>{{ $object->id }}</td>
+                                        <td>{{ $object->title }}</td>
+                                        <td>{{ $object->model_type->name }}</td>
+                                        <td>{{ $object->created_at }}</td>
+                                        <td>{{ $object->author->name }}</td>
                                         <td>
-                                            @if($node->deleted_at == null)
-                                                <a href="{{ route('nodes.edit', ['id' => $node->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
-                                                <a href="{{ route('nodes.show', ['id' => $node->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
+                                            @if($object->deleted_at == null)
+                                                <a href="{{ route('nodes.edit', ['id' => $object->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
+                                                <a href="{{ route('nodes.show', ['id' => $object->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
                                             @endif
                                         </td>
                                     </tr>

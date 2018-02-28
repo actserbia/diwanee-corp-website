@@ -40,17 +40,26 @@
                                 <th>@lang('blade_templates.global.actions')</th>
                             </tr>
                         </thead>
+                        <tfoot>
+                            <tr>
+                                <th>@lang('blade_templates.global.id')</th>
+                                <th>@lang('models_labels.User.name')</th>
+                                <th>@lang('models_labels.User.email')</th>
+                                <th>@lang('models_labels.User.role')</th>
+                                <th>@lang('blade_templates.global.actions')</th>
+                            </tr>
+                        </tfoot>
                         <tbody>
-                        @foreach($items as $user)
-                            <tr @if($user->deleted_at != null) class="deleted" @endif>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->fieldValue('role') }}</td>
+                        @foreach($items as $object)
+                            <tr @if($object->deleted_at != null) class="deleted" @endif>
+                                <td>{{ $object->id }}</td>
+                                <td>{{ $object->name }}</td>
+                                <td>{{ $object->email }}</td>
+                                <td>{{ $object->fieldValue('role') }}</td>
                                 <td>
-                                    @if(Auth::admin() && $user->deleted_at == null)
-                                        <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
-                                        <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
+                                    @if(Auth::admin() && $object->deleted_at == null)
+                                        <a href="{{ route('users.edit', ['id' => $object->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
+                                        <a href="{{ route('users.show', ['id' => $object->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
                                     @endif
                                 </td>
                             </tr>

@@ -95,6 +95,7 @@ return [
             'tags' => 'Search Tags',
             'nodes' => 'Search Nodes',
             'elements' => 'Search Elements',
+            'node_lists' => 'Search Lists',
             'negation' => 'Not',
             'start_date' => 'Start Date',
             'end_date' => 'End Date'

@@ -86,6 +86,7 @@
                                             <li><a href="{{ route('admin.search.nodes') }}">@lang('blade_templates.admin.sidebar.nodes')</a></li>
                                             <li><a href="{{ route('admin.search.tags') }}">@lang('blade_templates.admin.sidebar.tags')</a></li>
                                             <li><a href="{{ route('admin.search.elements') }}">@lang('blade_templates.admin.sidebar.elements')</a></li>
+                                            <li><a href="{{ route('admin.search.node-lists') }}">@lang('blade_templates.admin.sidebar.node_lists')</a></li>
                                             <li><a href="{{ route('admin.search.users') }}">@lang('blade_templates.admin.sidebar.users')</a></li>
                                         </ul>
                                     </li>

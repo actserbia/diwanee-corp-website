@@ -23,6 +23,15 @@ class NodeList extends AppModel {
         'order' => '0'
     ];
 
+    protected $filterFields = [
+        'id' => false,
+        'name' => true,
+        'node_type:name' => true,
+        'order_by_field:title' => true,
+        'order' => true,
+        'limit' => true
+    ];
+
     protected $attributeType = [
         'node_type_id' => Models::AttributeType_Number,
         'order_by_field_id' => Models::AttributeType_Number,

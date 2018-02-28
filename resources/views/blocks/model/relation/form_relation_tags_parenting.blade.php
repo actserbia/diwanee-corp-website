@@ -24,8 +24,8 @@
                 <option value=""></option>
                 @foreach ($object->formRelationValuesByLevel($field, isset($level) ? $level : 1, isset($tags) ? $tags : null) as $item)
                     <option value="{{ $item->id }}"
-                        @if(!isset($checkSelected) && $object->checkFormSelectRelationValue($field, $item, isset($level) ? $level : 1)) selected @endif
-                        @if(!isset($checkSelected) && $object->checkFormDisabledRelationValue($field, $item, isset($level) ? $level : 1)) disabled @endif
+                        @if($object->checkFormSelectRelationValue($field, $item, isset($level) ? $level : 1)) selected @endif
+                        @if($object->checkFormDisabledRelationValue($field, $item, isset($level) ? $level : 1)) disabled @endif
                     >
                         {{ isset($column) ? $item->$column : $item[$item->defaultDropdownColumn] }}
                     </option>

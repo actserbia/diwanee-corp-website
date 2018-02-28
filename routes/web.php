@@ -69,6 +69,7 @@
               Route::match(['get', 'post'], 'tags', 'AdminSearchController@tags')->name('admin.search.tags');
               Route::match(['get', 'post'], 'nodes', 'AdminSearchController@nodes')->name('admin.search.nodes');
               Route::match(['get', 'post'], 'elements', 'AdminSearchController@elements')->name('admin.search.elements');
+              Route::match(['get', 'post'], 'node-lists', 'AdminSearchController@nodeLists')->name('admin.search.node-lists');
 
               Route::match(['get'], 'typeahead', 'AdminSearchController@typeahead')->name('admin.search.typeahead');
               Route::get('add-filter', 'AdminSearchController@searchAddFilter')->name('admin.search.add.filter');

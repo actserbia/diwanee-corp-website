@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Filters\FiltersUtils;
 use App\Utils\HtmlElementsClasses;
+use App\Utils\Utils;
 use App\Node;
 
 class AdminSearchController extends Controller {
@@ -46,30 +47,33 @@ class AdminSearchController extends Controller {
         return $this->getFiltersView($request, 'User');
     }
 
+    public function nodeLists(Request $request) {
+        return $this->getFiltersView($request, 'NodeList');
+    }
+
     private function getFiltersView(Request $request, $modelName) {
         $params = $request->all();
 
         $modelClass = 'App\\' . $modelName;
         if(isset($params['model_type'])) {
-            $modelTypeId = $params['model_type'];
             $model = new $modelClass(['model_type_id' => $modelTypeId]);
             $attributes = ['model_type_id' => $modelTypeId];
         } else {
-            $modelTypeId = '';
             $model = new $modelClass;
             $attributes = [];
         }
 
-        $items = [];
-        if(!$modelClass::hasModelTypes() || isset($params['model_type'])) {
-            $params = FiltersUtils::prepareParams($request->all());
-            $items = $model::withAll($attributes)
-                ->filterByAllParams($params)
-                ->filterByModelType($modelTypeId)
-                ->get();
+        $filterParams = FiltersUtils::prepareParams($request->all());
+        $items = $model::withAll($attributes)
+            ->filterByAllParams($filterParams);
+
+        if(isset($params['model_type'])) {
+            $items = $items->filterByModelType($params['model_type'])->get();
+        } else {
+            $items = $items->get();
         }
 
-        return view('admin.search.' . strtolower($modelName) . 's', compact('items', 'model'));
+        return view('admin.search.' . Utils::getFormattedDBName($modelName) . 's', compact('items', 'model'));
     }
 
     public function typeahead(Request $request) {

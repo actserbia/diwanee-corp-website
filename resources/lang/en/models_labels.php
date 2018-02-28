@@ -88,7 +88,8 @@ return [
         'name' => 'Name',
         'created_at' => 'Created Date',
         'updated_at' => 'Updated Date',
-        'deleted_at' => 'Deleted Date'
+        'deleted_at' => 'Deleted Date',
+        'node_type_label' => 'Type'
     ],
 
     'Node' => [

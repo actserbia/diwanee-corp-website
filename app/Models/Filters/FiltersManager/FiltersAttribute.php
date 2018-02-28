@@ -17,7 +17,7 @@ class FiltersAttribute extends FiltersBaseSearch {
 
     protected function additionalWithAttribute() {
         if($this->orderBy && $this->checkIfAllSearchTypesAreEqual()) {
-            $this->query->orderByRaw('FIELD(' . $this->attribute . ', "' . implode('","', $this->paramsArray) . '")');
+            $this->query->orderByRaw('FIELD(`' . $this->attribute . '`, "' . implode('","', $this->paramsArray) . '")');
         }
     }
 }

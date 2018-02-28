@@ -3,9 +3,12 @@ namespace App\Models;
 
 class ModelsUtils {
     public static function addQueryRelationFilters($query, $model, $relation) {
-        foreach($model->getRelationFilters($relation) as $filterField => $filterValues) {
-            $query->whereIn($filterField, $filterValues);
-        }
+        //foreach($model->getRelationFilters($relation) as $filterField => $filterValues) {
+        //    $query->whereIn($filterField, $filterValues);
+        //}
+
+        $relationModel = $model->getRelationModel($relation);
+        $relationModel::filter($model->getRelationFilters($relation), $query);
     }
 
     public static function addQueryJsonFieldFilters($query, $jsonFieldSettings) {
