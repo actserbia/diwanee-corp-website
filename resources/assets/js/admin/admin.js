@@ -34,4 +34,30 @@ function addTypeahead() {
             }
         });
     });
+
+}
+
+function addTypeaheadList() {
+    $('.typeahead').each(function() {
+        var input_hidden = $(this).parent().find('input[name="id_list"]');
+        $.ajax({
+            type: 'GET',
+            url: '/api/lists/typeahead/',
+            dataType: 'json',
+            context: this,
+            success: function (data) {
+                $(this).typeahead('destroy');
+                $(this).typeahead({
+                    hint: true,
+                    highlight: true,
+                    minLength: 1,
+                    source: data,
+                    afterSelect: function(selected) {
+                        input_hidden.val(selected.id);
+                    }
+                });
+                $(this).removeClass('typeahead');
+            }
+        });
+    });
 }

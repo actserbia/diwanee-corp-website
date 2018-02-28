@@ -8,7 +8,7 @@ return [
 
     'defaultType' => 'Text',
 
-    'blockTypes' => [ 'Text', 'Heading', 'Quote', 'List', 'DiwaneeImage', 'DiwaneeVideo', 'SliderImage', 'DiwaneeNode' ],
+    'blockTypes' => [ 'Text', 'Heading', 'Quote', 'List', 'DiwaneeImage', 'DiwaneeVideo', 'SliderImage', 'DiwaneeNode', 'DiwaneeList' ],
 
     'stylesheets' => [
         'css/sir-trevor.css'

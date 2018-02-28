@@ -9,6 +9,7 @@ final class ElementType {
     const DiwaneeImage = 'diwanee_image';
     const DiwaneeVideo = 'diwanee_video';
     const DiwaneeNode = 'diwanee_node';
+    const DiwaneeList = 'diwanee_list';
     const ElementList = 'list';
     const Heading = 'heading';
     const Quote = 'quote';

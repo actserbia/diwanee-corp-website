@@ -329,5 +329,35 @@ SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
         });
     }
 
+});
+
+
+SirTrevor.Locales.en.blocks['diwanee list'] = {'title': 'Nodes List'};
+
+SirTrevor.Blocks.DiwaneeList = SirTrevor.Block.extend({
+    type: 'diwanee list',
+    icon_name: 'default',
+
+    droppable: false,
+    textable: false,
+
+    editorHTML : '<div class="st-nodes-list-block"> </div>',
+
+    onBlockRender: function () {
+        var data = this.getData();
+        this.setInputField(data.data, this);
+    },
+
+    setInputField: function(list_data, that) {
+        var block_id = this.blockID;
+        var list_name = (list_data.list_name !== undefined) ? list_data.list_name : '';
+
+        var input_field = '<label>Nodes list:</label>'+
+            '<input type="text" name="list_name" id="node-list'+block_id+ '"' +
+            ' data-provide="typeahead" class="typeahead" value="'+list_name+'">' +
+            '<input type="hidden" name="id_list" class="list-id" id="list-id-'+block_id+ '"' +' value="'+list_data.id_list+ '">';
+        that.$('.st-nodes-list-block')[0].innerHTML = input_field;
+        addTypeaheadList();
+    }
 
 });

@@ -29,6 +29,8 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('nodes/typeahead/{type}', 'ApiNodesController@typeahead')->name('api.nodes.typeahead');
     Route::get('node/{id}', 'ApiNodesController@show')->name('api.nodes.show');
 
+    Route::get('lists/typeahead', 'ApiListsController@typeahead')->name('api.lists.typeahead');
+
     Route::get('tags', 'ApiTagsController@index')->name('api.tags.index');
     Route::get('tags/{id}', 'ApiTagsController@show')->name('api.tags.show');
 

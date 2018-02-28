@@ -46,67 +46,23 @@ class CheckSTContent implements Rule
     }
 
     private function checkElementContent($element, $index) {
-        if(!isset($element->type) || !isset($element->data)) {
-            $this->message = __('messages.check_sir_trevor_content.type_or_data_missing', ['elementIndex' => $index]);
-            return false;
-        }
-
-        if(!in_array($element->type, ElementType::getAll())) {
-            $this->message = __('messages.check_sir_trevor_content.type_not_valid', ['type' => $element->type, 'validTypes' => implode(',', ElementType::getAll())]);
-            return false;
-        }
 
         switch($element->type) {
-            case ElementType::Quote:
-                if(!isset($element->data->cite)) {
-                    $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => $index, 'param' => 'cite']);
-                    return false;
-                }
 
-            case ElementType::Text:
-            case ElementType::Heading:
-                if(!isset($element->data->text)) {
-                    $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => $index, 'param' => 'text']);
-                    return false;
-                }
-                if(!$this->checkElementFormat($element, $index)) {
-                    $this->message = __('messages.check_sir_trevor_content.format_not_valid', ['elementIndex' => $index]);
+            case ElementType::DiwaneeList:
+                if(!isset($element->data->id_list) || $element->data->id_list == 'undefined') {
+                    $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => '', 'param' => 'nodes list']);
                     return false;
                 }
                 break;
 
-            case ElementType::DiwaneeImage:
-            case ElementType::SliderImage:
-                if(!isset($element->data->file->url) || !isset($element->data->seoname) || !isset($element->data->seoalt) || !isset($element->data->caption) || !isset($element->data->copyright)) {
-                    $this->message = __('messages.check_sir_trevor_content.image_data_missing', ['elementIndex' => $index]);
+            case ElementType::DiwaneeNode:
+                if(!isset($element->data->id_node) || $element->data->id_node == 'undefined') {
+                    $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => '', 'param' => 'node']);
                     return false;
                 }
                 break;
-
-            case ElementType::DiwaneeVideo:
-                if(!isset($element->data->remote_id) || !isset($element->data->source)) {
-                    $this->message = __('messages.check_sir_trevor_content.video_data_missing', ['elementIndex' => $index]);
-                    return false;
-                }
-                break;
-
-            case ElementType::ElementList:
-                if(!isset($element->data->listItems) || !is_array($element->data->listItems)) {
-                    $this->message = __('messages.check_sir_trevor_content.list_items_not_valid', ['elementIndex' => $index]);
-                    return false;
-                }
-                if(!$this->checkElementFormat($element, $index)) {
-                    $this->message = __('messages.check_sir_trevor_content.format_not_valid', ['elementIndex' => $index]);
-                    return false;
-                }
-                foreach($element->data->listItems as $itemIndex => $listItem) {
-                    if(!isset($listItem->content)) {
-                        $this->message = __('messages.check_sir_trevor_content.list_item_content_missing', ['elementIndex' => $index, 'itemIndex' => $itemIndex]);
-                        return false;
-                    }
-                }
-                break;
-        }
+       }
 
         return true;
     }
