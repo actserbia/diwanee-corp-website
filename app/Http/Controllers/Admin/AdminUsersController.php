@@ -51,7 +51,7 @@ class AdminUsersController extends Controller {
 
         $successName = $user->saveObject($data) ? 'success' : 'error';
 
-        return redirect()->route('users.index')->with($successName, __('messages.store_' . $successName, ['type' => 'user', 'name' => $user->name]));
+        return redirect()->route('users.index')->with($successName, __('messages.store_' . $successName, ['type' => __('models_labels.User.label_single'), 'name' => $user->name]));
     }
 
     /**
@@ -94,7 +94,7 @@ class AdminUsersController extends Controller {
 
         $successName = $user->saveObject($data) ? 'success' : 'error';
 
-        return redirect()->route('users.index')->with($successName, __('messages.update_' . $successName, ['type' => 'user', 'name' => $user->name]));
+        return redirect()->route('users.index')->with($successName, __('messages.update_' . $successName, ['type' => __('models_labels.User.label_single'), 'name' => $user->name]));
     }
 
     /**
@@ -108,6 +108,6 @@ class AdminUsersController extends Controller {
 
         $successName = $user->delete() ? 'success' : 'error';
 
-        return redirect()->route('users.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'user', 'name' => $user->name]));
+        return redirect()->route('users.index')->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.User.label_single'), 'name' => $user->name]));
     }
 }

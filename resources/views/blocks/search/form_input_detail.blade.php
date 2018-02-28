@@ -1,4 +1,4 @@
-<div>
+<div class="search-field-item">
 <select class="form-control" id="search_types_{{ $field }}" name="searchTypes_{{ $field }}[]"
     @if(Auth::user()->role !== 'admin') style="display:none;" @endif
 >

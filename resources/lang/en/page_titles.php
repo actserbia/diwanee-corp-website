@@ -66,5 +66,6 @@ return [
         'create-by-type' => 'Diwanee Corp Admin Panel - Create Node',
         'edit' => 'Diwanee Corp Admin Panel - Edit Node',
         'show' => 'Diwanee Corp Admin Panel - Delete Node'
-    ]
+    ],
+    'graphiql' => 'Graphiql'
 ];

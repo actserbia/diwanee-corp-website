@@ -48,6 +48,7 @@ let mix = require('laravel-mix');
             'resources/assets/_admin_/js/vfs_fonts.js',
             'resources/assets/_admin_/js/custom.min.js',
             
+            'resources/assets/js/admin/utils.js',
             'resources/assets/js/admin/form.js',
             'resources/assets/js/admin/model.js',
             'resources/assets/js/admin/relation-tags-parenting.js',

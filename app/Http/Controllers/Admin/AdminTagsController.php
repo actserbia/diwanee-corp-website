@@ -96,7 +96,7 @@ class AdminTagsController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.store_' . $successName, ['type' => 'tag', 'name' => $object->name]));
+        return redirect()->route('tags.index')->with($successName, __('messages.store_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -127,7 +127,7 @@ class AdminTagsController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.update_' . $successName, ['type' => 'tag', 'name' => $object->name]));
+        return redirect()->route('tags.index')->with($successName, __('messages.update_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -141,6 +141,6 @@ class AdminTagsController extends Controller {
         
         $successName = $object->delete() ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'tag', 'name' => $object->name]));
+        return redirect()->route('tags.index')->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
     }
 }

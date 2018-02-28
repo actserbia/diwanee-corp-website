@@ -62,7 +62,7 @@ class AdminNodeListsController extends Controller {
 
         $successName = $object->saveObject($data) ? 'success' : 'error';
 
-        return redirect()->route('node-lists.index')->with($successName, __('messages.store_' . $successName, ['type' => 'node list', 'name' => $object->name]));
+        return redirect()->route('node-lists.index')->with($successName, __('messages.store_' . $successName, ['type' => __('models_labels.NodeList.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -93,7 +93,7 @@ class AdminNodeListsController extends Controller {
 
         $successName = $object->saveObject($data) ? 'success' : 'error';
 
-        return redirect()->route('node-lists.index')->with($successName, __('messages.update_' . $successName, ['type' => 'node list', 'name' => $object->name]));
+        return redirect()->route('node-lists.index')->with($successName, __('messages.update_' . $successName, ['type' => __('models_labels.NodeList.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -107,7 +107,7 @@ class AdminNodeListsController extends Controller {
 
         $successName = $object->delete() ? 'success' : 'error';
 
-        return redirect()->route('node-lists.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'node list', 'name' => $object->name]));
+        return redirect()->route('node-lists.index')->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.NodeList.label_single'), 'name' => $object->name]));
     }
 
 

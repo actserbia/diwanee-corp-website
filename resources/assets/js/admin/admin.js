@@ -3,6 +3,7 @@ $(document).ready(function() {
     RelationsTagsParentingManager.initialize();
     RelationsManager.initialize();
     RelationsTagsParentingManager.setSelectedValues();
+    SearchManager.initialize();
     FormManager.beautifyCheckboxes();
 });
 

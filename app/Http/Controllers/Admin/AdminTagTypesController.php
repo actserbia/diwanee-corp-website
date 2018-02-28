@@ -64,7 +64,7 @@ class AdminTagTypesController extends Controller {
         $data['category'] = FieldTypeCategory::Tag;
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tag-types.index')->with($successName, __('messages.store_' . $successName, ['type' => 'tag type', 'name' => $object->name]));
+        return redirect()->route('tag-types.index')->with($successName, __('messages.store_' . $successName, ['type' => __('models_labels.TagType.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -95,7 +95,7 @@ class AdminTagTypesController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tag-types.index')->with($successName, __('messages.update_' . $successName, ['type' => 'tag type', 'name' => $object->name]));
+        return redirect()->route('tag-types.index')->with($successName, __('messages.update_' . $successName, ['type' => __('models_labels.TagType.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -109,6 +109,6 @@ class AdminTagTypesController extends Controller {
         
         $successName = $object->deleteObject() ? 'success' : 'error';
         
-        return redirect()->route('tag-types.index')->with($successName, __('messages.destroy_' . $successName, ['type' => 'tag type', 'name' => $object->name]));
+        return redirect()->route('tag-types.index')->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.TagType.label_single'), 'name' => $object->name]));
     }
 }
