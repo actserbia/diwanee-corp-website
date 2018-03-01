@@ -20,6 +20,7 @@ class CreateNodeListsTable extends Migration
             $table->unsignedInteger('order_by_field_id')->nullable();
             $table->boolean('order')->nullable();
             $table->unsignedTinyInteger('limit')->default(0);
+            $table->unsignedInteger('author_id');
 
             $table->timestamps();
             $table->softDeletes();

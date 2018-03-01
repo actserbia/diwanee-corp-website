@@ -8,14 +8,15 @@ use App\Constants\FieldTypeCategory;
 use App\Constants\NodeListRelationType;
 use App\Models\ModelParentingTagsManager;
 use App\Utils\Utils;
+use Auth;
 
 class NodeList extends AppModel {
     use SoftDeletes;
     use ModelParentingTagsManager;
     
-    protected $allAttributesFields = ['id', 'name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allAttributesFields = ['id', 'name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'author_id', 'created_at', 'updated_at', 'deleted_at'];
 
-    protected $fillable = ['name', 'node_type_id', 'order_by_field_id', 'order', 'limit'];
+    protected $fillable = ['name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'author_id'];
 
     protected $requiredFields = ['name', 'node_type', 'limit'];
     
@@ -29,12 +30,25 @@ class NodeList extends AppModel {
         'node_type:name' => true,
         'order_by_field:title' => true,
         'order' => true,
-        'limit' => true
+        'limit' => true,
+        'created_at' => true,
+        'updated_at' => true,
+        'deleted_at' => false,
+        'author_id' => false,
+        'author:name' => true,
+        'author:email' => true,
+        'author:role' => true,
+        'author:active' => false,
+        'author:api_token' => false,
+        'author:created_at' => false,
+        'author:updated_at' => false,
+        'author:deleted_at' => false
     ];
 
     protected $attributeType = [
         'node_type_id' => Models::AttributeType_Number,
         'order_by_field_id' => Models::AttributeType_Number,
+        'author_id' => Models::AttributeType_Number,
         'order' => Models::AttributeType_Enum,
         'limit' => Models::AttributeType_Number
     ];
@@ -68,6 +82,11 @@ class NodeList extends AppModel {
             'foreignKey' => 'node_list_id',
             'relationKey' => 'relation_id',
             'pivotFilters' => ['type' => [NodeListRelationType::Author]]
+        ],
+        'author' => [
+            'relationType' => 'belongsTo',
+            'model' => 'App\\User',
+            'foreignKey' => 'author_id'
         ]
     ];
     
@@ -167,11 +186,19 @@ class NodeList extends AppModel {
     }
     
     public function saveData(array $data) {
+        if(isset($data['tags'] )) {
+            foreach($data['tags'] as $tagId) {
+                $data['pivot_tags'][$tagId]['type'] = NodeListRelationType::Tag;
+            }
+        }
+        
         if(isset($data['authors'] )) {
             foreach($data['authors'] as $authorId) {
                 $data['pivot_authors'][$authorId]['type'] = NodeListRelationType::Author;
             }
         }
+        
+        $data['author'] = isset($this->id) ? $this->author->id : Auth::id();
 
         parent::saveData($data);
     }
