@@ -53,24 +53,20 @@ class AdminSearchController extends Controller {
 
     private function getFiltersView(Request $request, $modelName) {
         $params = $request->all();
+        $filterParams = FiltersUtils::prepareParams($request->all());
 
         $modelClass = 'App\\' . $modelName;
         if(isset($params['model_type'])) {
-            $model = new $modelClass(['model_type_id' => $modelTypeId]);
-            $attributes = ['model_type_id' => $modelTypeId];
+            $model = new $modelClass(['model_type_id' => $params['model_type']]);
+            $items = $model::withAll(['model_type_id' => $params['model_type']])
+                ->filterByAllParams($filterParams)
+                ->filterByModelType($params['model_type'])
+                ->get();
         } else {
             $model = new $modelClass;
-            $attributes = [];
-        }
-
-        $filterParams = FiltersUtils::prepareParams($request->all());
-        $items = $model::withAll($attributes)
-            ->filterByAllParams($filterParams);
-
-        if(isset($params['model_type'])) {
-            $items = $items->filterByModelType($params['model_type'])->get();
-        } else {
-            $items = $items->get();
+            $items = $model::withAll()
+                ->filterByAllParams($filterParams)
+                ->get();
         }
 
         return view('admin.search.' . Utils::getFormattedDBName($modelName) . 's', compact('items', 'model'));

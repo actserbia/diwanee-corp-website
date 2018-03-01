@@ -102,7 +102,7 @@ class NodeList extends AppModel {
     protected static $modelTypeField = 'node_type_id';
     
     public function populateData($attributes = null) {
-        $this->defaultFieldsValues['order_by_field'] = '2';
+        $this->defaultFieldsValues['order_by_field'] = config('app')['default_list_order_by_field_id'];
         
         if(isset($this->id) || isset($attributes['model_type_id'])) {
             $this->modelType = isset($this->id) ? $this->node_type : NodeType::find($attributes['model_type_id']);
