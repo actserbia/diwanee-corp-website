@@ -35,7 +35,7 @@ class SingleRelationManager extends RelationManager {
         $this->relationData = [];
         
         if(isset($data[$this->relation])) {
-            $this->relationData = $data[$this->relation];
+            $this->relationData[$data[$this->relation][0]] = [];
             foreach($data as $key => $value) {
                 if(strpos($key, 'pivot_' . $this->relation) === 0) {
                     $this->relationData = $value;

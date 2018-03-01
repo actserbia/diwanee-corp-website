@@ -140,7 +140,7 @@ trait ModelFormManager {
             } else {
                 return ($this->defaultAttributeValue($relation) == $item->id);
             }
-        } elseif(!$this->hasMultipleValues($relation, $level)) {
+        } elseif(!$this->hasMultipleValues($relation, $level) && isset($this->$relation)) {
             foreach($this->$relation as $relationItem) {
                 if($relationItem->id === $item->id) {
                     return true;
