@@ -40,7 +40,7 @@ class NodesType extends GraphQLType {
         $nodeTypeNames = NodeType::pluck('name');
         foreach($nodeTypeNames as $nodeTypeName) {
             $fields['additional_fields_from_' . Utils::getFormattedDBName($nodeTypeName)] = [
-                'type' => GraphQL::type(ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($nodeTypeName)),
+                'type' => GraphQL::type(ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($nodeTypeName, ' ')),
                 'description' => 'Dinamic generated data'
             ];
         }

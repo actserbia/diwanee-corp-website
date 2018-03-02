@@ -6,15 +6,16 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Rebing\GraphQL\Support\SelectFields;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Facades\GraphQL;
+use App\GraphQL\Type\Scalar\Timestamp;
 
-class NodesNmQuery extends Query {
+class NmNodesQuery extends Query {
     protected $name = '';
-    
+
     protected $args = [];
-    
+
     public function __construct($attributes = array()) {
         parent::__construct($attributes);
-        
+
         $this->attributes['name'] = $this->name . 'sQuery';
         $this->attributes['description'] = 'A query';
     }
@@ -34,25 +35,24 @@ class NodesNmQuery extends Query {
                 'name' => 'node_id'
             ]
         ];
-        
+
         foreach($this->args as $argName => $argType) {
             $args[$argName] = [
-                'type' => Type::$argType(),
+                'type' => ($argType === 'date') ? Timestamp::type() : Type::$argType(),
                 'name' => $argName
             ];
         }
-        
+
         return $args;
     }
 
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info) {
-
         $where = function ($query) use ($args) {
             foreach($args as $key=>$arg) {
                 $query->where($key, $arg);
             }
         };
-        
+
         $items = null;
         if($this->name !== '') {
             $model = 'App\\NodeModel\\' . $this->name;
@@ -61,7 +61,7 @@ class NodesNmQuery extends Query {
                 ->select(array_merge($fields->getSelect()))
                 ->paginate();
         }
-        
+
         return $items;
     }
 }

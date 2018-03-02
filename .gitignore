@@ -99,4 +99,5 @@ public/mix-manifest.json
 composer.lock
 
 app/NodeModel
-app/GraphQL/Nm*.php
+app/GraphQL/Type/NodeModel
+app/GraphQL/Query/NodeModel

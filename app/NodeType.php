@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
 use App\Models\Node\NodeModelDBGenerator;
-use App\Models\Node\NodeModelClassGenerator;
+use App\Models\Node\ClassGenerator\ClassGenerator;
 use App\Constants\Settings;
 use App\Utils\Utils;
 
@@ -87,8 +87,7 @@ class NodeType extends AppModel {
         $dbGenerator = new NodeModelDBGenerator($this, $oldAdditionalDataTableName);
         $dbGenerator->generate();
 
-        $classGenerator = new NodeModelClassGenerator($this, $oldName);
-        $classGenerator->generate();
+        ClassGenerator::generateAllFilesForNodeType($this, $oldName);
     }
 
     public function getSTFieldsArray() {

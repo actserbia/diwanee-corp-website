@@ -6,6 +6,8 @@ use example\Query\ExampleQuery;
 use example\Type\ExampleRelationType;
 use example\Type\ExampleType;
 
+use App\GraphQL\GraphQLUtils;
+
 return [
 
     // The prefix for routes
@@ -89,60 +91,7 @@ return [
     //      ],
     //  ]
     //
-    'schemas' => [
-//        'default' => [
-//            'query' => [
-//                'example_query' => ExampleQuery::class,
-//            ],
-//            'mutation' => [
-//                'example_mutation'  => ExampleMutation::class,
-//            ],
-//            'middleware' => []
-//        ],
-        'user' => [
-            'query' => [
-                'users' => App\GraphQL\Query\UsersQuery::class,
-            ],
-            'mutation' => [],
-            // 'middleware' => ['auth'],
-        ],
-        'tag' => [
-            'query' => [
-                'tags' => App\GraphQL\Query\TagsQuery::class
-            ],
-            'mutation' => []
-        ],
-        'nodelist' => [
-            'query' => [
-                'node_lists' => App\GraphQL\Query\NodeListsQuery::class,
-            ],
-            'mutation' => []
-        ],
-        'node' => [
-            'query' => [
-                'nodes' => App\GraphQL\Query\NodesQuery::class,
-            ],
-            'mutation' => []
-        ],
-        'nmnode' => [
-            'query' => [
-                'nodes' => App\GraphQL\Query\NodesNmQuery::class,
-            ],
-            'mutation' => []
-        ],
-        'nmarticle' => [
-            'query' => [
-                'nodes' => App\GraphQL\Query\NmArticlesQuery::class,
-            ],
-            'mutation' => []
-        ],
-        'nmrecipe' => [
-            'query' => [
-                'nodes' => App\GraphQL\Query\NmRecipesQuery::class,
-            ],
-            'mutation' => []
-        ]
-    ],
+    'schemas' => GraphQLUtils::getSchemas(),
     
     // The types available in the application. You can then access it from the
     // facade like this: GraphQL::type('user')
@@ -153,15 +102,7 @@ return [
     //     'user' => 'App\GraphQL\Type\UserType'
     // ]
     //
-    'types' => [
-        'User' => App\GraphQL\Type\UsersType::class,
-        'Tag' => App\GraphQL\Type\TagsType::class,
-        'NodeList' => App\GraphQL\Type\NodeListsType::class,
-        'Node' => App\GraphQL\Type\NodesType::class,
-        'NmNode' => App\GraphQL\Type\NodesNmType::class,
-        'NmArticle' => App\GraphQL\Type\NmArticlesType::class,
-        'NmRecipe' => App\GraphQL\Type\NmRecipesType::class
-    ],
+    'types' => GraphQLUtils::getTypes(),
     
     // This callable will be passed the Error object for each errors GraphQL catch.
     // The method should return an array representing the error.

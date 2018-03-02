@@ -6,7 +6,7 @@ use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
 use App\Constants\Settings;
 use App\Utils\Utils;
-use App\Models\Node\NodeModelClassGenerator;
+use App\Models\Node\ClassGenerator\ClassGenerator;
 use App\Models\Node\NodeModelDBGenerator;
 use App\Tag;
 
@@ -71,7 +71,7 @@ class Field extends AppModel {
 
         if(!empty($oldTitle) && $oldTitle !== $this->title) {
             NodeModelDBGenerator::changeFieldNameInAllNodeTables($oldTitle, $this->formattedTitle);
-            NodeModelClassGenerator::generateAll();
+            ClassGenerator::generateAllFiles();
         }
     }
     

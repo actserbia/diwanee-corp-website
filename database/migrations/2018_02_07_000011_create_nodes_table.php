@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Constants\NodeStatus;
-use App\Models\Node\NodeModelClassGenerator;
+use App\Models\Node\ClassGenerator\ClassGenerator;
 use App\Models\Node\NodeModelDBGenerator;
 
 class CreateNodesTable extends Migration
@@ -37,7 +37,7 @@ class CreateNodesTable extends Migration
      * @return void
      */
     public function down() {
-        NodeModelClassGenerator::deleteAll();
+        ClassGenerator::deleteAllGeneratedFiles();
         NodeModelDBGenerator::deleteAll();
         
         Schema::dropIfExists('nodes');
