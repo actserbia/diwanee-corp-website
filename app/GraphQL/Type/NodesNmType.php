@@ -3,6 +3,7 @@ namespace App\GraphQL\Type;
 
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use App\Utils\Utils;
 
 class NodesNmType extends GraphQLType {
     protected $modelName = '';
@@ -30,8 +31,8 @@ class NodesNmType extends GraphQLType {
         foreach($this->fields as $fieldName => $fieldSettings) {
             $type = $fieldSettings['type'];
             $fields[$fieldName] = [
-                'type' => $fieldSettings['required'] ? Type::nonNull(Type::$type()) : Type::$type(),
-                'description' => $fieldSettings['description']
+                'type' => (isset($fieldSettings['required']) && $fieldSettings['required']) ? Type::nonNull(Type::$type()) : Type::$type(),
+                'description' => Utils::getFormattedName($fieldName)
             ];
         }
         return $fields;

@@ -1,8 +1,6 @@
 <?php
 namespace App\GraphQL\Query;
 
-use App\Node;
-
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
 use Rebing\GraphQL\Support\SelectFields;
