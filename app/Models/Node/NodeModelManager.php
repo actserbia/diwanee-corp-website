@@ -31,7 +31,7 @@ trait NodeModelManager {
     }
 
     private function populateAttributesFieldsData() {
-        $this->relationsSettings['additional_data'] = [
+        $this->relationsSettings['additional_fields'] = [
             'relationType' => 'hasOne',
             'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($this->modelType->name, ' '),
             'foreignKey' => 'node_id',
@@ -67,8 +67,8 @@ trait NodeModelManager {
     protected function getAutomaticRenderAtributes() {
         $fields = parent::getAutomaticRenderAtributes();
 
-        if(isset($this->relationsSettings['additional_data'])) {
-            $model = new $this->relationsSettings['additional_data']['model'];
+        if(isset($this->relationsSettings['additional_fields'])) {
+            $model = new $this->relationsSettings['additional_fields']['model'];
             foreach($model->getFillableAttributes() as $field) {
                 if(strpos($field, '_id') === false) {
                     $fields[] = $field;
@@ -82,8 +82,8 @@ trait NodeModelManager {
     protected function getAllAttributes() {
         $attributes = parent::getAllAttributes();
         
-        if(isset($this->relationsSettings['additional_data'])) {
-            $model = new $this->relationsSettings['additional_data']['model'];
+        if(isset($this->relationsSettings['additional_fields'])) {
+            $model = new $this->relationsSettings['additional_fields']['model'];
             $attributes = array_merge($attributes, $model->getAllAttributes());
         }
         
@@ -93,8 +93,8 @@ trait NodeModelManager {
     public function getRequiredAttributes() {
         $requiredFields = parent::getRequiredAttributes();
         
-        if(isset($this->relationsSettings['additional_data'])) {
-            $model = new $this->relationsSettings['additional_data']['model'];
+        if(isset($this->relationsSettings['additional_fields'])) {
+            $model = new $this->relationsSettings['additional_fields']['model'];
             $requiredFields = array_merge($requiredFields, $model->getRequiredAttributes());
         }
 
@@ -104,8 +104,8 @@ trait NodeModelManager {
     public function getAllAttributesTypes() {
         $attributesTypes = parent::getAllAttributesTypes();
         
-        if(isset($this->relationsSettings['additional_data'])) {
-            $model = new $this->relationsSettings['additional_data']['model'];
+        if(isset($this->relationsSettings['additional_fields'])) {
+            $model = new $this->relationsSettings['additional_fields']['model'];
             $attributesTypes = array_merge($attributesTypes, $model->getAllAttributesTypes());
         }
         
@@ -113,9 +113,9 @@ trait NodeModelManager {
     }
 
     public function attributeValue($field) {
-        if(isset($this->additional_data)) {
-            if($this->additional_data->attributeValue($field) !== null) {
-                return $this->additional_data->attributeValue($field);
+        if(isset($this->additional_fields)) {
+            if($this->additional_fields->attributeValue($field) !== null) {
+                return $this->additional_fields->attributeValue($field);
             }
         }
 

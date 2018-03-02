@@ -171,10 +171,10 @@ class Node extends AppModel {
     
     protected function getFilterFields() {
         $fields = [];
-        if(isset($this->relationsSettings['additional_data'])) {
-            $relationFields = $this->getRelationModel('additional_data')->getFilterFields();
+        if(isset($this->relationsSettings['additional_fields'])) {
+            $relationFields = $this->getRelationModel('additional_fields')->getFilterFields();
             foreach($relationFields as $relationField => $visibility) {
-                $fields['additional_data' . ':' . $relationField] = $visibility;
+                $fields['additional_fields' . ':' . $relationField] = $visibility;
             }
             
             foreach(array_keys($this->relationsSettings) as $relation) {
@@ -190,7 +190,7 @@ class Node extends AppModel {
     
     protected function getStatisticFields() {
         $fields = [];
-        if(isset($this->relationsSettings['additional_data'])) {
+        if(isset($this->relationsSettings['additional_fields'])) {
             foreach(array_keys($this->relationsSettings) as $relation) {
                 if($this->checkRelationType($relation, ['App\\Node'], 'tags')) {
                     $fields[] = $relation . ':name';

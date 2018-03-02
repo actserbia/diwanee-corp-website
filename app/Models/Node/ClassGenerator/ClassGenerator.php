@@ -83,7 +83,7 @@ abstract class ClassGenerator {
     }
 
     private function getValue($value) {
-        return is_string($value) ? '\'' . addslashes($value) . '\'' : $value;
+        return (is_string($value) && strpos($value, '::') === false) ? '\'' . addslashes($value) . '\'' : $value;
     }
 
     public static function generateAll() {
