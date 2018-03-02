@@ -9,6 +9,8 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Rebing\GraphQL\Support\SelectFields;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Facades\GraphQL;
+use App\GraphQL\Type\Scalar\Timestamp;
+
 
 class TagsQuery extends Query
 {
@@ -36,6 +38,10 @@ class TagsQuery extends Query
             'type' => [
                 'type' => Type::string(),
                 'name' => 'type'
+            ],
+            'created_at' => [
+                'type' => Timestamp::type(),
+                'name' => 'created_at'
             ]
         ];
     }

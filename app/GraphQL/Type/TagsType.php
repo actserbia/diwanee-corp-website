@@ -3,6 +3,7 @@
 namespace App\GraphQL\Type;
 
 use App\Tag;
+use App\GraphQL\Type\Scalar\Timestamp;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
@@ -25,6 +26,10 @@ class TagsType extends GraphQLType
             'name' => [
                 'type' => Type::string(),
                 'description' => 'title'
+            ],
+            'created_at' => [
+                'type' => Timestamp::type(),
+                'description' => 'created'
             ],
 //            'tag_type' => [
 //                'type' => GraphQL::type('TagType'),
