@@ -2,6 +2,7 @@
 namespace App\GraphQL\Type;
 
 use App\Node;
+use App\GraphQL\Type\Scalar\Timestamp;
 use App\NodeType;
 use App\Constants\Settings;
 use App\Utils\Utils;
@@ -29,6 +30,10 @@ class NodesType extends GraphQLType {
             'author' => [
                 'type' => GraphQL::type('User'),
                 'description' => 'Author'
+            ],
+            'created_at' => [
+                'type' => Timestamp::type(),
+                'name' => 'created_at'
             ]
         ];
         

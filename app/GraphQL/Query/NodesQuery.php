@@ -5,6 +5,7 @@ use App\Node;
 
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
+use App\GraphQL\Type\Scalar\Timestamp;
 use Rebing\GraphQL\Support\SelectFields;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -35,6 +36,10 @@ class NodesQuery extends Query {
             'node_type_id' => [
                 'type' => Type::int(),
                 'name' => 'node_type_id'
+            ],
+            'created_at' => [
+                'type' => Timestamp::type(),
+                'name' => 'created_at'
             ]
         ];
         

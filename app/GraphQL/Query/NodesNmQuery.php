@@ -32,7 +32,7 @@ class NodesNmQuery extends Query {
                 'name' => 'id'
             ],
             'node_id' => [
-                'type' => Type::string(),
+                'type' => Type::int(),
                 'name' => 'node_id'
             ]
         ];
