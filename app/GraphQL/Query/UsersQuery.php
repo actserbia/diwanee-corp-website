@@ -43,11 +43,8 @@ class UsersQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         $where = function ($query) use ($args) {
-            if (isset($args['id'])) {
-                $query->where('id',$args['id']);
-            }
-            if (isset($args['email'])) {
-                $query->where('email',$args['email']);
+            foreach($args as $key=>$arg) {
+                $query->where($key, $arg);
             }
         };
         $user = User::with(array_keys($fields->getRelations()))

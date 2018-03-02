@@ -30,8 +30,8 @@ class NodeListsQuery extends Query
     public function resolve($root, $args, SelectFields $fields)
     {
         $where = function ($query) use ($args) {
-            if (isset($args['id'])) {
-                $query->where('id',$args['id']);
+            foreach($args as $key=>$arg) {
+                $query->where($key, $arg);
             }
         };
         

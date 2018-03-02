@@ -55,12 +55,8 @@ class NodesQuery extends Query {
 
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info) {
         $where = function ($query) use ($args) {
-            if (isset($args['id'])) {
-                $query->where('id', $args['id']);
-            }
-            
-            if (isset($args['node_type_id'])) {
-                $query->where('node_type_id', $args['node_type_id']);
+            foreach($args as $key=>$arg) {
+                $query->where($key, $arg);
             }
         };
         

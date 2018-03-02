@@ -53,10 +53,11 @@ class TagsQuery extends Query
 
 
         $where = function ($query) use ($args) {
-            if (isset($args['id'])) {
-                $query->where('id',$args['id']);
+            foreach($args as $key=>$arg) {
+                $query->where($key, $arg);
             }
         };
+
         $tags = Tag::with(array_keys($fields->getRelations()))
             ->where($where)
             ->select($fields->getSelect())
