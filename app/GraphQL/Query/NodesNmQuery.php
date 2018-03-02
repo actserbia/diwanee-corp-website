@@ -9,7 +9,7 @@ use Rebing\GraphQL\Support\SelectFields;
 use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
-class NmNodesQuery extends Query {
+class NodesNmQuery extends Query {
     protected $name = '';
     
     protected $args = [];

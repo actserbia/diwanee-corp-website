@@ -126,19 +126,7 @@ return [
         ],
         'nmnode' => [
             'query' => [
-                'nodes' => App\GraphQL\Query\NmNodesQuery::class,
-            ],
-            'mutation' => []
-        ],
-        'nmarticle' => [
-            'query' => [
-                'articles' => App\GraphQL\Query\NmArticlesQuery::class,
-            ],
-            'mutation' => []
-        ],
-        'nmrecipe' => [
-            'query' => [
-                'recipes' => App\GraphQL\Query\NmRecipesQuery::class,
+                'nodes' => App\GraphQL\Query\NodesNmQuery::class,
             ],
             'mutation' => []
         ]
@@ -158,9 +146,7 @@ return [
         'Tag' => App\GraphQL\Type\TagsType::class,
         'NodeList' => App\GraphQL\Type\NodeListsType::class,
         'Node' => App\GraphQL\Type\NodesType::class,
-        'NmNode' => App\GraphQL\Type\NmNodesType::class,
-        'NmArticle' => App\GraphQL\Type\NmArticlesType::class,
-        'NmRecipe' => App\GraphQL\Type\NmRecipesType::class
+        'NmNode' => App\GraphQL\Type\NodesNmType::class
     ],
     
     // This callable will be passed the Error object for each errors GraphQL catch.

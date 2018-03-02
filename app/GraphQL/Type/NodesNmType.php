@@ -1,11 +1,10 @@
 <?php
 namespace App\GraphQL\Type;
 
-use App\Node;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class NmNodesType extends GraphQLType {
+class NodesNmType extends GraphQLType {
     protected $modelName = '';
     
     protected $fields = [];
