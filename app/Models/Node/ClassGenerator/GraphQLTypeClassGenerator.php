@@ -13,7 +13,7 @@ class GraphQLTypeClassGenerator extends ClassGenerator {
     protected $fields = [];
 
     protected function getClassFilename($modelName) {
-        return app_path() . '/' . $this->folder . '/' . $this->getModelClassName($modelName) . 'sType.php';
+        return app_path() . '/' . $this->folder . '/' . $this->getModelClassName($modelName) . Settings::GraphQLTypeSufix . '.php';
     }
 
     protected function populateData() {
@@ -34,8 +34,8 @@ class GraphQLTypeClassGenerator extends ClassGenerator {
     protected function populateContent() {
         $this->content = '<?php' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'namespace App\\GraphQL\\Type\\NodeModel;' . PHP_EOL . PHP_EOL;
-        $this->content .= str_repeat(' ', 4) . 'use App\\GraphQL\\Type\\' . ucfirst(Settings::NodeModelPrefix) . 'NodesType;' . PHP_EOL . PHP_EOL;
-        $this->content .= str_repeat(' ', 4) . 'class ' . $this->getModelClassName($this->model->name) . 'sType extends ' . ucfirst(Settings::NodeModelPrefix) . 'NodesType {' . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'use App\\GraphQL\\Type\\' . ucfirst(Settings::NodeModelPrefix) . 'Node' . Settings::GraphQLTypeSufix . ';' . PHP_EOL . PHP_EOL;
+        $this->content .= str_repeat(' ', 4) . 'class ' . $this->getModelClassName($this->model->name) . Settings::GraphQLTypeSufix . ' extends ' . ucfirst(Settings::NodeModelPrefix) . 'Node' . Settings::GraphQLTypeSufix . ' {' . PHP_EOL;
         $this->content .= str_repeat(' ', 8) . 'protected $modelName = \'' . $this->modelName . '\';' . PHP_EOL;
         $this->addFormattedListWithKeys('fields');
         $this->content .= str_repeat(' ', 4) . '}' . PHP_EOL;
