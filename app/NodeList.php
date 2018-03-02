@@ -87,12 +87,21 @@ class NodeList extends AppModel {
             'relationType' => 'belongsTo',
             'model' => 'App\\User',
             'foreignKey' => 'author_id'
+        ],
+      
+        'list_items' => [
+            'relationType' => 'belongsToMany',
+            'model' => 'App\\Node',
+            'pivot' => 'node_list_relation',
+            'foreignKey' => 'node_list_id',
+            'relationKey' => 'relation_id'
         ]
     ];
     
     protected $multipleFields = [
         'tags' => true,
-        'authors' => true
+        'authors' => true,
+        'list_items' => true
     ];
     
     protected $dependsOn = [

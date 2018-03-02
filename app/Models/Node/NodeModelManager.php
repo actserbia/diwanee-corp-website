@@ -7,6 +7,20 @@ use App\NodeType;
 use App\Constants\FieldTypeCategory;
 
 trait NodeModelManager {
+    public function __call($method, $parameters) {
+        if(strpos($method, 'additional_fields_from_') !== false && !$this->isRelation($method)) {
+            $nodeTypeName = Utils::getFormattedName(str_replace('additional_fields_from_', '', $method));
+            $this->relationsSettings[$method] = [
+                'relationType' => 'hasOne',
+                'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . $nodeTypeName,
+                'foreignKey' => 'node_id',
+                'relationKey' => 'id'
+            ];
+        }
+        
+        return parent::__call($method, $parameters);
+    }
+    
     public function populateData($attributes = null) {
         if(isset($this->id) || isset($attributes['model_type_id'])) {
             $this->modelType = isset($this->id) ? $this->model_type : NodeType::find($attributes['model_type_id']);
