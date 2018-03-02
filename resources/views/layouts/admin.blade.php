@@ -100,8 +100,9 @@
                                     </li>
                                     <li><a ><i class="fa  fa fa-columns"></i> @lang('blade_templates.admin.sidebar.graphiql') <span class="fa fa-chevron-down"></span> </a>
                                         <ul class="nav child_menu">
-                                            <li><a href="/{{ config('graphiql.routes.ui') }}?type=user">@lang('blade_templates.admin.sidebar.users')</a></li>
+                                            <li><a href="/{{ config('graphiql.routes.ui') }}?type=node">@lang('blade_templates.admin.sidebar.nodes')</a></li>
                                             <li><a href="/{{ config('graphiql.routes.ui') }}?type=tag">@lang('blade_templates.admin.sidebar.tags')</a></li>
+                                            <li><a href="/{{ config('graphiql.routes.ui') }}?type=user">@lang('blade_templates.admin.sidebar.users')</a></li>
                                         </ul>
                                     </li>
                                 @endif
