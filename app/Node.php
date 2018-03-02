@@ -82,7 +82,8 @@ class Node extends AppModel {
             'foreignKey' => 'node_id',
             'relationKey' => 'tag_id',
             'sortBy' => 'ordinal_number',
-            'automaticSave' => false
+            'automaticSave' => false,
+            'parenting' => true
         ],
         'elements' => [
             'relationType' => 'belongsToMany',
@@ -178,7 +179,7 @@ class Node extends AppModel {
             }
             
             foreach(array_keys($this->relationsSettings) as $relation) {
-                if($this->checkRelationType($relation, ['App\\Node'], 'tags')) {
+                if($this->checkRelationType($relation, 'tags')) {
                     $fields[$relation . ':name'] = true;
                 }
             }
@@ -192,7 +193,7 @@ class Node extends AppModel {
         $fields = [];
         if(isset($this->relationsSettings['additional_fields'])) {
             foreach(array_keys($this->relationsSettings) as $relation) {
-                if($this->checkRelationType($relation, ['App\\Node'], 'tags')) {
+                if($this->checkRelationType($relation, 'tags')) {
                     $fields[] = $relation . ':name';
                 }
             }

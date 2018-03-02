@@ -48,8 +48,13 @@ trait ModelRelationsManager {
         return isset($this->relationsSettings[$field]);
     }
     
-    public function checkRelationType($field, $mainModelNames, $relationName) {
-        if(in_array($this->modelClass, $mainModelNames) && $this->isRelation($field)) {
+    public function isParentingRelation($relation) {
+        $relationsSettings = $this->getRelationSettings($relation);
+        return (isset($relationsSettings['parenting']) && $relationsSettings['parenting']);
+    }
+    
+    public function checkRelationType($field, $relationName) {
+        if($this->isRelation($field)) {
             if($field === $relationName) {
                 return true;
             }

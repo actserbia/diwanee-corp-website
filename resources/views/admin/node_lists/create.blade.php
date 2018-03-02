@@ -21,7 +21,7 @@
                         
                         <div id="node-list-tags"></div>
                         
-                        @include('blocks.model', ['field' => 'authors'])
+                        @include('blocks.model', ['field' => 'filter_authors'])
 
                         @include('blocks.model', ['field' => 'order_by_field'])
                         

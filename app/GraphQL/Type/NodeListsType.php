@@ -11,7 +11,7 @@ class NodeListsType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'NodeLists',
-        'description' => 'A type',
+        'description' => 'Node Lists',
         'model' => NodeList::class
     ];
 
@@ -31,7 +31,7 @@ class NodeListsType extends GraphQLType
                 'type' => Type::listOf(GraphQL::type('Tag')),
                 'description' => 'Filter Tags'
             ],
-            'authors' => [
+            'filter_authors' => [
                 'type' => Type::listOf(GraphQL::type('User')),
                 'description' => 'Filter Authors'
             ],

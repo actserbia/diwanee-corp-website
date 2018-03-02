@@ -67,15 +67,16 @@ class NodeList extends AppModel {
             'foreignKey' => 'order_by_field_id',
             'filters' => ['field_type.category' => [FieldTypeCategory::GlobalAttribute, FieldTypeCategory::Attribute]]
         ],
-        'tags' => [
+        'filter_tags' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Tag',
             'pivot' => 'node_list_relation',
             'foreignKey' => 'node_list_id',
             'relationKey' => 'relation_id',
-            'pivotFilters' => ['type' => [NodeListRelationType::Tag]]
+            'pivotFilters' => ['type' => [NodeListRelationType::Tag]],
+            'parenting' => true
         ],
-        'authors' => [
+        'filter_authors' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\User',
             'pivot' => 'node_list_relation',
@@ -99,8 +100,8 @@ class NodeList extends AppModel {
     ];
     
     protected $multipleFields = [
-        'tags' => true,
-        'authors' => true,
+        'filter_tags' => true,
+        'filter_authors' => true,
         'list_items' => true
     ];
     
@@ -129,7 +130,7 @@ class NodeList extends AppModel {
     private function populateTagFieldData($tagField) {
         if($tagField->pivot->active) {
             $relationSettings = [
-                'parent' => 'tags',
+                'parent' => 'filter_tags',
                 'filters' => ['tag_type_id' => [$tagField->field_type_id]],
                 'automaticRender' => true,
                 'automaticSave' => true
@@ -157,12 +158,12 @@ class NodeList extends AppModel {
         $additionalDataTable = $this->node_type->additionalDataTableName;
         $items = Node::join($this->node_type->additionalDataTableName, 'nodes.id', '=', $additionalDataTable . '.node_id')->where('node_type_id', '=', $this->node_type->id);
         
-        if(count($this->tags) > 0) {
+        if(count($this->filter_tags) > 0) {
             $items = $this->addFilterByTagsToitemsQuery($items);
         }
         
-        if(count($this->authors) > 0) {
-            $items = $items->whereIn('author_id', Utils::getItemsIds($this->authors));
+        if(count($this->filter_authors) > 0) {
+            $items = $items->whereIn('author_id', Utils::getItemsIds($this->filter_authors));
         }
         
         if(isset($this->order_by_field->id)) {
@@ -178,8 +179,8 @@ class NodeList extends AppModel {
     
     private function addFilterByTagsToitemsQuery($items) {
         $filterTagIds = [];
-        $tagIds = Utils::getItemsIds($this->tags);
-        foreach($this->tags as $tag) {
+        $tagIds = Utils::getItemsIds($this->filter_tags);
+        foreach($this->filter_tags as $tag) {
             if(empty(array_intersect(Utils::getItemsIds($tag->children), $tagIds))) {
                 $filterTagIds[] = $tag->id;
             }
@@ -195,15 +196,15 @@ class NodeList extends AppModel {
     }
     
     public function saveData(array $data) {
-        if(isset($data['tags'] )) {
-            foreach($data['tags'] as $tagId) {
-                $data['pivot_tags'][$tagId]['type'] = NodeListRelationType::Tag;
+        if(isset($data['filter_tags'] )) {
+            foreach($data['filter_tags'] as $tagId) {
+                $data['pivot_filter_tags'][$tagId]['type'] = NodeListRelationType::Tag;
             }
         }
         
-        if(isset($data['authors'] )) {
-            foreach($data['authors'] as $authorId) {
-                $data['pivot_authors'][$authorId]['type'] = NodeListRelationType::Author;
+        if(isset($data['filter_authors'] )) {
+            foreach($data['filter_authors'] as $authorId) {
+                $data['pivot_filter_authors'][$authorId]['type'] = NodeListRelationType::Author;
             }
         }
         
