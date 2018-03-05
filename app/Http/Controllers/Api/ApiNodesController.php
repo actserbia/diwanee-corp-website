@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
 use App\Node;
+use App\Constants\NodeStatus;
+
 use Auth;
 
 
@@ -23,7 +23,10 @@ class ApiNodesController extends Controller
 
     public function typeahead($type_id) {
 
-        $nodes = Node::select('id','title as name')->where('node_type_id', '=', $type_id)->get();
+        $nodes = Node::select('id','title as name')
+            ->where('node_type_id', '=', $type_id)
+            ->whereIn('status', NodeStatus::activeStatuses)
+            ->get();
         $results = array();
         foreach($nodes->toArray() as $arrNode) {
             $results[] = array_map('strval', $arrNode );
