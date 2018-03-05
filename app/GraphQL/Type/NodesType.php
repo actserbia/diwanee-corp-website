@@ -2,6 +2,9 @@
 namespace App\GraphQL\Type;
 
 use App\Node;
+use App\NodeType;
+use App\Utils\Utils;
+use App\Constants\Settings;
 use App\GraphQL\Type\Scalar\Timestamp;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;

@@ -11,7 +11,6 @@ use Rebing\GraphQL\Support\Facades\GraphQL;
 
 class NodesQuery extends Query {
     protected $name = 'Node';
-    protected $nodeTypeId = null;
     
     protected $args = [];
     
