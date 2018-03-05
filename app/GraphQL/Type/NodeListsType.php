@@ -6,6 +6,7 @@ use App\NodeList;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
+use App\GraphQL\Type\Scalar\Timestamp;
 
 class NodeListsType extends GraphQLType
 {
@@ -47,6 +48,11 @@ class NodeListsType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'Order'
             ],
+            'created_at' => [
+                'type' => Timestamp::type(),
+                'name' => 'created_at'
+            ],
+
             'list_items' => [
                 'type' => Type::listOf(GraphQL::type('Node')),
                 'description' => 'List Items'

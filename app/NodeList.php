@@ -88,21 +88,12 @@ class NodeList extends AppModel {
             'relationType' => 'belongsTo',
             'model' => 'App\\User',
             'foreignKey' => 'author_id'
-        ],
-      
-        'list_items' => [
-            'relationType' => 'belongsToMany',
-            'model' => 'App\\Node',
-            'pivot' => 'node_list_relation',
-            'foreignKey' => 'node_list_id',
-            'relationKey' => 'relation_id'
         ]
     ];
     
     protected $multipleFields = [
         'filter_tags' => true,
-        'filter_authors' => true,
-        'list_items' => true
+        'filter_authors' => true
     ];
     
     protected $dependsOn = [
@@ -211,5 +202,24 @@ class NodeList extends AppModel {
         $data['author'] = isset($this->id) ? $this->author->id : Auth::id();
 
         parent::saveData($data);
+    }
+
+
+
+    public function __call($method, $parameters) {
+        // This is added because of GraphQl
+        if($method === 'list_items' && !$this->isRelation($method)) {
+            $this->relationsSettings[$method] = [
+                'relationType' => 'belongsToMany',
+                'model' => 'App\\Node',
+                'pivot' => 'node_list_relation',
+                'foreignKey' => 'node_list_id',
+                'relationKey' => 'relation_id'
+            ];
+
+            $this->multipleFields['list_items'] = true;
+        }
+
+        return parent::__call($method, $parameters);
     }
 }

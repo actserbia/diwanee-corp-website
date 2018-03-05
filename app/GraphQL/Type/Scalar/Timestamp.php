@@ -50,6 +50,6 @@ class Timestamp extends IntType
         if (is_int($value)) {
             return $value;
         }
-        return (new Carbon($value))->getTimestamp();
+        return (new Carbon($value, 'Europe/Belgrade'))->getTimestamp();
     }
 }

@@ -24,21 +24,36 @@ class NodeListsQuery extends Query
             'id' => [
                 'name' => 'id',
                 'type' => Type::int()
+            ],
+            'created_at' => [
+                'type' => Type::string(),
+                'name' => 'created_at'
             ]
         ];
     }
-    public function resolve($root, $args, SelectFields $fields)
-    {
+    public function resolve($root, $args, SelectFields $fields) {
         $where = function ($query) use ($args) {
-            foreach($args as $key=>$arg) {
+            foreach($args as $key => $arg) {
                 $query->where($key, $arg);
             }
         };
         
-        $lists = NodeList::with(array_keys($fields->getRelations()))
-            ->where($where)
-            ->select($fields->getSelect())
-            ->paginate();
+        $relations = array_keys($fields->getRelations());
+        if(in_array('list_items', $relations)) {
+            $lists = NodeList::with($relations)
+                ->where($where)
+                ->paginate();
+
+            foreach($lists as $list) {
+                $list->list_items = $list->items;
+            }
+        } else {
+            $lists = NodeList::with($relations)
+                ->where($where)
+                ->select($fields->getSelect())
+                ->paginate();
+        }
+
         return $lists;
     }
 }
