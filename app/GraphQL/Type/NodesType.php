@@ -32,11 +32,11 @@ class NodesType extends GraphQLType {
                 'description' => 'Author'
             ],
             'tags' => [
-                'type' => GraphQL::type('Tag'),
+                'type' => Type::listOf(GraphQL::type('Tag')),
                 'description' => 'tags'
             ],
             'elements' => [
-                'type' => GraphQL::type('Element'),
+                'type' => Type::listOf(GraphQL::type('Element')),
                 'description' => 'Elements'
             ],
             'created_at' => [
