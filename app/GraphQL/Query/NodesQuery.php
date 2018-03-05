@@ -1,16 +1,14 @@
 <?php
 namespace App\GraphQL\Query;
 
-use App\Node;
-
 use GraphQL\Type\Definition\Type;
-use GraphQL\Type\Definition\ResolveInfo;
-use Rebing\GraphQL\Support\SelectFields;
-use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Facades\GraphQL;
+use Rebing\GraphQL\Support\SelectFields;
 
-class NodesQuery extends Query {
-    protected $name = 'Node';
+use App\NodeType;
+
+class NodesQuery extends AppQuery {
+    protected $modelName = 'App\\Node';
     
     protected $args = [];
     
@@ -22,18 +20,22 @@ class NodesQuery extends Query {
     }
 
     public function type() {
-        return Type::listOf(GraphQL::type($this->name));
+        return Type::listOf(GraphQL::type('Node'));
     }
 
     public function args() {
         $args = [
             'id' => [
-                'type' => Type::int(),
-                'name' => 'id'
+                'name' => 'id',
+                'type' => Type::listOf(Type::int())
             ],
             'node_type_id' => [
-                'type' => Type::int(),
+                'type' => Type::listOf(Type::int()),
                 'name' => 'node_type_id'
+            ],
+            'node_type' => [
+                'type' => Type::string(),
+                'name' => 'node_type'
             ],
             'created_at' => [
                 'type' => Type::string(),
@@ -50,18 +52,14 @@ class NodesQuery extends Query {
         
         return $args;
     }
+    
+    public function resolve($root, $args, SelectFields $fields) {
+        if(array_key_exists('node_type', $args)) {
+            $nodeType = NodeType::where('name', $args['node_type'])->first();
+            $args['node_type_id'] = [$nodeType->id];
+            unset($args['node_type']);
+        }
 
-    public function resolve($root, $args, SelectFields $fields, ResolveInfo $info) {
-        $where = function ($query) use ($args) {
-            foreach($args as $key=>$arg) {
-                $query->where($key, $arg);
-            }
-        };
-        
-        $items = Node::with(array_keys($fields->getRelations()))->where($where)
-            ->select(array_merge($fields->getSelect()))
-            ->paginate();
-        
-        return $items;
+        return parent::resolve($root, $args, $fields);
     }
 }

@@ -10,7 +10,7 @@ use App\Constants\FieldTypeCategory;
 class GraphQLQueryClassGenerator extends ClassGenerator {
     protected $folder = 'GraphQL/Query/NodeModel';
 
-    protected $name;
+    protected $modelName;
     protected $args = [];
 
     protected function getClassFilename($modelName) {
@@ -18,7 +18,7 @@ class GraphQLQueryClassGenerator extends ClassGenerator {
     }
 
     protected function populateData() {
-        $this->name = Utils::getFormattedName($this->model->name, ' ');
+        $this->modelName = 'App\\NodeModel\\' . Utils::getFormattedName($this->model->name, ' ');
         $this->args = [];
 
         $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
@@ -34,7 +34,7 @@ class GraphQLQueryClassGenerator extends ClassGenerator {
         $this->content .= str_repeat(' ', 4) . 'namespace App\\GraphQL\\Query\\NodeModel;' . PHP_EOL . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use App\\GraphQL\\Query\\' . ucfirst(Settings::NodeModelPrefix) . 'Node' . Settings::GraphQLQuerySufix . ';' . PHP_EOL . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'class ' . $this->getModelClassName($this->model->name) . Settings::GraphQLQuerySufix . ' extends ' . ucfirst(Settings::NodeModelPrefix) . 'Node' . Settings::GraphQLQuerySufix . ' {' . PHP_EOL;
-        $this->content .= str_repeat(' ', 8) . 'protected $name = \'' . $this->name . '\';' . PHP_EOL;
+        $this->content .= str_repeat(' ', 8) . 'protected $modelName = \'' . $this->modelName . '\';' . PHP_EOL;
         $this->addFormattedListWithKeys('args');
         $this->content .= str_repeat(' ', 4) . '}' . PHP_EOL;
     }

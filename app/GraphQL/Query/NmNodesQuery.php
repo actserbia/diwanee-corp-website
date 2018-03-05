@@ -2,14 +2,11 @@
 namespace App\GraphQL\Query;
 
 use GraphQL\Type\Definition\Type;
-use GraphQL\Type\Definition\ResolveInfo;
-use Rebing\GraphQL\Support\SelectFields;
-use Rebing\GraphQL\Support\Query;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use App\GraphQL\Type\Scalar\Timestamp;
 
-class NmNodesQuery extends Query {
-    protected $name = '';
+class NmNodesQuery extends AppQuery {
+    protected $modelName = '';
 
     protected $args = [];
 
@@ -44,24 +41,5 @@ class NmNodesQuery extends Query {
         }
 
         return $args;
-    }
-
-    public function resolve($root, $args, SelectFields $fields, ResolveInfo $info) {
-        $where = function ($query) use ($args) {
-            foreach($args as $key=>$arg) {
-                $query->where($key, $arg);
-            }
-        };
-
-        $items = null;
-        if($this->name !== '') {
-            $model = 'App\\NodeModel\\' . $this->name;
-            $items = $model::with(array_keys($fields->getRelations()))
-                ->where($where)
-                ->select(array_merge($fields->getSelect()))
-                ->paginate();
-        }
-
-        return $items;
     }
 }
