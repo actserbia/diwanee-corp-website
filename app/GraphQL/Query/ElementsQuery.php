@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Query;
 
-use App\Tag;
+use App\Element;
 
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -12,16 +12,16 @@ use Rebing\GraphQL\Support\Facades\GraphQL;
 use App\GraphQL\Type\Scalar\Timestamp;
 
 
-class TagsQuery extends Query
+class ElementsQuery extends Query
 {
     protected $attributes = [
-        'name' => 'TagsQuery',
+        'name' => 'ElementsQuery',
         'description' => 'A query'
     ];
 
     public function type()
     {
-        return Type::listOf(GraphQL::type('Tag'));
+        return Type::listOf(GraphQL::type('Element'));
     }
 
     public function args()
@@ -31,9 +31,9 @@ class TagsQuery extends Query
                 'type' => Type::int(),
                 'name' => 'id'
             ],
-            'name' => [
+            'data' => [
                 'type' => Type::string(),
-                'name' => 'name'
+                'name' => 'data'
             ],
             'type' => [
                 'type' => Type::string(),
@@ -55,11 +55,11 @@ class TagsQuery extends Query
             }
         };
 
-        $tags = Tag::with(array_keys($fields->getRelations()))
+        $elements = Element::with(array_keys($fields->getRelations()))
             ->where($where)
             ->select($fields->getSelect())
             ->paginate();
-        return $tags;
+        return $elements;
 
     }
 }
