@@ -4,6 +4,7 @@ namespace App\Validation\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use App\Constants\ElementType;
+use App\Utils\Utils;
 
 class CheckSTContent implements Rule
 {
@@ -46,24 +47,12 @@ class CheckSTContent implements Rule
     }
 
     private function checkElementContent($element, $index) {
-
-        switch($element->type) {
-
-            case ElementType::DiwaneeList:
-                if(!isset($element->data->item_id) || $element->data->item_id == 'undefined') {
-                    $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => '', 'param' => 'nodes list']);
-                    return false;
-                }
-                break;
-
-            case ElementType::DiwaneeNode:
-                if(!isset($element->data->item_id) || $element->data->item_id == 'undefined') {
-                    $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => '', 'param' => 'node']);
-                    return false;
-                }
-                break;
-       }
-
+        if(in_array($element->type, array_keys(ElementType::itemsTypesSettings))) {
+            if(!isset($element->data->item_id) || $element->data->item_id == 'undefined') {
+                $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => $index + 1, 'param' => Utils::getFormattedName($element->type, '_', ' ')]);
+                return false;
+            }
+        }
         return true;
     }
 

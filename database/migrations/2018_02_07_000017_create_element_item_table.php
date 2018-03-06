@@ -18,7 +18,7 @@ class CreateElementItemTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('element_id');
             $table->unsignedInteger('item_id');
-            $table->enum('type', ElementType::itemsTypes);
+            $table->enum('type', array_keys(ElementType::itemsTypesSettings));
         });
 
         Schema::table('element_item', function($table) {

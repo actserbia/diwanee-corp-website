@@ -107,14 +107,9 @@ class Element extends AppModel {
 
         $data->id = $this->id;
 
-        if($this->type === ElementType::DiwaneeNode) {
-            $data->node = $this->element_item->defaultDropdownColumnValue;
+        if(in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
+            $data->item_name = $this->element_item->defaultDropdownColumnValue;
         }
-
-        if($this->type === ElementType::DiwaneeList) {
-            $data->list_name = $this->element_item->defaultDropdownColumnValue;
-        }
-
 
         if(in_array($this->type, ElementType::imageTypes) && !isset($data->file->url)) {
             $data->file->url = ImagesManager::getS3Path($data->file->hash, false);
@@ -137,11 +132,8 @@ class Element extends AppModel {
 
         unset($preparedElementData['data']['id']);
 
-        if($elementData['type'] === ElementType::DiwaneeNode) {
-            unset($preparedElementData['data']['node']);
-        }
-        if($elementData['type'] === ElementType::DiwaneeList) {
-            unset($preparedElementData['data']['list_name']);
+        if(in_array($elementData['type'], array_keys(ElementType::itemsTypesSettings))) {
+            unset($preparedElementData['data']['item_name']);
         }
 
         if(in_array($elementData['type'], ElementType::imageTypes)) {
@@ -163,29 +155,18 @@ class Element extends AppModel {
     }
 
     public function saveItems($elementData) {
-        if($elementData['type'] === ElementType::DiwaneeNode) {
-            if(!isset($this->element_item) || $this->element_item->id != $elementData['data']['id_node']) {
+        if(in_array($elementData['type'], array_keys(ElementType::itemsTypesSettings))) {
+            if(!isset($this->element_item) || $this->element_item->id != $elementData['data']['item_id']) {
                 $this->element_item()->detach();
-                $this->element_item()->attach([$elementData['data']['id_node'] => ['type' => ElementType::DiwaneeNode]]);
-            }
-        }
-
-        if($elementData['type'] === ElementType::DiwaneeList) {
-            if(!isset($this->element_item) || $this->element_item->id != $elementData['data']['id_list']) {
-                $this->element_item()->detach();
-                $this->element_item()->attach([$elementData['data']['id_list'] => ['type' => ElementType::DiwaneeList]]);
+                $this->element_item()->attach([$elementData['data']['item_id']]);
             }
         }
     }
 
     public function __call($method, $parameters) {
         if($method === 'element_item' && empty($this->relationsSettings['element_item']['model'])) {
-            if($this->type === ElementType::DiwaneeNode) {
-                $this->relationsSettings['element_item']['model'] = 'App\\Node';
-            }
-
-            if($this->type === ElementType::DiwaneeList) {
-                $this->relationsSettings['element_item']['model'] = 'App\\NodeList';
+            if(in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
+                $this->relationsSettings['element_item']['model'] = ElementType::itemsTypesSettings[$this->type];
             }
         }
 

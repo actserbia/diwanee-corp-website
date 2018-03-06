@@ -100,7 +100,7 @@ class Node extends AppModel {
             'pivot' => 'element_item',
             'foreignKey' => 'item_id',
             'relationKey' => 'element_id',
-            'pivotFilters' => ['type' => [ElementType::DiwaneeNode]],
+            'filters' => ['type' => [ElementType::DiwaneeNode]],
             'automaticSave' => false
         ]
     ];

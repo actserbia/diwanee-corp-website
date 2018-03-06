@@ -15,7 +15,7 @@ return [
         'data_missing' => 'It should be array with data key.',
         'type_or_data_missing' => 'Element :elementIndex type or data not set.',
         'type_not_valid' => ':type is not valid sir trevor element type. Valid types are: :validTypes',
-        'data_param_missing' => 'Element :elementIndex :param is not set.',
+        'data_param_missing' => 'Element at position :elementIndex :param is not set.',
         'format_not_valid' => 'Element :elementIndex format is not set or is not valid.',
         'image_data_missing' => 'Element :elementIndex image data is not set.',
         'video_data_missing' => 'Element :elementIndex video data (remote_id or source) not set.',

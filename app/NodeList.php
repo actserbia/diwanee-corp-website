@@ -99,7 +99,7 @@ class NodeList extends AppModel {
             'pivot' => 'element_item',
             'foreignKey' => 'item_id',
             'relationKey' => 'element_id',
-            'pivotFilters' => ['type' => [ElementType::DiwaneeList]],
+            'filters' => ['type' => [ElementType::DiwaneeList]],
             'automaticSave' => false
         ]
     ];
