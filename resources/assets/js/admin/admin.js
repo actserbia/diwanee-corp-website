@@ -11,7 +11,7 @@ function addTypeahead() {
     $('.typeahead').each(function() {
         $(this).removeClass('typeahead');
         var type_id = $(this).parent().find('select  > option:selected').val();
-        var input_hidden = $(this).parent().find('input[name="id_node"]');
+        var input_hidden = $(this).parent().find('input[name="item_id"]');
         $.ajax({
             type: 'GET',
             url: '/api/nodes/typeahead/'+type_id,
@@ -39,7 +39,7 @@ function addTypeahead() {
 
 function addTypeaheadList() {
     $('.typeahead').each(function() {
-        var input_hidden = $(this).parent().find('input[name="id_list"]');
+        var input_hidden = $(this).parent().find('input[name="item_id"]');
         $.ajax({
             type: 'GET',
             url: '/api/lists/typeahead/',

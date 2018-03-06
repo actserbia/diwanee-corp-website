@@ -50,14 +50,14 @@ class CheckSTContent implements Rule
         switch($element->type) {
 
             case ElementType::DiwaneeList:
-                if(!isset($element->data->id_list) || $element->data->id_list == 'undefined') {
+                if(!isset($element->data->item_id) || $element->data->item_id == 'undefined') {
                     $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => '', 'param' => 'nodes list']);
                     return false;
                 }
                 break;
 
             case ElementType::DiwaneeNode:
-                if(!isset($element->data->id_node) || $element->data->id_node == 'undefined') {
+                if(!isset($element->data->item_id) || $element->data->item_id == 'undefined') {
                     $this->message = __('messages.check_sir_trevor_content.data_param_missing', ['elementIndex' => '', 'param' => 'node']);
                     return false;
                 }
