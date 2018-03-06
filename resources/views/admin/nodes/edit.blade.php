@@ -16,7 +16,7 @@
                 </div>
                 <div class="x_content">
                     <br />
-                    <form id="data_form" method="post" action="{{ route('nodes.update', ['id' => $object->id]) }}" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data">
+                    <form id="data_form" method="post" action="{{ route('nodes.update', ['id' => $object->id]) }}" data-parsley-validate class="form-horizontal form-label-left node-form" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         
                         <input name="model_type" type="hidden" value="{{ $object->model_type->id }}" />

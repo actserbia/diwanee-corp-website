@@ -78,8 +78,7 @@ class Validators {
 
         return Validator::make($data, [
             'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255',
-            'model_type' => self::modelRequiredValidation('model_type', $model) . '|exists:node_types,id',
-            'content' => [new CheckSTContent]
+            'model_type' => self::modelRequiredValidation('model_type', $model) . '|exists:node_types,id'
         ]);
     }
 

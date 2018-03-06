@@ -60,6 +60,7 @@ let mix = require('laravel-mix');
             'resources/assets/js/admin/datatable.js',
             'resources/lang/*/js/datatable.js',
             'resources/lang/*/js/html5.js',
+            'resources/lang/*/js/localization.js',
             'resources/assets/js/Html5Localization.js',
             'resources/assets/js/admin/search.js',
             'resources/assets/js/admin/statistics.js',
@@ -70,7 +71,8 @@ let mix = require('laravel-mix');
          .combine([
              'node_modules/sir-trevor/build/sir-trevor.js',
              'public/js/sir-trevor.js',
-             'resources/lang/*/js/sir-trevor.js'
+             'resources/lang/*/js/sir-trevor.js',
+             'resources/assets/js/admin/sir-trevor.js'
          ], 'public/js/sir-trevor.js')
     
         .sass('resources/assets/sass/admin/admin.scss', 'public/css/admin.css')

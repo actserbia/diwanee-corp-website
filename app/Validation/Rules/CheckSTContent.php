@@ -6,16 +6,14 @@ use Illuminate\Contracts\Validation\Rule;
 use App\Constants\ElementType;
 use App\Utils\Utils;
 
-class CheckSTContent implements Rule
-{
+class CheckSTContent implements Rule {
     private $message = '';
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         //
     }
 
@@ -26,8 +24,7 @@ class CheckSTContent implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
-    {
+    public function passes($attribute, $value) {
         $this->message = '';
 
 
@@ -56,21 +53,12 @@ class CheckSTContent implements Rule
         return true;
     }
 
-    private function checkElementFormat($element) {
-        if(!isset($element->data->format) || !in_array($element->data->format, array('html', 'markdown'))) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * Get the validation error message.
      *
      * @return string
      */
-    public function message()
-    {
+    public function message() {
         return __('messages.check_sir_trevor_content.not_valid_message', ['message' => $this->message]);
     }
 }
