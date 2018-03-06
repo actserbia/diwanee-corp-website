@@ -72,6 +72,8 @@ class NodeModelClassGenerator extends ClassGenerator {
         $this->content .= str_repeat(' ', 4) . 'use App\AppModel;' . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'use App\Constants\Models;' . PHP_EOL . PHP_EOL;
         $this->content .= str_repeat(' ', 4) . 'class ' . $this->getModelClassName($this->model->name) . ' extends AppModel {' . PHP_EOL;
+        
+        $this->content .= str_repeat(' ', 8) . 'public $timestamps = false;' . PHP_EOL . PHP_EOL;
 
         $this->addFormattedList('fillable');
         $this->addFormattedList('allAttributesFields');

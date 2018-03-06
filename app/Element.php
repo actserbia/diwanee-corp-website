@@ -108,7 +108,7 @@ class Element extends AppModel {
         $data->id = $this->id;
 
         if(in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
-            $data->item_name = $this->element_item->defaultDropdownColumnValue;
+            $data = $this->populateElementItemData($data);
         }
 
         if(in_array($this->type, ElementType::imageTypes) && !isset($data->file->url)) {
@@ -116,6 +116,12 @@ class Element extends AppModel {
             unset($data->file->hash);
         }
 
+        return $data;
+    }
+    
+    private function populateElementItemData($data) {
+        $data->item_name = $this->element_item->defaultDropdownColumnValue;
+        
         return $data;
     }
 

@@ -7,17 +7,7 @@ return [
         'moderator' => 'Moderator',
         'admin' => 'Admin'
     ],
-    'TypeStatus' => [
-        '1' => 'Published',
-        '0' => 'Unpublished',
-        '4' => 'Deleted'
-    ],
     'NodeStatus' => [
-        '1' => 'Published',
-        '0' => 'Unpublished',
-        '4' => 'Deleted'
-    ],
-    'NodeListStatus' => [
         '1' => 'Published',
         '0' => 'Unpublished',
         '4' => 'Deleted'

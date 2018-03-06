@@ -15,21 +15,19 @@ class NodeList extends AppModel {
     use SoftDeletes;
     use ModelParentingTagsManager;
     
-    protected $allAttributesFields = ['id', 'name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'status', 'author_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allAttributesFields = ['id', 'name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'author_id', 'created_at', 'updated_at', 'deleted_at'];
 
-    protected $fillable = ['name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'status', 'author_id'];
+    protected $fillable = ['name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'author_id'];
 
-    protected $requiredFields = ['name', 'node_type', 'limit', 'status'];
+    protected $requiredFields = ['name', 'node_type', 'limit'];
     
     protected $defaultFieldsValues = [
-        'status' => '0',
         'order' => '0'
     ];
 
     protected $filterFields = [
         'id' => false,
         'name' => true,
-        'status' => true,
         'node_type:name' => true,
         'order_by_field:title' => true,
         'order' => true,
@@ -49,7 +47,6 @@ class NodeList extends AppModel {
     ];
 
     protected $attributeType = [
-        'status' => Models::AttributeType_Enum,
         'node_type_id' => Models::AttributeType_Number,
         'order_by_field_id' => Models::AttributeType_Number,
         'author_id' => Models::AttributeType_Number,

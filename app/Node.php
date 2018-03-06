@@ -7,6 +7,7 @@ use App\Models\Node\NodeModelManager;
 use App\Models\ModelParentingTagsManager;
 use Auth;
 use App\Constants\ElementType;
+use App\Constants\NodeStatus;
 
 class Node extends AppModel {
     use SoftDeletes;
@@ -20,7 +21,7 @@ class Node extends AppModel {
     protected $requiredFields = ['title', 'status', 'node_type_id'];
     
     protected $defaultFieldsValues = [
-        'status' => '0'
+        'status' => NodeStatus::Unpublished
     ];
 
     protected $filterFields = [

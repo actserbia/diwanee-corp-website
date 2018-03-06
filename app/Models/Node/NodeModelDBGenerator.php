@@ -43,8 +43,6 @@ class NodeModelDBGenerator {
 
             $this->addNodeModelTableFields($table);
             
-            $table->timestamps();
-
             $table->foreign('node_id')->references('id')->on('nodes');
         });
     }

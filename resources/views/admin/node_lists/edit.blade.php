@@ -30,8 +30,6 @@
                         @include('blocks.model', ['field' => 'order'])
 
                         @include('blocks.model', ['field' => 'limit'])
-                        
-                        @include('blocks.model', ['field' => 'status'])
 
                         @include('blocks.model', ['field' => 'author', 'readonly' => 'label'])
 

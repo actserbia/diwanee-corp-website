@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Constants\NodeTypeStatus;
 
 class CreateNodeTypesTable extends Migration
 {
@@ -17,7 +16,6 @@ class CreateNodeTypesTable extends Migration
         Schema::create('node_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 255);
-            $table->enum('status', NodeTypeStatus::getAll());
 
             $table->timestamps();
             $table->softDeletes();

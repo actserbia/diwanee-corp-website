@@ -3,10 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Constants\NodeStatus;
 
-class CreateNodeListsTable extends Migration
-{
+class CreateNodeListsTable extends Migration {
     /**
      * Run the migrations.
      *
@@ -21,7 +19,6 @@ class CreateNodeListsTable extends Migration
             $table->unsignedInteger('order_by_field_id')->nullable();
             $table->boolean('order')->nullable();
             $table->unsignedTinyInteger('limit')->default(0);
-            $table->enum('status', NodeStatus::getAll());
             $table->unsignedInteger('author_id');
 
             $table->timestamps();
