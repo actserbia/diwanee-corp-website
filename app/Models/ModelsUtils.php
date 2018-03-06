@@ -21,4 +21,12 @@ class ModelsUtils {
             }
         }
     }
+
+    public static function getItemsFieldsList($items, $field = 'id') {
+        $ids = [];
+        foreach($items as $item) {
+            $ids[] = $item->$field;
+        }
+        return $ids;
+    }
 }

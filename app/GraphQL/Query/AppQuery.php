@@ -4,9 +4,10 @@ use Rebing\GraphQL\Support\Query;
 use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\StringType;
 use Rebing\GraphQL\Support\SelectFields;
+use GraphQL\Type\Definition\ResolveInfo;
 
 class AppQuery extends Query {
-    public function resolve($root, $args, SelectFields $fields) {
+    public function resolve($root, $args, SelectFields $fields,  ResolveInfo $info) {
         $items = null;
         if($this->modelName !== '') {
             $query = $this->modelName::with(array_keys($fields->getRelations()))

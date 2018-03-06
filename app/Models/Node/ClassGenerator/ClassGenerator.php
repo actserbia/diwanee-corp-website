@@ -8,7 +8,7 @@ use App\Utils\FileFunctions;
 use App\NodeType;
 
 abstract class ClassGenerator {
-    protected $folder = '';
+    const FOLDER = '';
 
     protected $model = null;
     protected $filepath = null;
@@ -27,7 +27,7 @@ abstract class ClassGenerator {
     }
 
     protected function getClassFilename($modelName) {
-        return app_path() . '/' . $this->folder . '/' . $this->getModelClassName($modelName) . '.php';
+        return app_path() . '/' . static::FOLDER . '/' . $this->getModelClassName($modelName) . '.php';
     }
 
     protected function getModelClassName($modelName) {
@@ -95,7 +95,7 @@ abstract class ClassGenerator {
     }
 
     public static function deleteAll() {
-        $folder = app_path() . '/' . $this->folder;
+        $folder = app_path() . '/' . static::FOLDER;
         $files = glob($folder . '/*');
         foreach($files as $file) {
             if(is_file($file)) {

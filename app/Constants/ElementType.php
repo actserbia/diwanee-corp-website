@@ -16,4 +16,5 @@ final class ElementType {
 
     const textTypes = array(self::Text, self::Heading, self::Quote, self::DiwaneeNode);
     const imageTypes = array(self::DiwaneeImage, self::SliderImage);
+    const itemsTypes = array(self::DiwaneeNode, self::DiwaneeList);
 }

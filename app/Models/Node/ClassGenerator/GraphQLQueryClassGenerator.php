@@ -8,13 +8,13 @@ use App\Utils\Utils;
 use App\Constants\FieldTypeCategory;
 
 class GraphQLQueryClassGenerator extends ClassGenerator {
-    protected $folder = 'GraphQL/Query/NodeModel';
+    const FOLDER = 'GraphQL/Query/NodeModel';
 
     protected $modelName;
     protected $args = [];
 
     protected function getClassFilename($modelName) {
-        return app_path() . '/' . $this->folder . '/' . $this->getModelClassName($modelName) . Settings::GraphQLQuerySufix . '.php';
+        return app_path() . '/' . static::FOLDER . '/' . $this->getModelClassName($modelName) . Settings::GraphQLQuerySufix . '.php';
     }
 
     protected function populateData() {

@@ -17,7 +17,7 @@ class MultipleRelationManager extends RelationManager {
     private function getRelationItemsWithPivotFiltersQuery($query, $relationsSettings) {
         if(isset($relationsSettings['pivotFilters'])) {
             foreach($relationsSettings['pivotFilters'] as $key => $values) {
-                $query = $query->whereIn($key, $values);
+                $query = $query->whereIn($relationsSettings['pivot'] . '.' . $key, $values);
             }
         }
         

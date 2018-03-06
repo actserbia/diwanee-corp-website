@@ -12,13 +12,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <p>@lang('blade_templates.global.delete_question', ['title' => '<strong>' . $object->name . '</strong>'])</p>
-
-                    <form method="POST" action="{{ route('node-lists.destroy', ['id' => $object->id]) }}">
-                        {{ csrf_field() }}
-                        <input name="_method" type="hidden" value="DELETE">
-                        <button type="submit" class="btn btn-danger">@lang('blade_templates.global.delete_confirm_message')</button>
-                    </form>
+                    <p>@lang('blade_templates.admin.tags.not_delete_text', ['title' => '<strong>' . $object->name . '</strong>'])</p>
                 </div>
             </div>
         </div>

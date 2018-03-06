@@ -6,7 +6,7 @@ use App\Constants\Models;
 use App\Models\Node\NodeModelManager;
 use App\Models\ModelParentingTagsManager;
 use Auth;
-
+use App\Constants\ElementType;
 
 class Node extends AppModel {
     use SoftDeletes;
@@ -93,12 +93,22 @@ class Node extends AppModel {
             'relationKey' => 'element_id',
             'sortBy' => 'ordinal_number',
             'automaticSave' => false
+        ],
+        'parent_elements' => [
+            'relationType' => 'belongsToMany',
+            'model' => 'App\\Element',
+            'pivot' => 'element_item',
+            'foreignKey' => 'item_id',
+            'relationKey' => 'element_id',
+            'pivotFilters' => ['type' => [ElementType::DiwaneeNode]],
+            'automaticSave' => false
         ]
     ];
 
     protected $multipleFields = [
         'tags' => true,
-        'elements' => true
+        'elements' => true,
+        'parent_elements' => true
     ];
 
     protected static $modelTypeField = 'node_type_id';
@@ -131,6 +141,8 @@ class Node extends AppModel {
                 return isset($el['data']['id']) && $el['data']['id'] === $element->id;
             });
             if(empty($contentElement)) {
+                $element->element_item()->detach();
+
                 $this->elements()->detach($element->id);
                 Element::find($element->id)->delete();
             }
@@ -156,8 +168,11 @@ class Node extends AppModel {
             $this->elements()->updateExistingPivot($element->id, ['ordinal_number' => $index + 1]);
         } else {
             $element = Element::create($preparedElementData);
+
             $this->elements()->attach($element->id, ['ordinal_number' => $index + 1]);
         }
+
+        $element->saveItems($elementData);
     }
 
     public function changeFormat($toHtml = false) {
@@ -201,5 +216,15 @@ class Node extends AppModel {
             $fields = array_merge($fields, $this->statisticFields);
         }
         return $fields;
+    }
+
+    public function deleteData() {
+        foreach($this->parent_elements as $parentElement) {
+            $parentElement->element_item()->detach();
+            $parentElement->nodes()->detach();
+            $parentElement->delete();
+        }
+
+        $this->delete();
     }
 }

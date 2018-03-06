@@ -7,13 +7,13 @@ use App\Constants\AttributeFieldType;
 use App\Constants\FieldTypeCategory;
 
 class GraphQLTypeClassGenerator extends ClassGenerator {
-    protected $folder = 'GraphQL/Type/NodeModel';
+    const FOLDER = 'GraphQL/Type/NodeModel';
 
     protected $modelName;
     protected $fields = [];
 
     protected function getClassFilename($modelName) {
-        return app_path() . '/' . $this->folder . '/' . $this->getModelClassName($modelName) . Settings::GraphQLTypeSufix . '.php';
+        return app_path() . '/' . static::FOLDER . '/' . $this->getModelClassName($modelName) . Settings::GraphQLTypeSufix . '.php';
     }
 
     protected function populateData() {

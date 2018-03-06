@@ -6,27 +6,30 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
 use App\Constants\NodeListRelationType;
+use App\Constants\ElementType;
 use App\Models\ModelParentingTagsManager;
-use App\Utils\Utils;
+use App\Models\ModelsUtils;
 use Auth;
 
 class NodeList extends AppModel {
     use SoftDeletes;
     use ModelParentingTagsManager;
     
-    protected $allAttributesFields = ['id', 'name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'author_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allAttributesFields = ['id', 'name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'status', 'author_id', 'created_at', 'updated_at', 'deleted_at'];
 
-    protected $fillable = ['name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'author_id'];
+    protected $fillable = ['name', 'node_type_id', 'order_by_field_id', 'order', 'limit', 'status', 'author_id'];
 
-    protected $requiredFields = ['name', 'node_type', 'limit'];
+    protected $requiredFields = ['name', 'node_type', 'limit', 'status'];
     
     protected $defaultFieldsValues = [
+        'status' => '0',
         'order' => '0'
     ];
 
     protected $filterFields = [
         'id' => false,
         'name' => true,
+        'status' => true,
         'node_type:name' => true,
         'order_by_field:title' => true,
         'order' => true,
@@ -46,6 +49,7 @@ class NodeList extends AppModel {
     ];
 
     protected $attributeType = [
+        'status' => Models::AttributeType_Enum,
         'node_type_id' => Models::AttributeType_Number,
         'order_by_field_id' => Models::AttributeType_Number,
         'author_id' => Models::AttributeType_Number,
@@ -88,12 +92,22 @@ class NodeList extends AppModel {
             'relationType' => 'belongsTo',
             'model' => 'App\\User',
             'foreignKey' => 'author_id'
+        ],
+        'parent_elements' => [
+            'relationType' => 'belongsToMany',
+            'model' => 'App\\Element',
+            'pivot' => 'element_item',
+            'foreignKey' => 'item_id',
+            'relationKey' => 'element_id',
+            'pivotFilters' => ['type' => [ElementType::DiwaneeList]],
+            'automaticSave' => false
         ]
     ];
     
     protected $multipleFields = [
         'filter_tags' => true,
-        'filter_authors' => true
+        'filter_authors' => true,
+        'parent_elements' => true
     ];
     
     protected $dependsOn = [
@@ -150,11 +164,11 @@ class NodeList extends AppModel {
         $items = Node::join($this->node_type->additionalDataTableName, 'nodes.id', '=', $additionalDataTable . '.node_id')->where('node_type_id', '=', $this->node_type->id);
         
         if(count($this->filter_tags) > 0) {
-            $items = $this->addFilterByTagsToitemsQuery($items);
+            $items = $this->addFilterByTagsToItemsQuery($items);
         }
         
         if(count($this->filter_authors) > 0) {
-            $items = $items->whereIn('author_id', Utils::getItemsIds($this->filter_authors));
+            $items = $items->whereIn('author_id', ModelsUtils::getItemsFieldsList($this->filter_authors, 'id'));
         }
         
         if(isset($this->order_by_field->id)) {
@@ -168,11 +182,11 @@ class NodeList extends AppModel {
         return $items->limit($this->limit)->get();
     }
     
-    private function addFilterByTagsToitemsQuery($items) {
+    private function addFilterByTagsToItemsQuery($items) {
         $filterTagIds = [];
-        $tagIds = Utils::getItemsIds($this->filter_tags);
+        $tagIds = ModelsUtils::getItemsFieldsList($this->filter_tags, 'id');
         foreach($this->filter_tags as $tag) {
-            if(empty(array_intersect(Utils::getItemsIds($tag->children), $tagIds))) {
+            if(empty(array_intersect(ModelsUtils::getItemsFieldsList($tag->children, 'id'), $tagIds))) {
                 $filterTagIds[] = $tag->id;
             }
         }
@@ -204,7 +218,15 @@ class NodeList extends AppModel {
         parent::saveData($data);
     }
 
+    public function deleteData() {
+        foreach($this->parent_elements as $parentElement) {
+            $parentElement->element_item()->detach();
+            $parentElement->nodes()->detach();
+            $parentElement->delete();
+        }
 
+        $this->delete();
+    }
 
     public function __call($method, $parameters) {
         // This is added because of GraphQl

@@ -105,7 +105,7 @@ class AdminNodeListsController extends Controller {
     public function destroy($id) {
         $object = NodeList::findOrFail($id);
 
-        $successName = $object->delete() ? 'success' : 'error';
+        $successName = $object->deleteObject() ? 'success' : 'error';
 
         return redirect()->route('node-lists.index')->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.NodeList.label_single'), 'name' => $object->name]));
     }

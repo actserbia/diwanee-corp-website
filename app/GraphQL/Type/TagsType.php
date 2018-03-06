@@ -31,10 +31,16 @@ class TagsType extends GraphQLType
                 'type' => Timestamp::type(),
                 'description' => 'created'
             ],
-//            'tag_type' => [
-//                'type' => GraphQL::type('TagType'),
-//                'description' => 'Type of tag'
-//            ]
+
+            'nodes' => [
+                'type' => Type::listOf(GraphQL::type('Node')),
+                'description' => 'Nodes'
+            ],
+
+            'tag_type' => [
+                'type' => GraphQL::type('FieldType'),
+                'description' => 'Type of tag'
+            ]
         ];
     }
 }

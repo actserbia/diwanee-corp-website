@@ -17,6 +17,11 @@ return [
         '0' => 'Unpublished',
         '4' => 'Deleted'
     ],
+    'NodeListStatus' => [
+        '1' => 'Published',
+        '0' => 'Unpublished',
+        '4' => 'Deleted'
+    ],
     'FieldType' => [
         'integer' => 'Integer',
         'text' => 'Text',

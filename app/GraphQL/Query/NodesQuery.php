@@ -4,6 +4,7 @@ namespace App\GraphQL\Query;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\SelectFields;
+use GraphQL\Type\Definition\ResolveInfo;
 
 use App\NodeType;
 
@@ -53,13 +54,13 @@ class NodesQuery extends AppQuery {
         return $args;
     }
     
-    public function resolve($root, $args, SelectFields $fields) {
+    public function resolve($root, $args, SelectFields $fields, ResolveInfo $info) {
         if(array_key_exists('node_type', $args)) {
             $nodeType = NodeType::where('name', $args['node_type'])->first();
             $args['node_type_id'] = [$nodeType->id];
             unset($args['node_type']);
         }
 
-        return parent::resolve($root, $args, $fields);
+        return parent::resolve($root, $args, $fields, $info);
     }
 }

@@ -23,7 +23,6 @@ class CreateNodeListRelationTable extends Migration
 
         Schema::table('node_list_relation', function($table) {
             $table->foreign('node_list_id')->references('id')->on('node_lists');
-            //$table->foreign('relation_id')->references('id')->on('tags');
         });
     }
 

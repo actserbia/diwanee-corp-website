@@ -67,7 +67,11 @@ class AdminTagsController extends Controller {
      */
     public function show($id) {
         $object = Tag::findOrFail($id);
-        return view('admin.tags.delete', compact('object'));
+        if(count($object->children) === 0) {
+            return view('admin.tags.delete', compact('object'));
+        } else {
+            return view('admin.tags.not_delete', compact('object'));
+        }
     }
 
     /**

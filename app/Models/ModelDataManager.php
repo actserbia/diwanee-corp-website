@@ -2,7 +2,7 @@
 namespace App\Models;
 
 use App\Constants\Models;
-use App\Utils\Utils;
+use App\Models\ModelsUtils;
 
 trait ModelDataManager {
     use ModelAttributesManager;
@@ -146,7 +146,7 @@ trait ModelDataManager {
                 
                 $filterRelationSettings = $model->getRelationSettings($filterFieldNameList[0]);
                 
-                $query->whereIn($filterRelationSettings['foreignKey'], Utils::getItemsIds($filterRelationItems));
+                $query->whereIn($filterRelationSettings['foreignKey'], ModelsUtils::getItemsFieldsList($filterRelationItems, 'id'));
             } else {
                 $query->whereIn($filterField, $filterValues);
             }

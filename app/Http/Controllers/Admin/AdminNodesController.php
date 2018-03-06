@@ -133,7 +133,7 @@ class AdminNodesController extends Controller {
     public function destroy($id) {
         $object = Node::findOrFail($id);
         
-        $successName = $object->delete() ? 'success' : 'error';
+        $successName = $object->deleteObject() ? 'success' : 'error';
         
         return redirect()->route('nodes.index')->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.Node.label_single'), 'name' => $object->name]));
     }

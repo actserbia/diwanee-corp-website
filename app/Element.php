@@ -77,26 +77,44 @@ class Element extends AppModel {
 
 
     protected $relationsSettings = [
+        'element_item' => [
+            'relationType' => 'belongsToMany',
+            'model' => '',
+            'pivot' => 'element_item',
+            'foreignKey' => 'element_id',
+            'relationKey' => 'item_id'
+        ],
         'nodes' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Node',
             'pivot' => 'node_element',
             'foreignKey' => 'element_id',
-            'relationKey' => 'node_id'
+            'relationKey' => 'node_id',
+            'automaticSave' => false
         ]
     ];
 
-    protected $multipleFields = ['nodes'];
+    protected $multipleFields = [
+        'nodes' => true
+    ];
 
-    public function getRelation($relation) {
-        return $this->relations[$relation];
-    }
-
+    //public function getRelation($relation) {
+    //    return $this->relations[$relation];
+    //}
 
     public function getDataAttribute($value) {
         $data = json_decode($value);
 
         $data->id = $this->id;
+
+        if($this->type === ElementType::DiwaneeNode) {
+            $data->node = $this->element_item->defaultDropdownColumnValue;
+        }
+
+        if($this->type === ElementType::DiwaneeList) {
+            $data->list_name = $this->element_item->defaultDropdownColumnValue;
+        }
+
 
         if(in_array($this->type, ElementType::imageTypes) && !isset($data->file->url)) {
             $data->file->url = ImagesManager::getS3Path($data->file->hash, false);
@@ -119,6 +137,13 @@ class Element extends AppModel {
 
         unset($preparedElementData['data']['id']);
 
+        if($elementData['type'] === ElementType::DiwaneeNode) {
+            unset($preparedElementData['data']['node']);
+        }
+        if($elementData['type'] === ElementType::DiwaneeList) {
+            unset($preparedElementData['data']['list_name']);
+        }
+
         if(in_array($elementData['type'], ElementType::imageTypes)) {
             $preparedElementData['data']['file']['hash'] = ImagesManager::getHashFromS3Path($preparedElementData['data']['file']['url']);
             unset($preparedElementData['data']['file']['url']);
@@ -135,5 +160,35 @@ class Element extends AppModel {
         foreach($elements as $element) {
             $element->changeFormat($toHtml);
         }
+    }
+
+    public function saveItems($elementData) {
+        if($elementData['type'] === ElementType::DiwaneeNode) {
+            if(!isset($this->element_item) || $this->element_item->id != $elementData['data']['id_node']) {
+                $this->element_item()->detach();
+                $this->element_item()->attach([$elementData['data']['id_node'] => ['type' => ElementType::DiwaneeNode]]);
+            }
+        }
+
+        if($elementData['type'] === ElementType::DiwaneeList) {
+            if(!isset($this->element_item) || $this->element_item->id != $elementData['data']['id_list']) {
+                $this->element_item()->detach();
+                $this->element_item()->attach([$elementData['data']['id_list'] => ['type' => ElementType::DiwaneeList]]);
+            }
+        }
+    }
+
+    public function __call($method, $parameters) {
+        if($method === 'element_item' && empty($this->relationsSettings['element_item']['model'])) {
+            if($this->type === ElementType::DiwaneeNode) {
+                $this->relationsSettings['element_item']['model'] = 'App\\Node';
+            }
+
+            if($this->type === ElementType::DiwaneeList) {
+                $this->relationsSettings['element_item']['model'] = 'App\\NodeList';
+            }
+        }
+
+        return parent::__call($method, $parameters);
     }
 }

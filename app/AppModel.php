@@ -59,6 +59,23 @@ class AppModel extends Model {
         $this->saveRelations($data);
     }
     
+    public function deleteObject() {
+        DB::beginTransaction();
+        try {
+            $this->deleteData();
+
+            DB::commit();
+            return true;
+        } catch(Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
+
+    public function deleteData() {
+        return $this->delete();
+    }
+
     protected function deleteRelationItems($relation) {
         $areAllDeleted = true;
         

@@ -83,7 +83,8 @@ return [
             'dashboard_text' => 'You are logged in!'
         ],
         'tags' => [
-            'reorder_list_button_text' => 'Reorder Tags'
+            'reorder_list_button_text' => 'Reorder Tags',
+            'not_delete_text' => 'It is not possible to delete tag which has children'
         ],
         'types' => [
             'add_field' => 'Add field'

@@ -29,6 +29,8 @@
 
                         @include('blocks.model', ['field' => 'limit'])
 
+                        @include('blocks.model', ['field' => 'status'])
+
                         <div class="ln_solid"></div>
 
                         <div class="form-group">

@@ -5,6 +5,7 @@ use App\NodeList;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\SelectFields;
+use GraphQL\Type\Definition\ResolveInfo;
 
 class NodeListsQuery extends AppQuery {
     protected $modelName = 'App\\NodeList';
@@ -36,8 +37,9 @@ class NodeListsQuery extends AppQuery {
         ];
     }
     
-    public function resolve($root, $args, SelectFields $fields) {
+    public function resolve($root, $args, SelectFields $fields, ResolveInfo $info) {
         $relations = array_keys($fields->getRelations());
+
         if(in_array('list_items', $relations)) {
             $query = NodeList::with($relations)
                 ->where($this->makeWhereQuery($args));
@@ -49,7 +51,7 @@ class NodeListsQuery extends AppQuery {
             }
             return $lists;
         } else {
-            return parent::resolve($root, $args, $fields);
+            return parent::resolve($root, $args, $fields, $info);
         }
     }
 }

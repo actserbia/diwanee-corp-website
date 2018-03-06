@@ -50,6 +50,7 @@ class SingleRelationManager extends RelationManager {
         }
         
         if(!isset($this->object->$relation) || $this->object->$relation->id != $relationItemId) {
+            $this->object->$relation()->detach();
             $this->object->$relation()->attach([$relationItemId => $relationItemData]);
         }
     }

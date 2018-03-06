@@ -6,7 +6,7 @@ use App\Constants\AttributeFieldType;
 use App\Constants\FieldTypeCategory;
 
 class NodeModelClassGenerator extends ClassGenerator {
-    protected $folder = 'NodeModel';
+    const FOLDER = 'NodeModel';
 
     protected $fillable = [];
     protected $allAttributesFields = ['id'];

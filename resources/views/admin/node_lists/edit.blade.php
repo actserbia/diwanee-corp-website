@@ -31,6 +31,8 @@
 
                         @include('blocks.model', ['field' => 'limit'])
                         
+                        @include('blocks.model', ['field' => 'status'])
+
                         @include('blocks.model', ['field' => 'author', 'readonly' => 'label'])
 
                         <div class="ln_solid"></div>

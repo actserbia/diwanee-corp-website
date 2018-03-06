@@ -73,12 +73,4 @@ class Utils {
     public static function translateModelDataPlural($translationLabel) {
         return __($translationLabel, ['type' => __('models_labels.' .  self::$modelType . '.label_plural')]);
     }
-    
-    public static function getItemsIds($items) {
-        $ids = [];
-        foreach($items as $item) {
-            $ids[] = $item->id;
-        }
-        return $ids;
-    }
 }

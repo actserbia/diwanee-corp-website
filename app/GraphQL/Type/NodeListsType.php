@@ -28,7 +28,7 @@ class NodeListsType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'Name'
             ],
-            'tags' => [
+            'filter_tags' => [
                 'type' => Type::listOf(GraphQL::type('Tag')),
                 'description' => 'Filter Tags'
             ],
