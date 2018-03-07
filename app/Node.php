@@ -142,7 +142,7 @@ class Node extends AppModel {
                 return isset($el['data']['id']) && $el['data']['id'] === $element->id;
             });
             if(empty($contentElement)) {
-                $element->element_item()->detach();
+                $element->detachElementItem();
 
                 $this->elements()->detach($element->id);
                 Element::find($element->id)->delete();

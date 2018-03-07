@@ -179,4 +179,10 @@ class Element extends AppModel {
             ];
         }
     }
+    
+    public function detachElementItem() {
+        if(in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
+            $this->element_item()->detach();
+        }
+    }
 }

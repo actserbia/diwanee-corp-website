@@ -298,37 +298,8 @@ SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
 
     onBlockRender: function () {
         var data = this.getData();
-        //this.setTypeSelect(data.data, this);
         setDiwaneeElementItemContent(this.blockID, data.data, this.type);
-    },
-
-    /*setTypeSelect: function(node_data, that) {
-        var block_id = this.blockID;
-        var list = '<select id="node-type-'+block_id+ '" name="type" '+
-            'onChange="addTypeahead(\'' + block_id + '\')">';
-        list += '<option value="0">Choose content type</option>';
-        var node = (node_data.item_name !== undefined) ? node_data.item_name : '';
-        $.ajax({
-            dataType: "json",
-            url: '/api/types/typeahead',
-            success: function (types) {
-                $.each(types, function(i, element) {
-                    list += '<option value="' + element.id + '"';
-                    if(element.id == node_data.type) {
-                        list += ' selected';
-                    }
-                    list += '>'+element.name+'</option>';
-                });
-                list += '</select>';
-                list += '<input type="text" name="item_name" id="node-'+block_id+ '"' +
-                    'data-provide="typeahead" class="typeahead node" value="'+node+'">';
-                list += '<input type="hidden" name="item_id" class="node-id" id="node-id-'+block_id+ '"' +' value="'+node_data.item_id+ '">';
-                that.$('.type_options')[0].innerHTML = list;
-                addTypeahead(block_id);
-            }
-        });
-    }*/
-
+    }
 });
 
 
@@ -345,20 +316,6 @@ SirTrevor.Blocks.DiwaneeList = SirTrevor.Block.extend({
 
     onBlockRender: function () {
         var data = this.getData();
-        //this.setInputField(data.data, this);
         setDiwaneeElementItemContent(this.blockID, data.data, this.type);
-    },
-
-    /*setInputField: function(list_data, that) {
-        var block_id = this.blockID;
-        var list_name = (list_data.item_name !== undefined) ? list_data.item_name : '';
-
-        var input_field = '<label>Nodes list:</label>'+
-            '<input type="text" name="item_name" id="node-list'+block_id+ '"' +
-            ' data-provide="typeahead" class="typeahead" value="'+list_name+'">' +
-            '<input type="hidden" name="item_id" class="list-id" id="list-id-'+block_id+ '"' +' value="'+list_data.item_id+ '">';
-        that.$('.st-nodes-list-block')[0].innerHTML = input_field;
-        addTypeahead(block_id);
-    }*/
-
+    }
 });
