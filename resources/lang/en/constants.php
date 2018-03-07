@@ -24,7 +24,9 @@ return [
         'diwanee_video' => 'Video',
         'list' => 'List',
         'heading' => 'Heading',
-        'quote' => 'Quote'
+        'quote' => 'Quote',
+        'diwanee_node' => 'Node',
+        'diwanee_list' => 'List'
     ],
     'UserActive' => [
         '1' => 'Active',

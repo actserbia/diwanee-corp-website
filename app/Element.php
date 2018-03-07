@@ -77,13 +77,6 @@ class Element extends AppModel {
 
 
     protected $relationsSettings = [
-        'element_item' => [
-            'relationType' => 'belongsToMany',
-            'model' => '',
-            'pivot' => 'element_item',
-            'foreignKey' => 'element_id',
-            'relationKey' => 'item_id'
-        ],
         'nodes' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Node',
@@ -97,10 +90,6 @@ class Element extends AppModel {
     protected $multipleFields = [
         'nodes' => true
     ];
-
-    //public function getRelation($relation) {
-    //    return $this->relations[$relation];
-    //}
 
     public function getDataAttribute($value) {
         $data = json_decode($value);
@@ -120,6 +109,8 @@ class Element extends AppModel {
     }
     
     private function populateElementItemData($data) {
+        $this->populateElementItemRelationSettings();
+        
         $data->item_name = $this->element_item->defaultDropdownColumnValue;
         
         return $data;
@@ -170,12 +161,22 @@ class Element extends AppModel {
     }
 
     public function __call($method, $parameters) {
-        if($method === 'element_item' && empty($this->relationsSettings['element_item']['model'])) {
-            if(in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
-                $this->relationsSettings['element_item']['model'] = ElementType::itemsTypesSettings[$this->type];
-            }
+        if($method === 'element_item') {
+            $this->populateElementItemRelationSettings();
         }
 
         return parent::__call($method, $parameters);
+    }
+    
+    private function populateElementItemRelationSettings() {
+        if(!isset($this->relationsSettings['element_item']) && in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
+            $this->relationsSettings['element_item'] = [
+                'relationType' => 'belongsToMany',
+                'model' => ElementType::itemsTypesSettings[$this->type],
+                'pivot' => 'element_item',
+                'foreignKey' => 'element_id',
+                'relationKey' => 'item_id'
+            ];
+        }
     }
 }
