@@ -24,7 +24,7 @@ class ApiNodesController extends Controller
 
     public function typeahead($type_id, Request $request) {
 
-        $reqNode = filter_var($request->server('HTTP_REFERER'), FILTER_SANITIZE_NUMBER_INT);
+        $reqNode = intval(filter_var($request->server('HTTP_REFERER'), FILTER_SANITIZE_NUMBER_INT));
 
         $nodes = Node::select('id','title as name')
             ->where('node_type_id', '=', $type_id)

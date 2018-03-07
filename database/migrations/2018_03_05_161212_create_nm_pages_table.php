@@ -15,9 +15,14 @@ class CreateNmPagesTable extends Migration
     {
         Schema::create('nm_pages', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('node_id');
             $table->string('meta_title', 255)->nullable();
             $table->string('meta_description', 255)->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('nm_pages', function($table) {
+            $table->foreign('node_id')->references('id')->on('nodes');
         });
     }
 

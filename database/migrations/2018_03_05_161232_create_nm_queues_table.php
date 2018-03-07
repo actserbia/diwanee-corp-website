@@ -15,7 +15,12 @@ class CreateNmQueuesTable extends Migration
     {
         Schema::create('nm_queues', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('node_id');
             $table->timestamps();
+        });
+
+        Schema::table('nm_queues', function($table) {
+            $table->foreign('node_id')->references('id')->on('nodes');
         });
     }
 

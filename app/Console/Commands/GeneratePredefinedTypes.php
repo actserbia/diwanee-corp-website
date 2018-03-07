@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use \App\Models\Node\ClassGenerator\NMPageClassGenerator;
+use \App\Models\Node\ClassGenerator\NMQueueClassGenerator;
+use \App\NodeType;
 
 class GeneratePredefinedTypes extends Command
 {
@@ -11,7 +14,7 @@ class GeneratePredefinedTypes extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'nmtype:generate';
 
     /**
      * The console command description.
@@ -37,6 +40,14 @@ class GeneratePredefinedTypes extends Command
      */
     public function handle()
     {
-        //
+        $page = new NodeType();
+        $page->name = 'Page';
+        $pageModel = new NMPageClassGenerator($page);
+        $pageModel->generate();
+
+        $queue = new NodeType();
+        $queue->name = 'Queue';
+        $queueModel = new NMQueueClassGenerator($queue);
+        $queueModel->generate();
     }
 }
