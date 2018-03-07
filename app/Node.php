@@ -18,7 +18,7 @@ class Node extends AppModel {
 
     protected $fillable = ['title', 'status', 'node_type_id', 'author_id'];
 
-    protected $requiredFields = ['title', 'status', 'node_type_id'];
+    protected $requiredFields = ['title', 'status', 'model_type'];
     
     protected $defaultFieldsValues = [
         'status' => NodeStatus::Unpublished
