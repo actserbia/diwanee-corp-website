@@ -1,8 +1,10 @@
 @extends('layouts.admin')
 
-@push('stylesheets')
-    {!! SirTrevor::stylesheets() !!}
-@endpush
+@if (isset($object->modelType))
+    @push('stylesheets')
+        {!! SirTrevor::stylesheets() !!}
+    @endpush
+@endif
 @section('content')
 <div>
     <div class="clearfix"></div>
@@ -53,6 +55,8 @@
     </div>
 </div>
 @endsection
-@push('scripts')
-    {!! SirTrevor::scripts($stFields, $stReqFields) !!}
-@endpush
+@if (isset($object->modelType))
+    @push('scripts')
+        {!! SirTrevor::scripts($stFields, $stReqFields) !!}
+    @endpush
+@endif

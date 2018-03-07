@@ -298,12 +298,12 @@ SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
 
     onBlockRender: function () {
         var data = this.getData();
-        this.setTypeSelect(data.data, this);
+        //this.setTypeSelect(data.data, this);
+        setDiwaneeElementItemContent(this.blockID, data.data, this.type);
     },
 
-    setTypeSelect: function(node_data, that) {
-        setNodeTypeSelect(this.blockID, node_data);
-        /*var block_id = this.blockID;
+    /*setTypeSelect: function(node_data, that) {
+        var block_id = this.blockID;
         var list = '<select id="node-type-'+block_id+ '" name="type" '+
             'onChange="addTypeahead(\'' + block_id + '\')">';
         list += '<option value="0">Choose content type</option>';
@@ -326,8 +326,8 @@ SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
                 that.$('.type_options')[0].innerHTML = list;
                 addTypeahead(block_id);
             }
-        });*/
-    }
+        });
+    }*/
 
 });
 
@@ -345,10 +345,11 @@ SirTrevor.Blocks.DiwaneeList = SirTrevor.Block.extend({
 
     onBlockRender: function () {
         var data = this.getData();
-        this.setInputField(data.data, this);
+        //this.setInputField(data.data, this);
+        setDiwaneeElementItemContent(this.blockID, data.data, this.type);
     },
 
-    setInputField: function(list_data, that) {
+    /*setInputField: function(list_data, that) {
         var block_id = this.blockID;
         var list_name = (list_data.item_name !== undefined) ? list_data.item_name : '';
 
@@ -358,6 +359,6 @@ SirTrevor.Blocks.DiwaneeList = SirTrevor.Block.extend({
             '<input type="hidden" name="item_id" class="list-id" id="list-id-'+block_id+ '"' +' value="'+list_data.item_id+ '">';
         that.$('.st-nodes-list-block')[0].innerHTML = input_field;
         addTypeahead(block_id);
-    }
+    }*/
 
 });

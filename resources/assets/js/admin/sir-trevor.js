@@ -5,9 +5,6 @@ $(document).ready(function() {
             var typeId = SirTrevorManager.getNodeTypeId(object);
             var inputHidden = $(object).parent().find('input[name="item_id"]');
             
-            //console.log(listName);
-            //console.log(typeId);
-
             $(object).typeahead('destroy');
             $(object).typeahead({
                 hint: true,
@@ -87,10 +84,27 @@ $(document).ready(function() {
             return true;
         },
         
-        setNodeTypeSelectContent: function(blockId, nodeData) {
-            var list = '<select id="node-type-' + blockId + '" name="type" onChange="addTypeahead(\'' + blockId + '\')">';
-            list += '<option value="0">' + Localization[$('html').attr('lang')].node_type_select__choose + '</option>';
+        setDiwaneeElementItemContentFromList: function(blockId, nodeData, elementType) {
             var itemName = (nodeData.item_name !== undefined) ? nodeData.item_name : '';
+            
+            var content = '';
+            if(SirTrevorManager.settings[elementType].hasNodeTypeSelect) {
+                content += SirTrevorManager.getDiwaneeElementNodeTypeSelectContent(blockId, nodeData);
+            }
+            if(typeof Localization[$('html').attr('lang')].diwanee_elements_labels[elementType] !== 'undefined') {
+                content += '<label>' + Localization[$('html').attr('lang')].diwanee_elements_labels[elementType] + '</label>';
+            }
+            
+            content += '<input type="text" name="item_name" id="node-' + blockId + '"' + 'data-provide="typeahead" class="typeahead node" value="' + itemName + '">';
+            content += '<input type="hidden" name="item_id" class="node-id" id="node-id-' + blockId + '"' + ' value="' + nodeData.item_id + '">';
+            $(SirTrevorManager.settings[elementType].container, $('div[id=' + blockId + ']'))[0].innerHTML = content;
+            
+            SirTrevorManager.addTypeahead(blockId);
+        },
+        
+        getDiwaneeElementNodeTypeSelectContent: function(blockId, nodeData) {
+            var list = '<select id="node-type-' + blockId + '" name="type" onChange="SirTrevorManager.addTypeahead(\'' + blockId + '\')">';
+            list += '<option value="0">' + Localization[$('html').attr('lang')].node_type_select__choose + '</option>';
             
             $.each(SirTrevorManager.nodeTypesList, function(i, element) {
                 list += '<option value="' + element.id + '"';
@@ -101,67 +115,69 @@ $(document).ready(function() {
             });
             
             list += '</select>';
-            list += '<input type="text" name="item_name" id="node-' + blockId + '"' + 'data-provide="typeahead" class="typeahead node" value="' + itemName + '">';
-            list += '<input type="hidden" name="item_id" class="node-id" id="node-id-' + blockId + '"' + ' value="' + nodeData.item_id + '">';
-            $('.type_options', $('div[id=' + blockId + ']'))[0].innerHTML = list;
-            addTypeahead(blockId);
+            
+            return list;
+        },
+        
+        addTypeahead: function(blockId) {
+            $('.typeahead', $('div[id=' + blockId + ']')).each(function(index, object) {
+                var listName = SirTrevorManager.getListName(object);
+                var typeId = SirTrevorManager.getNodeTypeId(object);
+                if(typeof SirTrevorManager.typeaheadList[listName][typeId] !== 'undefined') {
+                    $(object).stPopulateTypeheadFromList();
+                } else {
+                    $.ajax({
+                        type: 'GET',
+                        url: SirTrevorManager.getAjaxUrl(listName, typeId),
+                        dataType: 'json',
+                        context: object,
+                        success: function (data) {
+                            SirTrevorManager.typeaheadList[listName][typeId] = data;
+                            $(object).stPopulateTypeheadFromList();
+                        }
+                    });
+                }
+            });
         }
     };
     
     SirTrevorManager.nodeTypesList = [];
 
     SirTrevorManager.typeaheadList = {};
-    SirTrevorManager.typeaheadList.diwanee_node = {};
-    SirTrevorManager.typeaheadList.diwanee_node[0] = [];
-    SirTrevorManager.typeaheadList.diwanee_list = {};
+    SirTrevorManager.typeaheadList['diwanee node'] = {};
+    SirTrevorManager.typeaheadList['diwanee node'][0] = [];
+    SirTrevorManager.typeaheadList['diwanee list'] = {};
     
     SirTrevorManager.settings = {
-        "diwanee_node": {
-            "ajaxUrl": "/api/nodes/typeahead/[TYPE_ID]"
+        "diwanee node": {
+            "ajaxUrl": "/api/nodes/typeahead/[TYPE_ID]",
+            "hasNodeTypeSelect": true,
+            "container": ".type_options"
         },
         
-        "diwanee_list": {
-            "ajaxUrl": "/api/lists/typeahead"
+        "diwanee list": {
+            "ajaxUrl": "/api/lists/typeahead",
+            "hasNodeTypeSelect": false,
+            "container": ".st-nodes-list-block"
         }
     };
     
-    SirTrevorManager.DiwaneeNode = 'diwanee_node';
-    SirTrevorManager.DiwaneeList = 'diwanee_list';
+    SirTrevorManager.DiwaneeNode = 'diwanee node';
+    SirTrevorManager.DiwaneeList = 'diwanee list';
     
     SirTrevorManager.initialize();
 });
 
-function addTypeahead(blockId) {
-    $('.typeahead', $('div[id=' + blockId + ']')).each(function(index, object) {
-        var listName = SirTrevorManager.getListName(object);
-        var typeId = SirTrevorManager.getNodeTypeId(object);
-        if(typeof SirTrevorManager.typeaheadList[listName][typeId] !== 'undefined') {
-            $(object).stPopulateTypeheadFromList();
-        } else {
-            $.ajax({
-                type: 'GET',
-                url: SirTrevorManager.getAjaxUrl(listName, typeId),
-                dataType: 'json',
-                context: object,
-                success: function (data) {
-                    SirTrevorManager.typeaheadList[listName][typeId] = data;
-                    $(object).stPopulateTypeheadFromList();
-                }
-            });
-        }
-    });
-}
-
-function setNodeTypeSelect(blockId, nodeData) {
-    if(SirTrevorManager.nodeTypesList.length) {
-        SirTrevorManager.setNodeTypeSelectContent(blockId, nodeData);
+function setDiwaneeElementItemContent(blockId, nodeData, elementType) {
+    if(!SirTrevorManager.settings[elementType].hasNodeTypeSelect || SirTrevorManager.nodeTypesList.length) {
+        SirTrevorManager.setDiwaneeElementItemContentFromList(blockId, nodeData, elementType);
     } else {
         $.ajax({
             dataType: 'json',
             url: '/api/types/typeahead',
             success: function (types) {
                 SirTrevorManager.nodeTypesList = types;
-                SirTrevorManager.setNodeTypeSelectContent(blockId, nodeData);
+                SirTrevorManager.setDiwaneeElementItemContentFromList(blockId, nodeData, elementType);
             }
         });
     }
