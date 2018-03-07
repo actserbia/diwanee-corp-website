@@ -5,6 +5,7 @@ use App\Utils\Utils;
 use App\Constants\Settings;
 use App\NodeType;
 use App\Constants\FieldTypeCategory;
+use Request;
 
 trait NodeModelManager {
     public function __call($method, $parameters) {
@@ -120,5 +121,25 @@ trait NodeModelManager {
         }
 
         return parent::attributeValue($field);
+    }
+    
+    public function checkFormSelectRelationValue($relation, $item, $level = null) {
+        if($relation === 'model_type') {
+            if(Request::old('_token') !== null && Request::old($relation) == $item->id) {
+                return true;
+            }
+
+            if(Request::post('_token') !== null && Request::post($relation) == $item->id) {
+                return true;
+            }
+            
+            if(isset($this->modelType->id)) {
+                return ($this->modelType->id == $item->id);
+            } else {
+                return ($this->defaultAttributeValue($relation) == $item->id);
+            }
+        } else {
+            return parent::checkFormSelectRelationValue($relation, $item, $level);
+        }
     }
 }

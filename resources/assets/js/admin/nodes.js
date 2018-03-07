@@ -14,7 +14,10 @@ $(document).ready(function() {
     });
 
     $('#node-create #model_type').change(function() {
-        $.ajax({
+        if($(this).val() !== '') {
+            window.location = '/admin/nodes/create?model_type_id=' + $(this).val();
+        }
+        /*$.ajax({
             type: 'GET',
             url: '/admin/node-fields',
             data: {
@@ -33,6 +36,6 @@ $(document).ready(function() {
 
                 $('.relation-item[draggable=true]').setRelationItemsDraggableAndDroppable();
             }
-        });
+        });*/
     });
 });

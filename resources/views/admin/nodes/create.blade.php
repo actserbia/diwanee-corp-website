@@ -1,5 +1,8 @@
 @extends('layouts.admin')
 
+@push('stylesheets')
+    {!! SirTrevor::stylesheets() !!}
+@endpush
 @section('content')
 <div>
     <div class="clearfix"></div>
@@ -13,14 +16,43 @@
                 
                 <div id="node-create" class="x_content form-horizontal">
                     <br />
-                    @include('blocks.model', ['field' => 'model_type'])
+                    <form id="data_form" method="post" action="{{ route('nodes.store') }}" data-parsley-validate class="form-horizontal form-label-left">
+                        {{ csrf_field() }}
 
-                    <div class="ln_solid"></div>
+                        @include('blocks.model', ['field' => 'model_type'])
 
-                    <div id="node-fields"></div>
+                        <div class="ln_solid"></div>
+                        
+                        @if (isset($object->modelType))
+                            @foreach($object->getAutomaticRenderAtributesAndRelations() as $field)
+                                @include('blocks.model', ['field' => $field])
+                            @endforeach
+
+                            <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
+                                <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}" for="content">@lang('models_labels.Node.content')</label>
+                                <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
+                                    <textarea id="content" name="content" class="sir-trevor editable">{{ Request::old('content') ?: '' }}</textarea>
+                                    @if ($errors->has('content'))
+                                        <span class="help-block">{{ $errors->first('content') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="ln_solid"></div>
+
+                            <div class="form-group">
+                                <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_without_label') }}">
+                                    <button type="submit" class="btn btn-success">{{ Utils::translateModelData('blade_templates.admin.global.create_button_text')}}</button>
+                                </div>
+                            </div>
+                        @endif
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+@push('scripts')
+    {!! SirTrevor::scripts($stFields, $stReqFields) !!}
+@endpush

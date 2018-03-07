@@ -52,9 +52,20 @@ class AdminNodesController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        $object = new Node;
-        return view('admin.nodes.create', compact('object'));
+    public function create(Request $request) {
+        $data = $request->all();
+        
+        if(isset($data['model_type_id'])) {
+            $object = new Node(['model_type_id' => $data['model_type_id']]);
+            $stFields = $object->modelType->getSTFieldsArray();
+            $stReqFields = $object->modelType->getRequiredSTFieldsArray();
+        } else {
+            $object = new Node;
+            $stFields = [];
+            $stReqFields = [];
+        }
+        
+        return view('admin.nodes.create', compact('object', 'stFields', 'stReqFields'));
     }
 
     public function nodeFields(Request $request) {
@@ -77,10 +88,6 @@ class AdminNodesController extends Controller {
      */
     public function store(Request $request) {
         $data = $request->all();
-        
-        if(isset($data['firstStep'])) {
-            return redirect()->route('nodes.create', ['modelType' => $data['modelType']]);
-        }
         
         Validators::nodesFormValidator($data)->validate();
 
