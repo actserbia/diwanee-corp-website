@@ -33,7 +33,7 @@ class AppQuery extends Query {
     private function addArgFilterToQuery($query, $argName, $argValue) {
         $queryArg = $this->args()[$argName];
         if($queryArg['type'] instanceof ListOfType) {
-            if($queryArg['category'] === 'date') {
+            if(isset($queryArg['category']) && $queryArg['category'] === 'date') {
                 $this->addDateArgFilterToQuery($query, $argName, $argValue);
             } elseif($queryArg['type']->ofType->name === 'String') {
                 $this->addStringListArgFilterToQuery($query, $argName, $argValue);
