@@ -142,7 +142,7 @@ class Node extends AppModel {
                 return isset($el['data']['id']) && $el['data']['id'] === $element->id;
             });
             if(empty($contentElement)) {
-                $element->detachElementItem();
+                $element->element_item()->detach();
 
                 $this->elements()->detach($element->id);
                 Element::find($element->id)->delete();
@@ -227,5 +227,9 @@ class Node extends AppModel {
         }
 
         $this->delete();
+    }
+    
+    public function scopeWithActive($query) {
+        $query->whereIn('status', NodeStatus::activeStatuses);
     }
 }

@@ -18,7 +18,12 @@ final class ElementType {
     const imageTypes = array(self::DiwaneeImage, self::SliderImage);
 
     const itemsTypesSettings = array(
-      self::DiwaneeNode => 'App\\Node',
-      self::DiwaneeList => 'App\\NodeList'
+      self::DiwaneeNode => [
+          'model' => 'App\\Node',
+          'filter' => 'modelType'
+      ],
+      self::DiwaneeList => [
+          'model' => 'App\\NodeList'
+      ]
     );
 }

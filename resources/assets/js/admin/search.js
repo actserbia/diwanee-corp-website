@@ -47,7 +47,7 @@ $(document).ready(function() {
             }
         });
         
-        SearchManager.populateTypeheadListForField(fields, this);
+        SearchManager.populateTypeheadListForFields(fields, this);
     };
     
     
@@ -138,7 +138,7 @@ $(document).ready(function() {
             this.data = data;
         },
         
-        populateTypeheadListForField: function(fields, object) {
+        populateTypeheadListForFields: function(fields, object) {
             if(fields.length > 0) {
                 var field = fields.pop();
                 
@@ -151,7 +151,7 @@ $(document).ready(function() {
                     },
                     success: function (data) {
                         SearchManager.typeaheadList[field.name] = data;
-                        SearchManager.populateTypeheadListForField(fields, object);
+                        SearchManager.populateTypeheadListForFields(fields, object);
                     }
                 });
             } else {

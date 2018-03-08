@@ -40,11 +40,11 @@ class Element extends AppModel {
         'data:remote_id' => true,
         'created_at' => true,
         'updated_at' => true,
-        'nodes:title' => true,
-        'nodes:status' => true,
-        'nodes:created_at' => false,
-        'nodes:updated_at' => false,
-        'nodes:deleted_at' => false
+        'node:title' => true,
+        'node:status' => true,
+        'node:created_at' => false,
+        'node:updated_at' => false,
+        'node:deleted_at' => false
     ];
     
     protected $statisticFields = [
@@ -77,7 +77,14 @@ class Element extends AppModel {
 
 
     protected $relationsSettings = [
-        'nodes' => [
+        'element_item' => [
+            'relationType' => 'belongsToMany',
+            'model' => 'App\\Node',
+            'pivot' => 'element_item',
+            'foreignKey' => 'element_id',
+            'relationKey' => 'item_id'
+        ],
+        'node' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Node',
             'pivot' => 'node_element',
@@ -85,10 +92,6 @@ class Element extends AppModel {
             'relationKey' => 'node_id',
             'automaticSave' => false
         ]
-    ];
-
-    protected $multipleFields = [
-        'nodes' => true
     ];
 
     public function getDataAttribute($value) {
@@ -113,6 +116,15 @@ class Element extends AppModel {
         
         $data->item_name = $this->element_item->defaultDropdownColumnValue;
         
+        if(isset(ElementType::itemsTypesSettings[$this->type]['filter'])) {
+            $filter = ElementType::itemsTypesSettings[$this->type]['filter'];
+            if($this->element_item->isRelation($filter)) {
+                $data->filter = $this->element_item->hasMultipleValues($filter) ? 0 : $this->element_item->$filter->id;
+            } else {
+                $data->filter = $this->element_item->$filter;
+            }
+        }
+        
         return $data;
     }
 
@@ -131,6 +143,7 @@ class Element extends AppModel {
 
         if(in_array($elementData['type'], array_keys(ElementType::itemsTypesSettings))) {
             unset($preparedElementData['data']['item_name']);
+            unset($preparedElementData['data']['filter']);
         }
 
         if(in_array($elementData['type'], ElementType::imageTypes)) {
@@ -169,20 +182,8 @@ class Element extends AppModel {
     }
     
     private function populateElementItemRelationSettings() {
-        if(!isset($this->relationsSettings['element_item']) && in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
-            $this->relationsSettings['element_item'] = [
-                'relationType' => 'belongsToMany',
-                'model' => ElementType::itemsTypesSettings[$this->type],
-                'pivot' => 'element_item',
-                'foreignKey' => 'element_id',
-                'relationKey' => 'item_id'
-            ];
-        }
-    }
-    
-    public function detachElementItem() {
         if(in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
-            $this->element_item()->detach();
+            $this->relationsSettings['element_item']['model'] = ElementType::itemsTypesSettings[$this->type]['model'];
         }
     }
 }

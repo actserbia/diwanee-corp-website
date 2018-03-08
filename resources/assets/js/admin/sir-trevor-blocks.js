@@ -292,30 +292,22 @@ SirTrevor.Blocks.DiwaneeNode = SirTrevor.Block.extend({
     droppable: false,
     textable: false,
 
-    editorHTML : '<div class="st-node-block">'+
-                    '<div class="type_options"> </div>'+
-                 '</div>',
+    editorHTML : '<div class="diwanee-element-item"> </div>',
+    
+    hasFilterSelect: true,
 
     onBlockRender: function () {
         var data = this.getData();
-        setDiwaneeElementItemContent(this.blockID, data.data, this.type);
+        setDiwaneeElementItemContent(this.blockID, data.data, this.hasFilterSelect);
     }
 });
 
 
 SirTrevor.Locales.en.blocks['diwanee list'] = {'title': 'Nodes List'};
 
-SirTrevor.Blocks.DiwaneeList = SirTrevor.Block.extend({
+SirTrevor.Blocks.DiwaneeList = SirTrevor.Blocks.DiwaneeNode.extend({
     type: 'diwanee list',
     icon_name: 'default',
 
-    droppable: false,
-    textable: false,
-
-    editorHTML : '<div class="st-nodes-list-block"> </div>',
-
-    onBlockRender: function () {
-        var data = this.getData();
-        setDiwaneeElementItemContent(this.blockID, data.data, this.type);
-    }
+    hasFilterSelect: false
 });

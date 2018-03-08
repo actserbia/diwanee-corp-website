@@ -59,6 +59,8 @@
           Route::get('/model/tags-parenting/add-tag-subtags', 'ModelController@modelTagsParentingAddTagSubtags')->name('model.tags-parenting.add-tag-subtags');
           Route::get('/model/tag/get-children', 'ModelController@modelGetTagChildren')->name('model.tag.get-children');
           Route::get('/model/add-checkbox', 'ModelController@modelAddCheckbox')->name('model.add-checkbox');
+          Route::get('/model/typeahead/diwanee-element/items', 'ModelController@typeaheadDiwaneeElementItems')->name('model.typeahead.diwanee-element-items');
+          Route::get('/model/typeahead/diwanee-element/items-filters', 'ModelController@typeaheadDiwaneeElementItemsFilters')->name('model.typeahead.diwanee-element-items-filters');
           
           Route::resource('nodes', 'AdminNodesController');
           Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');
@@ -71,7 +73,7 @@
               Route::match(['get', 'post'], 'elements', 'AdminSearchController@elements')->name('admin.search.elements');
               Route::match(['get', 'post'], 'node-lists', 'AdminSearchController@nodeLists')->name('admin.search.node-lists');
 
-              Route::match(['get'], 'typeahead', 'AdminSearchController@typeahead')->name('admin.search.typeahead');
+              Route::get('typeahead', 'AdminSearchController@typeahead')->name('admin.search.typeahead');
               Route::get('add-filter', 'AdminSearchController@searchAddFilter')->name('admin.search.add.filter');
               Route::get('add-input', 'AdminSearchController@searchAddInput')->name('admin.search.add.input');
               Route::get('nodes-list', 'AdminSearchController@nodesList')->name('admin.search.nodes.list');

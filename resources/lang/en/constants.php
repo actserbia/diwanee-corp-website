@@ -28,6 +28,20 @@ return [
         'diwanee_node' => 'Node',
         'diwanee_list' => 'List'
     ],
+    'ElementDataSource' => [
+        'youtube' => 'Youtube',
+        'vimeo' => 'Vimeo',
+        'vine' => 'Vine',
+        'dailymotion' => 'Dailymotion',
+        'kaltura' => 'Kaltura'
+    ],
+    'ElementDataHeadingType' => [
+        'h1' => 'H1',
+        'h2' => 'H2',
+        'h3' => 'H3',
+        'h4' => 'H4',
+        'h5' => 'H5'
+    ],
     'UserActive' => [
         '1' => 'Active',
         '0' => 'Not Active'

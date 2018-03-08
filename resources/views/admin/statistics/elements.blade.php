@@ -23,7 +23,7 @@
 
                         @include('blocks.search', ['field' => 'elements*created_at'])
 
-                        @include('blocks.search', ['field' => 'nodes:status', 'onlyAnd' => true])
+                        @include('blocks.search', ['field' => 'node:status', 'onlyAnd' => true])
 
                         <div class="ln_solid"></div>
 

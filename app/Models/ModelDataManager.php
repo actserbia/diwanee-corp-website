@@ -154,4 +154,6 @@ trait ModelDataManager {
         
         return $query;
     }
+    
+    public function scopeWithActive($query) {}
 }
