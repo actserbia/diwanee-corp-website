@@ -22,7 +22,7 @@ class ElementsQuery extends AppQuery {
     public function args() {
         return [
             'id' => [
-                'type' => Type::int(),
+                'type' => Type::listOf(Type::int()),
                 'name' => 'id'
             ],
             'data' => [

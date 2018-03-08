@@ -33,8 +33,9 @@ class TagsQuery extends AppQuery {
                 'name' => 'type'
             ],
             'created_at' => [
-                'type' => Type::string(),
-                'name' => 'created_at'
+                'type' => Type::listOf(Type::string()),
+                'name' => 'created_at',
+                'category' => 'date'
             ]
         ];
     }

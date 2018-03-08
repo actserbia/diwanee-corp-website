@@ -32,14 +32,15 @@ class NodeListsQuery extends AppQuery {
             ],
             'created_at' => [
                 'type' => Type::listOf(Type::string()),
-                'name' => 'created_at'
+                'name' => 'created_at',
+                'category' => 'date'
             ]
         ];
     }
     
     public function resolve($root, $args, SelectFields $fields, ResolveInfo $info) {
         $relations = array_keys($fields->getRelations());
-
+        
         if(in_array('list_items', $relations)) {
             $query = NodeList::with($relations)
                 ->where($this->makeWhereQuery($args));

@@ -35,12 +35,17 @@ class NodesQuery extends AppQuery {
                 'name' => 'node_type_id'
             ],
             'node_type' => [
-                'type' => Type::string(),
+                'type' => Type::listOf(Type::string()),
                 'name' => 'node_type'
             ],
             'created_at' => [
-                'type' => Type::string(),
-                'name' => 'created_at'
+                'type' => Type::listOf(Type::string()),
+                'name' => 'created_at',
+                'category' => 'date'
+            ],
+            'title' => [
+                'type' => Type::listOf(Type::string()),
+                'name' => 'title'
             ]
         ];
         

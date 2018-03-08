@@ -9,6 +9,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 class AppQuery extends Query {
     public function resolve($root, $args, SelectFields $fields,  ResolveInfo $info) {
         $items = null;
+        
         if($this->modelName !== '') {
             $query = $this->modelName::with(array_keys($fields->getRelations()))
                 ->where($this->makeWhereQuery($args));
@@ -32,24 +33,33 @@ class AppQuery extends Query {
     private function addArgFilterToQuery($query, $argName, $argValue) {
         $queryArg = $this->args()[$argName];
         if($queryArg['type'] instanceof ListOfType) {
-            if($queryArg['type']->ofType->name === 'Int') {
-                $query->whereIn($argName, $argValue);
-            } else {
+            if($queryArg['category'] === 'date') {
                 $this->addDateArgFilterToQuery($query, $argName, $argValue);
+            } elseif($queryArg['type']->ofType->name === 'String') {
+                $this->addStringListArgFilterToQuery($query, $argName, $argValue);
+            } else {
+                $query->whereIn($argName, $argValue);
             }
         } elseif($queryArg['type'] instanceof StringType) {
-            $query->where($argName, 'like', '%' . $argValue . '%');
+            $query->where($argName, 'like', $argValue);
         } else {
             $query->where($argName, $argValue);
         }
     }
     
-    private function addDateArgFilterToQuery($query, $argName, $argValues) {
-        if(!empty($argValues[0])) {
-            $query->where($argName, '>=', $argValues[0]);
+    private function addStringListArgFilterToQuery($query, $argName, $argValues) {
+        foreach($argValues as $argValue) {
+            $query->orWhere($argName, 'like', $argValue);
         }
-        if(!empty($argValues[1])) {
-            $query->where($argName, '<=', $argValues[1]);
+    }
+    
+    private function addDateArgFilterToQuery($query, $argName, $argValues) {
+        $operators = ['>=', '<=', '>', '<', '='];
+        if(in_array($argValues[0], $operators)) {
+            $operator = $argValues[0];
+            $query->where($argName, $operator, $argValues[1]);
+        } else {
+            $query->where($argName, '>=', $argValues[0])->where($argName, '<=', $argValues[1]);
         }
     }
     

@@ -7,6 +7,7 @@ use App\GraphQL\Type\Scalar\Timestamp;
 use App\GraphQL\Type\Scalar\Data;
 
 use GraphQL\Type\Definition\Type;
+use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
 class ElementsType extends GraphQLType
@@ -35,6 +36,14 @@ class ElementsType extends GraphQLType
             'data' => [
                 'type' => Data::type(),
                 'description' => 'Element data'
+            ],
+            'element_item_node' => [
+                'type' => Type::listOf(GraphQL::type('Node')),
+                'description' => 'Element item node'
+            ],
+            'element_item_list' => [
+                'type' => Type::listOf(GraphQL::type('NodeList')),
+                'description' => 'Element item list'
             ]
         ];
     }

@@ -177,6 +177,17 @@ class Element extends AppModel {
         if($method === 'element_item') {
             $this->populateElementItemRelationSettings();
         }
+        
+        if(strpos($method, 'element_item_') !== false && !$this->isRelation($method)) {
+            $itemTypeName = str_replace('element_item_', '', $method);
+            $this->relationsSettings[$method] = [
+                'relationType' => 'belongsToMany',
+                'model' => ElementType::itemsTypesSettings['diwanee_' . $itemTypeName]['model'],
+                'pivot' => 'element_item',
+                'foreignKey' => 'element_id',
+                'relationKey' => 'item_id'
+            ];
+        }
 
         return parent::__call($method, $parameters);
     }
