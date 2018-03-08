@@ -20,7 +20,7 @@ final class ElementType {
     const itemsTypesSettings = array(
       self::DiwaneeNode => [
           'model' => 'App\\Node',
-          'filter' => 'modelType'
+          'filter' => 'model_type'
       ],
       self::DiwaneeList => [
           'model' => 'App\\NodeList'
