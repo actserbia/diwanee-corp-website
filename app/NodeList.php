@@ -114,6 +114,19 @@ class NodeList extends AppModel {
     
     protected static $modelTypeField = 'node_type_id';
     
+    protected $listParams = [
+        'fields' => ['node_type_id', 'order_by_field_id', 'order', 'limit'],
+        'relations' => ['node_type', 'order_by_field', 'filter_tags', 'filter_authors']
+    ];
+    
+    public function getFilterListFieldsAttribute() {
+        return $this->listParams['fields'];
+    }
+    
+    public function getFilterListRelationsAttribute() {
+        return $this->listParams['relations'];
+    }
+    
     public function populateData($attributes = null) {
         $this->defaultFieldsValues['order_by_field'] = config('app')['default_list_order_by_field_id'];
         

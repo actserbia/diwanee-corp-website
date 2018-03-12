@@ -42,12 +42,14 @@ class NodeListsQuery extends AppQuery {
         $relations = array_keys($fields->getRelations());
         
         if(in_array('list_items', $relations)) {
-            $relations = ['node_type', 'order_by_field', 'filter_tags', 'filter_authors'];
+            $nodeList = new NodeList;
             
-            $query = NodeList::with($relations)
+            $selectFields = array_merge($fields->getSelect(), $nodeList->filterListFields);
+            
+            $query = $nodeList::with($nodeList->filterListRelations)
                 ->where($this->makeWhereQuery($args));
             $this->addOrderByIdToQuery($query, $args);
-            $lists = $query->paginate();
+            $lists = $query->select($selectFields)->paginate();
             return $lists;
         } else {
             return parent::resolve($root, $args, $fields, $info);
