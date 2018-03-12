@@ -42,14 +42,16 @@ class NodeListsQuery extends AppQuery {
         $relations = array_keys($fields->getRelations());
         
         if(in_array('list_items', $relations)) {
+            foreach($relations as $index => $relation) {
+                if($relation === 'list_items') {
+                    unset($relations[$index]);
+                }
+            }
+            
             $query = NodeList::with($relations)
                 ->where($this->makeWhereQuery($args));
             $this->addOrderByIdToQuery($query, $args);
             $lists = $query->paginate();
-            
-            foreach($lists as $list) {
-                $list->list_items = $list->items;
-            }
             return $lists;
         } else {
             return parent::resolve($root, $args, $fields, $info);

@@ -29,26 +29,25 @@ class Data extends StringType
         return self::$_instance;
     }
 
-    public function __construct()
-    {
+    public function __construct() {
+        parent::__construct();
         Utils::invariant($this->name, 'Type must be named.');
     }
 
-    public function serialize($value)
-    {
+    public function serialize($value) {
         return $this->toData($value);
     }
 
-    public function parseValue($value)
-    {
+    public function parseValue($value) {
         return $this->toData($value);
     }
 
-    protected function toData($value)
-    {
-        if (is_string($value)) {
-            return $value;
-        }
-        return json_encode($value);
+    protected function toData($value) {
+        return $value;
+        
+        //if (is_string($value)) {
+        //    return $value;
+        //}
+        //return json_encode($value);
     }
 }

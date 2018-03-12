@@ -10,6 +10,6 @@ return [
         'amazonPath' => env('AMAZON_PATH', null),
         'amazonAccessKey' => env('AMAZON_ACCESS_KEY', null),
         'amazonSecretKey' => env('AMAZON_SECRET_KEY', null),
-        'amazonImagesFolder' => 'diwanee_com_images'
+        'amazonImagesFolder' => 'diwanee_corp_images'
     ]
 ];

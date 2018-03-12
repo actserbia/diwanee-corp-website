@@ -8,18 +8,21 @@ use App\Constants\FieldTypeCategory;
 use Request;
 
 trait NodeModelManager {
-    public function __call($method, $parameters) {
-        if(strpos($method, 'additional_fields_from_') !== false && !$this->isRelation($method)) {
-            $nodeTypeName = Utils::getFormattedName(str_replace('additional_fields_from_', '', $method));
-            $this->relationsSettings[$method] = [
-                'relationType' => 'hasOne',
-                'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . $nodeTypeName,
-                'foreignKey' => 'node_id',
-                'relationKey' => 'id'
-            ];
-        }
+    public function __construct(array $attributes = array()) {
+        parent::__construct($attributes);
         
-        return parent::__call($method, $parameters);
+        // GRAPHQL!!!
+        if(strpos(Request::url(), '/graphql') !== false) {
+            $nodeTypeNames = NodeType::pluck('name');
+            foreach($nodeTypeNames as $nodeTypeName) {
+                $this->relationsSettings['additional_fields_from_' . Utils::getFormattedDBName($nodeTypeName)] = [
+                    'relationType' => 'hasOne',
+                    'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . $nodeTypeName,
+                    'foreignKey' => 'node_id',
+                    'relationKey' => 'id'
+                ];
+            }
+        }
     }
     
     public function populateData($attributes = null) {

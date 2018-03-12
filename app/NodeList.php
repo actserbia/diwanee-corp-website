@@ -10,6 +10,7 @@ use App\Constants\ElementType;
 use App\Models\ModelParentingTagsManager;
 use App\Models\ModelsUtils;
 use Auth;
+use Request;
 
 class NodeList extends AppModel {
     use SoftDeletes;
@@ -224,11 +225,11 @@ class NodeList extends AppModel {
 
         $this->delete();
     }
-
+    
     public function __call($method, $parameters) {
-        // This is added because of GraphQl
-        if($method === 'list_items' && !$this->isRelation($method)) {
-            $this->relationsSettings[$method] = [
+        // GRAPHQL!!!
+        if($method === 'list_items') {
+            $this->relationsSettings['list_items'] = [
                 'relationType' => 'belongsToMany',
                 'model' => 'App\\Node',
                 'pivot' => 'node_list_relation',
@@ -237,6 +238,15 @@ class NodeList extends AppModel {
             ];
 
             $this->multipleFields['list_items'] = true;
+        }
+        
+        // GRAPHQL!!!
+        if($method === 'hydrate') {
+            $lists = parent::__call($method, $parameters);
+            foreach($lists as $list) {
+                $list->list_items = $list->items;
+            }
+            return $lists;
         }
 
         return parent::__call($method, $parameters);

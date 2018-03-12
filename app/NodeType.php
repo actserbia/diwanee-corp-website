@@ -33,7 +33,6 @@ class NodeType extends AppModel {
             'model' => 'App\\Field',
             'pivot' => 'node_type_field',
             'pivotModel' => 'App\\NodeTypeField',
-            'filters' => ['field_type.category' => [FieldTypeCategory::Attribute]],
             'sortBy' => 'ordinal_number',
             'extraFields' => ['active', 'required'],
             'automaticSave' => false

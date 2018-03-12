@@ -10,6 +10,10 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
+use App\Constants\ElementType;
+use App\Utils\ImagesManager;
+use App\Converters\ToHtmlConverter;
+
 class ElementsType extends GraphQLType
 {
     protected $attributes = [
@@ -37,6 +41,10 @@ class ElementsType extends GraphQLType
                 'type' => Data::type(),
                 'description' => 'Element data'
             ],
+            'node' => [
+                'type' => Type::listOf(GraphQL::type('Node')),
+                'description' => 'Element node'
+            ],
             'element_item_node' => [
                 'type' => Type::listOf(GraphQL::type('Node')),
                 'description' => 'Element item node'
@@ -46,5 +54,24 @@ class ElementsType extends GraphQLType
                 'description' => 'Element item list'
             ]
         ];
+    }
+    
+    protected function resolveDataField($root, $args) {
+        $converter = new ToHtmlConverter();
+        $converter->convertElementData($root);
+        
+        $data = $root->data;
+        
+        unset($data->id);
+        
+        if(in_array($root->type, array_keys(ElementType::itemsTypesSettings))) {
+            unset($data->filter);
+        }
+        
+        if(in_array($root->type, ElementType::imageTypes)) {
+            $data->file->hash = ImagesManager::getHashFromS3Path($data->file->url);
+        }
+       
+        return $data;
     }
 }

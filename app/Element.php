@@ -9,6 +9,7 @@ use App\Constants\Settings;
 use App\Converters\ToHtmlConverter;
 use App\Converters\ToMarkdownConverter;
 use App\Utils\ImagesManager;
+use Request;
 
 class Element extends AppModel {
     protected $allAttributesFields = ['id', 'type', 'data', 'created_at', 'updated_at', 'deleted_at'];
@@ -93,7 +94,53 @@ class Element extends AppModel {
             'automaticSave' => false
         ]
     ];
+    
+    protected $multipleFields = [
+        'node' => true
+    ];
+    
+    public function __construct(array $attributes = array()) {
+        parent::__construct($attributes);
+        
+        if(in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
+            $this->relationsSettings['element_item']['model'] = ElementType::itemsTypesSettings[$this->type]['model'];
+        }
+    }
+    
+    public function __call($method, $parameters) {
+        // GRAPHQL!!!
+        if(strpos($method, 'element_item_') !== false) {
+            $this->relationsSettings[$method] = [
+                'relationType' => 'belongsToMany',
+                'model' => ElementType::itemsTypesSettings['diwanee_' . str_replace('element_item_', '', $method)]['model'],
+                'pivot' => 'element_item',
+                'foreignKey' => 'element_id',
+                'relationKey' => 'item_id'
+            ];
+            $this->multipleFields[$method] = true;
+        }
+        
+        // GRAPHQL!!!
+        if($method === 'hydrate' && strpos(Request::url(), '/graphql') !== false) {
+            $elements = parent::__call($method, $parameters);
+            foreach($elements as $element) {
+                if(in_array($element->type, array_keys(ElementType::itemsTypesSettings))) {
+                    foreach(array_keys(ElementType::itemsTypesSettings) as $elementType) {
+                        $relationName = 'element_item_' . str_replace('diwanee_', '', $elementType);
+                        if($element->type !== $elementType) {
+                            $element->$relationName = [];
+                        } else {
+                            $element->$relationName();
+                        }
+                    }
+                }
+            }
+            return $elements;
+        }
 
+        return parent::__call($method, $parameters);
+    }
+    
     public function getDataAttribute($value) {
         $data = json_decode($value);
 
@@ -111,9 +158,11 @@ class Element extends AppModel {
         return $data;
     }
     
+    public function setDataAttribute($value) {
+        $this->attributes['data'] = json_encode($value);
+    }
+    
     private function populateElementItemData($data) {
-        $this->populateElementItemRelationSettings();
-        
         $data->item_name = $this->element_item->defaultDropdownColumnValue;
         
         if(isset(ElementType::itemsTypesSettings[$this->type]['filter'])) {
@@ -170,31 +219,6 @@ class Element extends AppModel {
                 $this->element_item()->detach();
                 $this->element_item()->attach([$elementData['data']['item_id']]);
             }
-        }
-    }
-
-    public function __call($method, $parameters) {
-        if($method === 'element_item') {
-            $this->populateElementItemRelationSettings();
-        }
-        
-        if(strpos($method, 'element_item_') !== false && !$this->isRelation($method)) {
-            $itemTypeName = str_replace('element_item_', '', $method);
-            $this->relationsSettings[$method] = [
-                'relationType' => 'belongsToMany',
-                'model' => ElementType::itemsTypesSettings['diwanee_' . $itemTypeName]['model'],
-                'pivot' => 'element_item',
-                'foreignKey' => 'element_id',
-                'relationKey' => 'item_id'
-            ];
-        }
-
-        return parent::__call($method, $parameters);
-    }
-    
-    private function populateElementItemRelationSettings() {
-        if(in_array($this->type, array_keys(ElementType::itemsTypesSettings))) {
-            $this->relationsSettings['element_item']['model'] = ElementType::itemsTypesSettings[$this->type]['model'];
         }
     }
 }

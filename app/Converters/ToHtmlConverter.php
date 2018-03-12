@@ -28,16 +28,22 @@ class ToHtmlConverter extends CommonMarkConverter {
     }
 
     private function convertText($element) {
-        $element->data->text = $this->convertToHtml($element->data->text);
-        if($element->type == 'heading') {
-          $element->data->text = strip_tags($element->data->text, '<strong><b><i><a><em>');
-          $element->data->text = str_replace("\n", '', $element->data->text);
-        }
-        $element->data->format = 'html';
-    }
+        $data = $element->data;
 
+        $data->text = $this->convertToHtml($element->data->text);
+        if($element->type == 'heading') {
+          $data->text = strip_tags($element->data->text, '<strong><b><i><a><em>');
+          $data->text = str_replace("\n", '', $element->data->text);
+        }
+        $data->format = 'html';
+
+        $element->data = $data;
+    }
+    
     private function convertList($element) {
-        $listItems = explode(Settings::MarkdownConverterConfig['list_item_style'], $element->data->text);
+        $data = $element->data;
+
+        $listItems = explode(Settings::MarkdownConverterConfig['list_item_style'], $data->text);
         $htmlListItems = array();
         foreach($listItems as $listItem) {
             if(!empty($listItem)) {
@@ -47,8 +53,10 @@ class ToHtmlConverter extends CommonMarkConverter {
                 $htmlListItems[] = $item;
             }
         }
-        $element->data->listItems = $htmlListItems;
-        unset($element->data->text);
-        $element->data->format = 'html';
+        $data->listItems = $htmlListItems;
+        unset($data->text);
+        $data->format = 'html';
+
+        $element->data = $data;
     }
 }
