@@ -95,10 +95,6 @@ class Element extends AppModel {
         ]
     ];
     
-    protected $multipleFields = [
-        'node' => true
-    ];
-    
     public function __construct(array $attributes = array()) {
         parent::__construct($attributes);
         
@@ -109,18 +105,6 @@ class Element extends AppModel {
     
     public function __call($method, $parameters) {
         // GRAPHQL!!!
-        if(strpos($method, 'element_item_') !== false && strpos(Request::url(), '/graphql') !== false) {
-            $this->relationsSettings[$method] = [
-                'relationType' => 'belongsToMany',
-                'model' => ElementType::itemsTypesSettings['diwanee_' . str_replace('element_item_', '', $method)]['model'],
-                'pivot' => 'element_item',
-                'foreignKey' => 'element_id',
-                'relationKey' => 'item_id'
-            ];
-            $this->multipleFields[$method] = true;
-        }
-        
-        // GRAPHQL!!!
         if($method === 'hydrate' && strpos(Request::url(), '/graphql') !== false) {
             $elements = parent::__call($method, $parameters);
             foreach($elements as $element) {
@@ -129,8 +113,6 @@ class Element extends AppModel {
                         $relationName = 'element_item_' . str_replace('diwanee_', '', $elementType);
                         if($element->type !== $elementType) {
                             $element->$relationName = [];
-                        } else {
-                            $element->$relationName();
                         }
                     }
                 }
@@ -141,6 +123,24 @@ class Element extends AppModel {
         return parent::__call($method, $parameters);
     }
     
+    public function isRelation($field) {
+        if(strpos($field, 'element_item_') !== false && !isset($this->relationsSettings[$field]) && strpos(Request::url(), '/graphql') !== false) {
+            $elementType = 'diwanee_' . str_replace('element_item_', '', $field);
+            if(!isset($this->type) || $this->type === $elementType) {
+                $this->relationsSettings[$field] = [
+                    'relationType' => 'belongsToMany',
+                    'model' => ElementType::itemsTypesSettings[$elementType]['model'],
+                    'pivot' => 'element_item',
+                    'foreignKey' => 'element_id',
+                    'relationKey' => 'item_id'
+                ];
+                $this->multipleFields[$field] = true;
+            }
+        }
+
+        return parent::isRelation($field);
+    }
+
     public function getDataAttribute($value) {
         $data = json_decode($value);
 

@@ -15,7 +15,7 @@ class RelationManager {
         $relationsSettings = $this->object->getRelationSettings($this->relation);
         
         $query = $this->getAllRelationItemsQuery($relationsSettings);
-            
+
         if(isset($relationsSettings['filters'])) {
             $relationModel = $this->object->getRelationModel($this->relation);
             $relationModel::filter($relationsSettings['filters'], $query);

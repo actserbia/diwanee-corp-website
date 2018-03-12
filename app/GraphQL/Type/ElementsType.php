@@ -41,10 +41,6 @@ class ElementsType extends GraphQLType
                 'type' => Data::type(),
                 'description' => 'Element data'
             ],
-            'node' => [
-                'type' => Type::listOf(GraphQL::type('Node')),
-                'description' => 'Element node'
-            ],
             'element_item_node' => [
                 'type' => Type::listOf(GraphQL::type('Node')),
                 'description' => 'Element item node'

@@ -24,17 +24,6 @@ class AdminNodesController extends Controller {
         $object = new Node;
         return view('admin.nodes.list', compact('object'));
     }
-    
-    public function nodesList(Request $request) {
-        $data = $request->all();
-
-        $objects = [];
-        if(isset($data['model_type_id'])) {
-            $objects = Node::filterByModelType($data['model_type_id'])->get();
-        }
-
-        return view('blocks.nodes-list', compact('objects'));
-    }
 
     /**
      * Display the specified resource.
@@ -66,18 +55,6 @@ class AdminNodesController extends Controller {
         }
         
         return view('admin.nodes.create', compact('object', 'stFields', 'stReqFields'));
-    }
-
-    public function nodeFields(Request $request) {
-        $data = $request->all();
-
-        if(isset($data['model_type_id'])) {
-            $modelType = $data['model_type_id'];
-            $object = new Node(['model_type_id' => $data['model_type_id']]);
-            $stFields = $object->modelType->getSTFieldsArray();
-            $stReqFields = $object->modelType->getRequiredSTFieldsArray();
-            return view('blocks.node-fields', compact('object', 'modelType', 'stFields', 'stReqFields'));
-        }
     }
 
     /**

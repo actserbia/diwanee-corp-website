@@ -42,11 +42,7 @@ class NodeListsQuery extends AppQuery {
         $relations = array_keys($fields->getRelations());
         
         if(in_array('list_items', $relations)) {
-            foreach($relations as $index => $relation) {
-                if($relation === 'list_items') {
-                    unset($relations[$index]);
-                }
-            }
+            $relations = ['node_type', 'order_by_field', 'filter_tags', 'filter_authors'];
             
             $query = NodeList::with($relations)
                 ->where($this->makeWhereQuery($args));

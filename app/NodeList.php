@@ -226,22 +226,28 @@ class NodeList extends AppModel {
         $this->delete();
     }
     
-    public function __call($method, $parameters) {
+    public function isRelation($field) {
         // GRAPHQL!!!
-        if($method === 'list_items' && strpos(Request::url(), '/graphql') !== false) {
-            $this->relationsSettings['list_items'] = [
-                'relationType' => 'belongsToMany',
-                'model' => 'App\\Node',
-                'pivot' => 'node_list_relation',
-                'foreignKey' => 'node_list_id',
-                'relationKey' => 'relation_id'
-            ];
+        if($field === 'list_items' && !isset($this->relationsSettings[$field]) && strpos(Request::url(), '/graphql') !== false) {
+            if(!isset($this->id)) {
+                $this->relationsSettings['list_items'] = [
+                    'relationType' => 'belongsToMany',
+                    'model' => 'App\\Node',
+                    'pivot' => 'node_list_relation',
+                    'foreignKey' => 'node_list_id',
+                    'relationKey' => 'relation_id'
+                ];
 
-            $this->multipleFields['list_items'] = true;
+                $this->multipleFields['list_items'] = true;
+            }
         }
         
+        return parent::isRelation($field);
+    }
+
+    public function __call($method, $parameters) {
         // GRAPHQL!!!
-        if($method === 'hydrate' && strpos(Request::url(), '/graphql') !== false) {
+        if($method === 'hydrate' && strpos(Request::url(), '/graphql') !== false && isset($parameters[0][0]->node_type_id)) {
             $lists = parent::__call($method, $parameters);
             foreach($lists as $list) {
                 $list->list_items = $list->items;

@@ -15,18 +15,27 @@ trait ModelRelationsManager {
     
     public function getAttribute($key) {
         if($this->isRelation($key)) {
-            if ($this->relationLoaded($key)) {
-                return $this->relations[$key];
-            }
-
-            $relationItems = $this->hasMultipleValues($key) ? $this->$key()->get() : $this->$key()->first();
-            $this->setRelation($key, $relationItems);
-            return $relationItems;
+            return $this->getRelationAttributeValue($key);
         } else {
             return parent::getAttribute($key);
         }
     }
     
+    private function getRelationAttributeValue($relation) {
+        if ($this->relationLoaded($relation)) {
+            $relationsSettings = $this->getRelationSettings($relation);
+            if($relationsSettings['relationType'] === 'belongsToMany' && !$this->hasMultipleValues($relation) && isset($this->relations[$relation][0])) {
+                return $this->relations[$relation][0];
+            } else {
+                return $this->relations[$relation];
+            }
+        }
+
+        $relationItems = $this->hasMultipleValues($relation) ? $this->$relation()->get() : $this->$relation()->first();
+        $this->setRelation($relation, $relationItems);
+        return $relationItems;
+    }
+
     public function relationValues($relation) {
         $relationsSettings = $this->getRelationSettings($relation);
         $modelClass = $relationsSettings['model'];

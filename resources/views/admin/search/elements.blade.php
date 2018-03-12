@@ -52,14 +52,14 @@
 
                         <tbody>
                             @foreach($items as $object)
-                                <tr @if($object->nodes[0]->deleted_at != null) class="deleted" @endif>
+                                <tr @if($object->node->deleted_at != null) class="deleted" @endif>
                                     <td>{{ $object->id }}</td>
                                     <td>{{ $object->fieldValue('type') }}</td>
-                                    <td>{{ $object->nodes[0]->title }}</td>
-                                    <td>{{ $object->nodes[0]->id }}</td>
+                                    <td>{{ $object->node->title }}</td>
+                                    <td>{{ $object->node->id }}</td>
                                     <td>
-                                        @if($object->nodes[0]->deleted_at == null)
-                                            <a href="{{ route('nodes.edit', ['id' => $object->nodes[0]->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit_article')"></i> </a>
+                                        @if($object->node->deleted_at == null)
+                                            <a href="{{ route('nodes.edit', ['id' => $object->node->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit_article')"></i> </a>
                                         @endif
                                     </td>
                                 </tr>
