@@ -5,7 +5,13 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use \App\Models\Node\ClassGenerator\NMPageClassGenerator;
 use \App\Models\Node\ClassGenerator\NMQueueClassGenerator;
+use \App\Models\Node\ClassGenerator\GraphQLTypeClassGenerator;
+use \App\Models\Node\ClassGenerator\GraphQLQueryClassGenerator;
+
 use \App\NodeType;
+use \App\NodeModel\NmPage;
+use \App\NodeModel\NmQueue;
+
 
 class GeneratePredefinedTypes extends Command
 {
@@ -21,7 +27,7 @@ class GeneratePredefinedTypes extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Generate predefined types (Page and Queue)';
 
     /**
      * Create a new command instance.
@@ -40,14 +46,23 @@ class GeneratePredefinedTypes extends Command
      */
     public function handle()
     {
-        $page = new NodeType();
-        $page->name = 'Page';
+        $page =  NodeType::with('fields', 'attribute_fields')->where('name', 'like', 'Page')->first();
         $pageModel = new NMPageClassGenerator($page);
         $pageModel->generate();
+        $graphQlTypeClassGenerator = new GraphQLTypeClassGenerator($page);
 
-        $queue = new NodeType();
-        $queue->name = 'Queue';
+        $graphQlTypeClassGenerator->generate();
+
+        $graphQlQueryClassGenerator = new GraphQLQueryClassGenerator($page);
+        $graphQlQueryClassGenerator->generate();
+
+        $queue = NodeType::with('fields', 'attribute_fields')->where('name', 'like', 'Queue')->first();
         $queueModel = new NMQueueClassGenerator($queue);
         $queueModel->generate();
+        $graphQlTypeClassGenerator = new GraphQLTypeClassGenerator($queue);
+        $graphQlTypeClassGenerator->generate();
+
+        $graphQlQueryClassGenerator = new GraphQLQueryClassGenerator($queue);
+        $graphQlQueryClassGenerator->generate();
     }
 }
