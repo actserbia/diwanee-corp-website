@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,5 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FieldTypesTableSeeder::class);
         $this->call(NodeTypesTableSeeder::class);
         $this->call(FieldTableSeeder::class);
+
+        Artisan::call('nmtype:generate');
     }
 }
