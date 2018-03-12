@@ -24,6 +24,17 @@ class AdminNodesController extends Controller {
         $object = new Node;
         return view('admin.nodes.list', compact('object'));
     }
+    
+    public function nodesList(Request $request) {
+        $data = $request->all();
+
+        $objects = [];
+        if(isset($data['model_type_id'])) {
+            $objects = Node::filterByModelType($data['model_type_id'])->get();
+        }
+
+        return view('blocks.nodes-list', compact('objects'));
+    }
 
     /**
      * Display the specified resource.
