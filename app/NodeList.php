@@ -228,7 +228,7 @@ class NodeList extends AppModel {
     
     public function __call($method, $parameters) {
         // GRAPHQL!!!
-        if($method === 'list_items') {
+        if($method === 'list_items' && strpos(Request::url(), '/graphql') !== false) {
             $this->relationsSettings['list_items'] = [
                 'relationType' => 'belongsToMany',
                 'model' => 'App\\Node',
@@ -241,7 +241,7 @@ class NodeList extends AppModel {
         }
         
         // GRAPHQL!!!
-        if($method === 'hydrate') {
+        if($method === 'hydrate' && strpos(Request::url(), '/graphql') !== false) {
             $lists = parent::__call($method, $parameters);
             foreach($lists as $list) {
                 $list->list_items = $list->items;

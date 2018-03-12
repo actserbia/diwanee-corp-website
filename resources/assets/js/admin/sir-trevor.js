@@ -22,7 +22,7 @@ $(document).ready(function() {
         initialize: function() {
             $('form.node-form .btn-success').click(function() {
                 var isValid = true;
-
+                
                 $('.diwanee-element-item').each(function(index, object) {
                     if(!SirTrevorManager.setElementItemValidity($(object))) {
                         isValid = false;
@@ -57,12 +57,11 @@ $(document).ready(function() {
             var itemFromListById = SirTrevorManager.typeaheadList[elementType][filterValue].inArray(itemId, 'id');
             var itemFromListByName = SirTrevorManager.typeaheadList[elementType][filterValue].inArray(itemName, 'name');
             
-            var message = Localization[$('html').attr('lang')].element_item_not_valid;
             if(itemFromListById === -1 || itemFromListByName === -1 || itemFromListById.id !== itemFromListByName.id) {
                 if(!object.hasClass('has-error')) {
                     object.addClass('has-error');
                 }
-                object.append('<span class="help-block">' + message + '</span>');
+                object.append('<span class="help-block">' + Localization[$('html').attr('lang')].element_item_not_valid + '</span>');
                 return false;
             }
             
@@ -88,7 +87,8 @@ $(document).ready(function() {
             $('select[name=filter]', $('div[id=' + blockId + ']')).change(function(){
                 SirTrevorManager.addTypeahead(blockId);
             });
-            $('select[name=filter]', $('div[id=' + blockId + ']')).val(nodeData.filter).trigger('change');
+            
+            SirTrevorManager.addTypeahead(blockId);
         },
         
         getDiwaneeElementNodeTypeSelectContent: function(elementType, nodeData) {
@@ -96,7 +96,8 @@ $(document).ready(function() {
             
             list += '<option value="">' + Localization[$('html').attr('lang')].node_type_select__choose + '</option>';
             $.each(SirTrevorManager.filterList[elementType], function(i, element) {
-                list += '<option value="' + element.id + '">' + element.name + '</option>';
+                var selected = (element.id === nodeData.filter) ? 'selected' : '';
+                list += '<option value="' + element.id + '"' + selected + '>' + element.name + '</option>';
             });
             
             list += '</select>';

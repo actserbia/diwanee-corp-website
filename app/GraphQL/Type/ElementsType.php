@@ -66,7 +66,6 @@ class ElementsType extends GraphQLType
         
         if(in_array($root->type, array_keys(ElementType::itemsTypesSettings))) {
             unset($data->filter);
-            unset($data->item_name);
         }
         
         if(in_array($root->type, ElementType::imageTypes)) {

@@ -109,7 +109,7 @@ class Element extends AppModel {
     
     public function __call($method, $parameters) {
         // GRAPHQL!!!
-        if(strpos($method, 'element_item_') !== false) {
+        if(strpos($method, 'element_item_') !== false && strpos(Request::url(), '/graphql') !== false) {
             $this->relationsSettings[$method] = [
                 'relationType' => 'belongsToMany',
                 'model' => ElementType::itemsTypesSettings['diwanee_' . str_replace('element_item_', '', $method)]['model'],
@@ -163,6 +163,8 @@ class Element extends AppModel {
     }
     
     private function populateElementItemData($data) {
+        $this->relationsSettings['element_item']['model'] = ElementType::itemsTypesSettings[$this->type]['model'];
+        
         $data->item_name = $this->element_item->defaultDropdownColumnValue;
         
         if(isset(ElementType::itemsTypesSettings[$this->type]['filter'])) {
