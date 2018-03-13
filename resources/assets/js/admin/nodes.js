@@ -17,25 +17,5 @@ $(document).ready(function() {
         if($(this).val() !== '') {
             window.location = '/admin/nodes/create?model_type_id=' + $(this).val();
         }
-        /*$.ajax({
-            type: 'GET',
-            url: '/admin/node-fields',
-            data: {
-                model_type_id: $(this).val()
-            },
-            success: function (data) {
-                $('#node-fields').html(data);
-
-                $('.tags-parenting-relation').addAddSubtagsEvents();
-                $('.remove-selected').addRemoveSubtagsEvents();
-
-                $('.relation-multiple').addAddRelationItemSelectedEvents();
-                $('.remove-selected').addRemoveSelectedEventsAndDisableSelected();
-
-                $('.relation-multiple').showOrHide();
-
-                $('.relation-item[draggable=true]').setRelationItemsDraggableAndDroppable();
-            }
-        });*/
     });
 });
