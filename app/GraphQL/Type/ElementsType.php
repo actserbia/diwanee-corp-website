@@ -4,7 +4,7 @@ namespace App\GraphQL\Type;
 
 use App\Element;
 use App\GraphQL\Type\Scalar\Timestamp;
-use App\GraphQL\Type\Scalar\Data;
+use App\GraphQL\Type\Scalar\RawData;
 
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -38,7 +38,7 @@ class ElementsType extends GraphQLType
                 'description' => 'created'
             ],
             'data' => [
-                'type' => Data::type(),
+                'type' => RawData::type(),
                 'description' => 'Element data'
             ],
             'element_item_node' => [
