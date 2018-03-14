@@ -2,17 +2,17 @@
 
 namespace App\GraphQL\Type;
 
-use App\FieldType;
+use App\Field;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class FieldTypesType extends GraphQLType
+class FieldsType extends GraphQLType
 {
     protected $attributes = [
-        'name' => 'FieldTypes',
-        'description' => 'Field types',
-        'model' => FieldType::class
+        'name' => 'Fields',
+        'description' => 'Fields',
+        'model' => Field::class
     ];
 
     public function fields()
@@ -22,17 +22,13 @@ class FieldTypesType extends GraphQLType
                 'type' => Type::nonNull(Type::int()),
                 'description' => 'The id of the tag'
             ],
-            'name' => [
+            'title' => [
                 'type' => Type::string(),
                 'description' => 'title'
             ],
-            'tags' => [
-                'type' => Type::listOf(GraphQL::type('Tag')),
-                'description' => 'tags'
-            ],
-            'fields' => [
-                'type' => Type::listOf(GraphQL::type('Field')),
-                'description' => 'fields'
+            'field_types' => [
+                'type' => Type::listOf(GraphQL::type('FieldType')),
+                'description' => 'field types'
             ]
         ];
     }
