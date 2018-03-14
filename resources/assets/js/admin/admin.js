@@ -4,5 +4,5 @@ $(document).ready(function() {
     RelationsManager.initialize();
     RelationsTagsParentingManager.setSelectedValues();
     SearchManager.initialize();
-    FormManager.beautifyCheckboxes();
+    FormManager.beautifyInputFields();
 });

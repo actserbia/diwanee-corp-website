@@ -100,7 +100,7 @@ class ModelController extends Controller {
         $fieldPrefix = $data['fieldPrefix'];
         $field = $data['field'];
         $itemFieldValue = false;
-        $removeCheckbox = true;
+        $removeCheckbox = isset($params['removeCheckbox']) ? $params['removeCheckbox'] : true;
         
         return view('blocks.model.form_checkbox_list_item', compact('object', 'fieldPrefix', 'field', 'itemFieldValue', 'removeCheckbox'));
     }

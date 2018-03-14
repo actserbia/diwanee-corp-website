@@ -28,7 +28,8 @@ $(document).ready(function() {
                                 $('div[id=relation-item-' + $(object).attr('id') + '-' + selectedItemId + ']').setRelationItemsDraggableAndDroppable();
                             }
                             $('.add-checkbox', '#selected-' + $(object).attr('id')).addAddCheckboxEvents();
-                            FormManager.beautifyCheckboxes();
+                            $('input.has-levels[type=checkbox]', '#selected-' + $(object).attr('id')).setHasLevelsCheckboxEvents();
+                            $('input[type=checkbox]', '#selected-' + $(object).attr('id')).beautifyInputField();
                         }
                     });
                 }
@@ -48,6 +49,7 @@ $(document).ready(function() {
                 $(object).parent().remove();
 
                 $('select[id=' + $('select[id=' + selectFieldName + ']').data('depending') + ']').populateItems();
+                
                 return false;
             });
 

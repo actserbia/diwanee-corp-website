@@ -87,7 +87,8 @@ return [
             'not_delete_text' => 'It is not possible to delete tag which has children'
         ],
         'types' => [
-            'add_field' => 'Add field'
+            'add_field' => 'Add field',
+            'multiple_list_has_levels' => 'Has Levels'
         ],
         'search' => [
             'search_label' => 'Add search filter',

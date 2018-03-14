@@ -3,6 +3,7 @@ namespace App\Models\Node;
 
 use App\Utils\Utils;
 use App\Constants\Settings;
+use App\Constants\Models;
 use App\NodeType;
 use App\Constants\FieldTypeCategory;
 use Request;
@@ -49,11 +50,13 @@ trait NodeModelManager {
     
     private function populateTagFieldData($tagField) {
         if($tagField->pivot->active) {
+            $formType = $tagField->pivot->multiple_list[0] ? Models::FormFieldType_Relation_Select_TagsParenting : Models::FormFieldType_Relation_Input;
             $relationSettings = [
                 'parent' => 'tags',
                 'filters' => ['tag_type_id' => [$tagField->field_type_id]],
                 'automaticRender' => true,
-                'automaticSave' => true
+                'automaticSave' => true,
+                'formType' => $formType
             ];
             $this->relationsSettings[$tagField->formattedTitle] = $relationSettings;
 
@@ -61,7 +64,11 @@ trait NodeModelManager {
                 $this->requiredFields[] = $tagField->formattedTitle;
             }
 
-            $this->multipleFields[$tagField->formattedTitle] = $tagField->pivot->multiple_list;
+            if($tagField->pivot->multiple_list[0]) {
+                $this->multipleFields[$tagField->formattedTitle] = array_slice($tagField->pivot->multiple_list, 1);
+            } else {
+                $this->multipleFields[$tagField->formattedTitle] = (bool)$tagField->pivot->multiple_list[1];
+            }
         }
     }
 

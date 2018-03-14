@@ -9,10 +9,10 @@ $(document).ready(function() {
                         data: $(object).data()
                     },
                     success: function (data) {
-                        $(object).parent().before(data);
+                        $(object).parent().parent().find('div[id=checkbox-list]').append(data);
                         $('.remove-checkbox').addRemoveCheckboxEvents();
                         $(object).setAddCheckboxVisibility();
-                        FormManager.beautifyCheckboxes();
+                        $('input.checkbox-item').beautifyInputField();
                     }
                 });
             });
@@ -32,10 +32,34 @@ $(document).ready(function() {
     $.fn.setAddCheckboxVisibility = function() {
         $(this).each(function(index, object) {
             if($('input.checkbox-item[data-model-id=' + $(object).data('model-id') + ']').length >= $(object).data('maximum-count')) {
-                $(object).attr('style', 'display:none;');
+                $(object).fadeOut('slow');
             } else {
-                $(object).attr('style', 'display:block;');
+                $(object).fadeIn('slow');
             }
+        });
+    };
+    
+    $.fn.setHasLevelsCheckboxEvents = function() {
+        $(this).each(function(index, object) {
+            $(object).on('ifChanged', function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/admin/model/add-checkbox',
+                    data: {
+                        data: $(object).data(),
+                        removeCheckbox: $(object).is(":checked") ? 1 : 0
+                    },
+                    success: function (data) {
+                        $(object).parent().parent().find('div[id=checkbox-list]').html(data);
+                        $('input.checkbox-item').beautifyInputField();
+                        if($(object).is(":checked")) {
+                            $('div.checkbox-add').fadeIn('fast');
+                        } else {
+                            $('div.checkbox-add').fadeOut('fast');
+                        }
+                    }
+                });
+            });
         });
     };
     
@@ -53,6 +77,8 @@ $(document).ready(function() {
     
     ModelManager = {
         initialize: function() {
+            $('input.has-levels[type=checkbox]').setHasLevelsCheckboxEvents();
+            
             $('.add-checkbox').addAddCheckboxEvents();
             $('.remove-checkbox').addRemoveCheckboxEvents();
             

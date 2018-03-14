@@ -198,4 +198,18 @@ trait ModelFormManager {
 
         return '';
     }
+    
+    public function formCheckboxListValue($fullFieldName, $index, $type = 'single') {
+        $formValue = $this->formValue($fullFieldName);
+        
+        if(empty($formValue)) {
+            return $formValue;
+        }
+        
+        if($type === 'list') {
+            return array_slice($formValue, $index);
+        } else {
+            return $formValue[$index];
+        }
+    }
 }

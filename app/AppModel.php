@@ -100,12 +100,4 @@ class AppModel extends Model {
         
         return true;
     }
-    
-    public function checkIfCanRemoveItem() {
-        if(method_exists($this, 'checkIfCanRemove')) {
-            return $this->checkIfCanRemove();
-        }
-        
-        return true;
-    }
 }

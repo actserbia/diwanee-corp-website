@@ -15,12 +15,18 @@ $(document).ready(function() {
         });
     });
     
-    FormManager = {
-        beautifyCheckboxes: function() {
-            $('input').iCheck({
+    $.fn.beautifyInputField = function() {
+        $(this).each(function(index, object) {
+            $(object).iCheck({
                 checkboxClass: 'icheckbox_flat-green',
                 radioClass: 'iradio_flat-green'
             });
+        });
+    };
+    
+    FormManager = {
+        beautifyInputFields: function() {
+            $('input').beautifyInputField();
         }
     }
 });
