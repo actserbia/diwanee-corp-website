@@ -84,7 +84,7 @@ class Node extends AppModel {
             'relationKey' => 'tag_id',
             'sortBy' => 'ordinal_number',
             'automaticSave' => false,
-            'parenting' => true
+            'formType' => Models::FormFieldType_Relation_Select_TagsParenting
         ],
         'elements' => [
             'relationType' => 'belongsToMany',

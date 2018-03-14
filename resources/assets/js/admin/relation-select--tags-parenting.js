@@ -10,14 +10,14 @@ $(document).ready(function() {
                 }
 
                 if($(object).hasClass('relation-multiple')) {
-                    $('a[id=' + $(object).data('relation') + '-remove-selected]', $('[id=selected-' + $(object).attr('id') + ']')).each(function(index, aObject) {
+                    $('a[id=' + $(object).data('relation') + '-remove-selected]', $('div[id=selected-' + $(object).attr('id') + ']')).each(function(index, aObject) {
                         selectedValues.push($(aObject).data('id'));
                     });
                 }
 
                 var nextLevel = $(object).data('level') + 1;
                 var nextLevelSelect = $(object).data('relation') + '-' + nextLevel;
-                if($('#' + nextLevelSelect).length) {
+                if($('select[id=' + nextLevelSelect + ']').length) {
                     $.ajax({
                         type: 'GET',
                         url: '/admin/model/tag/get-children',
@@ -27,28 +27,28 @@ $(document).ready(function() {
                         dataType: 'json',
                         success: function (data) {
                             if(data.length === 0) {
-                                $('.remove-selected', '#selected-' + nextLevelSelect).trigger('click');
+                                $('a.remove-selected', $('div[id=selected-' + nextLevelSelect + ']')).trigger('click');
 
-                                $('#' + nextLevelSelect).parent().parent().remove();
-                                $('#selected-' + nextLevelSelect).parent().parent().remove();
-                                $('#separator-' + nextLevelSelect).remove();
+                                $('select[id=' + nextLevelSelect + ']').parent().parent().remove();
+                                $('div[id=selected-' + nextLevelSelect + ']').parent().parent().remove();
+                                $('[id=separator-' + nextLevelSelect + ']').remove();
                             } else {
                                 if(!$(object).hasClass('relation-multiple')) {
-                                    $('#' + nextLevelSelect).empty();
-                                    $('#' + nextLevelSelect).append($('<option>', {
+                                    $('select[id=' + nextLevelSelect + ']').empty();
+                                    $('select[id=' + nextLevelSelect + ']').append($('<option>', {
                                         value: '',
                                         text: ''
                                     }));
                                 }
                                 $.each(data, function (index, item) {
-                                    $('#' + nextLevelSelect).append($('<option>', {
+                                    $('select[id=' + nextLevelSelect + ']').append($('<option>', {
                                         value: item.value,
                                         text: item.text
                                     }));
                                 });
                                 if(!$(object).hasClass('relation-multiple')) {
-                                    $('.remove-selected', '#selected-' + nextLevelSelect).trigger('click');
-                                    $('#' + nextLevelSelect).val('').trigger('change');
+                                    $('a.remove-selected', '[id=selected-' + nextLevelSelect + ']').trigger('click');
+                                    $('select[id=' + nextLevelSelect + ']').val('').trigger('change');
                                 }
                             }
                         }
@@ -75,19 +75,19 @@ $(document).ready(function() {
                         dataType: 'json',
                         success: function (data) {
                             $.each(data, function (index, item) {
-                                $.each($('option', '#' + nextLevelSelect), function (index, option) {
+                                $.each($('option', $('select[id=' + nextLevelSelect + ']')), function (index, option) {
                                     if($(option).val() == item.value) {
                                         $(option).remove();
                                     }
                                 });
 
-                                $('a[data-id=' + item.value + ']', '#selected-' + nextLevelSelect).trigger('click');
+                                $('a[data-id=' + item.value + ']', $('div[id=selected-' + nextLevelSelect + ']')).trigger('click');
                             });
 
-                            if($('option', '#' + nextLevelSelect).length === 1) {
-                                $('#' + nextLevelSelect).parent().parent().remove();
-                                $('#selected-' + nextLevelSelect).parent().parent().remove();
-                                $('#separator-' + nextLevelSelect).remove();
+                            if($('option', $('select[id=' + nextLevelSelect + ']')).length === 1) {
+                                $('select[id=' + nextLevelSelect + ']').parent().parent().remove();
+                                $('div[id=selected-' + nextLevelSelect + ']').parent().parent().remove();
+                                $('[id=separator-' + nextLevelSelect + ']').remove();
                             }
                         }
                 });
@@ -118,14 +118,17 @@ $(document).ready(function() {
                     data: {
                         data: $(object).data(),
                         tagsIds: selectedValues,
-                        checkSelected: $('#' + $(object).data('relation') + '-1').data('selected-values')
+                        checkSelected: $('select[id=' + $(object).data('relation') + '-1]').data('selected-values')
                     },
                     success: function (data) {
                         $('[id=separator-' + $(object).attr('id') + ']').after(data);
-                        $('#' + nextLevelSelect).addAddSubtagsEvents();
-                        $('#' + nextLevelSelect).addAddRelationItemSelectedEvents();
-                        $('.remove-selected', '#selected-' + nextLevelSelect).addRemoveSelectedEventsAndDisableSelected();
-                        $('#' + nextLevelSelect).setSelectedValues();
+                        $('select[id=' + nextLevelSelect + ']').addAddSubtagsEvents();
+                        $('select[id=' + nextLevelSelect + ']').addAddRelationItemSelectedEvents();
+                        $('a.remove-selected', $('div[id=selected-' + nextLevelSelect + ']')).addRemoveSelectedEventsAndDisableSelected();
+                        if($('select[id=' + nextLevelSelect + ']').data('sortable')) {
+                            $('.relation-item[draggable=true]', $('div[id=selected-' + nextLevelSelect + ']')).setRelationItemsDraggableAndDroppable();
+                        }
+                        $('select[id=' + nextLevelSelect + ']').setSelectedValues();
                     }
                 });
             });
@@ -135,12 +138,12 @@ $(document).ready(function() {
 
     RelationsTagsParentingManager = {
         initialize: function() {
-            $('.tags-parenting-relation').addAddSubtagsEvents();
-            $('.remove-selected').addRemoveSubtagsEvents();
+            $('select.tags-parenting-relation').addAddSubtagsEvents();
+            $('a.remove-selected').addRemoveSubtagsEvents();
         },
 
         setSelectedValues: function() {
-            $('.tags-parenting-relation').setSelectedValuesFromData();
+            $('select.tags-parenting-relation').setSelectedValuesFromData();
         }
     };
 });

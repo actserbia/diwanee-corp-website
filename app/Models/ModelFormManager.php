@@ -13,7 +13,7 @@ trait ModelFormManager {
         
         $fieldName = $this->getFieldName($fullFieldName);
         if($this->isRelation($fieldName)) {
-            return $this->isParentingRelation($fieldName) ? Models::FormFieldType_Relation_TagsParenting : Models::FormFieldType_Relation;
+            return $this->relationFormType($fieldName);
         }
         
         $modelManager = $this->getModelManager($fieldName);
@@ -181,5 +181,21 @@ trait ModelFormManager {
     
     public function formFieldName($fullFieldName, $prefix = '') {
         return empty($prefix) ? $fullFieldName : $prefix . '[' . $fullFieldName . ']';
+    }
+
+    public function formInputRelationValue($relation, $column) {
+        if(Request::old('_token') !== null) {
+            return Request::old($relation);
+        }
+
+        if(Request::post('_token') !== null) {
+            return Request::post($relation);
+        }
+
+        if(isset($this->$relation->id)) {
+            return $this->$relation->$column;
+        }
+
+        return '';
     }
 }

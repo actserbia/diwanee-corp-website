@@ -38,13 +38,12 @@ class ModelController extends Controller {
     public function modelAddRelationItem(Request $request) {
         $params = $request->all();
         
-        $data = $params['data'];
-        $field = $data['relation'];
-        $level = isset($data['level']) ? $data['level'] : 1;
-        $object = isset($data['modelId']) ? $data['model']::find($data['modelId']) : new $data['model'](['model_type_id' => $data['modelType']]);
-        $itemModel = $object->getRelationModel($data['relation']);
+        $field = $params['relation'];
+        $level = isset($params['level']) ? $params['level'] : 1;
+        $object = isset($params['modelId']) ? $params['model']::find($params['modelId']) : new $params['model'](['model_type_id' => $params['modelType']]);
+        $itemModel = $object->getRelationModel($params['relation']);
         $item = $itemModel::find($params['itemId']);
-        $fullData = $data['fullData'];
+        $fullData = $params['fullData'];
 
         if(($params['type'] === 'tags_parenting')) {
             return view('blocks.model.relation.form_relation_tags_parenting_item', compact('object', 'field', 'item', 'fullData', 'level'));
@@ -70,7 +69,7 @@ class ModelController extends Controller {
             }
         }
 
-        return ($tags->count() === 0) ? '' : view('blocks.model.relation.form_relation_tags_parenting', compact('object', 'field', 'tags', 'level', 'checkSelected'));
+        return ($tags->count() === 0) ? '' : view('blocks.model.relation.form_relation_select__tags_parenting', compact('object', 'field', 'tags', 'level', 'checkSelected'));
     }
 
     public function modelGetTagChildren(Request $request) {
@@ -189,5 +188,29 @@ class ModelController extends Controller {
         }
         
         return json_encode($filters);
+    }
+
+    public function typeaheadModelRelationItems(Request $request) {
+        $params = $request->all();
+
+        $column = $params['column'];
+
+        $object = isset($params['modelId']) ? $params['model']::find($params['modelId']) : new $params['model'](['model_type_id' => $params['modelType']]);
+        $items = $object->getRelationValues($params['relation'], isset($params['dependsOnValues']) ? $params['dependsOnValues'] : []);
+
+        $itemsOutput = [];
+        foreach($items as $item) {
+            $itemsOutput[] = array(
+                'id' => $item->id,
+                'name' => $item->$column
+            );
+        }
+
+        $results = array();
+        foreach($itemsOutput as $item) {
+            $results[] = array_map('strval', $item);
+        }
+
+        return json_encode($results);
     }
 }

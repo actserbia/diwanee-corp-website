@@ -61,6 +61,7 @@
           Route::get('/model/add-checkbox', 'ModelController@modelAddCheckbox')->name('model.add-checkbox');
           Route::get('/model/typeahead/diwanee-element/items', 'ModelController@typeaheadDiwaneeElementItems')->name('model.typeahead.diwanee-element-items');
           Route::get('/model/typeahead/diwanee-element/items-filters', 'ModelController@typeaheadDiwaneeElementItemsFilters')->name('model.typeahead.diwanee-element-items-filters');
+          Route::get('/model/typeahead/model-relation-items', 'ModelController@typeaheadModelRelationItems')->name('model.typeahead.model-relation-items');
           
           Route::resource('nodes', 'AdminNodesController');
           Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');

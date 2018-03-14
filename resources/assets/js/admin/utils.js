@@ -6,9 +6,8 @@ $(document).ready(function() {
         for(var index = 0; index < self.length; index++){
             var item = self[index];
             if (item.hasOwnProperty(property)) {
-                if (item[property].toLowerCase() === searchFor.toLowerCase()) {
-                    retVal = index;
-                    return retVal;
+                if (item[property] == searchFor) {
+                    return index;
                 }
             }
         };

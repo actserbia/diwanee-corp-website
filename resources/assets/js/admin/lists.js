@@ -18,6 +18,8 @@ $(document).ready(function() {
                 $('.relation-multiple').showOrHide();
 
                 $('.relation-item[draggable=true]').setRelationItemsDraggableAndDroppable();
+
+                $('input.relation-multiple-input', $('#node-list-tags')).relationPopulateTypehead();
             }
         });
     });

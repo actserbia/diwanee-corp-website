@@ -76,7 +76,7 @@ class NodeList extends AppModel {
             'foreignKey' => 'node_list_id',
             'relationKey' => 'relation_id',
             'pivotFilters' => ['type' => [NodeListRelationType::Tag]],
-            'parenting' => true
+            'formType' => Models::FormFieldType_Relation_Input
         ],
         'filter_authors' => [
             'relationType' => 'belongsToMany',
@@ -194,30 +194,14 @@ class NodeList extends AppModel {
     }
     
     private function addFilterByTagsToItemsQuery($items) {
-        $filterTagIds = [];
-        $tagIds = ModelsUtils::getItemsFieldsList($this->filter_tags, 'id');
-        foreach($this->filter_tags as $tag) {
-            if(empty(array_intersect(ModelsUtils::getItemsFieldsList($tag->children, 'id'), $tagIds))) {
-                $filterTagIds[] = $tag->id;
-            }
-        }
-        
-        return $items->where(function ($query) use($filterTagIds) {
-            foreach($filterTagIds as $filterTagId) {
-                $query->orWhereHas('tags', function($q) use ($filterTagId) {
-                    $q->where('tag_id', '=', $filterTagId);
-                });
-            }
+        return $items->where(function ($query) {
+            $query->orWhereHas('tags', function($q) {
+                $q->whereIn('tag_id', ModelsUtils::getItemsFieldsList($this->filter_tags, 'id'));
+            });
         });
     }
     
     public function saveData(array $data) {
-        if(isset($data['filter_tags'] )) {
-            foreach($data['filter_tags'] as $tagId) {
-                $data['pivot_filter_tags'][$tagId]['type'] = NodeListRelationType::Tag;
-            }
-        }
-        
         if(isset($data['filter_authors'] )) {
             foreach($data['filter_authors'] as $authorId) {
                 $data['pivot_filter_authors'][$authorId]['type'] = NodeListRelationType::Author;

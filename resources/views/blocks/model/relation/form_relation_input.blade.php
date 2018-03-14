@@ -3,8 +3,10 @@
         {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-        <select class="form-control {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->isRelation($field) ? 'relation' : ''}} {{$object->hasMultipleValues($field) ? 'relation-multiple' : ''}}"
-            id="{{ $field }}" name="{{ $field }}"
+        <input class="form-control relation {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->hasMultipleValues($field) ? 'relation-multiple' : ''}}"
+            type="text"
+            value="{{ $object->formInputRelationValue($field, isset($column) ? $column : $object->getDefaultDropdownColumn($field)) }}"
+            id="{{ $field }}-input" name="{{ $field }}-input"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"
@@ -14,18 +16,13 @@
             data-sortable="{{ $object->isSortable($field) }}"
             data-full-data="{{ isset($fullData) ?: false }}"
             @if($object->isRequired($field) && !$object->hasMultipleValues($field)) required @endif
-        >
-                <option value=""></option>
-                @foreach ($object->formRelationValues($field) as $item)
-                    <option value="{{ $item->id }}"
-                        @if($object->checkFormSelectRelationValue($field, $item)) selected @endif
-                        @if($object->checkFormDisabledRelationValue($field, $item)) disabled @endif
-                    >
-                        {{ isset($column) ? $item->$column : $item[$item->defaultDropdownColumn] }}
-                    </option>
-                @endforeach
+        />
+        @if (!$object->hasMultipleValues($field))
+            <input type="hidden" id="{{ $field }}" name="{{ $field }}" class="single-relation"
+                value="{{ $object->formInputRelationValue($field, 'id') }}"
+            />
+        @endif
 
-        </select>
         @if ($errors->has($field))
             <span class="help-block">{{ $errors->first($field) }}</span>
         @endif

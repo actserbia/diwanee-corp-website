@@ -3,6 +3,7 @@ namespace App\Models;
 
 use App\Models\RelationManager\RelationManager;
 use App\Utils\Utils;
+use App\Constants\Models;
 
 trait ModelRelationsManager {
     public function __call($method, $parameters) {
@@ -57,9 +58,9 @@ trait ModelRelationsManager {
         return isset($this->relationsSettings[$field]);
     }
     
-    public function isParentingRelation($relation) {
+    public function relationFormType($relation) {
         $relationsSettings = $this->getRelationSettings($relation);
-        return (isset($relationsSettings['parenting']) && $relationsSettings['parenting']);
+        return isset($relationsSettings['formType']) ? $relationsSettings['formType'] : Models::FormFieldType_Relation_Select;
     }
     
     public function checkRelationType($field, $relationName) {
@@ -224,15 +225,14 @@ trait ModelRelationsManager {
     }
     
     protected function checkIfItemIsInRelation($relation, $item) {
-        $found = false;
-        
-        foreach($this->$relation as $relationItem) {
-            if($relationItem->id === $item->id) {
-                $found = true;
-                break;
+        if($this->hasMultipleValues($relation)) {
+            foreach($this->$relation as $relationItem) {
+                if($relationItem->id === $item->id) {
+                    return true;
+                }
             }
+        } else {
+            return (isset($this->$relation->id) && $this->$relation->id === $item->id);
         }
-        
-        return $found;
     }
 }

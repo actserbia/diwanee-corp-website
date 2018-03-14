@@ -13,8 +13,8 @@
             data-model-type="{{ $object->modelTypeIdValue() }}"
             data-model-id="{{ $object->id }}"
             data-column="{{ isset($column) ? $column : $object->getDefaultDropdownColumn($field) }}"
-            data-sortable="1"
-            data-full-data="0"
+            data-sortable="{{ $object->isSortable($field) }}"
+            data-full-data="{{ isset($fullData) ?: false }}"
             data-level="{{ isset($level) ? $level : 1 }}"
             @if(!isset($checkSelected) || $checkSelected)
                 data-selected-values="{{ $object->formRelationValuesIdsList($field, isset($level) ? $level : 1) }}"
