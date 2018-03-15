@@ -9,7 +9,6 @@
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"
             data-model-id="{{ $object->id }}"
-            data-column="{{ isset($column) ? $column : $object->getDefaultDropdownColumn($field) }}"
             data-depends-on="{{ $object->dependsOn($field) }}"
             data-sortable="{{ $object->isSortable($field) }}"
             data-full-data="{{ isset($fullData) ?: false }}"
@@ -21,7 +20,7 @@
                         @if($object->checkFormSelectRelationValue($field, $item)) selected @endif
                         @if($object->checkFormDisabledRelationValue($field, $item)) disabled @endif
                     >
-                        {{ isset($column) ? $item->$column : $item[$item->defaultDropdownColumn] }}
+                        {{ $item[$item->defaultDropdownColumn] }}
                     </option>
                 @endforeach
 
@@ -39,7 +38,7 @@
         <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
             <div id="selected-{{ $field }}">
                 @foreach ($object->formSelectedValues($field) as $item)
-                    @include('blocks.model.relation.form_relation_item', ['item' => $item])
+                    @include('blocks.model.relation.form_relation_item', ['item' => $item, 'withCategory' => false])
                 @endforeach
             </div>
         </div>

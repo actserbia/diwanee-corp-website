@@ -53,38 +53,39 @@ trait ModelFormManager {
         return Request::old('_token') !== null ? Request::old($fieldName) : $this->attributeValue($fieldName);
     }
     
-    public function formReadonlyData($fullFieldName, $column = null) {
+    public function formReadonlyData($fullFieldName, $withCategory = false) {
         $fieldName = $this->getFieldName($fullFieldName);
         if($this->isRelation($fieldName)) {
-            $dropdownColumn = ($column !== null) ? $column : $this->getRelationModel($fieldName)->defaultDropdownColumn;
-            return $this->getRelationItemData($fieldName, $dropdownColumn);
+            return $this->getRelationItemData($fieldName, $withCategory);
         } elseif($this->attributeType($fieldName) === Models::AttributeType_Enum) {
             return [[
-                'label' => __('constants.' . $this->modelName . Utils::getFormattedName($fieldName))[$this->attributeValue($fieldName)],
+                'label' => $withCategory ? $this->getNameWithCategoryField() : __('constants.' . $this->modelName . Utils::getFormattedName($fieldName))[$this->attributeValue($fieldName)],
                 'value' => $this->attributeValue($fieldName)
             ]];
         } else {
             return [[
-                'label' => $this->attributeValue($fieldName),
+                'label' => $withCategory ? $this->getNameWithCategoryField() : $this->attributeValue($fieldName),
                 'value' => $this->attributeValue($fieldName)
             ]];
         }
     }
     
-    private function getRelationItemData($relation, $attribute) {
+    private function getRelationItemData($relation, $withCategory) {
         $values = [];
         
+        $dropdownColumn = $this->getRelationModel($relation)->defaultDropdownColumn;
+
         if($this->hasMultipleValues($relation)) {
             foreach($this->$relation as $relationItem) {
                 $values[] = [
-                    'label' => $relationItem->$attribute,
+                    'label' => $withCategory ? $relationItem->getNameWithCategoryField() : $relationItem->$dropdownColumn,
                     'value' => $relationItem->id,
                     'url' => $relationItem->editUrl
                 ];
             }
         } elseif(isset($this->$relation)) {
             $values[] = [
-                'label' => $this->$relation->$attribute,
+                'label' => $withCategory ? $this->$relation->getNameWithCategoryField() : $this->$relation->$dropdownColumn,
                 'value' => $this->$relation->id,
                 'url' => $this->$relation->editUrl
             ];
@@ -198,7 +199,7 @@ trait ModelFormManager {
         }
 
         if(isset($this->$relation->id)) {
-            return $this->$relation->$column;
+            return ($column === 'id') ? $this->id : $this->$relation->getNameWithCategoryField();
         }
 
         return '';

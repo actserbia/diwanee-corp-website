@@ -12,7 +12,6 @@
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"
             data-model-id="{{ $object->id }}"
-            data-column="{{ isset($column) ? $column : $object->getDefaultDropdownColumn($field) }}"
             data-sortable="{{ $object->isSortable($field) }}"
             data-full-data="{{ isset($fullData) ?: false }}"
             data-level="{{ isset($level) ? $level : 1 }}"
@@ -27,7 +26,7 @@
                         @if($object->checkFormSelectRelationValue($field, $item, isset($level) ? $level : 1)) selected @endif
                         @if($object->checkFormDisabledRelationValue($field, $item, isset($level) ? $level : 1)) disabled @endif
                     >
-                        {{ isset($column) ? $item->$column : $item[$item->defaultDropdownColumn] }}
+                        {{ $item[$item->defaultDropdownColumn] }}
                     </option>
                 @endforeach
 

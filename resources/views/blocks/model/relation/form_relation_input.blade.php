@@ -5,13 +5,12 @@
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
         <input class="form-control relation {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->hasMultipleValues($field) ? 'relation-multiple' : ''}}"
             type="text"
-            value="{{ $object->formInputRelationValue($field, isset($column) ? $column : $object->getDefaultDropdownColumn($field)) }}"
+            value="{{ $object->formInputRelationValue($field, $object->getDefaultDropdownColumn($field)) }}"
             id="{{ $field }}-input" name="{{ $field }}-input"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"
             data-model-id="{{ $object->id }}"
-            data-column="{{ isset($column) ? $column : $object->getDefaultDropdownColumn($field) }}"
             data-depends-on="{{ $object->dependsOn($field) }}"
             data-sortable="{{ $object->isSortable($field) }}"
             data-full-data="{{ isset($fullData) ?: false }}"
@@ -36,7 +35,7 @@
         <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
             <div id="selected-{{ $field }}">
                 @foreach ($object->formSelectedValues($field) as $item)
-                    @include('blocks.model.relation.form_relation_item', ['item' => $item])
+                    @include('blocks.model.relation.form_relation_item', ['item' => $item, 'withCategory' => true])
                 @endforeach
             </div>
         </div>

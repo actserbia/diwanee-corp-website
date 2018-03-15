@@ -257,6 +257,7 @@ $(document).ready(function() {
                     data: {
                         itemId: relationItemId,
                         type: $(object).hasClass('tags-parenting-relation') ? 'tags_parenting' : '',
+                        withCategory: 1,
                         relation: $(object).data('relation'),
                         model: $(object).data('model'),
                         modelId: $(object).data('model-id'),

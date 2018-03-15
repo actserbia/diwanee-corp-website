@@ -1,3 +1,3 @@
-@foreach ($object->formReadonlyData($field, isset($column) ? $column : null) as $data)
+@foreach ($object->formReadonlyData($field, $withCategory) as $data)
     {{ $data['label'] }}
 @endforeach

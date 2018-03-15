@@ -3,7 +3,7 @@
         {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-        @foreach ($object->formReadonlyData($field, isset($column) ? $column : null) as $data)
+        @foreach ($object->formReadonlyData($field) as $data)
             @if($readonly === 'readonly_field')
                 <input class="form-control" type="text" value="{{ $data['label'] }}"
                     id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}_text" 

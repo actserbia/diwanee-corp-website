@@ -18,8 +18,8 @@ class ModelController extends Controller {
         $params = $request->all();
 
         $data = $params['data'];
-        $column = $data['column'];
         $model = new $data['model'];
+        $column = $model->getDefaultDropdownColumn($data['relation']);
 
         $items = $model->getRelationValues($data['relation'], isset($params['dependsOnValues']) ? $params['dependsOnValues'] : []);
 
@@ -44,11 +44,12 @@ class ModelController extends Controller {
         $itemModel = $object->getRelationModel($params['relation']);
         $item = $itemModel::find($params['itemId']);
         $fullData = $params['fullData'];
+        $withCategory = isset($params['withCategory']) ? $params['withCategory'] : false;
 
         if(($params['type'] === 'tags_parenting')) {
             return view('blocks.model.relation.form_relation_tags_parenting_item', compact('object', 'field', 'item', 'fullData', 'level'));
         } else {
-            return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData'));
+            return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData', 'withCategory'));
         }
     }
 
@@ -193,20 +194,14 @@ class ModelController extends Controller {
     public function typeaheadModelRelationItems(Request $request) {
         $params = $request->all();
 
-        $column = $params['column'];
-
         $object = isset($params['modelId']) ? $params['model']::find($params['modelId']) : new $params['model'](['model_type_id' => $params['modelType']]);
         $items = $object->getRelationValues($params['relation'], isset($params['dependsOnValues']) ? $params['dependsOnValues'] : []);
 
         $itemsOutput = [];
         foreach($items as $item) {
-            $name = $item->$column;
-            if(!empty($item->categoryField)) {
-                $name = $item->$column . ' (' . $item->categoryField . ')';
-            }
             $itemsOutput[] = array(
                 'id' => $item->id,
-                'name' => $name
+                'name' => $item->getNameWithCategoryField()
             );
         }
 
