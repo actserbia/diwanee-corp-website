@@ -32,12 +32,36 @@ class NodesType extends GraphQLType {
                 'description' => 'Author'
             ],
             'tags' => [
+                'args' => [
+                    'id' => [
+                        'type' => Type::int(),
+                        'description' => 'id of the article',
+                    ],
+                    'name' => [
+                        'type' => Type::string(),
+                        'description' => 'title'
+                    ],
+                    'tag_type_id' => [
+                        'type' => Type::int(),
+                        'description' => 'taxonomy id'
+                    ],
+                    'taxonomy' => [
+                        'type' => Type::string(),
+                        'description' => 'taxonomy name'
+                    ]
+                    ],
                 'type' => Type::listOf(GraphQL::type('Tag')),
                 'description' => 'tags'
             ],
             'elements' => [
                 'type' => Type::listOf(GraphQL::type('Element')),
-                'description' => 'Elements'
+                'description' => 'Elements',
+                'args' => [
+                    'type' => [
+                        'type' => Type::string(),
+                        'description' => 'type of element',
+                    ]
+                 ]
             ],
             'created_at' => [
                 'type' => Timestamp::type(),
@@ -54,5 +78,30 @@ class NodesType extends GraphQLType {
         }
         
         return $fields;
+    }
+
+    public function resolveTagsField($root, $args)
+    {
+        if (isset($args['id'])) {
+            return  $root->tags->where('id', $args['id']);
+        }
+        if (isset($args['tag_type_id'])) {
+            return  $root->tags->where('tag_type_id', $args['tag_type_id']);
+        }
+        if (isset($args['taxonomy'])) {
+            return  $root->tags->where('tag_type.name', $args['taxonomy']);
+        }
+
+        return $root->tags;
+    }
+
+    public function resolveElementsField($root, $args)
+    {
+
+        if (isset($args['type'])) {
+            return  $root->elements->where('type', $args['type']);
+        }
+
+        return $root->elements;
     }
 }

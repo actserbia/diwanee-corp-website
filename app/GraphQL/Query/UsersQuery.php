@@ -26,7 +26,7 @@ class UsersQuery extends AppQuery {
         return [
             'id' => [
                 'name' => 'id',
-                'type' => Type::int()
+                'type' => Type::listOf(Type::int())
             ],
             'email' => [
                 'name' => 'email',
@@ -35,7 +35,16 @@ class UsersQuery extends AppQuery {
             'role' => [
                 'name' => 'role',
                 'type' => Type::string()
+            ],
+            'active' => [
+                'name' => 'active',
+                'type' => Type::int()
+            ],
+            'name' => [
+                'name' => 'name',
+                'type' => Type::string()
             ]
         ];
+
     }
 }

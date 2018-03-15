@@ -21,7 +21,8 @@ class NodesQuery extends AppQuery {
     }
 
     public function type() {
-        return Type::listOf(GraphQL::type('Node'));
+        return GraphQL::paginate('Node');
+        //return Type::listOf(GraphQL::type('Node'));
     }
 
     public function args() {
@@ -46,7 +47,15 @@ class NodesQuery extends AppQuery {
             'title' => [
                 'type' => Type::listOf(Type::string()),
                 'name' => 'title'
-            ]
+            ],
+//            'author' => [
+//                'type' => GraphQL::type('UserInput'),
+//                'name' => 'author'
+//            ],
+//            'author_id' => [
+//                'type' => Type::listOf(Type::int()),
+//                'name' => 'author_id'
+//            ]
         ];
         
         foreach($this->args as $argName => $argType) {
@@ -64,6 +73,9 @@ class NodesQuery extends AppQuery {
             $nodeType = NodeType::where('name', $args['node_type'])->first();
             $args['node_type_id'] = [$nodeType->id];
             unset($args['node_type']);
+        }
+        if(array_key_exists('author', $args)) {
+            var_dump($args['author']);
         }
 
         return parent::resolve($root, $args, $fields, $info);

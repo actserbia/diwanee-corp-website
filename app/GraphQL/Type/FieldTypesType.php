@@ -20,7 +20,7 @@ class FieldTypesType extends GraphQLType
         return [
             'id' => [
                 'type' => Type::nonNull(Type::int()),
-                'description' => 'The id of the tag'
+                'description' => 'id'
             ],
             'name' => [
                 'type' => Type::string(),

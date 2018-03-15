@@ -35,22 +35,31 @@ class UsersType extends GraphQLType
                 'type' => Type::string(),
                 'description' => 'The role of the user'
             ],
+            'active' => [
+                'type' => Type::int(),
+                'description' => 'User status'
+            ],
 
             // Nested Resource
-//            'nodes' => [
-//                'args' => [
-//                    'id' => [
-//                        'type' => Type::int(),
-//                        'description' => 'id of the node',
-//                    ],
-//                    'title' => [
-//                        'type' => Type::string(),
-//                        'description' => 'title'
-//                    ],
-//                ],
-//                'type' => Type::listOf(GraphQL::type('Node')),
-//                'description' => 'node',
-//            ],
+            'nodes' => [
+                'args' => [
+                    'id' => [
+                        'name' => 'id',
+                        'type' => Type::int()
+
+                    ],
+                    'title' => [
+                        'name' => 'title',
+                        'type' => Type::string()
+                    ],
+                    'tag' => [
+                        'name' => 'tag',
+                        'type' => Type::string()
+                    ],
+                ],
+                'type' => Type::listOf(GraphQL::type('Node')),
+                'description' => 'User nodes'
+            ]
         ];
     }
 
@@ -58,4 +67,20 @@ class UsersType extends GraphQLType
     {
         return strtolower($root->email);
     }
+
+    public function resolveNodesField($root, $args)
+    {
+        if (isset($args['id'])) {
+            return  $root->nodes->where('id', $args['id']);
+        }
+        if (isset($args['title'])) {
+            return  $root->nodes->where('title', 'like', $args['title']);
+        }
+        if (isset($args['tag'])) {
+            return  $root->nodes->where('tag.name', $args['tag']);
+        }
+
+        return $root->nodes;
+    }
+
 }

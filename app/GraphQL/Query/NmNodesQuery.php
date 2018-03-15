@@ -24,7 +24,7 @@ class NmNodesQuery extends AppQuery {
     public function args() {
         $args = [
             'id' => [
-                'type' => Type::int(),
+                'type' => Type::listOf(Type::int()),
                 'name' => 'id'
             ],
             'node_id' => [

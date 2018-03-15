@@ -14,7 +14,7 @@ class AppQuery extends Query {
             $query = $this->modelName::with(array_keys($fields->getRelations()))
                 ->where($this->makeWhereQuery($args));
             $this->addOrderByIdToQuery($query, $args);
-            $items = $query->select($fields->getSelect())->paginate();
+            $items = $query->select($fields->getSelect())->paginate(); //$args['limit'], ['*'], 'page', $args['page']);
         }
         
         return $items;
