@@ -29,6 +29,7 @@ trait NodeModelManager {
             
             $this->populateAttributesFieldsData();
             $this->populateTagFieldsData();
+            $this->populateRelationFieldsData();
         }
     }
 
@@ -50,25 +51,54 @@ trait NodeModelManager {
     
     private function populateTagFieldData($tagField) {
         if($tagField->pivot->active) {
-            $formType = $tagField->pivot->multiple_list[0] ? Models::FormFieldType_Relation_Select_TagsParenting : Models::FormFieldType_Relation_Input;
-            $relationSettings = [
-                'parent' => 'tags',
-                'filters' => ['tag_type_id' => [$tagField->field_type_id]],
-                'automaticRender' => true,
-                'automaticSave' => true,
-                'formType' => $formType
-            ];
-            $this->relationsSettings[$tagField->formattedTitle] = $relationSettings;
-
-            if($tagField->pivot->required) {
-                $this->requiredFields[] = $tagField->formattedTitle;
+            $this->populateFieldData($tagField, 'tags');
+        }
+    }
+    
+    private function populateRelationFieldsData() {
+        $relationFieldsRelationName = FieldTypeCategory::Relation . '_fields';
+        foreach($this->modelType->$relationFieldsRelationName as $relationField) {
+            $this->populateRelationFieldData($relationField);
+        }
+    }
+    
+    private function populateRelationFieldData($relationField) {
+        if($relationField->pivot->active) {
+            $parentRelation = '';
+            
+            foreach($this->relationsSettings as $relation => $relationSettings) {
+                if($relationSettings['relationType'] === 'belongsToMany' && $relationSettings['pivot'] === 'node_' . Utils::getFormattedDBName($relationField->title)) {
+                    $parentRelation = $relation;
+                    break;
+                }
             }
-
-            if($tagField->pivot->multiple_list[0]) {
-                $this->multipleFields[$tagField->formattedTitle] = array_slice($tagField->pivot->multiple_list, 1);
-            } else {
-                $this->multipleFields[$tagField->formattedTitle] = (bool)$tagField->pivot->multiple_list[1];
+          
+            if($parentRelation !== '') {
+                $this->populateFieldData($relationField, $parentRelation);
             }
+        }
+    }
+    
+    private function populateFieldData($field, $parentRelation) {
+        $formType = $field->pivot->multiple_list[0] ? Models::FormFieldType_Relation_Select_TagsParenting : Models::FormFieldType_Relation_Input;
+                
+        $relationSettings = [
+            'parent' => $parentRelation,
+            'automaticRender' => true,
+            'automaticSave' => true,
+            'formType' => $formType
+        ];
+                
+        $this->relationsSettings[$field->formattedTitle] = $relationSettings;
+
+        if($field->pivot->required) {
+            $this->requiredFields[] = $field->formattedTitle;
+        }
+
+        if($field->pivot->multiple_list[0]) {
+            $this->multipleFields[$field->formattedTitle] = array_slice($field->pivot->multiple_list, 1);
+        } else {
+            $this->multipleFields[$field->formattedTitle] = (bool)$field->pivot->multiple_list[1];
         }
     }
 

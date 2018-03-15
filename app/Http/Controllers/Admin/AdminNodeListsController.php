@@ -56,7 +56,7 @@ class AdminNodeListsController extends Controller {
     public function store(Request $request) {
         $data = $request->all();
 
-        Validators::nodeTypesFormValidator($data)->validate();
+        Validators::nodeListsFormValidator($data)->validate();
 
         $object = new NodeList;
 
@@ -87,7 +87,7 @@ class AdminNodeListsController extends Controller {
     public function update(Request $request, $id) {
         $data = $request->all();
 
-        Validators::nodeTypesFormValidator($data, ['id' => $id])->validate();
+        Validators::nodeListsFormValidator($data, ['id' => $id])->validate();
 
         $object = NodeList::findOrFail($id);
 

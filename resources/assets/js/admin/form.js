@@ -5,11 +5,14 @@ $(document).ready(function() {
         form.find('input[type=checkbox]').each( function () {
             var checkbox = $(this);
             
-            if(checkbox.is(":checked") || checkbox.is(":disabled")) {
-                checkbox.attr('value', '1');
-            } else {
-                checkbox.attr('value', '0');
+            if(!checkbox.is(":disabled")) {
+                if(checkbox.is(":checked")) {
+                    checkbox.attr('value', '1');
+                } else {
+                    checkbox.attr('value', '0');
+                }
             }
+            
             checkbox.prop('disabled', false);
             checkbox.prop('checked', true);
         });

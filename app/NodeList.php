@@ -4,6 +4,7 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Collection;
 use App\Constants\Models;
+use App\Constants\Database;
 use App\Constants\FieldTypeCategory;
 use App\Constants\NodeListRelationType;
 use App\Constants\ElementType;
@@ -23,6 +24,7 @@ class NodeList extends AppModel {
     protected $requiredFields = ['name', 'node_type', 'limit'];
     
     protected $defaultFieldsValues = [
+        'order_by_field' => Database::Field_GlobalAttribute_CreatedAt_Id,
         'order' => '0'
     ];
 
@@ -128,8 +130,6 @@ class NodeList extends AppModel {
     }
     
     public function populateData($attributes = null) {
-        $this->defaultFieldsValues['order_by_field'] = config('app')['default_list_order_by_field_id'];
-        
         if(isset($this->id) || isset($attributes['model_type_id'])) {
             $this->modelType = isset($this->id) ? $this->node_type : NodeType::find($attributes['model_type_id']);
             $this->populateTagFieldsData();

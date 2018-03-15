@@ -12,7 +12,6 @@ class NodeTypeField extends Pivot {
 
     public $timestamps = false;
 
-
     protected $casts = [
         'multiple_list' => 'array'
     ];

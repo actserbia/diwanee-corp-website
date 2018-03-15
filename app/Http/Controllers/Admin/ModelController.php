@@ -200,9 +200,13 @@ class ModelController extends Controller {
 
         $itemsOutput = [];
         foreach($items as $item) {
+            $name = $item->$column;
+            if(!empty($item->categoryField)) {
+                $name = $item->$column . ' (' . $item->categoryField . ')';
+            }
             $itemsOutput[] = array(
                 'id' => $item->id,
-                'name' => $item->$column
+                'name' => $name
             );
         }
 

@@ -113,7 +113,9 @@ class Node extends AppModel {
     ];
 
     protected static $modelTypeField = 'node_type_id';
-
+    
+    protected $editable = true;
+    
     public function getEditorContentAttribute() {
         $data = array();
         

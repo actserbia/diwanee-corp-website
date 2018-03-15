@@ -53,6 +53,12 @@ class NodeType extends AppModel {
             'filters' => ['field_type.category' => [FieldTypeCategory::SirTrevor]],
             'automaticSave' => true
         ],
+        'relation_fields' => [
+            'parent' => 'fields',
+            'filters' => ['field_type.category' => [FieldTypeCategory::Relation]],
+            'extraFields' => ['active', 'required', 'multiple_list'],
+            'automaticSave' => true
+        ],
 
         'nodes' => [
             'relationType' => 'hasMany',
@@ -68,6 +74,7 @@ class NodeType extends AppModel {
         'attribute_fields' => true,
         'tag_fields' => true,
         'sir_trevor_fields' => true,
+        'relation_fields' => true,
         'nodes' => true
     ];
 

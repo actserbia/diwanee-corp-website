@@ -8,4 +8,6 @@ final class FieldTypeCategory {
     const Attribute = 'attribute';
     const Tag = 'tag';
     const SirTrevor = 'sir_trevor';
+    const Relation = 'relation';
+    
 }

@@ -22,6 +22,8 @@
                         @include('blocks.model', ['field' => 'parents'])
                         
                         @include('blocks.model', ['field' => 'children'])
+                        
+                        @include('blocks.model', ['field' => 'tag_data', 'readonly' => 'label_with_link'])
 
                         <div class="ln_solid"></div>
 

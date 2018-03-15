@@ -90,7 +90,7 @@ $(document).ready(function() {
     
     TagsManager = {
         initialize: function() {
-            $('#tag_type').change(function() {
+            $('#tags-list #tag_type').change(function() {
                 $.ajax({
                     type: 'GET',
                     url: '/admin/tags-list',
@@ -98,11 +98,11 @@ $(document).ready(function() {
                         tag_type_id: $(this).val()
                     },
                     success: function (data) {
-                        $('#tags-list').html(data);
+                        $('div[id=tags-list-content]').html(data);
                         if($.trim(data) === '') {
-                            $('#tags-reoder').attr('style', 'display:none;');
+                            $('div[id=tags-reoder]').attr('style', 'display:none;');
                         } else {
-                            $('#tags-reoder').attr('style', 'display:block;');
+                            $('div[id=tags-reoder]').attr('style', 'display:block;');
                         }
                         $('.tag-item[draggable=true]').setTagsDraggableAndDroppable();
                     }
@@ -114,7 +114,7 @@ $(document).ready(function() {
                     type: 'GET',
                     url: '/admin/tags-reorder-tags',
                     data: {
-                        tags: $('#tags-list').getTagsOrder()
+                        tags: $('div[id=tags-list-content]').getTagsOrder()
                     },
                     success: function (data) {
                         $('.alert').remove();

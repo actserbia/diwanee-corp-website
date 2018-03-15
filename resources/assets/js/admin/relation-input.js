@@ -56,7 +56,7 @@ $(document).ready(function() {
 
     $.fn.riAddRemoveSelectedEvents = function() {
         $(this).each(function(index, object) {
-            var relationFieldName = $(object).data('field');
+            var relationFieldName = $(object).data('field') + '-input';
             if(typeof $(object).data('level') !== 'undefined') {
                 relationFieldName += '-' + $(object).data('level');
             }
@@ -75,14 +75,19 @@ $(document).ready(function() {
                 
                 return false;
             });
+            
+            console.log(relationFieldName);
+            console.log(RelationInputsManager.typeaheadList);
 
             var index = RelationInputsManager.typeaheadList[relation].inArray($(object).data('id'), 'id');
+            
             var selectedItem = RelationInputsManager.typeaheadList[relation][index];
 
             if(typeof RelationInputsManager.typeaheadListSelected[relation] === 'undefined') {
                 RelationInputsManager.typeaheadListSelected[relation] = [];
             }
             RelationInputsManager.typeaheadListSelected[relation].push(selectedItem);
+            console.log(RelationInputsManager.typeaheadListSelected);
         });
     };
 
@@ -232,7 +237,7 @@ $(document).ready(function() {
         },
 
         addRelationItem: function(relationItemId, object) {
-            if($(object).hasClass('.relation-multiple')) {
+            if($(object).hasClass('relation-multiple')) {
                 $(object).val('');
             }
 

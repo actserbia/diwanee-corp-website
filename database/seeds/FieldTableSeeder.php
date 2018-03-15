@@ -4,7 +4,7 @@ use App\FieldType;
 use App\NodeType;
 use App\NodeTypeField;
 use App\Field;
-
+use App\Constants\FieldTypeCategory;
 
 class FieldTableSeeder extends Seeder
 {
@@ -39,7 +39,6 @@ class FieldTableSeeder extends Seeder
         $nodeTypeField->field_id = $fieldId;
         $nodeTypeField->active = 1;
         $nodeTypeField->required = 0;
-        $nodeTypeField->multiple = 0;
         $nodeTypeField->ordinal_number = 0;
 
         $nodeTypeField->save();
@@ -63,10 +62,31 @@ class FieldTableSeeder extends Seeder
         $nodeTypeField->field_id = $fieldId;
         $nodeTypeField->active = 1;
         $nodeTypeField->required = 0;
-        $nodeTypeField->multiple = 0;
         $nodeTypeField->ordinal_number = 1;
 
         $nodeTypeField->save();
+        
+        $this->addTagDataNodeType();
+    }
+    
+    private function addTagDataNodeType() {
+        $tagDataNodeType = NodeType::where('name', '=', 'Tag Data')->first();
+        
+        $field = Field::join('field_types', 'fields.field_type_id', '=', 'field_types.id')
+            ->where('field_types.name', '=', 'Tag')
+            ->where('field_types.category', '=', FieldTypeCategory::Relation)
+            ->select('fields.*')
+            ->first();
+        
+        $nodeTypeField = new NodeTypeField;
 
+        $nodeTypeField->node_type_id = $tagDataNodeType->id;
+        $nodeTypeField->field_id = $field->id;
+        $nodeTypeField->active = 1;
+        $nodeTypeField->required = 1;
+        $nodeTypeField->multiple_list = [false, false];
+        $nodeTypeField->ordinal_number = 0;
+
+        $nodeTypeField->save();
     }
 }

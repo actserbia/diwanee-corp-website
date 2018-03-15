@@ -12,9 +12,9 @@
         
         @include('blocks.model', ['field' => 'name'])
         
-        @include('blocks.model', ['field' => 'email', 'readonly' => true])
+        @include('blocks.model', ['field' => 'email', 'readonly' => 'readonly_field'])
         
-        @include('blocks.model', ['field' => 'role', 'readonly' => true])
+        @include('blocks.model', ['field' => 'role', 'readonly' => 'readonly_field'])
                   
         <div class="ln_solid"></div>
 

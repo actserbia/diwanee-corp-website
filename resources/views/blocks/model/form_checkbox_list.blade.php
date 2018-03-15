@@ -7,6 +7,7 @@
         <input class="form-control has-levels" type="checkbox"
             id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}" 
             name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}[]"
+            value="{{ $object->formCheckboxListValue($field, 0) }}"
             @if($object->formCheckboxListValue($field, 0)) checked @endif
             @if(!$object->checkIfCanRemove()) disabled @endif
             data-model="{{ $object->modelClass }}"

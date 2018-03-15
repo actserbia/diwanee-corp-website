@@ -116,7 +116,7 @@ abstract class ClassGenerator {
         GraphQLQueryClassGenerator::deleteAll();
     }
 
-    public static function generateAllFilesForNodeType($nodeType, $oldName) {
+    public static function generateAllFilesForNodeType($nodeType, $oldName = null) {
         $nodeModelClassGenerator = new NodeModelClassGenerator($nodeType, $oldName);
         $nodeModelClassGenerator->generate();
 

@@ -3,6 +3,7 @@ namespace App\Models;
 
 use App\Constants\Models;
 use App\Models\ModelsUtils;
+use App\Utils\Utils;
 
 trait ModelDataManager {
     use ModelAttributesManager;
@@ -156,4 +157,29 @@ trait ModelDataManager {
     }
     
     public function scopeWithActive($query) {}
+    
+    public function getEditUrlAttribute() {
+        return $this->editable ? route(Utils::getFormattedDBName($this->modelName) . 's.edit', ['id' => $this->id]) : null;
+    }
+    
+    public function getCategoryFieldAttribute() {
+        if(isset($this->categoryField)) {
+            $categoryField = $this->categoryField;
+            
+            if($this->isRelation($categoryField)) {
+                $defaultColumn = $this->getDefaultDropdownColumn($categoryField);
+                return $this->$categoryField->$defaultColumn;
+            }
+            
+            elseif($this->attributeType($categoryField) === Models::AttributeType_Enum) {
+                return __('constants.' . $this->modelName . Utils::getFormattedName($categoryField))[$this->attributeValue($categoryField)];
+            }
+            
+            else {
+                return $this->$categoryField;
+            }
+        }
+        
+        return '';
+    }
 }

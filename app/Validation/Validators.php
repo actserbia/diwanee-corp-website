@@ -55,8 +55,7 @@ class Validators {
         $nameUnique = isset($additional['id']) ? 'unique:node_types,id,' . $additional['id'] : 'unique:node_types';
         
         return Validator::make($data, [
-            'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
-            'status' => self::modelRequiredValidation('status', $model)
+            'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255'
         ]);
     }
     
@@ -74,11 +73,20 @@ class Validators {
         $model = new Node(['model_type_id' => $data['model_type']]);
 
         $titleUnique = isset($additional['id']) ? 'unique:nodes,id,' . $additional['id'] : 'unique:nodes';
-        $id = isset($additional['id']) ? $additional['id'] : '';
 
         return Validator::make($data, [
             'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255',
             'model_type' => self::modelRequiredValidation('model_type', $model) . '|exists:node_types,id'
+        ]);
+    }
+    
+    public static function nodeListsFormValidator(array $data, array $additional = []) {
+        $model = new NodeType;
+
+        $nameUnique = isset($additional['id']) ? 'unique:node_lists,id,' . $additional['id'] : 'unique:node_lists';
+        
+        return Validator::make($data, [
+            'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255'
         ]);
     }
 

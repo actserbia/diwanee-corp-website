@@ -53,36 +53,41 @@ trait ModelFormManager {
         return Request::old('_token') !== null ? Request::old($fieldName) : $this->attributeValue($fieldName);
     }
     
-    public function formReadonlyValue($fullFieldName) {
-        $fieldName = $this->getFieldName($fullFieldName);
-        if($this->isRelation($fieldName)) {
-            return $this->getRelationItemValue($fieldName, 'id');
-        } else {
-            return [$this->attributeValue($fieldName)];
-        }
-    }
-    
-    public function formReadonlyText($fullFieldName, $column = null) {
+    public function formReadonlyData($fullFieldName, $column = null) {
         $fieldName = $this->getFieldName($fullFieldName);
         if($this->isRelation($fieldName)) {
             $dropdownColumn = ($column !== null) ? $column : $this->getRelationModel($fieldName)->defaultDropdownColumn;
-            return $this->getRelationItemValue($fieldName, $dropdownColumn);
+            return $this->getRelationItemData($fieldName, $dropdownColumn);
         } elseif($this->attributeType($fieldName) === Models::AttributeType_Enum) {
-            return [__('constants.' . $this->modelName . Utils::getFormattedName($fieldName))[$this->attributeValue($fieldName)]];
+            return [[
+                'label' => __('constants.' . $this->modelName . Utils::getFormattedName($fieldName))[$this->attributeValue($fieldName)],
+                'value' => $this->attributeValue($fieldName)
+            ]];
         } else {
-            return [$this->attributeValue($fieldName)];
+            return [[
+                'label' => $this->attributeValue($fieldName),
+                'value' => $this->attributeValue($fieldName)
+            ]];
         }
     }
     
-    private function getRelationItemValue($relation, $attribute) {
+    private function getRelationItemData($relation, $attribute) {
         $values = [];
         
         if($this->hasMultipleValues($relation)) {
-            foreach($this->$relation as $value) {
-                $values[] = $value->$attribute;
+            foreach($this->$relation as $relationItem) {
+                $values[] = [
+                    'label' => $relationItem->$attribute,
+                    'value' => $relationItem->id,
+                    'url' => $relationItem->editUrl
+                ];
             }
-        } else {
-            $values[] = isset($this->$relation) ? $this->$relation->$attribute : '';
+        } elseif(isset($this->$relation)) {
+            $values[] = [
+                'label' => $this->$relation->$attribute,
+                'value' => $this->$relation->id,
+                'url' => $this->$relation->editUrl
+            ];
         }
         
         return $values;

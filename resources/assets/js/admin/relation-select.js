@@ -60,14 +60,12 @@ $(document).ready(function() {
     };
 
 
-
-
     $.fn.addDependingEvents = function() {
         $(this).each(function(index, dependingObject) {
-            $.each($(dependingObject).data('depends-on'), function( index, dependsOnField ){
+            $.each($(dependingObject).data('depends-on'), function( index, dependsOnField ) {
                 $('[id=' + dependsOnField + ']').data('depending', $(dependingObject).attr('id'));
                 $('[id=' + dependsOnField + ']').change(function() {
-                    dependingObject.populateItems();
+                    $(dependingObject).populateItems();
                 });
             });
         });
@@ -75,12 +73,15 @@ $(document).ready(function() {
 
     $.fn.populateItems = function() {
         $(this).each(function(index, object) {
+            console.log($(object));
             $(object).empty();
 
             var dependsOnValues = {};
             $.each($(object).data('depends-on'), function( index, dependsOnField ) {
                 dependsOnValues[dependsOnField] = $('[id=' + dependsOnField + ']').getValue();
             });
+            
+            console.log(dependsOnValues);
 
             $.ajax({
                 type: 'GET',
@@ -166,7 +167,6 @@ $(document).ready(function() {
             });
         });
     };
-
 
 
     $.fn.setRelationItemsDraggableAndDroppable = function() {

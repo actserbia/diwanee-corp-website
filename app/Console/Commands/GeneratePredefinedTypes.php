@@ -3,14 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use \App\Models\Node\ClassGenerator\NMPageClassGenerator;
-use \App\Models\Node\ClassGenerator\NMQueueClassGenerator;
-use \App\Models\Node\ClassGenerator\GraphQLTypeClassGenerator;
-use \App\Models\Node\ClassGenerator\GraphQLQueryClassGenerator;
+use App\Models\Node\ClassGenerator\ClassGenerator;
+use \App\Models\Node\NodeModelDBGenerator;
 
 use \App\NodeType;
-use \App\NodeModel\NmPage;
-use \App\NodeModel\NmQueue;
 
 
 class GeneratePredefinedTypes extends Command
@@ -34,8 +30,7 @@ class GeneratePredefinedTypes extends Command
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -44,25 +39,18 @@ class GeneratePredefinedTypes extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
-        $page =  NodeType::with('fields', 'attribute_fields')->where('name', 'like', 'Page')->first();
-        $pageModel = new NMPageClassGenerator($page);
-        $pageModel->generate();
-        $graphQlTypeClassGenerator = new GraphQLTypeClassGenerator($page);
-
-        $graphQlTypeClassGenerator->generate();
-
-        $graphQlQueryClassGenerator = new GraphQLQueryClassGenerator($page);
-        $graphQlQueryClassGenerator->generate();
-
-        $queue = NodeType::with('fields', 'attribute_fields')->where('name', 'like', 'Queue')->first();
-        $queueModel = new NMQueueClassGenerator($queue);
-        $queueModel->generate();
-        $graphQlTypeClassGenerator = new GraphQLTypeClassGenerator($queue);
-        $graphQlTypeClassGenerator->generate();
-
-        $graphQlQueryClassGenerator = new GraphQLQueryClassGenerator($queue);
-        $graphQlQueryClassGenerator->generate();
+    public function handle() {
+        $this->generateNodeTypeClasses('Page');
+        $this->generateNodeTypeClasses('Queue');
+        $this->generateNodeTypeClasses('Tag Data');
+    }
+    
+    private function generateNodeTypeClasses($nodeTypeName) {
+        $nodeType =  NodeType::withAll()->where('name', 'like', $nodeTypeName)->first();
+        
+        $modelDBGenerator = new NodeModelDBGenerator($nodeType);
+        $modelDBGenerator->generate();
+        
+        ClassGenerator::generateAllFilesForNodeType($nodeType);
     }
 }

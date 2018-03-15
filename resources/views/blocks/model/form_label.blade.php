@@ -1,3 +1,3 @@
-@foreach ($object->formReadonlyText($field, isset($column) ? $column : null) as $value)
-    {{ $value }}
+@foreach ($object->formReadonlyData($field, isset($column) ? $column : null) as $data)
+    {{ $data['label'] }}
 @endforeach

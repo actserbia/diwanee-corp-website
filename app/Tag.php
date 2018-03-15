@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Constants\Models;
+use App\Constants\Database;
 use Illuminate\Support\Facades\DB;
 use App\Constants\FieldTypeCategory;
 
@@ -63,6 +64,14 @@ class Tag extends AppModel {
             'foreignKey' => 'tag_type_id',
             'filters' => ['category' => [FieldTypeCategory::Tag]]
         ],
+        'tag_data' => [
+            'relationType' => 'belongsToMany',
+            'model' => 'App\\Node',
+            'pivot' => 'node_tag',
+            'foreignKey' => 'tag_id',
+            'relationKey' => 'node_id',
+            'filters' => ['node_type_id' => [Database::NodeType_TagData_Id]]
+        ],
         'parents' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Tag',
@@ -97,6 +106,8 @@ class Tag extends AppModel {
         'parents' => ['tag_type'],
         'children' => ['tag_type']
     ];
+    
+    protected $categoryField = 'tag_type';
     
     public function getMovingDisabledAttribute() {
         return count($this->parents) > 1 || count($this->nodes) > 0;
