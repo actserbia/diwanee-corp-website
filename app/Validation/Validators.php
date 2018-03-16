@@ -73,11 +73,17 @@ class Validators {
 
         $titleUnique = isset($additional['id']) ? 'unique:nodes,id,' . $additional['id'] : 'unique:nodes';
 
-        return Validator::make($data, [
+        $validationParams = [
             'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255',
-            'model_type' => self::modelRequiredValidation('model_type', $model) . '|exists:node_types,id',
-            'tag' => 'checkTagRequired:' . $data['model_type']
-        ]);
+            'model_type' => self::modelRequiredValidation('model_type', $model) . '|exists:node_types,id'
+        ];
+        foreach($model->modelType->tag_fields as $tagField) {
+            if($model->isRequired($tagField->formattedTitle)) {
+                $validationParams[$tagField->formattedTitle] = 'checkTagRequired';
+            }
+        }
+
+        return Validator::make($data, $validationParams);
     }
     
     public static function nodeListsFormValidator(array $data, array $additional = []) {
