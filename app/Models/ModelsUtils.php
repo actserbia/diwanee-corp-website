@@ -1,6 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Constants\Models;
+
 class ModelsUtils {
     public static function addQueryRelationFilters($query, $model, $relation) {
         $relationModel = $model->getRelationModel($relation);
@@ -28,5 +30,9 @@ class ModelsUtils {
             $ids[] = $item->$field;
         }
         return $ids;
+    }
+    
+    public static function checkIfNodeTypeIdIsInPredefinedTypesList($nodeTypeId) {
+        return in_array($nodeTypeId, Models::NodeType_PredefinedList);
     }
 }

@@ -4,7 +4,9 @@
   final class Database {
       use Constants;
 
-      const NodeType_TagData_Id = 1;
+      const NodeType_Page_Id = 1;
+      const NodeType_Queue_Id = 2;
+      const NodeType_TagData_Id = 3;
       
       const FieldType_GlobalAttribute_Text_Id = 1;
       const FieldType_GlobalAttribute_Date_Id = 2;

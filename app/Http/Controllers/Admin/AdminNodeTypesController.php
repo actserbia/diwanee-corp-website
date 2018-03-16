@@ -8,9 +8,19 @@ use App\NodeType;
 use App\Validation\Validators;
 use App\Utils\HtmlElementsClasses;
 use App\Utils\Utils;
+use App\Models\ModelsUtils;
+use Illuminate\Support\Facades\Route;
 
 class AdminNodeTypesController extends Controller {
     public function __construct() {
+        $routeParams = Route::current()->parameters();
+        if(isset($routeParams['node_type'])) {
+            if(ModelsUtils::checkIfNodeTypeIdIsInPredefinedTypesList($routeParams['node_type'])) {
+                abort(403, __('messages.unauthorized_action'));
+                return redirect('/');
+            }
+        }
+        
         HtmlElementsClasses::$template = 'admin';
         Utils::$modelType = 'NodeType';
     }
@@ -73,7 +83,7 @@ class AdminNodeTypesController extends Controller {
      */
     public function edit($id) {
         $object = NodeType::findOrFail($id);
-
+        
         return view('admin.node_types.edit', compact('object'));
     }
 

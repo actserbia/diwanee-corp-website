@@ -21,6 +21,16 @@ class NodeTypesTableSeeder extends Seeder {
         });
         
         factory(NodeType::class, 1)->create([
+            'id' => Database::NodeType_Page_Id,
+            'name' => 'Page'
+        ]);
+        
+        factory(NodeType::class, 1)->create([
+            'id' => Database::NodeType_Queue_Id,
+            'name' => 'Queue'
+        ]);
+        
+        factory(NodeType::class, 1)->create([
             'id' => Database::NodeType_TagData_Id,
             'name' => 'Tag Data'
         ]);
@@ -30,13 +40,5 @@ class NodeTypesTableSeeder extends Seeder {
         });
         
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        
-        factory(NodeType::class, 1)->create([
-            'name' => 'Page'
-        ]);
-
-        factory(NodeType::class, 1)->create([
-            'name' => 'Queue'
-        ]);
     }
 }

@@ -33,9 +33,9 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ __('constants.UserRole.' . $user->role) }}</td>
                             <td>
-                                @if(Auth::user()->role == 'admin' && $user['deleted_at'] == null)
-                                <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
-                                <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
+                                @if(Auth::admin() && $user['deleted_at'] == null)
+                                    <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
+                                    <a href="{{ route('users.show', ['id' => $user->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
                                 @endif
                             </td>
                         </tr>

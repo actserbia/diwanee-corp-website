@@ -234,6 +234,7 @@ return [
         'HtmlElementsClasses'  => App\Utils\HtmlElementsClasses::class,
         'GraphQL' => Rebing\GraphQL\Support\Facades\GraphQL::class,
         'Utils' => App\Utils\Utils::class,
+        'ModelsUtils' => App\Models\ModelsUtils::class,
         'HTML' => Collective\Html\HtmlFacade::class,
         'SirTrevorJs' => Caouecs\Sirtrevorjs\SirTrevorJs::class,
         'STConverter' => Caouecs\Sirtrevorjs\SirTrevorJsConverter::class,

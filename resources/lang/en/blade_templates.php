@@ -88,7 +88,7 @@ return [
         ],
         'types' => [
             'add_field' => 'Add field',
-            'multiple_list_has_levels' => 'Has Levels'
+            'multiple_list_has_levels' => 'Hierarchy'
         ],
         'search' => [
             'search_label' => 'Add search filter',

@@ -1,5 +1,7 @@
 <?php
   namespace App\Constants;
+  
+  use App\Constants\Database;
 
   final class Models {
       use Constants;
@@ -38,4 +40,6 @@
       const FieldType_AttributeAggregate = 'attribute_aggregate';
       const FieldType_Relation = 'relation';
       const FieldType_RelationJson = 'relation_json';
+      
+      const NodeType_PredefinedList = [Database::NodeType_Page_Id, Database::NodeType_Queue_Id, Database::NodeType_TagData_Id];
   }
