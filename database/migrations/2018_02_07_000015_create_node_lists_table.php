@@ -24,6 +24,7 @@ class CreateNodeListsTable extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('author_id')->references('id')->on('users');
             $table->foreign('node_type_id')->references('id')->on('node_types');
             $table->foreign('order_by_field_id')->references('id')->on('fields');
         });
