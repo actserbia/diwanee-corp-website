@@ -2,7 +2,6 @@
 namespace App\Validation;
 
 use Illuminate\Support\Facades\Validator;
-use App\Validation\Rules\CheckSTContent;
 use App\User;
 use App\FieldType;
 use App\Field;
@@ -76,7 +75,8 @@ class Validators {
 
         return Validator::make($data, [
             'title' => self::modelRequiredValidation('title', $model) . '|' . $titleUnique . '|max:255',
-            'model_type' => self::modelRequiredValidation('model_type', $model) . '|exists:node_types,id'
+            'model_type' => self::modelRequiredValidation('model_type', $model) . '|exists:node_types,id',
+            'tag' => 'checkTagRequired:' . $data['model_type']
         ]);
     }
     

@@ -1,9 +1,8 @@
 <?php
 namespace App\Models\Node;
 
-use App\Utils\Utils;
+use Illuminate\Support\Str;
 use App\Constants\Settings;
-use App\Constants\Models;
 use App\NodeType;
 use App\Constants\FieldTypeCategory;
 use Request;
@@ -14,7 +13,7 @@ trait NodeModelManager {
         if(strpos($field, 'additional_fields_from_') !== false && !isset($this->relationsSettings[$field]) && strpos(Request::url(), '/graphql') !== false) {
             $this->relationsSettings[$field] = [
                 'relationType' => 'hasOne',
-                'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName(str_replace('additional_fields_from_', '', $field)),
+                'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Str::studly(str_replace('additional_fields_from_', '', $field)),
                 'foreignKey' => 'node_id',
                 'relationKey' => 'id'
             ];
@@ -36,7 +35,7 @@ trait NodeModelManager {
     private function populateAttributesFieldsData() {
         $this->relationsSettings['additional_fields'] = [
             'relationType' => 'hasOne',
-            'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($this->modelType->name, ' '),
+            'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Str::studly($this->modelType->name),
             'foreignKey' => 'node_id',
             'relationKey' => 'id'
         ];
@@ -67,7 +66,7 @@ trait NodeModelManager {
             $parentRelation = '';
             
             foreach($this->relationsSettings as $relation => $relationSettings) {
-                if($relationSettings['relationType'] === 'belongsToMany' && $relationSettings['pivot'] === 'node_' . Utils::getFormattedDBName($relationField->title)) {
+                if($relationSettings['relationType'] === 'belongsToMany' && $relationSettings['pivot'] === 'node_' . Str::snake($relationField->title)) {
                     $parentRelation = $relation;
                     break;
                 }
@@ -80,13 +79,11 @@ trait NodeModelManager {
     }
     
     private function populateFieldData($field, $parentRelation) {
-        $formType = $field->pivot->multiple_list[0] ? Models::FormFieldType_Relation_Select_TagsParenting : Models::FormFieldType_Relation_Input;
-                
         $relationSettings = [
             'parent' => $parentRelation,
             'automaticRender' => true,
             'automaticSave' => true,
-            'formType' => $formType
+            'formType' => $field->pivot->getFormType()
         ];
                 
         $this->relationsSettings[$field->formattedTitle] = $relationSettings;
@@ -95,11 +92,7 @@ trait NodeModelManager {
             $this->requiredFields[] = $field->formattedTitle;
         }
 
-        if($field->pivot->multiple_list[0]) {
-            $this->multipleFields[$field->formattedTitle] = array_slice($field->pivot->multiple_list, 1);
-        } else {
-            $this->multipleFields[$field->formattedTitle] = (bool)$field->pivot->multiple_list[1];
-        }
+        $this->multipleFields[$field->formattedTitle] = $field->pivot->multiple['value'];
     }
 
     protected function getAutomaticRenderAtributes() {

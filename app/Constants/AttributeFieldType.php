@@ -7,4 +7,5 @@ final class AttributeFieldType {
     const Text = 'Text';
     const Integer = 'Integer';
     const Date = 'Date';
+    const Boolean = 'Boolean';
 }

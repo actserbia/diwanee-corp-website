@@ -1,9 +1,9 @@
 <?php
 namespace App\GraphQL\Type;
 
+use Illuminate\Support\Str;
 use App\Node;
 use App\NodeType;
-use App\Utils\Utils;
 use App\Constants\Settings;
 use App\GraphQL\Type\Scalar\Timestamp;
 use GraphQL\Type\Definition\Type;
@@ -71,8 +71,8 @@ class NodesType extends GraphQLType {
         
         $nodeTypeNames = NodeType::pluck('name');
         foreach($nodeTypeNames as $nodeTypeName) {
-            $fields['additional_fields_from_' . Utils::getFormattedDBName($nodeTypeName)] = [
-                'type' => GraphQL::type(ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($nodeTypeName, ' ')),
+            $fields['additional_fields_from_' . Str::snake($nodeTypeName)] = [
+                'type' => GraphQL::type(ucfirst(Settings::NodeModelPrefix) . Str::studly($nodeTypeName)),
                 'description' => 'Dinamic generated data'
             ];
         }

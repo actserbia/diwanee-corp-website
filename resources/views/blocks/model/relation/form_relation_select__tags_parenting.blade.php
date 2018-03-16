@@ -4,7 +4,6 @@
             {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
         @endif
     </label>
-
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
         <select class="form-control relation tags-parenting-relation {{$object->hasMultipleValues($field, isset($level) ? $level : 1) ? 'relation-multiple' : ''}}"
             id="{{ $field }}-{{ isset($level) ? $level : 1 }}" name="{{ $field }}[]"
@@ -18,7 +17,7 @@
             @if(!isset($checkSelected) || $checkSelected)
                 data-selected-values="{{ $object->formRelationValuesIdsList($field, isset($level) ? $level : 1) }}"
             @endif
-            @if($object->isRequired($field) && !$object->hasMultipleValues($field, isset($level) ? $level : 1)) required @endif
+            @if($object->isRequired($field) && (!isset($level) || $level == 1) && !$object->hasMultipleValues($field, isset($level) ? $level : 1)) required @endif
         >
                 <option value=""></option>
                 @foreach ($object->formRelationValuesByLevel($field, isset($level) ? $level : 1, isset($tags) ? $tags : null) as $item)

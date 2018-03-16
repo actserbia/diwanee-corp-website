@@ -38,10 +38,6 @@ class NodeModelClassGenerator extends ClassGenerator {
                 }
 
                 $this->attributeType[$field->formattedTitle] = $this->getAttributeType($field);
-
-                if($field->pivot->multiple) {
-                    $this->multipleFields[$field->formattedTitle] = true;
-                }
             }
         }
     }
@@ -56,6 +52,10 @@ class NodeModelClassGenerator extends ClassGenerator {
 
             case AttributeFieldType::Date:
                 $attributeType = 'Models::AttributeType_Date';
+                break;
+
+            case AttributeFieldType::Boolean:
+                $attributeType = 'Models::AttributeType_Checkbox';
                 break;
 
             default:

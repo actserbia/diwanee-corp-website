@@ -10,6 +10,7 @@ use App\Constants\AttributeFieldType;
 use App\Constants\ElementType;
 use App\Constants\Database;
 use App\Utils\Utils;
+use Illuminate\Support\Str;
 
 class FieldTypesTableSeeder extends Seeder
 {
@@ -90,12 +91,12 @@ class FieldTypesTableSeeder extends Seeder
         $elementTypes = ElementType::getAll();
         foreach($elementTypes as $elementType) {
             $fieldType = factory(FieldType::class)->create([
-                'name' => Utils::getFormattedName($elementType, '_', ' '),
+                'name' => Str::studly($elementType),
                 'category' => FieldTypeCategory::SirTrevor
             ]);
             
             factory(Field::class)->create([
-                'title' => Utils::getFormattedName($elementType, '_', ' '),
+                'title' => Str::studly($elementType),
                 'field_type_id' => $fieldType->id
             ]);
         }

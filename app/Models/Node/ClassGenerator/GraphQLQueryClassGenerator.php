@@ -4,8 +4,8 @@ namespace App\Models\Node\ClassGenerator;
 
 use App\Constants\Settings;
 use App\Constants\AttributeFieldType;
-use App\Utils\Utils;
 use App\Constants\FieldTypeCategory;
+use Illuminate\Support\Str;
 
 class GraphQLQueryClassGenerator extends ClassGenerator {
     const FOLDER = 'GraphQL/Query/NodeModel';
@@ -18,7 +18,7 @@ class GraphQLQueryClassGenerator extends ClassGenerator {
     }
 
     protected function populateData() {
-        $this->modelName = 'App\\NodeModel\\' . Utils::getFormattedName($this->model->name, ' ');
+        $this->modelName = 'App\\NodeModel\\' . Str::studly($this->model->name);
         $this->args = [];
 
         $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
@@ -49,6 +49,10 @@ class GraphQLQueryClassGenerator extends ClassGenerator {
 
             case AttributeFieldType::Date:
                 $attributeType = 'date';
+                break;
+
+            case AttributeFieldType::Boolean:
+                $attributeType = 'boolean';
                 break;
 
             default:

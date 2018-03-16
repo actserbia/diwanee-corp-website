@@ -110,7 +110,20 @@ class Tag extends AppModel {
     protected $categoryField = 'tag_type';
     
     public function getMovingDisabledAttribute() {
-        return count($this->parents) > 1 || count($this->nodes) > 0;
+        if(count($this->parents) > 1) {
+            return true;
+        }
+
+        $count = count($this->nodes);
+        if($count > 0) {
+            foreach($this->nodes as $node) {
+                if($node->model_type->id === Database::NodeType_TagData_Id) {
+                    $count--;
+                }
+            }
+        }
+
+        return ($count > 0) ? true : false;
     }
     
     public function parentsRelationValues($dependsOnValues = null) {

@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Tag;
 use App\Constants\Settings;
 
-
 class Rules {
     public static function addRules() {
         self::addCheckTags();
+        self::addCheckTagRequired();
     }
     
     private static function addCheckTags() {
@@ -97,5 +97,19 @@ class Rules {
         }
 
         return true;
+    }
+
+
+
+    private static function addCheckTagRequired() {
+        Validator::extend('checkTagRequired', function ($attribute, $value, $parameters) {
+            if(is_array($value)) {
+                $value = array_filter($value, function ($item) {
+                    return !empty($item);
+                });
+            }
+
+            return !empty($value);
+        });
     }
 }

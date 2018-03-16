@@ -1,6 +1,7 @@
 <?php
 namespace App\GraphQL\Query;
 
+use Illuminate\Support\Str;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\SelectFields;
@@ -17,7 +18,7 @@ class NodesQuery extends AppQuery {
     public function __construct($attributes = array()) {
         parent::__construct($attributes);
         
-        $this->attributes['name'] = $this->name . 'sQuery';
+        $this->attributes['name'] = Str::plural($this->name) . 'Query';
         $this->attributes['description'] = 'A query';
     }
 

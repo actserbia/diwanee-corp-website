@@ -123,4 +123,6 @@ return [
 
     'attributes' => [],
 
+    'check_tag_required' => 'The :attribute should not be empty.'
+
 ];

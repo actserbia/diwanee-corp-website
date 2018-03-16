@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Controllers\Controller;
@@ -100,8 +101,8 @@ class ModelController extends Controller {
         $object = isset($data['modelId']) ? $data['model']::find($data['modelId']) : new $data['model'];
         $fieldPrefix = $data['fieldPrefix'];
         $field = $data['field'];
-        $itemFieldValue = false;
         $removeCheckbox = isset($params['removeCheckbox']) ? $params['removeCheckbox'] : true;
+        $itemFieldValue = !$removeCheckbox;
         
         return view('blocks.model.form_checkbox_list_item', compact('object', 'fieldPrefix', 'field', 'itemFieldValue', 'removeCheckbox'));
     }
@@ -177,7 +178,7 @@ class ModelController extends Controller {
             
             $filters = $filterModelObject::select('id', $filterModelObject->defaultDropdownColumn . ' AS name')->get();
         } else {
-            $items = __('constants.' . $modelObject->modelName . Utils::getFormattedName($filter));
+            $items = __('constants.' . $modelObject->modelName . Str::studly($filter));
             
             $filters = [];
             foreach($items as $key => $value) {

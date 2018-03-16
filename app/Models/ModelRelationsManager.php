@@ -2,8 +2,8 @@
 namespace App\Models;
 
 use App\Models\RelationManager\RelationManager;
-use App\Utils\Utils;
 use App\Constants\Models;
+use Illuminate\Support\Str;
 
 trait ModelRelationsManager {
     public function __call($method, $parameters) {
@@ -106,14 +106,20 @@ trait ModelRelationsManager {
     }
     
     public function relationExtraData($query, $relation) {
-        $extraFields = $this->extraFields($relation);
+        $pivotFields = [];
+
+        $relationsSettings = $this->getRelationSettings($relation);
+        if(isset($relationsSettings['pivotModel'])) {
+            $pivotFields = $relationsSettings['pivotModel']::getPivotFields();
+        }
+
         $sortable = $this->sortableField($relation);
         if(!empty($sortable)) {
-            $extraFields[] = $sortable;
+            $pivotFields[] = $sortable;
         }
         
-        if(!empty($extraFields)) {
-            $query->withPivot($extraFields);
+        if(!empty($pivotFields)) {
+            $query->withPivot($pivotFields);
         }
         
         if(!empty($sortable)) {
@@ -183,7 +189,7 @@ trait ModelRelationsManager {
     }
 
     public function getRelationValues($relation, $dependsOnValues = null) {
-        $relationValuesMethod = Utils::getFormattedName($relation) . 'RelationValues';
+        $relationValuesMethod = Str::studly($relation) . 'RelationValues';
         if(method_exists($this, $relationValuesMethod)) {
             return $this->$relationValuesMethod($dependsOnValues);
         } else {

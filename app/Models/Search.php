@@ -4,8 +4,8 @@ namespace App\Models;
 use App\Constants\Models;
 use App\Constants\Filters;
 use App\Models\Filters\FiltersUtils;
-use App\Utils\Utils;
 use Auth;
+use Illuminate\Support\Str;
 
 trait Search {
     public function scopeFilterByAllParams($query, $params, $orderBy = true) {
@@ -38,7 +38,7 @@ trait Search {
         $fieldSettings = $this->getFieldSettings($fullFieldName);
 
         if(!empty($fieldSettings)) {
-            $filtersManagerClassName = 'App\\Models\\Filters\\FiltersManager\\Filters' . Utils::getFormattedName($fieldSettings['field_type']);
+            $filtersManagerClassName = 'App\\Models\\Filters\\FiltersManager\\Filters' . Str::studly($fieldSettings['field_type']);
             return new $filtersManagerClassName($fieldSettings);
         }
 

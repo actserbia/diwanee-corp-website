@@ -3,6 +3,7 @@ namespace App\Models\ModelManager;
 
 use App\Constants\Models;
 use App\Utils\Utils;
+use Illuminate\Support\Str;
 
 abstract class ModelManager {
     protected $fieldModel = null;
@@ -54,7 +55,7 @@ abstract class ModelManager {
     }
 
     public function getEnumListForDropdown() {
-        return __('constants.' . $this->fieldModel->modelName . Utils::getFormattedName($this->attributeName('_')));
+        return __('constants.' . $this->fieldModel->modelName . Str::studly($this->attributeName('_')));
     }
 
     public function fieldValue($value = null) {

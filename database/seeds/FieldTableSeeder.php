@@ -4,7 +4,7 @@ use App\FieldType;
 use App\NodeType;
 use App\NodeTypeField;
 use App\Field;
-use App\Constants\FieldTypeCategory;
+use App\Constants\Database;
 
 class FieldTableSeeder extends Seeder
 {
@@ -72,19 +72,19 @@ class FieldTableSeeder extends Seeder
     private function addTagDataNodeType() {
         $tagDataNodeType = NodeType::where('name', '=', 'Tag Data')->first();
         
-        $field = Field::join('field_types', 'fields.field_type_id', '=', 'field_types.id')
-            ->where('field_types.name', '=', 'Tag')
-            ->where('field_types.category', '=', FieldTypeCategory::Relation)
-            ->select('fields.*')
-            ->first();
+        $field = Field::find(Database::Field_Relation_Tag_Id);
         
         $nodeTypeField = new NodeTypeField;
+
+        $additionalSettings = [
+            'multiple' => ['0', '0']
+        ];
 
         $nodeTypeField->node_type_id = $tagDataNodeType->id;
         $nodeTypeField->field_id = $field->id;
         $nodeTypeField->active = 1;
         $nodeTypeField->required = 1;
-        $nodeTypeField->multiple_list = [false, false];
+        $nodeTypeField->additional_settings = $additionalSettings;
         $nodeTypeField->ordinal_number = 0;
 
         $nodeTypeField->save();

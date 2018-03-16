@@ -6,10 +6,10 @@
         {{ __('blade_templates.admin.types.multiple_list_has_levels') }}
         <input class="form-control has-levels" type="checkbox"
             id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}" 
-            name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}[]"
-            value="{{ $object->formCheckboxListValue($field, 0) }}"
-            @if($object->formCheckboxListValue($field, 0)) checked @endif
-            @if(!$object->checkIfCanRemove()) disabled @endif
+            name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}[hierarchy]"
+            value="{{ $object->formValue($field)['hierarchy'] }}"
+            @if($object->formValue($field)['hierarchy']) checked @endif
+            @if(!$object->formValue($field)['hierarchy'] && !$object->checkIfCanRemove()) disabled @endif
             data-model="{{ $object->modelClass }}"
             data-model-id="{{ $object->id }}"
             data-field="{{ $field }}"
@@ -17,22 +17,23 @@
         />
         
         <div id="checkbox-list">
-            @if($object->formCheckboxListValue($field, 0))
-                @foreach ($object->formCheckboxListValue($field, 1, 'list') as $itemFieldValue)
+            @if($object->formValue($field)['hierarchy'])
+                @foreach ($object->formValue($field)['value'] as $itemFieldValue)
                     @include('blocks.model.form_checkbox_list_item', ['removeCheckbox' => $object->checkIfCanRemove()])
                 @endforeach
             @else
-                @include('blocks.model.form_checkbox_list_item', ['removeCheckbox' => false, 'itemFieldValue' => $object->formCheckboxListValue($field, 1)])
+                @include('blocks.model.form_checkbox_list_item', ['removeCheckbox' => false, 'itemFieldValue' => $object->formValue($field)['value'][0]])
             @endif  
         </div>
         
-        <div class="checkbox-add" @if(!$object->formCheckboxListValue($field, 0)) style="display:none;" @endif>
+        <div class="checkbox-add" @if(!$object->formValue($field)['hierarchy']) style="display:none;" @endif>
             <a href="javascript:" class="add-checkbox"
                 data-model="{{ $object->modelClass }}"
                 data-model-id="{{ $object->id }}"
                 data-field="{{ $field }}"
                 data-field-prefix="{{ $fieldPrefix }}"
                 data-maximum-count="{{ $object->getMaximumCheckboxItemsCount($field) }}"
+                data-type-id="{{ isset($object->pivot->id) ? $object->pivot->id : $object->id }}"
             ><i class="fa fa-plus" aria-hidden="true"></i></a>
         </div>
         

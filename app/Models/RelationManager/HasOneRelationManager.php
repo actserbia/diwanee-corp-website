@@ -1,7 +1,7 @@
 <?php
 namespace App\Models\RelationManager;
 
-use App\Utils\Utils;
+use Illuminate\Support\Str;
 use ReflectionClass;
 
 class HasOneRelationManager extends RelationManager {
@@ -18,7 +18,7 @@ class HasOneRelationManager extends RelationManager {
         
         $relationObject = isset($this->object->$relation) ? $this->object->$relation : new $relationSettings['model'];
         $refClass = new ReflectionClass($this->object);
-        $inverseRelationName = Utils::getFormattedDBName($refClass->getShortName());
+        $inverseRelationName = Str::snake($refClass->getShortName());
         $relationObject->$inverseRelationName()->associate($this->object);
         if(count($relationObject->getFillableAttributes()) > 0) {
             $relationObject->fill($this->relationData);

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
 use App\Models\Node\NodeModelDBGenerator;
@@ -45,7 +46,7 @@ class NodeType extends AppModel {
         'tag_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::Tag]],
-            'extraFields' => ['active', 'required', 'multiple_list'],
+            'extraFields' => ['active', 'required', 'multiple', 'render_type'],
             'automaticSave' => true
         ],
         'sir_trevor_fields' => [
@@ -56,7 +57,7 @@ class NodeType extends AppModel {
         'relation_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::Relation]],
-            'extraFields' => ['active', 'required', 'multiple_list'],
+            'extraFields' => ['active', 'required', 'multiple', 'render_type'],
             'automaticSave' => true
         ],
 
@@ -81,7 +82,7 @@ class NodeType extends AppModel {
     protected $dependsOn = [];
     
     public function getAdditionalDataTableNameAttribute() {
-        return empty($this->name) ? $this->name : Settings::NodeModelPrefix . '_' . Utils::getFormattedDBName($this->name) . 's';
+        return empty($this->name) ? $this->name : Settings::NodeModelPrefix . '_' . Str::plural(Str::snake($this->name));
     }
 
     public function saveData(array $data) {

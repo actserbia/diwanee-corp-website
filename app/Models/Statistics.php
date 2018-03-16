@@ -1,8 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Utils\Utils;
 use App\Constants\Models;
+use Illuminate\Support\Str;
 
 trait Statistics {
     public function scopeStatistics($query, $fullFieldName) {
@@ -14,7 +14,7 @@ trait Statistics {
         $fieldSettings = $this->getFieldSettings($fullFieldName);
         if(!empty($fieldSettings)) {
             $fieldType = $fieldSettings['field_type'] === Models::FieldType_AttributeAggregate ? Models::FieldType_Attribute : $fieldSettings['field_type'];
-            $statisticsManagerClassName = 'App\\Models\\Statistics\\StatisticsManager\\Statistics' . Utils::getFormattedName($fieldType);
+            $statisticsManagerClassName = 'App\\Models\\Statistics\\StatisticsManager\\Statistics' . Str::studly($fieldType);
             return new $statisticsManagerClassName($fieldSettings);
         }
     }

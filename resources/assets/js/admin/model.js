@@ -31,7 +31,7 @@ $(document).ready(function() {
     
     $.fn.setAddCheckboxVisibility = function() {
         $(this).each(function(index, object) {
-            if($('input.checkbox-item[data-model-id=' + $(object).data('model-id') + ']').length >= $(object).data('maximum-count')) {
+            if($('input.checkbox-item[data-type-id=' + $(object).data('type-id') + ']').length >= $(object).data('maximum-count')) {
                 $(object).fadeOut('slow');
             } else {
                 $(object).fadeIn('slow');

@@ -1,6 +1,7 @@
 <?php
 namespace App\GraphQL\Type;
 
+use Illuminate\Support\Str;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use App\Utils\Utils;
@@ -14,8 +15,8 @@ class NmNodesType extends GraphQLType {
     public function __construct($attributes = array()) {
         parent::__construct($attributes);
 
-        $this->attributes['name'] = $this->modelName . 's';
-        $this->attributes['description'] = $this->modelName . 's type';
+        $this->attributes['name'] = Str::plural($this->modelName);
+        $this->attributes['description'] = Str::plural($this->modelName) . ' type';
         $this->attributes['model'] = 'App\\NodeModel\\' . $this->modelName;
     }
 
@@ -34,7 +35,7 @@ class NmNodesType extends GraphQLType {
             $type = ($typeName === 'date') ? Timestamp::type() : Type::$typeName();
             $fields[$fieldName] = [
                 'type' => (isset($fieldSettings['required']) && $fieldSettings['required']) ? Type::nonNull($type) : $type,
-                'description' => Utils::getFormattedName($fieldName)
+                'description' => Str::studly($fieldName)
             ];
         }
         return $fields;

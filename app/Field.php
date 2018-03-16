@@ -1,11 +1,12 @@
 <?php
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Constants\Models;
 use App\Constants\FieldTypeCategory;
 use App\Constants\Settings;
-use App\Utils\Utils;
+use App\Constants\Database;
 use App\Models\Node\ClassGenerator\ClassGenerator;
 use App\Models\Node\NodeModelDBGenerator;
 use App\Tag;
@@ -17,12 +18,16 @@ class Field extends AppModel {
 
     protected $allAttributesFields = ['id', 'title', 'created_at', 'updated_at', 'deleted_at'];
     
-    protected $allFieldsFromPivots = ['active', 'required', 'multiple_list'];
+    protected $allFieldsFromPivots = ['active', 'required', 'multiple', 'render_type'];
 
-    protected $requiredFields = ['title', 'field_type', 'attribute_field_type'];
+    protected $requiredFields = ['title', 'field_type', 'attribute_field_type', 'render_type'];
     
     protected $defaultFieldsValues = [
-        'active' => '1'
+        'active' => '1',
+        'multiple' =>  [
+            'hierarchy' => true,
+            'value' => []
+        ]
     ];
     
     protected $defaultDropdownColumn = 'title';
@@ -30,7 +35,8 @@ class Field extends AppModel {
     protected $attributeType = [
         'active' => Models::AttributeType_Checkbox,
         'required' => Models::AttributeType_Checkbox,
-        'multiple_list' => Models::AttributeType_CheckboxList
+        'multiple' => Models::AttributeType_CheckboxList,
+        'render_type' => Models::AttributeType_Enum
     ];
 
     protected $relationsSettings = [
@@ -57,7 +63,7 @@ class Field extends AppModel {
     protected $dependsOn = [];
     
     public function getFormattedTitleAttribute() {
-        return Utils::getFormattedDBName($this->title);
+        return Str::snake($this->title);
     }
 
     public function getFieldTypeCategoryAttribute() {
@@ -77,22 +83,25 @@ class Field extends AppModel {
     
     public function attributeValue($field) {
         $value = parent::attributeValue($field);
-        if($field === 'multiple_list' && $this->field_type->category === FieldTypeCategory::Tag) {
-            if(!isset($value)) {
-                $value = [true];
-            }
-            
-            if($value[0]) {
-                $tags = Tag::where('tag_type_id', '=', $this->field_type->id)->get();
-                $maxLevelsCount = Tag::relationMaxLevelsCount('children', $tags);
-                for($index = count($value); $index < $maxLevelsCount + 1; $index++) {
-                    $value[] = false;
-                }
+        if($field === 'multiple' && $value['hierarchy']) {
+            $maxLevelsCount = $this->getMaxLevelsCount();
+            for($index = count($value['value']); $index < $maxLevelsCount; $index++) {
+                $value['value'][] = false;
             }
         }
         return $value;
     }
     
+    private function getMaxLevelsCount() {
+        if($this->id === Database::Field_Relation_Tag_Id) {
+            $tags = Tag::get();
+        } elseif($this->field_type->category === FieldTypeCategory::Tag) {
+            $tags = Tag::where('tag_type_id', '=', $this->field_type->id)->get();
+        }
+
+        return ($tags !== null) ? Tag::relationMaxLevelsCount('children', $tags) : 1;
+    }
+
     public function checkIfCanRemove() {
         if(isset($this->pivot) && $this->pivot->pivotParent->modelClass === 'App\\NodeType') {
             return $this->pivot->pivotParent->checkIfCanRemoveSelectedRelationItem($this->field_type->category . '_fields');
@@ -102,7 +111,7 @@ class Field extends AppModel {
     }
     
     public function getMaximumCheckboxItemsCount($field) {
-        if($field === 'multiple_list' && $this->field_type->category === FieldTypeCategory::Tag) {
+        if($field === 'multiple' && ($this->field_type->category === FieldTypeCategory::Tag || $this->id === Database::Field_Relation_Tag_Id)) {
             return Settings::MaximumTagsLevelsCount;
         }
         

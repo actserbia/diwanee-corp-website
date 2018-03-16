@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Constants\Models;
 use App\Utils\Utils;
 use Request;
+use Illuminate\Support\Str;
 
 trait ModelFormManager {
     public function formFieldType($fullFieldName, $readonly = false) {
@@ -59,7 +60,7 @@ trait ModelFormManager {
             return $this->getRelationItemData($fieldName, $withCategory);
         } elseif($this->attributeType($fieldName) === Models::AttributeType_Enum) {
             return [[
-                'label' => $withCategory ? $this->getNameWithCategoryField() : __('constants.' . $this->modelName . Utils::getFormattedName($fieldName))[$this->attributeValue($fieldName)],
+                'label' => $withCategory ? $this->getNameWithCategoryField() : __('constants.' . $this->modelName . Str::studly($fieldName))[$this->attributeValue($fieldName)],
                 'value' => $this->attributeValue($fieldName)
             ]];
         } else {
@@ -203,19 +204,5 @@ trait ModelFormManager {
         }
 
         return '';
-    }
-    
-    public function formCheckboxListValue($fullFieldName, $index, $type = 'single') {
-        $formValue = $this->formValue($fullFieldName);
-        
-        if(empty($formValue)) {
-            return $formValue;
-        }
-        
-        if($type === 'list') {
-            return array_slice($formValue, $index);
-        } else {
-            return $formValue[$index];
-        }
     }
 }

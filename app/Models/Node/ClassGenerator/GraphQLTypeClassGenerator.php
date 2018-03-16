@@ -53,6 +53,10 @@ class GraphQLTypeClassGenerator extends ClassGenerator {
                 $attributeType = 'date';
                 break;
 
+            case AttributeFieldType::Boolean:
+                $attributeType = 'boolean';
+                break;
+
             default:
                 $attributeType = 'string';
                 break;

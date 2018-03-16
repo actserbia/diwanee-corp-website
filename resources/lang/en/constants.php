@@ -15,7 +15,12 @@ return [
     'FieldType' => [
         'integer' => 'Integer',
         'text' => 'Text',
-        'date' => 'Date'
+        'date' => 'Date',
+        'boolean' => 'Boolean'
+    ],
+    'FieldRenderType' => [
+        'select' => 'Select',
+        'input' => 'Input'
     ],
     'ElementType' => [
         'text' => 'Text',

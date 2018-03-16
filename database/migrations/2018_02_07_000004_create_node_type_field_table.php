@@ -19,7 +19,7 @@ class CreateNodeTypeFieldTable extends Migration
             $table->unsignedInteger('field_id');
             $table->boolean('active')->default(1);
             $table->boolean('required')->default(0);
-            $table->longText('multiple_list')->nullable();
+            $table->longText('additional_settings')->nullable();
             $table->unsignedTinyInteger('ordinal_number');
 
             $table->foreign('node_type_id')->references('id')->on('node_types');

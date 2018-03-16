@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Filters\FiltersUtils;
@@ -69,7 +70,7 @@ class AdminSearchController extends Controller {
                 ->get();
         }
 
-        return view('admin.search.' . Utils::getFormattedDBName($modelName) . 's', compact('items', 'model'));
+        return view('admin.search.' . Str::plural(Str::snake($modelName)), compact('items', 'model'));
     }
 
     public function typeahead(Request $request) {

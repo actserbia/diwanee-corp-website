@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use App\Constants\Models;
 use App\Models\ModelsUtils;
 use App\Utils\Utils;
@@ -159,7 +160,7 @@ trait ModelDataManager {
     public function scopeWithActive($query) {}
     
     public function getEditUrlAttribute() {
-        return $this->editable ? route(Utils::getFormattedDBName($this->modelName) . 's.edit', ['id' => $this->id]) : null;
+        return $this->editable ? route(Str::plural(Str::snake($this->modelName)) . '.edit', ['id' => $this->id]) : null;
     }
     
     public function getNameWithCategoryField() {
@@ -176,7 +177,7 @@ trait ModelDataManager {
             }
             
             elseif($this->attributeType($categoryField) === Models::AttributeType_Enum) {
-                $categoryFieldValue = __('constants.' . $this->modelName . Utils::getFormattedName($categoryField))[$this->attributeValue($categoryField)];
+                $categoryFieldValue = __('constants.' . $this->modelName . Str::studly($categoryField))[$this->attributeValue($categoryField)];
             }
             
             else {

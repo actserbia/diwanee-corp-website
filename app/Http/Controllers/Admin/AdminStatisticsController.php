@@ -2,9 +2,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Utils\HtmlElementsClasses;
-use App\Node;
 
 class AdminStatisticsController extends Controller {
     public function __construct() {
@@ -70,6 +70,6 @@ class AdminStatisticsController extends Controller {
             $statistics = $statisticsFilter->statistics($statisticName);
         }
 
-        return view('admin.statistics.' . strtolower($modelName) . 's', compact('model', 'statistics', 'statisticName'));
+        return view('admin.statistics.' . Str::plural(strtolower($modelName)), compact('model', 'statistics', 'statisticName'));
     }
 }

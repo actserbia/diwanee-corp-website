@@ -76,6 +76,10 @@ class NodeModelDBGenerator {
             case AttributeFieldType::Date:
                 $tableField = $table->timestamp($field->formattedTitle);
                 break;
+
+            case AttributeFieldType::Boolean:
+                $tableField = $table->boolean($field->formattedTitle);
+                break;
         }
 
         if(!$field->pivot->required) {

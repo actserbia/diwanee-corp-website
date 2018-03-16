@@ -1,7 +1,7 @@
 <?php
 namespace App\GraphQL;
 
-use App\Utils\Utils;
+use Illuminate\Support\Str;
 use App\Constants\Settings;
 
 class GraphQLUtils {
@@ -31,9 +31,9 @@ class GraphQLUtils {
         $folder = empty($folderName) ? $folderName : $folderName . '\\';
 
         foreach(self::getGraphQLTypesNames($folderName) as $typeName) {
-            $schemas[Utils::getFormattedDBName($typeName)] = [
+            $schemas[Str::snake($typeName)] = [
                 'query' => [
-                    Utils::getFormattedDBName($typeName) . 's' => 'App\\GraphQL\\Query\\' . $folder . $typeName . Settings::GraphQLQuerySufix,
+                    Str::plural(Str::snake($typeName)) => 'App\\GraphQL\\Query\\' . $folder . $typeName . Settings::GraphQLQuerySufix,
                 ],
                 'mutation' => []
             ];

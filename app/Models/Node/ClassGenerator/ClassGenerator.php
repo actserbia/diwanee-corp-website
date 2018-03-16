@@ -3,9 +3,9 @@
 namespace App\Models\Node\ClassGenerator;
 
 use App\Constants\Settings;
-use App\Utils\Utils;
 use App\Utils\FileFunctions;
 use App\NodeType;
+use Illuminate\Support\Str;
 
 abstract class ClassGenerator {
     const FOLDER = '';
@@ -31,7 +31,7 @@ abstract class ClassGenerator {
     }
 
     protected function getModelClassName($modelName) {
-        return ucfirst(Settings::NodeModelPrefix) . Utils::getFormattedName($modelName, ' ');
+        return ucfirst(Settings::NodeModelPrefix) . Str::studly($modelName);
     }
 
     public function generate() {

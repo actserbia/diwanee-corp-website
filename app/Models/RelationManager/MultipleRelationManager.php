@@ -26,6 +26,15 @@ class MultipleRelationManager extends RelationManager {
     
     
     public function saveRelation($data) {
+        foreach($data as $key => $value) {
+            if(strpos($key, 'pivot_') !== false) {
+                $relationsSettings = $this->object->getRelationSettings(str_replace('pivot_', '', $key));
+                if(isset($relationsSettings['pivotModel'])) {
+                    $data[$key] = $relationsSettings['pivotModel']::populatePivotData($value);
+                }
+            }
+        }
+
         $this->populateRelationData($data);
         
         $relation = $this->relation;

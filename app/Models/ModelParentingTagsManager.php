@@ -3,6 +3,7 @@ namespace App\Models;
 
 use App\Tag;
 use Illuminate\Database\Eloquent\Collection;
+use Request;
 
 trait ModelParentingTagsManager {
     public function formRelationValuesIdsList($relation, $level = 1) {
@@ -17,7 +18,7 @@ trait ModelParentingTagsManager {
     }
 
     public function formSelectedValuesByLevel($relation, $level = 1, $checkRelationItems = true) {
-        if(!$checkRelationItems) {
+        if(!$checkRelationItems || Request::old('_token') !== null) {
             return [];
         }
 
