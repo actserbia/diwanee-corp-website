@@ -6,7 +6,7 @@
         <input class="form-control relation {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->hasMultipleValues($field) ? 'relation-multiple' : ''}}"
             type="text"
             value="{{ $object->formInputRelationValue($field, $object->getDefaultDropdownColumn($field)) }}"
-            id="{{ $field }}-input" name="{{ $field }}-input"
+            id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}-input" name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}-input"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"

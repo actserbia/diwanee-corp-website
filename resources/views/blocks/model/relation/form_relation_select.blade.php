@@ -4,7 +4,7 @@
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
         <select class="form-control relation {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->hasMultipleValues($field) ? 'relation-multiple' : ''}}"
-            id="{{ $field }}" name="{{ $field }}"
+            id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}" name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"
@@ -41,6 +41,14 @@
                     @include('blocks.model.relation.form_relation_item', ['item' => $item, 'withCategory' => false])
                 @endforeach
             </div>
+            @if (isset($addNewItem) && $addNewItem)
+                <a href=":javascript" class="add-new-relation-item"
+                    data-relation="{{ $field }}"
+                    data-model="{{ $object->modelClass }}"
+                    data-model-type="{{ $object->modelTypeIdValue() }}"
+                    data-last-index="0"
+                ><i class="fa fa-plus" aria-hidden="true"></i></a>
+            @endif
         </div>
     </div>
 @endif

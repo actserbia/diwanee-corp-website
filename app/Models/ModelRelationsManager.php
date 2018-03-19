@@ -94,7 +94,7 @@ trait ModelRelationsManager {
     public function getRelationModel($relation) {
         if($this->isRelation($relation)) {
             $relationsSettings = $this->getRelationSettings($relation);
-            return new $relationsSettings['model'];
+            return isset($relationsSettings['modelAttributes']) ? new $relationsSettings['model']($relationsSettings['modelAttributes']) : new $relationsSettings['model'];
         }
 
         return null;

@@ -15,7 +15,7 @@ class Node extends AppModel {
     use SoftDeletes;
     use NodeModelManager;
     use ModelParentingTagsManager;
-    //use Searchable;
+    use Searchable;
 
     protected $allAttributesFields = ['id', 'title', 'status', 'node_type_id', 'author_id', 'created_at', 'updated_at', 'deleted_at', 'elements_count'];
 

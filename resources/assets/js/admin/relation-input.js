@@ -271,7 +271,7 @@ $(document).ready(function() {
                             $('div[id=relation-item-' + $(object).attr('id') + '-' + relationItemId + ']').setRelationItemsDraggableAndDroppable();
                         }
                         $('.add-checkbox', '#selected-' + $(object).attr('id')).addAddCheckboxEvents();
-                        $('input.has-levels[type=checkbox]', '#selected-' + $(object).attr('id')).setHasLevelsCheckboxEvents();
+                        $('input.hierarchy[type=checkbox]', '#selected-' + $(object).attr('id')).setHierarchyCheckboxEvents();
                         $('input[type=checkbox]', '#selected-' + $(object).attr('id')).beautifyInputField();
                     }
                 });

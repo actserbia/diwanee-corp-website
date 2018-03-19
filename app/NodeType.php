@@ -41,24 +41,28 @@ class NodeType extends AppModel {
         'attribute_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::Attribute]],
-            'automaticSave' => true
+            'automaticSave' => true,
+            'modelAttributes' => ['category' => FieldTypeCategory::Attribute]
         ],
         'tag_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::Tag]],
             'extraFields' => ['active', 'required', 'multiple', 'render_type'],
-            'automaticSave' => true
+            'automaticSave' => true,
+            'modelAttributes' => ['category' => FieldTypeCategory::Tag]
         ],
         'sir_trevor_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::SirTrevor]],
-            'automaticSave' => true
+            'automaticSave' => true,
+            'modelAttributes' => ['category' => FieldTypeCategory::SirTrevor]
         ],
         'relation_fields' => [
             'parent' => 'fields',
             'filters' => ['field_type.category' => [FieldTypeCategory::Relation]],
             'extraFields' => ['active', 'required', 'multiple', 'render_type'],
-            'automaticSave' => true
+            'automaticSave' => true,
+            'modelAttributes' => ['category' => FieldTypeCategory::Relation]
         ],
 
         'nodes' => [

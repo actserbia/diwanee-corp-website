@@ -6,7 +6,7 @@
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
         <select class="form-control relation tags-parenting-relation {{$object->hasMultipleValues($field, isset($level) ? $level : 1) ? 'relation-multiple' : ''}}"
-            id="{{ $field }}-{{ isset($level) ? $level : 1 }}" name="{{ $field }}[]"
+            id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}-{{ isset($level) ? $level : 1 }}" name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}[]"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"

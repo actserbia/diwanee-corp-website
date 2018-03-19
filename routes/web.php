@@ -62,6 +62,7 @@
           Route::get('/model/typeahead/diwanee-element/items', 'ModelController@typeaheadDiwaneeElementItems')->name('model.typeahead.diwanee-element-items');
           Route::get('/model/typeahead/diwanee-element/items-filters', 'ModelController@typeaheadDiwaneeElementItemsFilters')->name('model.typeahead.diwanee-element-items-filters');
           Route::get('/model/typeahead/model-relation-items', 'ModelController@typeaheadModelRelationItems')->name('model.typeahead.model-relation-items');
+          Route::get('/model/add-new-relation-item', 'ModelController@modelAddNewRelationItem')->name('model.add-new-relation-item');
           
           Route::resource('nodes', 'AdminNodesController');
           Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');

@@ -28,7 +28,7 @@ $(document).ready(function() {
                                 $('div[id=relation-item-' + $(object).attr('id') + '-' + selectedItemId + ']').setRelationItemsDraggableAndDroppable();
                             }
                             $('.add-checkbox', '#selected-' + $(object).attr('id')).addAddCheckboxEvents();
-                            $('input.has-levels[type=checkbox]', '#selected-' + $(object).attr('id')).setHasLevelsCheckboxEvents();
+                            $('input.hierarchy[type=checkbox]', '#selected-' + $(object).attr('id')).setHierarchyCheckboxEvents();
                             $('input[type=checkbox]', '#selected-' + $(object).attr('id')).beautifyInputField();
                         }
                     });
@@ -81,8 +81,6 @@ $(document).ready(function() {
                 dependsOnValues[dependsOnField] = $('[id=' + dependsOnField + ']').getValue();
             });
             
-            console.log(dependsOnValues);
-
             $.ajax({
                 type: 'GET',
                 url: '/admin/model/populate-field',
@@ -206,6 +204,43 @@ $(document).ready(function() {
             });
         });
     };
+    
+    
+    $.fn.addAddNewRelationItemEvents = function() {
+        $(this).each(function(index, object) {
+            $(object).click(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/admin/model/add-new-relation-item',
+                    data: {
+                        data: $(object).data()
+                    },
+                    success: function (data) {
+                        $(object).before(data);
+                        $(object).data('last-index', $(object).data('last-index') + 1);
+                        
+                        $('a.remove-added-relation-item', $(object).parent()).addRemoveAddedRelationItemEvents();
+                        
+                        $('.add-checkbox', $(object).parent()).addAddCheckboxEvents();
+                        $('input.hierarchy[type=checkbox]', $(object).parent()).setHierarchyCheckboxEvents();
+                        $('input[type=checkbox]', $(object).parent()).beautifyInputField();
+                    }
+                });
+                return false;
+            });
+        });
+    };
+    
+    $.fn.addRemoveAddedRelationItemEvents = function() {
+        $(this).each(function(index, object) {
+            $(object).click(function() {
+                $(object).parent().remove();
+                return false;
+            });
+        });
+    };
+
+
 
     RelationsManager = {
         initialize: function() {
@@ -216,6 +251,9 @@ $(document).ready(function() {
             $('select.relation-multiple').showOrHide();
 
             $('.relation-item[draggable=true]').setRelationItemsDraggableAndDroppable();
+            
+            $('a.add-new-relation-item').addAddNewRelationItemEvents();
+            $('a.remove-added-relation-item').addRemoveAddedRelationItemEvents();
         }
     };
 });

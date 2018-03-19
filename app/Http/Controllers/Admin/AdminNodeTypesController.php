@@ -96,7 +96,7 @@ class AdminNodeTypesController extends Controller {
      */
     public function update(Request $request, $id) {
         $data = $request->all();
-
+        
         Validators::nodeTypesFormValidator($data, ['id' => $id])->validate();
 
         $object = NodeType::findOrFail($id);

@@ -43,20 +43,7 @@ class Field extends AppModel {
         'field_type' => [
             'relationType' => 'belongsTo',
             'model' => 'App\\FieldType',
-            'foreignKey' => 'field_type_id',
-            'automaticRender' => true
-        ],
-        'attribute_field_type' => [
-            'relationType' => 'belongsTo',
-            'model' => 'App\\FieldType',
-            'foreignKey' => 'field_type_id',
-            'filters' => ['category' => [FieldTypeCategory::Attribute]]
-        ],
-        'tag_field_type' => [
-            'relationType' => 'belongsTo',
-            'model' => 'App\\FieldType',
-            'foreignKey' => 'field_type_id',
-            'filters' => ['category' => [FieldTypeCategory::Tag]]
+            'foreignKey' => 'field_type_id'
         ]
     ];
 
@@ -68,6 +55,17 @@ class Field extends AppModel {
 
     public function getFieldTypeCategoryAttribute() {
         return $this->field_type->category;
+    }
+    
+    public function populateData($attributes = null) {
+        if(isset($this->id) || isset($attributes['category'])) {
+            $category = isset($this->id) ? $this->field_type->category : $attributes['category'];
+            $this->relationsSettings[$category . '_field_type'] = [
+                'parent' => 'field_type',
+                'filters' => ['category' => [$category]],
+                'automaticRender' => true
+            ];
+        }
     }
 
     public function saveData(array $data) {

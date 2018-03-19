@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use App\Http\Controllers\Controller;
 use App\Utils\HtmlElementsClasses;
-use App\Utils\Utils;
 use App\Tag;
 use App\Constants\ElementType;
 
@@ -52,6 +51,19 @@ class ModelController extends Controller {
         } else {
             return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData', 'withCategory'));
         }
+    }
+
+    public function modelAddNewRelationItem(Request $request) {
+        $params = $request->all();
+        
+        $data = $params['data'];
+        
+        $field = $data['relation'];
+        $object = new $data['model'](['model_type_id' => $data['modelType']]);
+        $item = $object->getRelationModel($data['relation']);
+        $index = ++$data['lastIndex'];
+        
+        return view('blocks.model.relation.form_relation_item__new', compact('object', 'field', 'item', 'index')); 
     }
 
     public function modelTagsParentingAddTagSubtags(Request $request) {

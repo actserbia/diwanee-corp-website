@@ -3,8 +3,8 @@
         {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-        {{ __('blade_templates.admin.types.multiple_list_has_levels') }}
-        <input class="form-control has-levels" type="checkbox"
+        {{ __('blade_templates.admin.types.multiple_list_hierarchy') }}
+        <input class="form-control hierarchy" type="checkbox"
             id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}" 
             name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}[hierarchy]"
             value="{{ $object->formValue($field)['hierarchy'] }}"

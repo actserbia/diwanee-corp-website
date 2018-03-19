@@ -39,7 +39,7 @@ $(document).ready(function() {
         });
     };
     
-    $.fn.setHasLevelsCheckboxEvents = function() {
+    $.fn.setHierarchyCheckboxEvents = function() {
         $(this).each(function(index, object) {
             $(object).on('ifChanged', function() {
                 $.ajax({
@@ -77,7 +77,7 @@ $(document).ready(function() {
     
     ModelManager = {
         initialize: function() {
-            $('input.has-levels[type=checkbox]').setHasLevelsCheckboxEvents();
+            $('input.hierarchy[type=checkbox]').setHierarchyCheckboxEvents();
             
             $('.add-checkbox').addAddCheckboxEvents();
             $('.remove-checkbox').addRemoveCheckboxEvents();
