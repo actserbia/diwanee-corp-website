@@ -18,7 +18,7 @@ class CreateTagsTable extends Migration
             $table->unsignedInteger('tag_type_id');
             $table->string('name', 255)->nullable();
             $table->string('meta_title', 255)->nullable();
-            $table->string('meta_description', 255);
+            $table->string('meta_description', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -29,7 +29,7 @@ class Validators {
         $model = new FieldType;
         
         return Validator::make($data, [
-            'name' => self::modelRequiredValidation('name', $model) . '|' . self::uniqueValidation('field_types', 'name', 'category', $data['category'], $additional) . '|max:255'
+            'name' => self::modelRequiredValidation('name', $model) . '|' . self::uniqueValidation('field_types', 'name', 'category', 'tag', $additional) . '|max:255'
         ]);
     }
     
