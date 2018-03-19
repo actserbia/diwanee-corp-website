@@ -31,8 +31,7 @@ class NmNodesType extends GraphQLType {
         ];
 
         foreach($this->fields as $fieldName => $fieldSettings) {
-            $typeName = $fieldSettings['type'];
-            $type = ($typeName === 'date') ? Timestamp::type() : Type::$typeName();
+            $type = $fieldSettings['type'][0]::$fieldSettings['type'][1];
             $fields[$fieldName] = [
                 'type' => (isset($fieldSettings['required']) && $fieldSettings['required']) ? Type::nonNull($type) : $type,
                 'description' => Str::studly($fieldName)

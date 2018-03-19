@@ -35,4 +35,8 @@ class ModelsUtils {
     public static function checkIfNodeTypeIdIsInPredefinedTypesList($nodeTypeId) {
         return in_array($nodeTypeId, Models::NodeType_PredefinedList);
     }
+    
+    public static function checkIfFieldIdIsInPredefinedFieldsList($fieldId) {
+        return in_array($fieldId, Models::Field_PredefinedList);
+    }
 }

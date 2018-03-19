@@ -39,11 +39,15 @@ abstract class ClassGenerator {
             FileFunctions::deleteFile($this->oldFilepath);
         }
 
-        $this->populateData();
+        if(count($this->model->attribute_fields) > 0) {
+            $this->populateData();
 
-        $this->populateContent();
+            $this->populateContent();
 
-        FileFunctions::writeToFile($this->content, $this->filepath);
+            FileFunctions::writeToFile($this->content, $this->filepath);
+        } else {
+            FileFunctions::deleteFile($this->filepath);
+        }
     }
 
     abstract protected function populateData();
@@ -83,7 +87,15 @@ abstract class ClassGenerator {
     }
 
     private function getValue($value) {
-        return (is_string($value) && strpos($value, '::') === false) ? '\'' . addslashes($value) . '\'' : $value;
+        if(is_string($value) && strpos($value, '::') === false) {
+            return '\'' . addslashes($value) . '\'';
+        }
+        
+        if(is_array($value)) {
+            return '[\'' . implode('\',\'', $value) . '\']';
+        }
+        
+        return $value;
     }
 
     public static function generateAll() {

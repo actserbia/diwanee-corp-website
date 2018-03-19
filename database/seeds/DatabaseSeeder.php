@@ -13,9 +13,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UsersTableSeeder::class);
+        
         $this->call(FieldTypesTableSeeder::class);
+        $this->call(FieldsTableSeeder::class);
         $this->call(NodeTypesTableSeeder::class);
-        $this->call(FieldTableSeeder::class);
+        $this->call(NodeTypeFieldTableSeeder::class);
 
         Artisan::call('nmtype:generate');
     }

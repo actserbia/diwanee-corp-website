@@ -9,6 +9,7 @@ class Rules {
     public static function addRules() {
         self::addCheckTags();
         self::addCheckTagRequired();
+        self::addCheckJson();
     }
     
     private static function addCheckTags() {
@@ -110,6 +111,12 @@ class Rules {
             }
 
             return !empty($value);
+        });
+    }
+    
+    private static function addCheckJson() {
+        Validator::extend('checkJson', function ($attribute, $value, $parameters) {
+            return !is_null(json_decode($value));
         });
     }
 }

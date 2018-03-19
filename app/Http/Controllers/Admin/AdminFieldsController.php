@@ -9,9 +9,19 @@ use App\Constants\FieldTypeCategory;
 use App\Validation\Validators;
 use App\Utils\HtmlElementsClasses;
 use App\Utils\Utils;
+use App\Models\ModelsUtils;
+use Illuminate\Support\Facades\Route;
 
 class AdminFieldsController extends Controller {
     public function __construct() {
+        $routeParams = Route::current()->parameters();
+        if(isset($routeParams['field'])) {
+            if(ModelsUtils::checkIfFieldIdIsInPredefinedFieldsList($routeParams['field'])) {
+                abort(403, __('messages.unauthorized_action'));
+                return redirect('/');
+            }
+        }
+        
         HtmlElementsClasses::$template = 'admin';
         Utils::$modelType = 'Field';
     }

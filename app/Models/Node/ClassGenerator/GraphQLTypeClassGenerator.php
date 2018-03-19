@@ -4,7 +4,6 @@ namespace App\Models\Node\ClassGenerator;
 
 use App\Constants\Settings;
 use App\Constants\AttributeFieldType;
-use App\Constants\FieldTypeCategory;
 
 class GraphQLTypeClassGenerator extends ClassGenerator {
     const FOLDER = 'GraphQL/Type/NodeModel';
@@ -20,11 +19,10 @@ class GraphQLTypeClassGenerator extends ClassGenerator {
         $this->modelName = $this->getModelClassName($this->model->name);
         $this->fields = [];
 
-        $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
-        foreach($this->model->$attributeFieldsRelationName as $field) {
+        foreach($this->model->attribute_fields as $field) {
             if($field->pivot->active) {
                 $this->fields[$field->formattedTitle] = [
-                    'type' => $this->getAttributeType($field),
+                    'type' => AttributeFieldType::graphQLTypes[$field->field_type->name],
                     'required' => $field->pivot->required
                 ];
             }
@@ -39,29 +37,5 @@ class GraphQLTypeClassGenerator extends ClassGenerator {
         $this->content .= str_repeat(' ', 8) . 'protected $modelName = \'' . $this->modelName . '\';' . PHP_EOL;
         $this->addFormattedListWithKeys('fields');
         $this->content .= str_repeat(' ', 4) . '}' . PHP_EOL;
-    }
-
-    private function getAttributeType($field) {
-        $attributeType = 'string';
-
-        switch($field->field_type->name) {
-            case AttributeFieldType::Integer:
-                $attributeType = 'int';
-                break;
-
-            case AttributeFieldType::Date:
-                $attributeType = 'date';
-                break;
-
-            case AttributeFieldType::Boolean:
-                $attributeType = 'boolean';
-                break;
-
-            default:
-                $attributeType = 'string';
-                break;
-        }
-
-        return $attributeType;
     }
 }

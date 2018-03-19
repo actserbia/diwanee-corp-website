@@ -37,8 +37,10 @@
                             <td>{{ $object->field_type->name }}</td>
                             <td>{{ $object->created_at }}</td>
                             <td>
-                                <a href="{{ route('fields.edit', ['id' => $object->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
-                                <a href="{{ route('fields.show', ['id' => $object->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
+                                @if(!ModelsUtils::checkIfFieldIdIsInPredefinedFieldsList($object->id))
+                                    <a href="{{ route('fields.edit', ['id' => $object->id]) }}" class="btn btn-info btn-xs"><i class="fa fa-pencil" title="@lang('blade_templates.global.edit')"></i> </a>
+                                    <a href="{{ route('fields.show', ['id' => $object->id]) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o" title="@lang('blade_templates.global.delete')"></i> </a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

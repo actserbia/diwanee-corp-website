@@ -12,9 +12,9 @@ use App\Constants\FieldTypeCategory;
 class Tag extends AppModel {
     use SoftDeletes;
     
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'meta_title', 'meta_description'];
 
-    protected $allAttributesFields = ['id', 'name', 'tag_type_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allAttributesFields = ['id', 'name', 'tag_type_id', 'meta_title', 'meta_description', 'created_at', 'updated_at', 'deleted_at'];
     
     protected $allFieldsFromPivots = ['tag_id', 'parent_id'];
 
@@ -23,6 +23,8 @@ class Tag extends AppModel {
     protected $filterFields = [
         'id' => false,
         'name' => true,
+        'meta_title' => true,
+        'meta_description' => true,
         'tag_type:name' => true,
         'created_at' => true,
         'updated_at' => true,

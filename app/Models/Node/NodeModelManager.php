@@ -4,7 +4,6 @@ namespace App\Models\Node;
 use Illuminate\Support\Str;
 use App\Constants\Settings;
 use App\NodeType;
-use App\Constants\FieldTypeCategory;
 use Request;
 
 trait NodeModelManager {
@@ -33,17 +32,18 @@ trait NodeModelManager {
     }
 
     private function populateAttributesFieldsData() {
-        $this->relationsSettings['additional_fields'] = [
-            'relationType' => 'hasOne',
-            'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Str::studly($this->modelType->name),
-            'foreignKey' => 'node_id',
-            'relationKey' => 'id'
-        ];
+        if(count($this->modelType->attribute_fields) > 0) {
+            $this->relationsSettings['additional_fields'] = [
+                'relationType' => 'hasOne',
+                'model' => 'App\\NodeModel\\' . ucfirst(Settings::NodeModelPrefix) . Str::studly($this->modelType->name),
+                'foreignKey' => 'node_id',
+                'relationKey' => 'id'
+            ];
+        }
     }
 
     private function populateTagFieldsData() {
-        $tagFieldsRelationName = FieldTypeCategory::Tag . '_fields';
-        foreach($this->modelType->$tagFieldsRelationName as $tagField) {
+        foreach($this->modelType->tag_fields as $tagField) {
             $this->populateTagFieldData($tagField);
         }
     }
@@ -55,8 +55,7 @@ trait NodeModelManager {
     }
     
     private function populateRelationFieldsData() {
-        $relationFieldsRelationName = FieldTypeCategory::Relation . '_fields';
-        foreach($this->modelType->$relationFieldsRelationName as $relationField) {
+        foreach($this->modelType->relation_fields as $relationField) {
             $this->populateRelationFieldData($relationField);
         }
     }
@@ -116,6 +115,17 @@ trait NodeModelManager {
         if(isset($this->relationsSettings['additional_fields'])) {
             $model = new $this->relationsSettings['additional_fields']['model'];
             $attributes = array_merge($attributes, $model->getAllAttributes());
+        }
+        
+        return $attributes;
+    }
+    
+    public function getFillableAttributes() {
+        $attributes = parent::getFillableAttributes();
+        
+        if(isset($this->relationsSettings['additional_fields'])) {
+            $model = new $this->relationsSettings['additional_fields']['model'];
+            $attributes = array_merge($attributes, $model->getFillableAttributes());
         }
         
         return $attributes;

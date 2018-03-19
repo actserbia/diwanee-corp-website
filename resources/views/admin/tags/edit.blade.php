@@ -23,6 +23,10 @@
                         
                         @include('blocks.model', ['field' => 'children'])
                         
+                        @include('blocks.model', ['field' => 'meta_title'])
+                        
+                        @include('blocks.model', ['field' => 'meta_description'])
+                        
                         @include('blocks.model', ['field' => 'tag_data', 'readonly' => 'label_with_link'])
 
                         <div class="ln_solid"></div>

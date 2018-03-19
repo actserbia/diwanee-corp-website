@@ -22,6 +22,10 @@
                         @include('blocks.model', ['field' => 'parents'])
                         
                         @include('blocks.model', ['field' => 'children'])
+                        
+                        @include('blocks.model', ['field' => 'meta_title'])
+                        
+                        @include('blocks.model', ['field' => 'meta_description'])
 
                         <div class="ln_solid"></div>
 

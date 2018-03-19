@@ -48,15 +48,13 @@ class FieldType extends AppModel {
         $isNew = !isset($this->id);
             
         parent::saveData($data);
-            
-        if($isNew) {
-            $this->addFieldForTagFieldType();
-        }
+        
+        $this->saveFieldForTagFieldType($isNew);
     }
     
-    private function addFieldForTagFieldType() {
+    private function saveFieldForTagFieldType($isNew) {
         if($this->category === FieldTypeCategory::Tag) {
-            $fieldObject = new Field;
+            $fieldObject = $isNew ? new Field : Field::where('field_type_id', '=', $this->id)->first();
             $fieldData = [
                 'title' => $this->name,
                 'field_type' => $this->id

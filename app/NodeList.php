@@ -137,8 +137,7 @@ class NodeList extends AppModel {
     }
 
     private function populateTagFieldsData() {
-        $tagFieldsRelationName = FieldTypeCategory::Tag . '_fields';
-        foreach($this->modelType->$tagFieldsRelationName as $tagField) {
+        foreach($this->modelType->tag_fields as $tagField) {
             $this->populateTagFieldData($tagField);
         }
     }

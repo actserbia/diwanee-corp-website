@@ -6,7 +6,7 @@ use App\NodeTypeField;
 use App\Field;
 use App\Constants\Database;
 
-class FieldTableSeeder extends Seeder
+class NodeTypeFieldTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,47 +19,23 @@ class FieldTableSeeder extends Seeder
             ->where('category', 'like', 'attribute')
             ->first();
 
-        $pageType = NodeType::where('name', 'like', 'Page')->first();
-
-        $field = Field::where('title', 'like', 'Meta Title')->first();
-
-        if($field != null) {
-            $fieldId = $field->id;
-        } else {
-            factory(Field::class, 1)->create([
-                'title' => 'Meta Title',
-                'field_type_id' => $textType->id
-            ]);
-            $fieldId = DB::getPdo()->lastInsertId();
-        }
+        $pageType = NodeType::find(Database::NodeType_Page_Id);
 
         $nodeTypeField = new NodeTypeField;
 
         $nodeTypeField->node_type_id = $pageType->id;
-        $nodeTypeField->field_id = $fieldId;
+        $nodeTypeField->field_id = Database::Field_Attribute_MetaTitle_Id;
         $nodeTypeField->active = 1;
         $nodeTypeField->required = 0;
         $nodeTypeField->ordinal_number = 0;
 
         $nodeTypeField->save();
 
-
-        $field = Field::where('title', 'like', 'Meta Description')->first();
-
-        if($field != null) {
-            $fieldId = $field->id;
-        } else {
-            factory(Field::class, 1)->create([
-                'title' => 'Meta Description',
-                'field_type_id' => $textType->id
-            ]);
-            $fieldId = DB::getPdo()->lastInsertId();
-        }
-
+        
         $nodeTypeField = new NodeTypeField;
 
         $nodeTypeField->node_type_id = $pageType->id;
-        $nodeTypeField->field_id = $fieldId;
+        $nodeTypeField->field_id = Database::Field_Attribute_MetaDescription_Id;
         $nodeTypeField->active = 1;
         $nodeTypeField->required = 0;
         $nodeTypeField->ordinal_number = 1;
@@ -70,14 +46,20 @@ class FieldTableSeeder extends Seeder
     }
     
     private function addTagDataNodeType() {
-        $tagDataNodeType = NodeType::where('name', '=', 'Tag Data')->first();
+        $tagDataNodeType = NodeType::find(Database::NodeType_TagData_Id);
         
         $field = Field::find(Database::Field_Relation_Tag_Id);
         
         $nodeTypeField = new NodeTypeField;
 
         $additionalSettings = [
-            'multiple' => ['0', '0']
+            'additional_settings' => [
+                'multiple' => [
+                    'hierarchy' => '0',
+                    'value' => '0'
+                ],
+                'render_type' => 'input'
+            ]
         ];
 
         $nodeTypeField->node_type_id = $tagDataNodeType->id;

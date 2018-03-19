@@ -99,8 +99,7 @@ class NodeType extends AppModel {
 
     public function getSTFieldsArray() {
         $stFields = array();
-        $sirTrevorRelationName = FieldTypeCategory::SirTrevor . '_fields';
-        foreach($this->$sirTrevorRelationName as $field) {
+        foreach($this->sir_trevor_fields as $field) {
             $stFields[] = str_replace(' ', '', $field->title);
         }
         return $stFields;
@@ -108,8 +107,7 @@ class NodeType extends AppModel {
 
     public function getRequiredSTFieldsArray() {
         $reqFields = array();
-        $sirTrevorRelationName = FieldTypeCategory::SirTrevor . '_fields';
-        foreach($this->$sirTrevorRelationName as $field) {
+        foreach($this->sir_trevor_fields as $field) {
             if($field->pivot->required) {
                 $reqFields[] = str_replace(' ', '', $field->title);
             }

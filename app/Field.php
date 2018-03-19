@@ -33,8 +33,8 @@ class Field extends AppModel {
     protected $defaultDropdownColumn = 'title';
 
     protected $attributeType = [
-        'active' => Models::AttributeType_Checkbox,
-        'required' => Models::AttributeType_Checkbox,
+        'active' => Models::AttributeType_Boolean,
+        'required' => Models::AttributeType_Boolean,
         'multiple' => Models::AttributeType_CheckboxList,
         'render_type' => Models::AttributeType_Enum
     ];
@@ -75,7 +75,7 @@ class Field extends AppModel {
 
         parent::saveData($data);
 
-        if(!empty($oldTitle) && $oldTitle !== $this->title) {
+        if(!empty($oldTitle) && $oldTitle !== $this->title && $this->fieldTypeCategory === FieldTypeCategory::Attribute) {
             NodeModelDBGenerator::changeFieldNameInAllNodeTables($oldTitle, $this->formattedTitle);
             ClassGenerator::generateAllFiles();
         }

@@ -21,10 +21,11 @@ class GraphQLQueryClassGenerator extends ClassGenerator {
         $this->modelName = 'App\\NodeModel\\' . Str::studly($this->model->name);
         $this->args = [];
 
-        $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
-        foreach($this->model->$attributeFieldsRelationName as $field) {
+        foreach($this->model->attribute_fields as $field) {
             if($field->pivot->active) {
-                $this->args[$field->formattedTitle] = $this->getAttributeType($field);
+                $this->args[$field->formattedTitle] = [
+                    'type' => AttributeFieldType::graphQLTypes[$field->field_type->name]
+                ];
             }
         }
     }
@@ -37,29 +38,5 @@ class GraphQLQueryClassGenerator extends ClassGenerator {
         $this->content .= str_repeat(' ', 8) . 'protected $modelName = \'' . $this->modelName . '\';' . PHP_EOL;
         $this->addFormattedListWithKeys('args');
         $this->content .= str_repeat(' ', 4) . '}' . PHP_EOL;
-    }
-
-    private function getAttributeType($field) {
-        $attributeType = 'string';
-
-        switch($field->field_type->name) {
-            case AttributeFieldType::Integer:
-                $attributeType = 'int';
-                break;
-
-            case AttributeFieldType::Date:
-                $attributeType = 'date';
-                break;
-
-            case AttributeFieldType::Boolean:
-                $attributeType = 'boolean';
-                break;
-
-            default:
-                $attributeType = 'string';
-                break;
-        }
-
-        return $attributeType;
     }
 }

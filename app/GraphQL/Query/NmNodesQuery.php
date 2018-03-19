@@ -34,9 +34,9 @@ class NmNodesQuery extends AppQuery {
             ]
         ];
 
-        foreach($this->args as $argName => $argType) {
+        foreach($this->args as $argName => $argSettings) {
             $args[$argName] = [
-                'type' => ($argType === 'date') ? Timestamp::type() : Type::$argType(),
+                'type' => ($argSettings['type'][0] === 'RawData') ? Type::string() : $argSettings['type'][0]::$argSettings['type'][1],
                 'name' => $argName
             ];
         }

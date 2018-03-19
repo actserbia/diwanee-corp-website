@@ -29,11 +29,16 @@ class NodeModelDBGenerator {
             }
         }
 
-        if(Schema::hasTable($this->tableName)) {
-            $this->updateNodeModelTable();
+        if(count($this->model->attribute_fields) > 0) {
+            if(Schema::hasTable($this->tableName)) {
+                $this->updateNodeModelTable();
+            } else {
+                $this->createNodeModelTable();
+            }
         } else {
-            $this->createNodeModelTable();
+            Schema::dropIfExists($this->tableName);
         }
+        
     }
 
     private function createNodeModelTable() {
@@ -54,8 +59,7 @@ class NodeModelDBGenerator {
     }
 
     private function addNodeModelTableFields($table) {
-        $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
-        foreach($this->model->$attributeFieldsRelationName as $field) {
+        foreach($this->model->attribute_fields as $field) {
             if(!Schema::hasColumn($this->tableName, $field->formattedTitle)) {
                 $this->setTableField($table, $field);
             }
@@ -63,23 +67,12 @@ class NodeModelDBGenerator {
     }
 
     private function setTableField($table, $field) {
-        $tableField = null;
-        switch($field->field_type->name) {
-            case AttributeFieldType::Text:
-                $tableField = $table->string($field->formattedTitle, 255);
-                break;
-
-            case AttributeFieldType::Integer:
-                $tableField = $table->unsignedInteger($field->formattedTitle);
-                break;
-
-            case AttributeFieldType::Date:
-                $tableField = $table->timestamp($field->formattedTitle);
-                break;
-
-            case AttributeFieldType::Boolean:
-                $tableField = $table->boolean($field->formattedTitle);
-                break;
+        $databaseType = AttributeFieldType::databaseTypes[$field->field_type->name];
+        if(is_array($databaseType)) { 
+            $databaseTypeName = $databaseType[0];
+            $tableField = $table->$databaseTypeName($field->formattedTitle, $databaseType[1]);
+        } else {
+            $tableField = $table->$databaseType($field->formattedTitle);
         }
 
         if(!$field->pivot->required) {

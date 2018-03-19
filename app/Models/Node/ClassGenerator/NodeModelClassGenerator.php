@@ -3,7 +3,6 @@
 namespace App\Models\Node\ClassGenerator;
 
 use App\Constants\AttributeFieldType;
-use App\Constants\FieldTypeCategory;
 
 class NodeModelClassGenerator extends ClassGenerator {
     const FOLDER = 'NodeModel';
@@ -26,8 +25,7 @@ class NodeModelClassGenerator extends ClassGenerator {
     protected $multipleFields = [];
 
     protected function populateData() {
-        $attributeFieldsRelationName = FieldTypeCategory::Attribute . '_fields';
-        foreach($this->model->$attributeFieldsRelationName as $field) {
+        foreach($this->model->attribute_fields as $field) {
             if($field->pivot->active) {
                 $this->fillable[] = $field->formattedTitle;
                 $this->allAttributesFields[] = $field->formattedTitle;
@@ -37,33 +35,9 @@ class NodeModelClassGenerator extends ClassGenerator {
                     $this->requiredFields[] = $field->formattedTitle;
                 }
 
-                $this->attributeType[$field->formattedTitle] = $this->getAttributeType($field);
+                $this->attributeType[$field->formattedTitle] = AttributeFieldType::modelAttributeTypes[$field->field_type->name];
             }
         }
-    }
-
-    private function getAttributeType($field) {
-        $attributeType = 'Models::AttributeType_Text';
-
-        switch($field->field_type->name) {
-            case AttributeFieldType::Integer:
-                $attributeType = 'Models::AttributeType_Number';
-                break;
-
-            case AttributeFieldType::Date:
-                $attributeType = 'Models::AttributeType_Date';
-                break;
-
-            case AttributeFieldType::Boolean:
-                $attributeType = 'Models::AttributeType_Checkbox';
-                break;
-
-            default:
-                $attributeType = 'Models::AttributeType_Text';
-                break;
-        }
-
-        return $attributeType;
     }
 
     protected function populateContent() {
