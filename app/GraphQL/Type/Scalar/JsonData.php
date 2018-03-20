@@ -5,19 +5,19 @@ namespace App\GraphQL\Type\Scalar;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Utils\Utils;
 
-class RawData extends StringType
+class JsonData extends StringType
 {
     private static $_instance = null;
     const MIN_INT = 0;
     /**
      * @var string
      */
-    public $name = "RawData";
+    public $name = 'JsonData';
 
     /**
      * @var string
      */
-    public $description = "Raw, unformatted data from DB ";
+    public $description = 'Json data';
 
     protected function __clone() {}
 
@@ -43,11 +43,6 @@ class RawData extends StringType
     }
 
     protected function toData($value) {
-        return $value;
-        
-        //if (is_string($value)) {
-        //    return $value;
-        //}
-        //return json_encode($value);
+        return is_string($value) ? json_decode($value) : $value;
     }
 }

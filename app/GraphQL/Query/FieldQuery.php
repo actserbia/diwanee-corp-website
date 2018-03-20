@@ -6,7 +6,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
 
-class FieldsQuery extends AppQuery {
+class FieldQuery extends AppQuery {
     protected $modelName = 'App\\Field';
 
     protected $attributes = [

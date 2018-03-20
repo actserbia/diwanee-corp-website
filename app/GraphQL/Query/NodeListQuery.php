@@ -7,7 +7,7 @@ use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\SelectFields;
 use GraphQL\Type\Definition\ResolveInfo;
 
-class NodeListsQuery extends AppQuery {
+class NodeListQuery extends AppQuery {
     protected $modelName = 'App\\NodeList';
     
     protected $attributes = [

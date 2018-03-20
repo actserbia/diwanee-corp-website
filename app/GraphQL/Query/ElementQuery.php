@@ -7,7 +7,7 @@ use Rebing\GraphQL\Support\Facades\GraphQL;
 use App\GraphQL\Type\Scalar\Timestamp;
 
 
-class ElementsQuery extends AppQuery {
+class ElementQuery extends AppQuery {
     protected $modelName = 'App\\Element';
     
     protected $attributes = [

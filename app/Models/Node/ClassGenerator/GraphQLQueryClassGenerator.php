@@ -4,7 +4,6 @@ namespace App\Models\Node\ClassGenerator;
 
 use App\Constants\Settings;
 use App\Constants\AttributeFieldType;
-use App\Constants\FieldTypeCategory;
 use Illuminate\Support\Str;
 
 class GraphQLQueryClassGenerator extends ClassGenerator {
@@ -18,7 +17,7 @@ class GraphQLQueryClassGenerator extends ClassGenerator {
     }
 
     protected function populateData() {
-        $this->modelName = 'App\\NodeModel\\' . Str::studly($this->model->name);
+        $this->modelName = $this->getModelClassName($this->model->name);
         $this->args = [];
 
         foreach($this->model->attribute_fields as $field) {

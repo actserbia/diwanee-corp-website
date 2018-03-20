@@ -8,7 +8,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class TagsType extends GraphQLType
+class TagType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'Tags',

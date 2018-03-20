@@ -10,7 +10,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use App\NodeType;
 use App\User as Author;
 
-class NodesQuery extends AppQuery {
+class NodeQuery extends AppQuery {
     protected $modelName = 'App\\Node';
     
     protected $args = [];

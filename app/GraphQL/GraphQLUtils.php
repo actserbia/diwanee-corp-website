@@ -42,7 +42,7 @@ class GraphQLUtils {
         return $schemas;
     }
 
-    private static function getGraphQLTypesNames($folderName = '') {
+    public static function getGraphQLTypesNames($folderName = '') {
         $typeNames = [];
 
         if(!empty($folderName)) {

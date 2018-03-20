@@ -4,8 +4,8 @@ namespace App\Constants;
 
 final class Settings {
     const NodeModelPrefix = 'nm';
-    const GraphQLTypeSufix = 'sType';
-    const GraphQLQuerySufix = 'sQuery';
+    const GraphQLTypeSufix = 'Type';
+    const GraphQLQuerySufix = 'Query';
     
     const MaximumTagsLevelsCount = 5;
 

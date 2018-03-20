@@ -7,7 +7,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class UsersType extends GraphQLType
+class UserType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'Users',

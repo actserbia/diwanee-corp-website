@@ -6,16 +6,16 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
 
-class FieldTypesQuery extends AppQuery {
-    protected $modelName = 'App\\FieldType';
-
+class TagQuery extends AppQuery {
+    protected $modelName = 'App\\Tag';
+    
     protected $attributes = [
-        'name' => 'FieldTypesQuery',
+        'name' => 'TagsQuery',
         'description' => 'A query'
     ];
 
     public function type() {
-        return Type::listOf(GraphQL::type('FieldType'));
+        return Type::listOf(GraphQL::type('Tag'));
     }
 
     public function args() {
@@ -27,6 +27,15 @@ class FieldTypesQuery extends AppQuery {
             'name' => [
                 'type' => Type::string(),
                 'name' => 'name'
+            ],
+            'type' => [
+                'type' => Type::string(),
+                'name' => 'type'
+            ],
+            'created_at' => [
+                'type' => Type::listOf(Type::string()),
+                'name' => 'created_at',
+                'category' => 'date'
             ]
         ];
     }

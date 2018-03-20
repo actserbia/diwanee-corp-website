@@ -1,12 +1,11 @@
 <?php
 namespace App\GraphQL\Query;
 
-use Illuminate\Support\Str;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use App\GraphQL\Type\Scalar\Timestamp;
 
-class NmNodesQuery extends AppQuery {
+class NmNodeQuery extends AppQuery {
     protected $modelName = '';
 
     protected $args = [];
@@ -14,12 +13,12 @@ class NmNodesQuery extends AppQuery {
     public function __construct($attributes = array()) {
         parent::__construct($attributes);
 
-        $this->attributes['name'] = Str::plural($this->name) . 'Query';
+        $this->attributes['name'] = $this->modelName . ' Query';
         $this->attributes['description'] = 'A query';
     }
 
     public function type() {
-        return Type::listOf(GraphQL::type($this->name));
+        return Type::listOf(GraphQL::type($this->modelName));
     }
 
     public function args() {
@@ -35,8 +34,25 @@ class NmNodesQuery extends AppQuery {
         ];
 
         foreach($this->args as $argName => $argSettings) {
+            $typeClass = $argSettings['type'][0];
+            $typeFieldType = $argSettings['type'][1];
+            
+            switch($typeClass) {
+                case 'JsonData':
+                  $type = Type::string();
+                  break;
+                  
+                case 'Timestamp':
+                  $type = Timestamp::$typeFieldType();
+                  break;
+                
+                default:
+                    $type = Type::$typeFieldType();
+                    break;
+            }
+            
             $args[$argName] = [
-                'type' => ($argSettings['type'][0] === 'RawData') ? Type::string() : $argSettings['type'][0]::$argSettings['type'][1],
+                'type' => $type,
                 'name' => $argName
             ];
         }

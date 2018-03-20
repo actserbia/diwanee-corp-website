@@ -4,19 +4,19 @@ namespace App\GraphQL\Type;
 use Illuminate\Support\Str;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Type as GraphQLType;
-use App\Utils\Utils;
 use App\GraphQL\Type\Scalar\Timestamp;
+use App\GraphQL\Type\Scalar\JsonData;
 
-class NmNodesType extends GraphQLType {
-    protected $modelName = '';
+class NmNodeType extends GraphQLType {
+    protected $modelName = 'NmNode';
 
     protected $fields = [];
 
     public function __construct($attributes = array()) {
         parent::__construct($attributes);
 
-        $this->attributes['name'] = Str::plural($this->modelName);
-        $this->attributes['description'] = Str::plural($this->modelName) . ' type';
+        $this->attributes['name'] = $this->modelName;
+        $this->attributes['description'] = $this->modelName . ' type';
         $this->attributes['model'] = 'App\\NodeModel\\' . $this->modelName;
     }
 
@@ -31,7 +31,23 @@ class NmNodesType extends GraphQLType {
         ];
 
         foreach($this->fields as $fieldName => $fieldSettings) {
-            $type = $fieldSettings['type'][0]::$fieldSettings['type'][1];
+            $typeClass = $fieldSettings['type'][0];
+            $typeFieldType = $fieldSettings['type'][1];
+            
+            switch($typeClass) {
+                case 'JsonData':
+                  $type = JsonData::$typeFieldType();
+                  break;
+                  
+                case 'Timestamp':
+                  $type = Timestamp::$typeFieldType();
+                  break;
+                
+                default:
+                    $type = Type::$typeFieldType();
+                    break;
+            }
+            
             $fields[$fieldName] = [
                 'type' => (isset($fieldSettings['required']) && $fieldSettings['required']) ? Type::nonNull($type) : $type,
                 'description' => Str::studly($fieldName)

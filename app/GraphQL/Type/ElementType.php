@@ -4,17 +4,17 @@ namespace App\GraphQL\Type;
 
 use App\Element;
 use App\GraphQL\Type\Scalar\Timestamp;
-use App\GraphQL\Type\Scalar\RawData;
+use App\GraphQL\Type\Scalar\JsonData;
 
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-use App\Constants\ElementType;
+use App\Constants\ElementType as ElementTypeConstants;
 use App\Utils\ImagesManager;
 use App\Converters\ToHtmlConverter;
 
-class ElementsType extends GraphQLType
+class ElementType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'Elements',
@@ -38,7 +38,7 @@ class ElementsType extends GraphQLType
                 'description' => 'created'
             ],
             'data' => [
-                'type' => RawData::type(),
+                'type' => JsonData::type(),
                 'description' => 'Element data'
             ],
             'element_item_node' => [
@@ -60,11 +60,11 @@ class ElementsType extends GraphQLType
         
         unset($data->id);
         
-        if(in_array($root->type, array_keys(ElementType::itemsTypesSettings))) {
+        if(in_array($root->type, array_keys(ElementTypeConstants::itemsTypesSettings))) {
             unset($data->filter);
         }
         
-        if(in_array($root->type, ElementType::imageTypes)) {
+        if(in_array($root->type, ElementTypeConstants::imageTypes)) {
             $data->file->hash = ImagesManager::getHashFromS3Path($data->file->url);
         }
        

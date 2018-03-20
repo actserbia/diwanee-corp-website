@@ -8,7 +8,7 @@ use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 use App\GraphQL\Type\Scalar\Timestamp;
 
-class NodeListsType extends GraphQLType
+class NodeListType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'NodeLists',

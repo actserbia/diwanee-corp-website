@@ -44,6 +44,11 @@ class Field extends AppModel {
             'relationType' => 'belongsTo',
             'model' => 'App\\FieldType',
             'foreignKey' => 'field_type_id'
+        ],
+        'attribute_field_type' => [
+            'parent' => 'field_type',
+            'filters' => ['category' => [FieldTypeCategory::Attribute]],
+            'automaticRender' => true
         ]
     ];
 

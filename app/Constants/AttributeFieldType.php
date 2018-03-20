@@ -32,6 +32,6 @@ final class AttributeFieldType {
         self::Integer => ['Type', 'int'],
         self::Date => ['Timestamp', 'type'],
         self::Boolean => ['Type', 'boolean'],
-        self::Json => ['RawData', 'type']
+        self::Json => ['JsonData', 'type']
     );
 }

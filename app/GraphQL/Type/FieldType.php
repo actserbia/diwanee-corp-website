@@ -7,7 +7,7 @@ use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 use Rebing\GraphQL\Support\Type as GraphQLType;
 
-class FieldsType extends GraphQLType
+class FieldType extends GraphQLType
 {
     protected $attributes = [
         'name' => 'Fields',

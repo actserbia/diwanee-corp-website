@@ -4,7 +4,7 @@ namespace App\GraphQL\Query;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
 
-class UsersQuery extends AppQuery {
+class UserQuery extends AppQuery {
     protected $modelName = 'App\\User';
     
     protected $attributes = [
