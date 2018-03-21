@@ -28,7 +28,7 @@ trait Searchable
     public function toSearchArray()
     {
         $this->populateAttributesFieldsData();
-        $model = $this->load('model_type', 'author', 'tags', 'elements', 'additional_fields');
+        $model = $this->load('model_type', 'author', 'tags');
 
         return $model->toArray();
     }

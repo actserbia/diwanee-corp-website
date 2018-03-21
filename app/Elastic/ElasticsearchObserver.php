@@ -16,7 +16,7 @@ class ElasticsearchObserver
     public function savedWithRelations($model)
     {
         $this->elasticsearch->index([
-            'index' => $model->getSearchIndex(),
+            'index' => env('ELASTICSEARCH_INDEX_PREFIX').'_'.$model->getSearchIndex(),
             'type' => $model->getSearchType(),
             'id' => $model->id,
             'body' => $model->toSearchArray(),
