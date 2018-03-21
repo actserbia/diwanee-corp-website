@@ -254,19 +254,27 @@ $(document).ready(function() {
     $.fn.addNodeTypeAttributeFieldNewRelationItemEvents = function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
-                $('select#attribute_fields').children('option').each(function(index, option) {
-                    if($(option).text() === $(object).val()) {
-                        window.alert($(object).val() + Localization[$('html').attr('lang')].field_exists);
-                        $(object).val('');
-                    }
-                });
-
                 $('div#selected-attribute_fields input[name*=title]').each(function(index, input) {
                     if($(input).val() === $(object).val() && $(input).attr('id') !== $(object).attr('id')) {
                         window.alert(Localization[$('html').attr('lang')].field_entered + $(object).val());
                         $(object).val('');
+                        return;
                     }
                 });
+                
+                $('select#attribute_fields').children('option').each(function(index, option) {
+                    if($(option).text() === $(object).val()) {
+                        window.alert($(object).val() + Localization[$('html').attr('lang')].field_exists__select);
+                        $(object).val('');
+                        return;
+                    }
+                });
+                
+                if(typeof RelationInputsManager.typeaheadList['attribute_fields'] !== 'undefined') {
+                    if(RelationInputsManager.typeaheadList['attribute_fields'].inArray($(object).val(), 'name') !== -1) {
+                        window.alert($(object).val() + Localization[$('html').attr('lang')].field_exists__input);
+                    }
+                }
             });
         });
     };

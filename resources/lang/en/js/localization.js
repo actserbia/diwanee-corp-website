@@ -8,6 +8,7 @@ Localization.en = {
     "diwanee_elements_labels": {
         "diwanee list": "Nodes list:"
     },
-    "field_exists": " field exists! Please, choose it from dropdown list.",
+    "field_exists__select": " field exists! Please, choose it from dropdown list.",
+    "field_exists__input": " field exists! Please, choose it from input.",
     "field_entered": "You have already entered field "
 }
