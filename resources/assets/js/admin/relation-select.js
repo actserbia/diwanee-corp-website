@@ -170,15 +170,19 @@ $(document).ready(function() {
     $.fn.setRelationItemsDraggableAndDroppable = function() {
         $(this).each(function(index, object) {
             $(object).on('dragstart', function(e) {
+                console.log('drop');
                 e.originalEvent.dataTransfer.setData('id', e.target.id);
             });
 
             $(object).on('dragover', function(e) {
+                console.log('dragover');
                 e.preventDefault();
             });
 
             $(object).on('drop', function(e) {
+                console.log('drop');
                 e.preventDefault();
+
                 var dragId = e.originalEvent.dataTransfer.getData('id');
 
                 var element = e.target;
@@ -216,14 +220,20 @@ $(document).ready(function() {
                         data: $(object).data()
                     },
                     success: function (data) {
-                        $(object).before(data);
+                        $('div[id=selected-' + $(object).data('relation') + ']').append(data);
                         $(object).data('last-index', $(object).data('last-index') + 1);
                         
                         $('a.remove-added-relation-item', $(object).parent()).addRemoveAddedRelationItemEvents();
                         
+                        if($(object).data('sortable')) {
+                            $('div[id=relation-item-' + $(object).data('relation') + '-' + $(object).data('last-index') + '-new]').setRelationItemsDraggableAndDroppable();
+                        }
+
                         $('.add-checkbox', $(object).parent()).addAddCheckboxEvents();
                         $('input.hierarchy[type=checkbox]', $(object).parent()).setHierarchyCheckboxEvents();
                         $('input[type=checkbox]', $(object).parent()).beautifyInputField();
+
+                        RelationsManager.addNewRelationItemEvents();
                     }
                 });
                 return false;
@@ -241,6 +251,25 @@ $(document).ready(function() {
     };
 
 
+    $.fn.addNodeTypeAttributeFieldNewRelationItemEvents = function() {
+        $(this).each(function(index, object) {
+            $(object).change(function() {
+                $('select#attribute_fields').children('option').each(function(index, option) {
+                    if($(option).text() === $(object).val()) {
+                        window.alert($(object).val() + Localization[$('html').attr('lang')].field_exists);
+                        $(object).val('');
+                    }
+                });
+
+                $('div#selected-attribute_fields input[name*=title]').each(function(index, input) {
+                    if($(input).val() === $(object).val() && $(input).attr('id') !== $(object).attr('id')) {
+                        window.alert(Localization[$('html').attr('lang')].field_entered + $(object).val());
+                        $(object).val('');
+                    }
+                });
+            });
+        });
+    };
 
     RelationsManager = {
         initialize: function() {
@@ -254,6 +283,10 @@ $(document).ready(function() {
             
             $('a.add-new-relation-item').addAddNewRelationItemEvents();
             $('a.remove-added-relation-item').addRemoveAddedRelationItemEvents();
+        },
+
+        addNewRelationItemEvents: function() {
+            $('div#selected-attribute_fields input[name*=title]').addNodeTypeAttributeFieldNewRelationItemEvents();
         }
     };
 });

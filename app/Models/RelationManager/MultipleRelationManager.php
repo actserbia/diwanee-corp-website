@@ -4,6 +4,9 @@ namespace App\Models\RelationManager;
 class MultipleRelationManager extends RelationManager {
     private $index = 0;
     
+    private $data = [];
+    private $indexIdsPairs = [];
+
     protected function getAllRelationItemsQuery($relationsSettings) {
         if(isset($relationsSettings['pivotModel'])) {
             $query = $this->object->belongsToMany($relationsSettings['model'], $relationsSettings['pivot'])->using($relationsSettings['pivotModel']);
@@ -26,19 +29,13 @@ class MultipleRelationManager extends RelationManager {
     
     
     public function saveRelation($data) {
-        foreach($data as $key => $value) {
-            if(strpos($key, 'pivot_') !== false) {
-                $relationsSettings = $this->object->getRelationSettings(str_replace('pivot_', '', $key));
-                if(isset($relationsSettings['pivotModel'])) {
-                    $data[$key] = $relationsSettings['pivotModel']::populatePivotData($value);
-                }
-            }
-        }
-
-        $this->populateRelationData($data);
-        
+        $this->data = $data;
         $relation = $this->relation;
         
+        $this->addNewRelationItems();
+
+        $this->populateRelationData();
+
         foreach($this->object->$relation as $item) {
             if(!isset($this->relationData[$item->id])) {
                 $this->object->$relation()->detach($item);
@@ -51,20 +48,49 @@ class MultipleRelationManager extends RelationManager {
         }
     }
     
-    protected function populateRelationData($data) {
+    private function addNewRelationItems() {
+        $relation = $this->relation;
+
+        if(isset($this->data['new_items'][$relation])) {
+            $relationsSettings = $this->object->getRelationSettings($relation);
+
+            $this->indexIdsPairs = [];
+            foreach($this->data['new_items'][$relation] as $key => $relationItemData) {
+                $object = new $relationsSettings['model'];
+                $object->saveObject($relationItemData);
+
+                $this->indexIdsPairs[$key] = $object->id;
+            }
+        }
+    }
+
+    protected function populateRelationData() {
         $this->relationData = [];
         
-        if(isset($data[$this->relation])) {
-            foreach($data[$this->relation] as $itemId) {
-                if(!empty($itemId)) {
-                    $this->relationData[$itemId] = [];
-                }
-            }
+        $relation = $this->relation;
+        if(isset($this->data[$relation])) {
+            $this->populateRelationDataFromRequestData();
 
-            foreach($data as $key => $value) {
-                if(strpos($key, 'pivot_' . $this->relation) === 0) {
-                    $this->relationData = $value;
-                }
+            $relationsSettings = $this->object->getRelationSettings($relation);
+            if(isset($relationsSettings['pivotModel'])) {
+                $this->relationData = $relationsSettings['pivotModel']::populatePivotData($this->relationData);
+            }
+        }
+    }
+
+    private function populateRelationDataFromRequestData() {
+        $this->relationData = [];
+
+        $relation = $this->relation;
+        $data = $this->data;
+        foreach($data[$relation] as $index => $itemId) {
+            if(strpos($itemId, '-new') !== false) {
+                $data[$relation][$index] = $this->indexIdsPairs[$itemId];
+
+                $relationItemData = $data['new_items'][$relation][$itemId];
+                $this->relationData[$this->indexIdsPairs[$itemId]] = isset($relationItemData['pivot']) ? $relationItemData['pivot'] : [];
+            } elseif(!empty($itemId)) {
+                $this->relationData[$itemId] = isset($data['relation_items'][$relation][$itemId]['pivot']) ? $data['relation_items'][$relation][$itemId]['pivot'] : [];
             }
         }
     }

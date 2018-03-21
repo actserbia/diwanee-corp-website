@@ -1,8 +1,8 @@
 <div class="checkbox-item-container">
     <input class="form-control checkbox-item" type="checkbox"
         value="{{ $itemFieldValue }}"
-        id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}" 
-        name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}[value][]"
+        id="{{ $object->formFieldName($field, $fieldPrefix) }}"
+        name="{{ $object->formFieldName($field, $fieldPrefix) }}[value][]"
         @if($itemFieldValue) checked @endif
         @if($itemFieldValue && !$object->checkIfCanRemove()) disabled @endif
         data-type-id="{{ isset($object->pivot->id) ? $object->pivot->id : $object->id }}"

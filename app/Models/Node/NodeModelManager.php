@@ -163,7 +163,7 @@ trait NodeModelManager {
         return parent::attributeValue($field);
     }
     
-    public function checkFormSelectRelationValue($relation, $item, $level = null) {
+    public function checkFormSelectRelationValue($relation, $item, $prefix = '', $level = null) {
         if($relation === 'model_type') {
             if(Request::old('_token') !== null && Request::old($relation) == $item->id) {
                 return true;
@@ -179,7 +179,7 @@ trait NodeModelManager {
                 return ($this->defaultAttributeValue($relation) == $item->id);
             }
         } else {
-            return parent::checkFormSelectRelationValue($relation, $item, $level);
+            return parent::checkFormSelectRelationValue($relation, $item, $prefix, $level);
         }
     }
 }

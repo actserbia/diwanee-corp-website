@@ -49,9 +49,14 @@ trait ModelFormManager {
         return $modelManager->getTypeaheadItems();
     }
 
-    public function formValue($fullFieldName) {
+    public function formValue($fullFieldName, $prefix = '') {
         $fieldName = $this->getFieldName($fullFieldName);
-        return Request::old('_token') !== null ? Request::old($fieldName) : $this->attributeValue($fieldName);
+
+        if(Request::old('_token') !== null) {
+            return $this->formGetRequestPrefixData($fieldName, $prefix);
+        }
+
+        return $this->attributeValue($fieldName);
     }
     
     public function formReadonlyData($fullFieldName, $withCategory = false) {
@@ -95,14 +100,11 @@ trait ModelFormManager {
         return $values;
     }
 
-    public function checkFormSelectValue($fullFieldName, $itemValue) {
+    public function checkFormSelectValue($fullFieldName, $itemValue, $prefix = '') {
         $fieldName = $this->getFieldName($fullFieldName);
-        if(Request::old('_token') !== null && Request::old($fieldName) == $itemValue) {
-            return true;
-        }
         
-        if(Request::post('_token') !== null && Request::post($fieldName) == $itemValue) {
-            return true;
+        if(Request::old('_token') !== null || Request::post('_token') !== null) {
+            return ($this->formGetRequestPrefixData($fieldName, $prefix) == $itemValue);
         }
 
         $attributeValue = $this->attributeValue($fieldName);
@@ -132,14 +134,10 @@ trait ModelFormManager {
         return $this->getRelationValues($relation, $items);
     }
 
-    public function checkFormSelectRelationValue($relation, $item, $level = null) {
+    public function checkFormSelectRelationValue($relation, $item, $prefix = '', $level = null) {
         if($level === null) {
-            if(Request::old('_token') !== null && Request::old($relation) == $item->id) {
-                return true;
-            }
-
-            if(Request::post('_token') !== null && Request::post($relation) == $item->id) {
-                return true;
+            if(Request::old('_token') !== null || Request::post('_token') !== null) {
+                return ($this->formGetRequestPrefixData($relation, $prefix) == $item->id);
             }
             
             if(isset($this->$relation->id)) {
@@ -158,7 +156,7 @@ trait ModelFormManager {
         return false;
     }
     
-    public function checkFormDisabledRelationValue($relation, $item, $level = null) {
+    public function checkFormDisabledRelationValue($relation, $item, $prefix = '', $level = null) {
         if($this->hasMultipleValues($relation, $level)) {
             foreach($this->$relation as $relationItem) {
                 if($relationItem->id === $item->id) {
@@ -170,13 +168,9 @@ trait ModelFormManager {
         return false;
     }
 
-    public function formSelectedValues($relation) {
+    public function formSelectedValues($relation, $prefix = '') {
         if(Request::old('_token') !== null) {
-            $oldValue = [];
-            if(Request::old($relation) !== null) {
-                $oldValue = $this->getRelationModel($relation)::find(Request::old($relation));
-            }
-            return $oldValue;
+            return $this->formGetSelectedValuesFromRequest($relation, $prefix);
         }
 
         if(isset($this->$relation)) {
@@ -186,17 +180,34 @@ trait ModelFormManager {
         return [];
     }
     
+    private function formGetSelectedValuesFromRequest($relation, $prefix = '') {
+        $requestRelationData = $this->formGetRequestPrefixData($relation, $prefix);
+
+        if($requestRelationData === null) {
+            return [];
+        }
+
+        if(!is_array($requestRelationData)) {
+            return $this->getRelationModel($relation)::find($requestRelationData);
+        }
+
+        $relationItemsList = [];
+        foreach($requestRelationData as $relationItemId) {
+            $relationItemsList[$relationItemId] = $this->getRelationModel($relation);
+            if(strpos($relationItemId, '-new') === false) {
+                $relationItemsList[$relationItemId] = $relationItemsList[$relationItemId]::find($relationItemId);
+            }
+        }
+        return $relationItemsList;
+    }
+
     public function formFieldName($fullFieldName, $prefix = '') {
         return empty($prefix) ? $fullFieldName : $prefix . '[' . $fullFieldName . ']';
     }
 
-    public function formInputRelationValue($relation, $column) {
-        if(Request::old('_token') !== null) {
-            return Request::old($relation);
-        }
-
-        if(Request::post('_token') !== null) {
-            return Request::post($relation);
+    public function formInputRelationValue($relation, $column, $prefix = '') {
+        if(Request::old('_token') !== null || Request::post('_token') !== null) {
+            return $this->formGetRequestPrefixData($relation, $prefix);
         }
 
         if(isset($this->$relation->id)) {
@@ -204,5 +215,47 @@ trait ModelFormManager {
         }
 
         return '';
+    }
+
+    private function formGetRequestPrefixData($fieldName, $prefix) {
+        $requestData = $this->formGetRequestData();
+
+        if(empty($prefix)) {
+            return $requestData[$fieldName];
+        }
+
+        $pos = strpos($prefix, '[');
+        if($pos === false) {
+            $requestPrefixData = $requestData[$prefix];
+        } else {
+            $firstAttribute = substr($prefix, 0, $pos);
+            $otherAttributesList = str_replace(['[', ']'], ['[\'', '\']'], substr($prefix, $pos));
+
+            eval('$requestPrefixData = isset($requestData[\'' . $firstAttribute . '\']' . $otherAttributesList . ') ? $requestData[\'' . $firstAttribute . '\']' . $otherAttributesList . ' : \'\';');
+        }
+
+        return isset($requestPrefixData[$fieldName]) ? $requestPrefixData[$fieldName] : '';
+    }
+
+    private function formGetRequestData($param = null) {
+        if(Request::old('_token') !== null) {
+            return ($param !== null) ? Request::old($param) : Request::old();
+        }
+
+        if(Request::post('_token') !== null) {
+            return ($param !== null) ? Request::post($param) : Request::post();
+        }
+
+        return null;
+    }
+
+    public function formHasError($errors, $fieldName, $prefix = '') {
+        $errorField = str_replace(['[', ']'], ['.', ''], $prefix) . '.' . $fieldName;
+        return $errors->has($errorField);
+    }
+
+    public function formErrorMessage($errors, $fieldName, $prefix = '') {
+        $errorField = str_replace(['[', ']'], ['.', ''], $prefix) . '.' . $fieldName;
+        return $errors->has($errorField) ? str_replace('The ' . $errorField, __('validation.this_field'), $errors->first($errorField)) : '';
     }
 }

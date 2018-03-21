@@ -9,7 +9,7 @@ use App\Constants\FieldTypeCategory;
 use App\Models\Node\NodeModelDBGenerator;
 use App\Models\Node\ClassGenerator\ClassGenerator;
 use App\Constants\Settings;
-use App\Utils\Utils;
+use App\Field;
 
 class NodeType extends AppModel {
     use SoftDeletes;

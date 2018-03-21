@@ -1,10 +1,11 @@
-<div id="relation-item-{{ $field }}-{{ $index }}" class="relation-item" @if($object->isSortable($field)) draggable="true" @endif>
+<div id="relation-item-{{ $field }}-{{ $index }}-new" class="relation-item" @if($object->isSortable($field)) draggable="true" @endif>
+    <input type="hidden" value="{{ $index }}-new" id="{{ $field }}" name="{{ $field }}[]" />
     @foreach ($item->getAutomaticRenderAtributesAndRelations() as $itemFieldName)
-        @include('blocks.model', ['fieldPrefix' => 'new_item[' . $field . '][' . $index . ']', 'field' => $itemFieldName, 'object' => $item])
+        @include('blocks.model', ['fieldPrefix' => 'new_items[' . $field . '][' . $index . '-new]', 'field' => $itemFieldName, 'object' => $item])
     @endforeach
         
     @foreach ($object->extraFields($field) as $itemFieldName)
-        @include('blocks.model', ['fieldPrefix' => 'pivot_' . $field . '[' . $index . ']', 'field' => $itemFieldName, 'object' => $item])
+        @include('blocks.model', ['fieldPrefix' => 'new_items[' . $field . '][' . $index . '-new][pivot]', 'field' => $itemFieldName, 'object' => $item])
     @endforeach
         
     <a href=":javascript" class="remove-added-relation-item">

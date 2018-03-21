@@ -203,7 +203,7 @@ class NodeList extends AppModel {
     public function saveData(array $data) {
         if(isset($data['filter_authors'] )) {
             foreach($data['filter_authors'] as $authorId) {
-                $data['pivot_filter_authors'][$authorId]['type'] = NodeListRelationType::Author;
+                $data['relation_items']['filter_authors'][$authorId]['pivot']['type'] = NodeListRelationType::Author;
             }
         }
         

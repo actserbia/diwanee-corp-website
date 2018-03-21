@@ -1,4 +1,4 @@
-<div class="form-group{{ $errors->has($field) ? ' has-error' : '' }}">
+<div class="form-group{{ $object->formHasError($errors, $field, $fieldPrefix) ? ' has-error' : '' }}">
     <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}" for="{{ $field }}">
         {{ $object->fieldLabel($field) }}
     </label>
@@ -7,7 +7,7 @@
         <div class="input-group date">
             <input class="form-control"
                 type="text"
-                value="{{ $object->formValue($field) }}"
+                value="{{ $object->formValue($field, $fieldPrefix) }}"
                 id="{{ $field }}"
                 name="{{ $field }}"
             />
@@ -16,8 +16,8 @@
             </span>
         </div>
         
-        @if ($errors->has($field))
-            <span class="help-block">{{ $errors->first($field) }}</span>
+        @if ($object->formHasError($errors, $field, $fieldPrefix))
+            <span class="help-block">{{ $object->formErrorMessage($errors, $field, $fieldPrefix) }}</span>
         @endif
     </div>
 </div>

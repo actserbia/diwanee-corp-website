@@ -48,11 +48,13 @@ class Validators {
     
     public static function nodeTypesFormValidator(array $data, array $additional = []) {
         $model = new NodeType;
+        $fieldModel = new Field;
         
         $nameUnique = isset($additional['id']) ? 'unique:node_types,id,' . $additional['id'] : 'unique:node_types';
         
         return Validator::make($data, [
-            'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255'
+            'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
+            'new_items.attribute_fields.*.title' => self::modelRequiredValidation('title', $fieldModel) . '|max:255'
         ]);
     }
     

@@ -61,7 +61,7 @@ class ModelController extends Controller {
         $field = $data['relation'];
         $object = new $data['model'](['model_type_id' => $data['modelType']]);
         $item = $object->getRelationModel($data['relation']);
-        $index = ++$data['lastIndex'];
+        $index = $data['lastIndex']++;
         
         return view('blocks.model.relation.form_relation_item__new', compact('object', 'field', 'item', 'index')); 
     }
@@ -74,6 +74,7 @@ class ModelController extends Controller {
         $object = isset($data['modelId']) ? $data['model']::find($data['modelId']) : new $data['model'](['model_type_id' => $data['modelType']]);
         $level = $data['level'] + 1;
         $checkSelected = isset($params['checkSelected']) && !empty($params['checkSelected']);
+        $fieldPrefix = isset($data['fieldPrefix']) ? $data['fieldPrefix'] : '';
 
         $tags = new Collection([]);
         if(isset($params['tagsIds'])) {
@@ -83,7 +84,7 @@ class ModelController extends Controller {
             }
         }
 
-        return ($tags->count() === 0) ? '' : view('blocks.model.relation.form_relation_select__tags_parenting', compact('object', 'field', 'tags', 'level', 'checkSelected'));
+        return ($tags->count() === 0) ? '' : view('blocks.model.relation.form_relation_select__tags_parenting', compact('object', 'field', 'tags', 'level', 'checkSelected', 'fieldPrefix'));
     }
 
     public function modelGetTagChildren(Request $request) {

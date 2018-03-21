@@ -6,7 +6,7 @@
         @endforeach
 
         @foreach ($object->extraFields($field) as $itemFieldName)
-            @include('blocks.model', ['fieldPrefix' => 'pivot_' . $field . '[' . $item->id . ']', 'field' => $itemFieldName, 'object' => $item])
+            @include('blocks.model', ['fieldPrefix' => 'relation_items[' . $field . '][' . $item->id  . '][pivot]', 'field' => $itemFieldName, 'object' => $item])
         @endforeach
     @else
         @include('blocks.model.form_label', ['fieldPrefix' => '_', 'field' => $item->defaultDropdownColumn, 'object' => $item, 'withCategory' => $withCategory])

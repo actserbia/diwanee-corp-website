@@ -124,6 +124,7 @@ return [
     'attributes' => [],
 
     'check_tag_required' => 'The :attribute should not be empty.',
-    'check_json' => 'The :attribute should be in json format.'
+    'check_json' => 'The :attribute should be in json format.',
+    'this_field' => 'This field'
 
 ];

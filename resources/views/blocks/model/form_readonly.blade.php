@@ -6,8 +6,8 @@
         @foreach ($object->formReadonlyData($field) as $data)
             @if($readonly === 'readonly_field')
                 <input class="form-control" type="text" value="{{ $data['label'] }}"
-                    id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}_text" 
-                    name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}_text"
+                    id="{{ $object->formFieldName($field, $fieldPrefix) }}_text"
+                    name="{{ $object->formFieldName($field, $fieldPrefix) }}_text"
                     readonly
                 />
             @elseif($readonly === 'label_with_link' && isset($data['url']))
@@ -18,8 +18,8 @@
                 <div class="model-label">{{ $data['label'] }}</div>
             @endif
             <input class="form-control" type="hidden" value="{{ $data['value'] }}" 
-                id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
-                name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
+                id="{{ $object->formFieldName($field, $fieldPrefix) }}"
+                name="{{ $object->formFieldName($field, $fieldPrefix) }}"
             />
         @endforeach
     </div>

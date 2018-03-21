@@ -1,21 +1,21 @@
-<div class="form-group{{ $errors->has($field) ? ' has-error' : '' }}">
+<div class="form-group{{ $object->formHasError($errors, $field, $fieldPrefix) ? ' has-error' : '' }}">
     <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}" for="{{ $field }}">
         {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
         <select class="form-control" 
-            id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
-            name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}"
+            id="{{ $object->formFieldName($field, $fieldPrefix) }}"
+            name="{{ $object->formFieldName($field, $fieldPrefix) }}"
             @if($object->isRequired($field)) required @endif
         >
             <option value=""></option>
             @foreach ($object->getEnumListForDropdown($field) as $itemValue => $itemTitle)
-                <option value="{{ $itemValue }}" @if($object->checkFormSelectValue($field, $itemValue)) selected @endif>{{ $itemTitle }}</option>
+                <option value="{{ $itemValue }}" @if($object->checkFormSelectValue($field, $itemValue, $fieldPrefix)) selected @endif>{{ $itemTitle }}</option>
             @endforeach
         </select>
 
-        @if ($errors->has($field))
-            <span class="help-block">{{ $errors->first($field) }}</span>
+        @if ($object->formHasError($errors, $field, $fieldPrefix))
+            <span class="help-block">{{ $object->formErrorMessage($errors, $field, $fieldPrefix) }}</span>
         @endif
     </div>
 </div>

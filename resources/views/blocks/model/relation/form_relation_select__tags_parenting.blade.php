@@ -1,4 +1,4 @@
-<div class="form-group{{ $errors->has($field) ? ' has-error' : '' }}">
+<div class="form-group{{ $object->formHasError($errors, $field, $fieldPrefix) ? ' has-error' : '' }}">
     <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}" for="{{ $field }}">
         @if(!isset($level) || $level === 1)
             {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
@@ -6,7 +6,8 @@
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
         <select class="form-control relation tags-parenting-relation {{$object->hasMultipleValues($field, isset($level) ? $level : 1) ? 'relation-multiple' : ''}}"
-            id="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}-{{ isset($level) ? $level : 1 }}" name="{{ $object->formFieldName($field, isset($fieldPrefix) ? $fieldPrefix : '') }}[]"
+            id="{{ $object->formFieldName($field, $fieldPrefix) }}-{{ isset($level) ? $level : 1 }}"
+            name="{{ $object->formFieldName($field, $fieldPrefix) }}[]"
             data-relation="{{ $field }}"
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"
@@ -22,16 +23,16 @@
                 <option value=""></option>
                 @foreach ($object->formRelationValuesByLevel($field, isset($level) ? $level : 1, isset($tags) ? $tags : null) as $item)
                     <option value="{{ $item->id }}"
-                        @if($object->checkFormSelectRelationValue($field, $item, isset($level) ? $level : 1)) selected @endif
-                        @if($object->checkFormDisabledRelationValue($field, $item, isset($level) ? $level : 1)) disabled @endif
+                        @if($object->checkFormSelectRelationValue($field, $item, $fieldPrefix, isset($level) ? $level : 1)) selected @endif
+                        @if($object->checkFormDisabledRelationValue($field, $item, $fieldPrefix, isset($level) ? $level : 1)) disabled @endif
                     >
                         {{ $item[$item->defaultDropdownColumn] }}
                     </option>
                 @endforeach
 
         </select>
-        @if ($errors->has($field))
-            <span class="help-block">{{ $errors->first($field) }}</span>
+        @if ($object->formHasError($errors, $field, $fieldPrefix))
+            <span class="help-block">{{ $object->formErrorMessage($errors, $field, $fieldPrefix) }}</span>
         @endif
     </div>
 </div>
