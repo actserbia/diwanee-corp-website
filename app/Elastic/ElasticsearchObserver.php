@@ -13,7 +13,7 @@ class ElasticsearchObserver
         $this->elasticsearch = $elasticsearch;
     }
 
-    public function saved($model)
+    public function savedWithRelations($model)
     {
         $this->elasticsearch->index([
             'index' => $model->getSearchIndex(),

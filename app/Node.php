@@ -17,6 +17,8 @@ class Node extends AppModel {
     use ModelParentingTagsManager;
     use Searchable;
 
+    protected $observables = [ 'savedWithRelations' ];
+
     protected $allAttributesFields = ['id', 'title', 'status', 'node_type_id', 'author_id', 'created_at', 'updated_at', 'deleted_at', 'elements_count'];
 
     protected $fillable = ['title', 'status', 'node_type_id', 'author_id'];
@@ -137,6 +139,7 @@ class Node extends AppModel {
         parent::saveData($data);
         
         $this->saveElements($data);
+        $this->fireModelEvent('savedWithRelations', false);
     }
 
     private function saveElements(array $data) {

@@ -2,13 +2,11 @@
 
 namespace App\Elastic;
 
+
 trait Searchable
 {
     public static function bootSearchable()
     {
-        // This makes it easy to toggle the search feature flag
-        // on and off. This is going to prove useful later on
-        // when deploy the new search engine to a live app.
         if (config('services.elasticsearch.enabled')) {
             static::observe(ElasticsearchObserver::class);
         }
@@ -24,15 +22,14 @@ trait Searchable
         if (property_exists($this, 'useSearchType')) {
             return $this->useSearchType;
         }
-
         return $this->getTable();
     }
 
     public function toSearchArray()
     {
-        // By having a custom method that transforms the model
-        // to a searchable array allows us to customize the
-        // data that's going to be searchable per model.
-        return $this->toArray();
+        $this->populateAttributesFieldsData();
+        $model = $this->load('model_type', 'author', 'tags', 'elements', 'additional_fields');
+
+        return $model->toArray();
     }
 }
