@@ -12,7 +12,7 @@ class AppModel extends Model {
     use ModelDataManager;
     use Search;
     use Statistics;
-    
+
     protected $allAttributesFields = [];
     
     protected $allFieldsFromPivots = [];
@@ -34,6 +34,8 @@ class AppModel extends Model {
     protected $multipleFields = [];
     
     protected $dependsOn = [];
+
+    protected $observables = [ 'savedWithRelations' ];
     
     public function saveObject(array $data) {
         DB::beginTransaction();
@@ -41,6 +43,7 @@ class AppModel extends Model {
             $this->saveData($data);
 
             DB::commit();
+            $this->fireModelEvent('savedWithRelations', false);
             return true;
         } catch(Exception $e) {
             DB::rollBack();
