@@ -7,7 +7,7 @@ trait Searchable
 {
     public static function bootSearchable()
     {
-        if (config('services.elasticsearch.enabled')) {
+        if (env('ELASTICSEARCH_ENABLED', false)) {
             static::observe(ElasticsearchObserver::class);
         }
     }

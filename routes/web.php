@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Search\NodesRepository;
+
 
   $locale = Request::segment(1);
   if(in_array($locale, config('app.locales'))) {
@@ -26,6 +28,14 @@
       Auth::routes();
 
       Route::get('/', 'HomeController@index')->name('home');
+
+      Route::get('/searchx', function (NodesRepository $repository) {
+          $nodes = $repository->search((string) request('q'));
+
+          return view('search', [
+              'nodes' => $nodes,
+          ]);
+      });
 
       Route::post('sirtrevor/upload-image', 'ImagesController@uploadSirTrevorImage')->name('sirtrevor.upload.image');
 
