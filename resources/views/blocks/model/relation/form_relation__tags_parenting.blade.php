@@ -24,7 +24,7 @@
                 @foreach ($object->formRelationValuesByLevel($field, isset($level) ? $level : 1, isset($tags) ? $tags : null) as $item)
                     <option value="{{ $item->id }}"
                         @if($object->checkFormSelectRelationValue($field, $item, $fieldPrefix, isset($level) ? $level : 1)) selected @endif
-                        @if($object->checkFormDisabledRelationValue($field, $item, $fieldPrefix, isset($level) ? $level : 1)) disabled @endif
+                        @if($object->checkFormDisabledRelationValue($field, $item, isset($level) ? $level : 1)) disabled @endif
                     >
                         {{ $item[$item->representationField] }}
                     </option>

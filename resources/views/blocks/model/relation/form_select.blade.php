@@ -11,10 +11,10 @@
     @if($object->isRequired($field) && !$object->hasMultipleValues($field)) required @endif
 >
     <option value=""></option>
-    @foreach ($object->formRelationValues($field) as $item)
+    @foreach ($object->formRelationValues($field, $fieldPrefix) as $item)
         <option value="{{ $item->id }}"
             @if($object->checkFormSelectRelationValue($field, $item, $fieldPrefix)) selected @endif
-            @if($object->checkFormDisabledRelationValue($field, $item, $fieldPrefix)) disabled @endif
+            @if($object->checkFormDisabledRelationValue($field, $item)) disabled @endif
         >{{ $item[$item->representationField] }}</option>
     @endforeach
 </select>

@@ -115,21 +115,19 @@ trait ModelFormManager {
         return false;
     }
 
-    public function formRelationValues($relation) {
-        if(Request::old('_token') !== null) {
-            if($this->checkDependsOn($relation)) {
-                return static::formRelationValuesByOld($relation);
-            }
+    public function formRelationValues($relation, $prefix = '') {
+        if(Request::old('_token') !== null && $this->checkDependsOn($relation)) {
+            return static::formRelationValuesByOld($relation, $prefix);
         }
 
         return $this->getRelationValues($relation);
     }
 
-    private function formRelationValuesByOld($relation) {
+    private function formRelationValuesByOld($relation, $prefix) {
         $items = [];
         $dependsOn = $this->dependsOn($relation, false);
         foreach($dependsOn as $depsOn) {
-            $items[$depsOn] = Request::old($depsOn);
+            $items[$depsOn] = $this->formGetRequestPrefixData($depsOn, $prefix);
         }
         return $this->getRelationValues($relation, $items);
     }
@@ -156,7 +154,7 @@ trait ModelFormManager {
         return false;
     }
     
-    public function checkFormDisabledRelationValue($relation, $item, $prefix = '', $level = null) {
+    public function checkFormDisabledRelationValue($relation, $item, $level = null) {
         if($this->hasMultipleValues($relation, $level)) {
             foreach($this->$relation as $relationItem) {
                 if($relationItem->id === $item->id) {

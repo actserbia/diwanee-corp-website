@@ -22,8 +22,6 @@
                         @include('blocks.model', ['field' => 'tag_fields', 'fullData' => true])
                         
                         @include('blocks.model', ['field' => 'sir_trevor_fields', 'fullData' => true])
-                        
-                        @include('blocks.model', ['field' => 'relation_fields', 'fullData' => true])
 
                         <div class="ln_solid"></div>
 

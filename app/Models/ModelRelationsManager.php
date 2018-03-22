@@ -60,7 +60,7 @@ trait ModelRelationsManager {
     
     public function relationFormType($relation) {
         $relationsSettings = $this->getRelationSettings($relation);
-        return isset($relationsSettings['formHierarchy']) ? Models::FormFieldType_Relation . '__' . Models::FormFieldType_Relation_TagsParentingSuffix : Models::FormFieldType_Relation;
+        return (isset($relationsSettings['formHierarchy']) && $relationsSettings['formHierarchy']) ? Models::FormFieldType_Relation . '__' . Models::FormFieldType_Relation_TagsParentingSuffix : Models::FormFieldType_Relation;
     }
     
     public function relationFormRenderType($relation) {
