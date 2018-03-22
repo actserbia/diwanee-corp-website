@@ -67,7 +67,7 @@ class Node extends AppModel {
         'node_type_id' => Models::AttributeType_Number
     ];
 
-    protected $defaultDropdownColumn = 'title';
+    protected $representationField = 'title';
 
     protected $relationsSettings = [
         'model_type' => [

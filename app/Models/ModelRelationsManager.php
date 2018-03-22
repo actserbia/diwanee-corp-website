@@ -132,8 +132,8 @@ trait ModelRelationsManager {
         }
     }
 
-    public function getDefaultDropdownColumn($relation) {
-        return $this->getRelationModel($relation)->defaultDropdownColumn;
+    public function getRepresentationField($relation) {
+        return $this->getRelationModel($relation)->representationField;
     }
 
     public function hasMultipleValues($relation, $level = null) {

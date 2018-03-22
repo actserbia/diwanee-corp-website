@@ -49,7 +49,7 @@ class User extends Authenticatable
         'role'
     ];
     
-    protected $defaultDropdownColumn = 'name';
+    protected $representationField = 'name';
     
     protected $attributeType = [
         'email' => Models::AttributeType_Email,

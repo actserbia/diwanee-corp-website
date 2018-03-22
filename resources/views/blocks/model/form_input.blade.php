@@ -3,7 +3,7 @@
         {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-        <input class="form-control {{ $object->defaultDropdownColumn === $field ? 'default-dropdown' : '' }}"
+        <input class="form-control {{ $object->representationField === $field ? 'default-dropdown' : '' }}"
             type="{{ $object->attributeType($field) }}"
             value="{{ $object->formValue($field, $fieldPrefix) }}"
             id="{{ $object->formFieldName($field, $fieldPrefix) }}"

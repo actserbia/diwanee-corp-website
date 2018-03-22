@@ -57,7 +57,7 @@ class NodeList extends AppModel {
         'limit' => Models::AttributeType_Number
     ];
 
-    protected $defaultDropdownColumn = 'name';
+    protected $representationField = 'name';
 
     protected $relationsSettings = [
         'node_type' => [

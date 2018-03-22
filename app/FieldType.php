@@ -20,7 +20,7 @@ class FieldType extends AppModel {
 
     protected $requiredFields = ['name', 'category'];
     
-    protected $defaultDropdownColumn = 'name';
+    protected $representationField = 'name';
 
     protected $relationsSettings = [
         'fields' => [

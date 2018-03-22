@@ -9,7 +9,7 @@
             @include('blocks.model', ['fieldPrefix' => 'relation_items[' . $field . '][' . $item->id  . '][pivot]', 'field' => $itemFieldName, 'object' => $item])
         @endforeach
     @else
-        @include('blocks.model.form_label', ['fieldPrefix' => '_', 'field' => $item->defaultDropdownColumn, 'object' => $item, 'withCategory' => $withCategory])
+        @include('blocks.model.form_label', ['fieldPrefix' => '_', 'field' => $item->representationField, 'object' => $item, 'withCategory' => $withCategory])
     @endif
 
     @if ($object->checkIfCanRemoveSelectedRelationItem($field, $item))

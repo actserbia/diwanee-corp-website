@@ -1,6 +1,6 @@
 <input class="form-control relation {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->hasMultipleValues($field) ? 'relation-multiple' : ''}}"
     type="text"
-    value="{{ $object->formInputRelationValue($field, $object->getDefaultDropdownColumn($field), $fieldPrefix) }}"
+    value="{{ $object->formInputRelationValue($field, $object->getRepresentationField($field), $fieldPrefix) }}"
     id="{{ $object->formFieldName($field, $fieldPrefix) }}-input" name="{{ $object->formFieldName($field, $fieldPrefix) }}-input"
     data-relation="{{ $field }}"
     data-model="{{ $object->modelClass }}"

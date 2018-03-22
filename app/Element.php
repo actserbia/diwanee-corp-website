@@ -165,7 +165,7 @@ class Element extends AppModel {
     private function populateElementItemData($data) {
         $this->relationsSettings['element_item']['model'] = ElementType::itemsTypesSettings[$this->type]['model'];
         
-        $data->item_name = $this->element_item->defaultDropdownColumnValue;
+        $data->item_name = $this->element_item->representationFieldValue;
         
         if(isset(ElementType::itemsTypesSettings[$this->type]['filter'])) {
             $filter = ElementType::itemsTypesSettings[$this->type]['filter'];

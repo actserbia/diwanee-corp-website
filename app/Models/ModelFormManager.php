@@ -79,19 +79,19 @@ trait ModelFormManager {
     private function getRelationItemData($relation, $withCategory) {
         $values = [];
         
-        $dropdownColumn = $this->getRelationModel($relation)->defaultDropdownColumn;
+        $representationField = $this->getRelationModel($relation)->representationField;
 
         if($this->hasMultipleValues($relation)) {
             foreach($this->$relation as $relationItem) {
                 $values[] = [
-                    'label' => $withCategory ? $relationItem->getNameWithCategoryField() : $relationItem->$dropdownColumn,
+                    'label' => $withCategory ? $relationItem->getNameWithCategoryField() : $relationItem->$representationField,
                     'value' => $relationItem->id,
                     'url' => $relationItem->editUrl
                 ];
             }
         } elseif(isset($this->$relation)) {
             $values[] = [
-                'label' => $withCategory ? $this->$relation->getNameWithCategoryField() : $this->$relation->$dropdownColumn,
+                'label' => $withCategory ? $this->$relation->getNameWithCategoryField() : $this->$relation->$representationField,
                 'value' => $this->$relation->id,
                 'url' => $this->$relation->editUrl
             ];

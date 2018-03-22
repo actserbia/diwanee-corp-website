@@ -4,7 +4,6 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use App\Constants\Models;
 use App\Models\ModelsUtils;
-use App\Utils\Utils;
 
 trait ModelDataManager {
     use ModelAttributesManager;
@@ -164,15 +163,14 @@ trait ModelDataManager {
     }
     
     public function getNameWithCategoryField() {
-        $defaultDropdownColumn = $this->defaultDropdownColumn;
-        $name = $this->$defaultDropdownColumn;
+        $name = $this->getRepresentationFieldValueAttribute();
 
         if(isset($this->categoryField)) {
 
             $categoryField = $this->categoryField;
             
             if($this->isRelation($categoryField)) {
-                $defaultColumn = $this->getDefaultDropdownColumn($categoryField);
+                $defaultColumn = $this->getRepresentationField($categoryField);
                 $categoryFieldValue = $this->$categoryField->$defaultColumn;
             }
             

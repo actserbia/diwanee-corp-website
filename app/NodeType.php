@@ -22,7 +22,7 @@ class NodeType extends AppModel {
 
     protected $requiredFields = ['name'];
     
-    protected $defaultDropdownColumn = 'name';
+    protected $representationField = 'name';
 
     protected $attributeType = [
         'status' => Models::AttributeType_Enum

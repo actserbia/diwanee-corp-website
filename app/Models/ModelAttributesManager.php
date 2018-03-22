@@ -36,13 +36,13 @@ trait ModelAttributesManager {
         return get_class($this);
     }
     
-    public function getDefaultDropdownColumnAttribute() {
-        return $this->defaultDropdownColumn;
+    public function getRepresentationFieldAttribute() {
+        return $this->representationField;
     }
     
-    public function getDefaultDropdownColumnValueAttribute() {
-        $defaultDropdownColumn = $this->defaultDropdownColumn;
-        return $this->$defaultDropdownColumn;
+    public function getRepresentationFieldValueAttribute() {
+        $representationField = $this->representationField;
+        return $this->$representationField;
     }
     
     public function isAttribute($field) {

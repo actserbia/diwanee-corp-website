@@ -27,7 +27,7 @@ class AppModel extends Model {
     
     protected $defaultFieldsValues = [];
 
-    protected $defaultDropdownColumn = '';
+    protected $representationField = '';
 
     protected $relationsSettings = [];
     

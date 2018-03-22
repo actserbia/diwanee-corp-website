@@ -15,6 +15,6 @@
         <option value="{{ $item->id }}"
             @if($object->checkFormSelectRelationValue($field, $item, $fieldPrefix)) selected @endif
             @if($object->checkFormDisabledRelationValue($field, $item, $fieldPrefix)) disabled @endif
-        >{{ $item[$item->defaultDropdownColumn] }}</option>
+        >{{ $item[$item->representationField] }}</option>
     @endforeach
 </select>

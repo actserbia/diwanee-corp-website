@@ -30,7 +30,7 @@ class Field extends AppModel {
         ]
     ];
     
-    protected $defaultDropdownColumn = 'title';
+    protected $representationField = 'title';
 
     protected $attributeType = [
         'active' => Models::AttributeType_Boolean,

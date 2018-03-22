@@ -20,7 +20,7 @@ class ModelController extends Controller {
 
         $data = $params['data'];
         $model = new $data['model'];
-        $column = $model->getDefaultDropdownColumn($data['relation']);
+        $column = $model->getRepresentationField($data['relation']);
 
         $items = $model->getRelationValues($data['relation'], isset($params['dependsOnValues']) ? $params['dependsOnValues'] : []);
 
@@ -95,7 +95,7 @@ class ModelController extends Controller {
 
         $tagParent = Tag::find($params['tag_id']);
         if($tagParent) {
-            $column = $tagParent->defaultDropdownColumn;
+            $column = $tagParent->representationField;
             foreach($tagParent->children as $tag) {
                 $itemsOutput[] = array(
                     'value' => $tag->id,
@@ -128,7 +128,7 @@ class ModelController extends Controller {
         $model = ElementType::itemsTypesSettings[$params['elementType']]['model'];
         $modelObject = new $model;
 
-        $itemsQuery = $modelObject::select('id', $modelObject->defaultDropdownColumn . ' AS name');
+        $itemsQuery = $modelObject::select('id', $modelObject->representationField . ' AS name');
         
         if(isset($params['filterValue'])) {
             $itemsQuery = $this->addFilterToQuery($itemsQuery, $params, $modelObject);
@@ -190,7 +190,7 @@ class ModelController extends Controller {
             $relationsSettings = $modelObject->getRelationSettings($filter);
             $filterModelObject = new $relationsSettings['model'];
             
-            $filters = $filterModelObject::select('id', $filterModelObject->defaultDropdownColumn . ' AS name')->get();
+            $filters = $filterModelObject::select('id', $filterModelObject->representationField . ' AS name')->get();
         } else {
             $items = __('constants.' . $modelObject->modelName . Str::studly($filter));
             

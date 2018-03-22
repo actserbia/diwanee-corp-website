@@ -57,7 +57,7 @@ class Tag extends AppModel {
         'tag_id' => Models::AttributeType_Number
     ];
     
-    protected $defaultDropdownColumn = 'name';
+    protected $representationField = 'name';
 
     protected $relationsSettings = [
         'tag_type' => [
