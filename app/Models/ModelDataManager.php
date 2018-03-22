@@ -14,19 +14,28 @@ trait ModelDataManager {
     
     public $modelType = null;
     protected static $modelTypeField = '';
+    protected $modelTypeRelation = '';
 
     public static function hasModelTypes() {
         return !empty(static::$modelTypeField);
     }
 
     public static function scopeFilterByModelType($query, $modelTypeId) {
-        if(!empty(static::$modelTypeField)) {
+        if(static::hasModelTypes()) {
             $query->where(static::$modelTypeField, '=', $modelTypeId);
         }
     }
 
     public function __construct(array $attributes = array()) {
         parent::__construct($attributes);
+        
+        if(static::hasModelTypes()) {
+            if(isset($this->id) || isset($attributes['model_type_id'])) {
+                $modelTypeRelation = $this->modelTypeRelation;
+                $modelTypeRelationModel = $this->getRelationModel($modelTypeRelation);
+                $this->modelType = isset($this->id) ? $this->$modelTypeRelation : $modelTypeRelationModel::find($attributes['model_type_id']);
+            }
+        }
 
         if(method_exists($this, 'populateData')) {
             $this->populateData($attributes);
@@ -165,22 +174,11 @@ trait ModelDataManager {
     public function getNameWithCategoryField() {
         $name = $this->getRepresentationFieldValueAttribute();
 
-        if(isset($this->categoryField)) {
-
-            $categoryField = $this->categoryField;
+        if(!empty($this->modelTypeRelation)) {
+            $categoryField = $this->modelTypeRelation;
             
-            if($this->isRelation($categoryField)) {
-                $defaultColumn = $this->getRepresentationField($categoryField);
-                $categoryFieldValue = $this->$categoryField->$defaultColumn;
-            }
-            
-            elseif($this->attributeType($categoryField) === Models::AttributeType_Enum) {
-                $categoryFieldValue = __('constants.' . $this->modelName . Str::studly($categoryField))[$this->attributeValue($categoryField)];
-            }
-            
-            else {
-                $categoryFieldValue = $this->$categoryField;
-            }
+            $representationField = $this->getRepresentationField($categoryField);
+            $categoryFieldValue = $this->$categoryField->$representationField;
 
             $name .= ' (' . $categoryFieldValue . ')';
         }

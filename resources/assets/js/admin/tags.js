@@ -90,23 +90,10 @@ $(document).ready(function() {
     
     TagsManager = {
         initialize: function() {
+            $('.tag-item[draggable=true]').setTagsDraggableAndDroppable();
+            
             $('#tags-list #tag_type').change(function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/admin/tags-list',
-                    data: {
-                        tag_type_id: $(this).val()
-                    },
-                    success: function (data) {
-                        $('div[id=tags-list-content]').html(data);
-                        if($.trim(data) === '') {
-                            $('div[id=tags-reoder]').attr('style', 'display:none;');
-                        } else {
-                            $('div[id=tags-reoder]').attr('style', 'display:block;');
-                        }
-                        $('.tag-item[draggable=true]').setTagsDraggableAndDroppable();
-                    }
-                });
+                window.location = '/admin/tags?tag_type_id=' + $(this).val();
             });
             
             $('#tags-reoder').click(function() {

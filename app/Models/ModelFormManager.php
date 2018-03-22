@@ -138,7 +138,9 @@ trait ModelFormManager {
                 return ($this->formGetRequestPrefixData($relation, $prefix) == $item->id);
             }
             
-            if(isset($this->$relation->id)) {
+            if(isset($this->modelType->id) && $relation === $this->modelTypeRelation) {
+                return ($this->modelType->id == $item->id);
+            } elseif(isset($this->$relation->id)) {
                 return ($this->$relation->id == $item->id);
             } else {
                 return ($this->defaultAttributeValue($relation) == $item->id);

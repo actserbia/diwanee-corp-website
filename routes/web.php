@@ -53,7 +53,6 @@ use App\Search\NodesRepository;
           Route::get('/', 'DashboardController@index')->name('admin.home');
           
           Route::resource('tags', 'AdminTagsController');
-          Route::get('tags-list', 'AdminTagsController@tagsReorderList')->name('tags-list');
           Route::match(['get', 'post'], 'tags-reorder-tags', 'AdminTagsController@tagsReorder')->name('tags-reorder-tags');
           
           Route::resource('tag-types', 'AdminTagTypesController');

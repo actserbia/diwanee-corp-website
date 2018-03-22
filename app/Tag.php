@@ -111,7 +111,8 @@ class Tag extends AppModel {
         'children' => ['tag_type']
     ];
     
-    protected $categoryField = 'tag_type';
+    protected static $modelTypeField = 'tag_type_id';
+    protected $modelTypeRelation = 'tag_type';
     
     public function getMovingDisabledAttribute() {
         if(count($this->parents) > 1) {

@@ -117,6 +117,7 @@ class Node extends AppModel {
     ];
 
     protected static $modelTypeField = 'node_type_id';
+    protected $modelTypeRelation = 'model_type';
     
     protected $editable = true;
     

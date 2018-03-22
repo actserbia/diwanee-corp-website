@@ -31,7 +31,6 @@ class AdminNodesController extends Controller {
             $objects = Node::get();
         }
         
-        //$object = new Node;
         return view('admin.nodes.list', compact('object', 'objects'));
     }
     

@@ -23,8 +23,6 @@ trait NodeModelManager {
     
     public function populateData($attributes = null) {
         if(isset($this->id) || isset($attributes['model_type_id'])) {
-            $this->modelType = isset($this->id) ? $this->model_type : NodeType::find($attributes['model_type_id']);
-            
             $this->populateAttributesFieldsData();
             $this->populateTagFieldsData();
             $this->populateRelationFieldsData();
@@ -162,25 +160,5 @@ trait NodeModelManager {
         }
 
         return parent::attributeValue($field);
-    }
-    
-    public function checkFormSelectRelationValue($relation, $item, $prefix = '', $level = null) {
-        if($relation === 'model_type') {
-            if(Request::old('_token') !== null && Request::old($relation) == $item->id) {
-                return true;
-            }
-
-            if(Request::post('_token') !== null && Request::post($relation) == $item->id) {
-                return true;
-            }
-            
-            if(isset($this->modelType->id)) {
-                return ($this->modelType->id == $item->id);
-            } else {
-                return ($this->defaultAttributeValue($relation) == $item->id);
-            }
-        } else {
-            return parent::checkFormSelectRelationValue($relation, $item, $prefix, $level);
-        }
     }
 }

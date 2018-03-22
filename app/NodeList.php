@@ -115,6 +115,7 @@ class NodeList extends AppModel {
     ];
     
     protected static $modelTypeField = 'node_type_id';
+    protected $modelTypeRelation = 'node_type';
     
     protected $listParams = [
         'fields' => ['node_type_id', 'order_by_field_id', 'order', 'limit'],
@@ -131,7 +132,6 @@ class NodeList extends AppModel {
     
     public function populateData($attributes = null) {
         if(isset($this->id) || isset($attributes['model_type_id'])) {
-            $this->modelType = isset($this->id) ? $this->node_type : NodeType::find($attributes['model_type_id']);
             $this->populateTagFieldsData();
         }
     }

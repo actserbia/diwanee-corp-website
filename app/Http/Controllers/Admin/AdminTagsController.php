@@ -24,25 +24,15 @@ class AdminTagsController extends Controller {
     public function index(Request $request) {
         $data = $request->all();
 
-        $object = new Tag;
-
-        $tags = [];
-        if(isset($data['tag_type'])) {
-            $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['tag_type'])->get();
+        if(isset($data['tag_type_id'])) {
+            $object = new Tag(['model_type_id' => $data['tag_type_id']]);
+            $tags = Tag::has('parents', '=', '0')->filterByModelType($data['tag_type_id'])->get();
+        } else {
+            $object = new Tag;
+            $tags = [];
         }
 
         return view('admin.tags.list', compact('object', 'tags'));
-    }
-
-    public function tagsReorderList(Request $request) {
-        $data = $request->all();
-
-        $tags = [];
-        if(isset($data['tag_type_id'])) {
-            $tags = Tag::has('parents', '=', '0')->where('tag_type_id', '=', $data['tag_type_id'])->get();
-        }
-
-        return view('blocks.tags-list', compact('tags'));
     }
 
     public function tagsReorder(Request $request) {
@@ -100,7 +90,7 @@ class AdminTagsController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.store_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
+        return redirect()->route('tags.index', ['tag_type_id' => $object->tag_type->id])->with($successName, __('messages.store_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -131,7 +121,7 @@ class AdminTagsController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.update_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
+        return redirect()->route('tags.index', ['tag_type_id' => $object->tag_type->id])->with($successName, __('messages.update_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -145,6 +135,6 @@ class AdminTagsController extends Controller {
         
         $successName = $object->delete() ? 'success' : 'error';
         
-        return redirect()->route('tags.index')->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
+        return redirect()->route('tags.index', ['tag_type_id' => $object->tag_type->id])->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.Tag.label_single'), 'name' => $object->name]));
     }
 }

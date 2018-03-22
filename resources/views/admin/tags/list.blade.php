@@ -15,8 +15,12 @@
 
                     <div class="ln_solid"></div>
 
-                    <div id="tags-list-content"></div>
-                    <button id="tags-reoder" class="btn btn-success" style="display: none;">@lang('blade_templates.admin.tags.reorder_list_button_text')</button>
+                    <div id="tags-list-content">
+                        @include('blocks.tags-list')
+                    </div>
+                    @if(count($tags) > 0)
+                        <button id="tags-reoder" class="btn btn-success">@lang('blade_templates.admin.tags.reorder_list_button_text')</button>
+                    @endif
                 </div>
             </div>
         </div>
