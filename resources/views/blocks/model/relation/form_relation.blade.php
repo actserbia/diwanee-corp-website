@@ -3,25 +3,8 @@
         {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-        <input class="form-control relation {{$object->checkDependsOn($field) ? 'depending-field' : ''}} {{$object->hasMultipleValues($field) ? 'relation-multiple' : ''}}"
-            type="text"
-            value="{{ $object->formInputRelationValue($field, $object->getDefaultDropdownColumn($field), $fieldPrefix) }}"
-            id="{{ $object->formFieldName($field, $fieldPrefix) }}-input" name="{{ $object->formFieldName($field, $fieldPrefix) }}-input"
-            data-relation="{{ $field }}"
-            data-model="{{ $object->modelClass }}"
-            data-model-type="{{ $object->modelTypeIdValue() }}"
-            data-model-id="{{ $object->id }}"
-            data-depends-on="{{ $object->dependsOn($field) }}"
-            data-sortable="{{ $object->isSortable($field) }}"
-            data-full-data="{{ isset($fullData) ?: false }}"
-            @if($object->isRequired($field) && !$object->hasMultipleValues($field)) required @endif
-        />
-        @if (!$object->hasMultipleValues($field))
-            <input type="hidden" id="{{ $field }}" name="{{ $field }}" class="single-relation"
-                value="{{ $object->formInputRelationValue($field, 'id', $fieldPrefix) }}"
-            />
-        @endif
-
+        @include('blocks.model.relation.form_' . $object->relationFormRenderType($field))
+        
         @if ($object->formHasError($errors, $field, $fieldPrefix))
             <span class="help-block">{{ $object->formErrorMessage($errors, $field, $fieldPrefix) }}</span>
         @endif
@@ -35,7 +18,7 @@
             <div id="selected-{{ $field }}">
                 @foreach ($object->formSelectedValues($field, $fieldPrefix) as $key => $item)
                     @if (strpos($key, '-new') === false)
-                        @include('blocks.model.relation.form_relation_item', ['item' => $item, 'withCategory' => false])
+                        @include('blocks.model.relation.form_relation_item', ['item' => $item, 'withCategory' => ($object->relationFormRenderType($field) === 'input') ? true : false])
                     @else
                         @include('blocks.model.relation.form_relation_item__new', ['item' => $item, 'index' => str_replace('-new', '', $key)])
                     @endif

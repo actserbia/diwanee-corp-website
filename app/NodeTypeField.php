@@ -28,6 +28,10 @@ class NodeTypeField extends Pivot {
     public function getRenderTypeAttribute() {
         return isset($this->additional_settings['render_type']) ? $this->additional_settings['render_type'] : null;
     }
+    
+    public function getFormHierarchyAttribute() {
+        return isset($this->additional_settings['multiple']) ? $this->additional_settings['multiple']['hierarchy'] : null;
+    }
 
     public static function getPivotFields() {
         return static::$pivotFields;
@@ -44,13 +48,5 @@ class NodeTypeField extends Pivot {
         }
 
         return $data;
-    }
-
-    public function getFormType() {
-        if($this->multiple['hierarchy']) {
-            return Models::FormFieldType_Relation_Select_TagsParenting;
-        }
-
-        return $this->render_type === 'select' ? Models::FormFieldType_Relation_Select : Models::FormFieldType_Relation_Input;
     }
 }

@@ -82,7 +82,8 @@ trait NodeModelManager {
             'parent' => $parentRelation,
             'automaticRender' => true,
             'automaticSave' => true,
-            'formType' => $field->pivot->getFormType()
+            'renderType' => $field->pivot->renderType,
+            'formHierarchy' => $field->pivot->formHierarchy
         ];
                 
         $this->relationsSettings[$field->formattedTitle] = $relationSettings;

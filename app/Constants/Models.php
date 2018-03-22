@@ -19,12 +19,14 @@
       const FormFieldType_Input = 'form_input';
       const FormFieldType_Date = 'form_date';
       const FormFieldType_Select = 'form_select';
-      const FormFieldType_Relation_Select = 'relation.form_relation_select';
-      const FormFieldType_Relation_Select_TagsParenting = 'relation.form_relation_select__tags_parenting';
-      const FormFieldType_Relation_Input = 'relation.form_relation_input';
+      const FormFieldType_Relation = 'relation.form_relation';
+      const FormFieldType_Relation_TagsParentingSuffix = 'tags_parenting';
       const FormFieldType_Readonly = 'form_readonly';
       const FormFieldType_CheckboxList = 'form_checkbox_list';
       const FormFieldType_TextArea = 'form_textarea';
+      
+      const FormFieldRenderType_Select = 'select';
+      const FormFieldRenderType_Input = 'input';
 
       const FormFieldTypesList = [
           self::AttributeType_Text => self::FormFieldType_Input,

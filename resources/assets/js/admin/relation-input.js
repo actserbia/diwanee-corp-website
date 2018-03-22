@@ -16,7 +16,7 @@ $(document).ready(function() {
     $.fn.relationPopulateTypehead = function() {
         $(this).each(function(index, object) {
             var relation = $(object).data('relation');
-
+            
             if(typeof RelationInputsManager.typeaheadList[relation] !== 'undefined') {
                 $(object).relationPopulateTypeheadFromList();
                 $(object).riSyncronizeData();
@@ -76,9 +76,6 @@ $(document).ready(function() {
                 return false;
             });
             
-            console.log(relationFieldName);
-            console.log(RelationInputsManager.typeaheadList);
-
             var index = RelationInputsManager.typeaheadList[relation].inArray($(object).data('id'), 'id');
             
             var selectedItem = RelationInputsManager.typeaheadList[relation][index];
@@ -87,7 +84,6 @@ $(document).ready(function() {
                 RelationInputsManager.typeaheadListSelected[relation] = [];
             }
             RelationInputsManager.typeaheadListSelected[relation].push(selectedItem);
-            console.log(RelationInputsManager.typeaheadListSelected);
         });
     };
 
@@ -212,7 +208,7 @@ $(document).ready(function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
                 var relation = $(object).data('relation');
-
+                
                 var index = RelationInputsManager.typeaheadList[relation].inArray($(object).val(), 'name');
                 if(index !== -1) {
                     var item = RelationInputsManager.typeaheadList[relation][index];

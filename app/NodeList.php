@@ -78,7 +78,7 @@ class NodeList extends AppModel {
             'foreignKey' => 'node_list_id',
             'relationKey' => 'relation_id',
             'pivotFilters' => ['type' => [NodeListRelationType::Tag]],
-            'formType' => Models::FormFieldType_Relation_Input
+            'renderType' => Models::FormFieldRenderType_Input
         ],
         'filter_authors' => [
             'relationType' => 'belongsToMany',

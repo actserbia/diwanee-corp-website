@@ -36,7 +36,7 @@ return [
     ],
 
     'elasticsearch' => [
-        'enabled' => true,
+        'enabled' => env('ELASTICSEARCH_ENABLED')
     ]
 
 ];

@@ -17,7 +17,7 @@
             @else
                 <div class="model-label">{{ $data['label'] }}</div>
             @endif
-            <input class="form-control" type="hidden" value="{{ $data['value'] }}" 
+            <input class="form-control {{ $object->defaultDropdownColumn === $field ? 'default-dropdown' : '' }}" type="hidden" value="{{ $data['value'] }}" 
                 id="{{ $object->formFieldName($field, $fieldPrefix) }}"
                 name="{{ $object->formFieldName($field, $fieldPrefix) }}"
             />

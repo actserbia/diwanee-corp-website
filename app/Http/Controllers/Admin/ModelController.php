@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Utils\HtmlElementsClasses;
 use App\Tag;
 use App\Constants\ElementType;
+use App\Constants\Models;
 
 class ModelController extends Controller {
     public function __construct() {
@@ -84,7 +85,7 @@ class ModelController extends Controller {
             }
         }
 
-        return ($tags->count() === 0) ? '' : view('blocks.model.relation.form_relation_select__tags_parenting', compact('object', 'field', 'tags', 'level', 'checkSelected', 'fieldPrefix'));
+        return ($tags->count() === 0) ? '' : view('blocks.model.' . Models::FormFieldType_Relation . '__' . Models::FormFieldType_Relation_TagsParentingSuffix, compact('object', 'field', 'tags', 'level', 'checkSelected', 'fieldPrefix'));
     }
 
     public function modelGetTagChildren(Request $request) {

@@ -12,14 +12,15 @@ $(document).ready(function() {
                 $('.tags-parenting-relation').addAddSubtagsEvents();
                 $('.remove-selected').addRemoveSubtagsEvents();
 
-                $('.relation-multiple').addAddRelationItemSelectedEvents();
+                $('select.relation-multiple').addAddRelationItemSelectedEvents();
                 $('.remove-selected').addRemoveSelectedEventsAndDisableSelected();
 
-                $('.relation-multiple').showOrHide();
+                $('select.relation-multiple').showOrHide();
+                $('input.relation-multiple').riShowOrHide();
 
                 $('.relation-item[draggable=true]').setRelationItemsDraggableAndDroppable();
 
-                $('input.relation-multiple-input', $('#node-list-tags')).relationPopulateTypehead();
+                $('input.relation-multiple', $('#node-list-tags')).relationPopulateTypehead();
             }
         });
     });

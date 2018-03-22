@@ -6,7 +6,7 @@ $(document).ready(function() {
                 if($(object).hasClass('relation-multiple')) {
                     $(object).val('');
                 }
-
+                
                 if(selectedItemId !== null && selectedItemId !== '') {
                     $.ajax({
                         type: 'GET',
@@ -73,7 +73,6 @@ $(document).ready(function() {
 
     $.fn.populateItems = function() {
         $(this).each(function(index, object) {
-            console.log($(object));
             $(object).empty();
 
             var dependsOnValues = {};
@@ -170,17 +169,14 @@ $(document).ready(function() {
     $.fn.setRelationItemsDraggableAndDroppable = function() {
         $(this).each(function(index, object) {
             $(object).on('dragstart', function(e) {
-                console.log('drop');
                 e.originalEvent.dataTransfer.setData('id', e.target.id);
             });
 
             $(object).on('dragover', function(e) {
-                console.log('dragover');
                 e.preventDefault();
             });
 
             $(object).on('drop', function(e) {
-                console.log('drop');
                 e.preventDefault();
 
                 var dragId = e.originalEvent.dataTransfer.getData('id');
@@ -251,27 +247,27 @@ $(document).ready(function() {
     };
 
 
-    $.fn.addNodeTypeAttributeFieldNewRelationItemEvents = function() {
+    $.fn.addNewRelationItemEvents = function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
-                $('div#selected-attribute_fields input[name*=title]').each(function(index, input) {
+                var relation = $(object).parent().parent().parent().data('relation');
+                
+                $('div#selected-' + relation + ' input.default-dropdown').each(function(index, input) {
                     if($(input).val() === $(object).val() && $(input).attr('id') !== $(object).attr('id')) {
                         window.alert(Localization[$('html').attr('lang')].field_entered + $(object).val());
                         $(object).val('');
-                        return;
                     }
                 });
                 
-                $('select#attribute_fields').children('option').each(function(index, option) {
+                $($(object).val() !== '' && 'select#' + relation).children('option').each(function(index, option) {
                     if($(option).text() === $(object).val()) {
                         window.alert($(object).val() + Localization[$('html').attr('lang')].field_exists__select);
                         $(object).val('');
-                        return;
                     }
                 });
                 
-                if(typeof RelationInputsManager.typeaheadList['attribute_fields'] !== 'undefined') {
-                    if(RelationInputsManager.typeaheadList['attribute_fields'].inArray($(object).val(), 'name') !== -1) {
+                if($(object).val() !== '' && typeof RelationInputsManager.typeaheadList[relation] !== 'undefined') {
+                    if(RelationInputsManager.typeaheadList[relation].inArray($(object).val(), 'name') !== -1) {
                         window.alert($(object).val() + Localization[$('html').attr('lang')].field_exists__input);
                     }
                 }
@@ -294,7 +290,7 @@ $(document).ready(function() {
         },
 
         addNewRelationItemEvents: function() {
-            $('div#selected-attribute_fields input[name*=title]').addNodeTypeAttributeFieldNewRelationItemEvents();
+            $('input.default-dropdown').addNewRelationItemEvents();
         }
     };
 });
