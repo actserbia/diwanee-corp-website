@@ -64,7 +64,8 @@ class Tag extends AppModel {
             'relationType' => 'belongsTo',
             'model' => 'App\\FieldType',
             'foreignKey' => 'tag_type_id',
-            'filters' => ['category' => [FieldTypeCategory::Tag]]
+            'filters' => ['category' => [FieldTypeCategory::Tag]],
+            'automaticRender' => true
         ],
         'tag_data' => [
             'relationType' => 'belongsToMany',
@@ -79,7 +80,8 @@ class Tag extends AppModel {
             'model' => 'App\\Tag',
             'pivot' => 'tag_parent',
             'foreignKey' => 'tag_id',
-            'relationKey' => 'parent_id'
+            'relationKey' => 'parent_id',
+            'automaticRender' => true
         ],
         'children' => [
             'relationType' => 'belongsToMany',

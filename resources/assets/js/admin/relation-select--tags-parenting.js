@@ -10,13 +10,13 @@ $(document).ready(function() {
                 }
 
                 if($(object).hasClass('relation-multiple')) {
-                    $('a[id=' + $(object).data('relation') + '-remove-selected]', $('div[id=selected-' + $(object).attr('id') + ']')).each(function(index, aObject) {
+                    $('a[id=' + $(object).data('field') + '-remove-selected]', $('div[id=selected-' + $(object).attr('id') + ']')).each(function(index, aObject) {
                         selectedValues.push($(aObject).data('id'));
                     });
                 }
 
                 var nextLevel = $(object).data('level') + 1;
-                var nextLevelSelect = $(object).data('relation') + '-' + nextLevel;
+                var nextLevelSelect = $(object).data('field') + '-' + nextLevel;
                 if($('select[id=' + nextLevelSelect + ']').length) {
                     $.ajax({
                         type: 'GET',
@@ -111,14 +111,14 @@ $(document).ready(function() {
         if(typeof selectedValues !== 'undefined' && selectedValues.length > 0) {
             $(this).each(function(index, object) {
                 var nextLevel = $(object).data('level') + 1;
-                var nextLevelSelect = $(object).data('relation') + '-' + nextLevel;
+                var nextLevelSelect = $(object).data('field') + '-' + nextLevel;
                 $.ajax({
                     type: 'GET',
                     url: '/admin/model/tags-parenting/add-tag-subtags',
                     data: {
                         data: $(object).data(),
                         tagsIds: selectedValues,
-                        checkSelected: $('select[id=' + $(object).data('relation') + '-1]').data('selected-values')
+                        checkSelected: $('select[id=' + $(object).data('field') + '-1]').data('selected-values')
                     },
                     success: function (data) {
                         $('[id=separator-' + $(object).attr('id') + ']').after(data);

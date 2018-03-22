@@ -1,4 +1,4 @@
-<div id="relation-item-{{ $field }}-{{ $index }}-new" class="relation-item" data-relation="{{ $field }}" @if($object->isSortable($field)) draggable="true" @endif>
+<div id="relation-item-{{ $field }}-{{ $index }}-new" class="relation-item" data-field="{{ $field }}" @if($object->isSortable($field)) draggable="true" @endif>
     <input type="hidden" value="{{ $index }}-new" id="{{ $field }}" name="{{ $field }}[]" />
     @foreach ($item->getAutomaticRenderAtributesAndRelations() as $itemFieldName)
         @include('blocks.model', ['fieldPrefix' => 'new_items[' . $field . '][' . $index . '-new]', 'field' => $itemFieldName, 'object' => $item])

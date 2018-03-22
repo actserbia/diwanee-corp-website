@@ -125,7 +125,7 @@ trait ModelFormManager {
 
     private function formRelationValuesByOld($relation, $prefix) {
         $items = [];
-        $dependsOn = $this->dependsOn($relation, false);
+        $dependsOn = $this->dependsOn($relation, $prefix, false);
         foreach($dependsOn as $depsOn) {
             $items[$depsOn] = $this->formGetRequestPrefixData($depsOn, $prefix);
         }

@@ -6,6 +6,7 @@
         <textarea class="form-control" rows="4"
             id="{{ $object->formFieldName($field, $fieldPrefix) }}"
             name="{{ $object->formFieldName($field, $fieldPrefix) }}"
+            data-field="{{ $field }}"
             @if($object->isRequired($field)) required @endif
         >{{ $object->formValue($field, $fieldPrefix) }}</textarea>
         @if ($object->formHasError($errors, $field, $fieldPrefix))

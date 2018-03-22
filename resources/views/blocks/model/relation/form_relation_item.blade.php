@@ -1,5 +1,5 @@
 <div id="relation-item-{{ $field }}-{{ $item->id }}" class="relation-item" @if($object->isSortable($field)) draggable="true" @endif>
-    <input type="hidden" value="{{ $item->id }}" id="{{ $field }}" name="{{ $field }}[]" />
+    <input type="hidden" value="{{ $item->id }}" id="{{ $object->formFieldName($field, $fieldPrefix) }}" name="{{ $object->formFieldName($field, $fieldPrefix) }}[]" />
     @if (isset($fullData) && $fullData)
         @foreach ($item->getAutomaticRenderAtributesAndRelations() as $itemFieldName)
             @include('blocks.model', ['readonly' => 'label', 'fieldPrefix' => '_', 'field' => $itemFieldName, 'object' => $item])

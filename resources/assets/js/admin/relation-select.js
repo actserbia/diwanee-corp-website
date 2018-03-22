@@ -14,16 +14,17 @@ $(document).ready(function() {
                         data: {
                             itemId: selectedItemId,
                             type: $(object).hasClass('tags-parenting-relation') ? 'tags_parenting' : '',
-                            relation: $(object).data('relation'),
+                            relation: $(object).data('field'),
                             model: $(object).data('model'),
                             modelId: $(object).data('model-id'),
                             modelType: $(object).data('model-type'),
                             fullData: $(object).data('full-data'),
-                            level: $(object).data('level')
+                            level: $(object).data('level'),
+                            fieldPrefix: $(object).data('field-prefix')
                         },
                         success: function (data) {
-                            $('div[id=selected-' + $(object).attr('id') + ']').append(data);
-                            $('a[data-id=' + selectedItemId + ']', $('div[id=selected-' + $(object).attr('id') + ']')).addRemoveSelectedEventsAndDisableSelected();
+                            $('div[id="selected-' + $(object).attr('id') + '"]').append(data);
+                            $('a[data-id=' + selectedItemId + ']', $('div[id="selected-' + $(object).attr('id') + '"]')).addRemoveSelectedEventsAndDisableSelected();
                             if($(object).data('sortable')) {
                                 $('div[id=relation-item-' + $(object).attr('id') + '-' + selectedItemId + ']').setRelationItemsDraggableAndDroppable();
                             }
@@ -63,8 +64,8 @@ $(document).ready(function() {
     $.fn.addDependingEvents = function() {
         $(this).each(function(index, dependingObject) {
             $.each($(dependingObject).data('depends-on'), function( index, dependsOnField ) {
-                $('[id=' + dependsOnField + ']').data('depending', $(dependingObject).attr('id'));
-                $('[id=' + dependsOnField + ']').change(function() {
+                $('[id="' + dependsOnField + '"]').data('depending', $(dependingObject).attr('id'));
+                $('[id="' + dependsOnField + '"]').change(function() {
                     $(dependingObject).populateItems();
                 });
             });
@@ -77,7 +78,7 @@ $(document).ready(function() {
 
             var dependsOnValues = {};
             $.each($(object).data('depends-on'), function( index, dependsOnField ) {
-                dependsOnValues[dependsOnField] = $('[id=' + dependsOnField + ']').getValue();
+                dependsOnValues[$('[id="' + dependsOnField + '"]').data('field')] = $('[id="' + dependsOnField + '"]').getValue();
             });
             
             $.ajax({
@@ -216,14 +217,18 @@ $(document).ready(function() {
                         data: $(object).data()
                     },
                     success: function (data) {
-                        $('div[id=selected-' + $(object).data('relation') + ']').append(data);
+                        $('div[id=selected-' + $(object).data('field') + ']').append(data);
                         $(object).data('last-index', $(object).data('last-index') + 1);
                         
                         $('a.remove-added-relation-item', $(object).parent()).addRemoveAddedRelationItemEvents();
                         
                         if($(object).data('sortable')) {
-                            $('div[id=relation-item-' + $(object).data('relation') + '-' + $(object).data('last-index') + '-new]').setRelationItemsDraggableAndDroppable();
+                            $('div[id=relation-item-' + $(object).data('field') + '-' + $(object).data('last-index') + '-new]').setRelationItemsDraggableAndDroppable();
                         }
+
+                        $('select.relation-multiple', $(object).parent()).addAddRelationItemSelectedEvents();
+                        $('a.remove-selected', $(object).parent()).addRemoveSelectedEventsAndDisableSelected();
+                        $('select.depending-field', $(object).parent()).addDependingEvents();
 
                         $('.add-checkbox', $(object).parent()).addAddCheckboxEvents();
                         $('input.hierarchy[type=checkbox]', $(object).parent()).setHierarchyCheckboxEvents();
@@ -250,9 +255,9 @@ $(document).ready(function() {
     $.fn.addNewRelationItemEvents = function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
-                var relation = $(object).parent().parent().parent().data('relation');
+                var relation = $(object).parent().parent().parent().data('field');
                 
-                $('div#selected-' + relation + ' input.default-dropdown').each(function(index, input) {
+                $('div#selected-' + relation + ' input.representation-field').each(function(index, input) {
                     if($(input).val() === $(object).val() && $(input).attr('id') !== $(object).attr('id')) {
                         window.alert(Localization[$('html').attr('lang')].field_entered + $(object).val());
                         $(object).val('');
@@ -290,7 +295,7 @@ $(document).ready(function() {
         },
 
         addNewRelationItemEvents: function() {
-            $('input.default-dropdown').addNewRelationItemEvents();
+            $('input.representation-field').addNewRelationItemEvents();
         }
     };
 });

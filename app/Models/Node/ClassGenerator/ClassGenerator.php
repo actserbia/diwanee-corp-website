@@ -7,7 +7,7 @@ use App\Utils\FileFunctions;
 use App\NodeType;
 use Illuminate\Support\Str;
 
-abstract class ClassGenerator {
+class ClassGenerator {
     const FOLDER = '';
 
     protected $model = null;
@@ -50,9 +50,9 @@ abstract class ClassGenerator {
         }
     }
 
-    abstract protected function populateData();
+    protected function populateData(){}
 
-    abstract protected function populateContent();
+    protected function populateContent(){}
 
     protected function addFormattedList($listName) {
         if(!empty($this->$listName)) {

@@ -15,7 +15,7 @@
     <div class="form-group">
         <label class="{{ HtmlElementsClasses::getHtmlClassForElement('label_for_element') }}"></label>
         <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-            <div id="selected-{{ $field }}">
+            <div id="selected-{{ $object->formFieldName($field, $fieldPrefix) }}">
                 @foreach ($object->formSelectedValues($field, $fieldPrefix) as $key => $item)
                     @if (strpos($key, '-new') === false)
                         @include('blocks.model.relation.form_relation_item', ['item' => $item, 'withCategory' => ($object->relationFormRenderType($field) === 'input') ? true : false])
@@ -26,7 +26,7 @@
             </div>
             @if (isset($addNewItem) && $addNewItem)
                 <a href=":javascript" class="add-new-relation-item"
-                    data-relation="{{ $field }}"
+                    data-field="{{ $field }}"
                     data-model="{{ $object->modelClass }}"
                     data-model-type="{{ $object->modelTypeIdValue() }}"
                     data-sortable="{{ $object->isSortable($field) }}"

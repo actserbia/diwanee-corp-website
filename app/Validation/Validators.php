@@ -54,7 +54,7 @@ class Validators {
         
         return Validator::make($data, [
             'name' => self::modelRequiredValidation('name', $model) . '|' . $nameUnique . '|max:255',
-            'new_items.attribute_fields.*.title' => self::modelRequiredValidation('title', $fieldModel) . '|max:2'
+            'new_items.attribute_fields.*.title' => self::modelRequiredValidation('title', $fieldModel) . '|max:255'
         ]);
     }
     

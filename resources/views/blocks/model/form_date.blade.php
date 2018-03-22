@@ -8,8 +8,9 @@
             <input class="form-control"
                 type="text"
                 value="{{ $object->formValue($field, $fieldPrefix) }}"
-                id="{{ $field }}"
-                name="{{ $field }}"
+                id="{{ $object->formFieldName($field, $fieldPrefix) }}"
+                name="{{ $object->formFieldName($field, $fieldPrefix) }}"
+                data-field="{{ $field }}"
             />
             <span class="input-group-addon">
                <span class="glyphicon glyphicon-calendar"></span>

@@ -170,8 +170,15 @@ trait ModelRelationsManager {
         return isset($this->dependsOn[$relation]);
     }
 
-    public function dependsOn($relation, $encode = true) {
+    public function dependsOn($relation, $prefix = '', $encode = true) {
         $dependsOn = isset($this->dependsOn[$relation]) ? $this->dependsOn[$relation] : [];
+
+        if($prefix !== '') {
+            foreach($dependsOn as $index => $depsOn) {
+                $dependsOn[$index] = $prefix . '[' . $depsOn . ']';
+            }
+        }
+
         return $encode ? json_encode($dependsOn) : $dependsOn;
     }
 

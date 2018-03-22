@@ -20,16 +20,16 @@ class ModelController extends Controller {
 
         $data = $params['data'];
         $model = new $data['model'];
-        $column = $model->getRepresentationField($data['relation']);
+        $column = $model->getRepresentationField($data['field']);
 
-        $items = $model->getRelationValues($data['relation'], isset($params['dependsOnValues']) ? $params['dependsOnValues'] : []);
+        $items = $model->getRelationValues($data['field'], isset($params['dependsOnValues']) ? $params['dependsOnValues'] : []);
 
         $itemsOutput = [['value' => '', 'text' => '', 'selected' => '']];
         foreach($items as $item) {
             $itemsOutput[] = array(
                 'value' => $item->id,
                 'text' => $item->$column,
-                'selected' => $model->defaultAttributeValue($data['relation']) == $item->id ? 'selected' : ''
+                'selected' => $model->defaultAttributeValue($data['field']) == $item->id ? 'selected' : ''
             );
         }
 
@@ -46,11 +46,12 @@ class ModelController extends Controller {
         $item = $itemModel::find($params['itemId']);
         $fullData = $params['fullData'];
         $withCategory = isset($params['withCategory']) ? $params['withCategory'] : false;
+        $fieldPrefix = isset($params['fieldPrefix']) ? $params['fieldPrefix'] : '';
 
         if(($params['type'] === 'tags_parenting')) {
-            return view('blocks.model.relation.form_relation_tags_parenting_item', compact('object', 'field', 'item', 'fullData', 'level'));
+            return view('blocks.model.relation.form_relation_tags_parenting_item', compact('object', 'field', 'item', 'fullData', 'level', 'fieldPrefix'));
         } else {
-            return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData', 'withCategory'));
+            return view('blocks.model.relation.form_relation_item', compact('object', 'field', 'item', 'fullData', 'withCategory', 'fieldPrefix'));
         }
     }
 
@@ -59,9 +60,9 @@ class ModelController extends Controller {
         
         $data = $params['data'];
         
-        $field = $data['relation'];
+        $field = $data['field'];
         $object = new $data['model'](['model_type_id' => $data['modelType']]);
-        $item = $object->getRelationModel($data['relation']);
+        $item = $object->getRelationModel($data['field']);
         $index = $data['lastIndex']++;
         
         return view('blocks.model.relation.form_relation_item__new', compact('object', 'field', 'item', 'index')); 
@@ -71,7 +72,7 @@ class ModelController extends Controller {
         $params = $request->all();
 
         $data = $params['data'];
-        $field = $data['relation'];
+        $field = $data['field'];
         $object = isset($data['modelId']) ? $data['model']::find($data['modelId']) : new $data['model'](['model_type_id' => $data['modelType']]);
         $level = $data['level'] + 1;
         $checkSelected = isset($params['checkSelected']) && !empty($params['checkSelected']);

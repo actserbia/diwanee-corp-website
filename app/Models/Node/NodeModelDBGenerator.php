@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Constants\AttributeFieldType;
 use App\NodeType;
-use App\Constants\FieldTypeCategory;
 
 class NodeModelDBGenerator {
     private $model = null;
@@ -55,6 +54,7 @@ class NodeModelDBGenerator {
     private function updateNodeModelTable() {
         Schema::table($this->tableName, function (Blueprint $table) {
             $this->addNodeModelTableFields($table);
+            $this->removeOldNodeModelTableFields($table);
         });
     }
 
@@ -65,6 +65,20 @@ class NodeModelDBGenerator {
             }
         }
     }
+
+    private function removeOldNodeModelTableFields($table) {
+        $attributesFields = ['id', 'node_id'];
+        foreach($this->model->attribute_fields as $field) {
+            $attributesFields[] = $field->formattedTitle;
+        }
+
+        $oldColumns = array_diff(Schema::getColumnListing($this->tableName), $attributesFields);
+        foreach($oldColumns as $oldColumn) {
+            $table->dropColumn($oldColumn);
+        }
+    }
+
+
 
     private function setTableField($table, $field) {
         $databaseType = AttributeFieldType::databaseTypes[$field->field_type->name];
@@ -90,7 +104,9 @@ class NodeModelDBGenerator {
 
     public function changeFieldName($oldFieldName, $newFieldName) {
         Schema::table($this->tableName, function (Blueprint $table) use ($oldFieldName, $newFieldName) {
-            $table->renameColumn($oldFieldName, $newFieldName);
+            if(Schema::hasColumn($this->tableName, $oldFieldName)) {
+                $table->renameColumn($oldFieldName, $newFieldName);
+            }
         });
     }
 

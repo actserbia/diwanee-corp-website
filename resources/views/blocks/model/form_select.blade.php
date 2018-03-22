@@ -6,6 +6,7 @@
         <select class="form-control" 
             id="{{ $object->formFieldName($field, $fieldPrefix) }}"
             name="{{ $object->formFieldName($field, $fieldPrefix) }}"
+            data-field="{{ $field }}"
             @if($object->isRequired($field)) required @endif
         >
             <option value=""></option>

@@ -8,7 +8,7 @@
         <select class="form-control relation tags-parenting-relation {{$object->hasMultipleValues($field, isset($level) ? $level : 1) ? 'relation-multiple' : ''}}"
             id="{{ $object->formFieldName($field, $fieldPrefix) }}-{{ isset($level) ? $level : 1 }}"
             name="{{ $object->formFieldName($field, $fieldPrefix) }}[]"
-            data-relation="{{ $field }}"
+            data-field="{{ $field }}"
             data-model="{{ $object->modelClass }}"
             data-model-type="{{ $object->modelTypeIdValue() }}"
             data-model-id="{{ $object->id }}"

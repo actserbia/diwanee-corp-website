@@ -3,11 +3,12 @@
         {{ $object->fieldLabel($field) }} @if($object->isRequired($field))<span class="required">*</span>@endif
     </label>
     <div class="{{ HtmlElementsClasses::getHtmlClassForElement('element_div_with_label') }}">
-        <input class="form-control {{ $object->representationField === $field ? 'default-dropdown' : '' }}"
+        <input class="form-control {{ $object->representationField === $field ? 'representation-field' : '' }}"
             type="{{ $object->attributeType($field) }}"
             value="{{ $object->formValue($field, $fieldPrefix) }}"
             id="{{ $object->formFieldName($field, $fieldPrefix) }}"
             name="{{ $object->formFieldName($field, $fieldPrefix) }}"
+            data-field="{{ $field }}"
             @if($object->isRequired($field)) required @endif
             @if($object->attributeType($field) === 'checkbox' && $object->formValue($field, $fieldPrefix)) checked @endif
         />

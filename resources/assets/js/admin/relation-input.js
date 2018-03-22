@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $.fn.relationPopulateTypeheadFromList = function() {
         $(this).each(function(index, object) {
-            var relation = $(object).data('relation');
+            var relation = $(object).data('field');
 
             $(object).typeahead('destroy');
             $(object).typeahead({
@@ -15,7 +15,7 @@ $(document).ready(function() {
 
     $.fn.relationPopulateTypehead = function() {
         $(this).each(function(index, object) {
-            var relation = $(object).data('relation');
+            var relation = $(object).data('field');
             
             if(typeof RelationInputsManager.typeaheadList[relation] !== 'undefined') {
                 $(object).relationPopulateTypeheadFromList();
@@ -32,7 +32,7 @@ $(document).ready(function() {
                     type: 'GET',
                     url: '/admin/model/typeahead/model-relation-items',
                     data: {
-                        relation: $(object).data('relation'),
+                        relation: $(object).data('field'),
                         model: $(object).data('model'),
                         modelId: $(object).data('model-id'),
                         modelType: $(object).data('model-type'),
@@ -61,7 +61,7 @@ $(document).ready(function() {
                 relationFieldName += '-' + $(object).data('level');
             }
 
-            var relation = $('input[id=' + relationFieldName + ']').data('relation');
+            var relation = $('input[id=' + relationFieldName + ']').data('field');
 
             $(object).click(function() {
                 if(typeof RelationInputsManager.typeaheadListSelected[relation] !== 'undefined') {
@@ -108,13 +108,13 @@ $(document).ready(function() {
                 dependsOnValues[dependsOnField] = $('[id=' + dependsOnField + ']').riGetValue();
             });
 
-            var relation = $(object).data('relation');
+            var relation = $(object).data('field');
 
             $.ajax({
                 type: 'GET',
                 url: '/admin/model/typeahead/model-relation-items',
                 data: {
-                    relation: $(object).data('relation'),
+                    relation: $(object).data('field'),
                     model: $(object).data('model'),
                     modelId: $(object).data('model-id'),
                     modelType: $(object).data('model-type'),
@@ -152,7 +152,7 @@ $(document).ready(function() {
 
     $.fn.riShowOrHide = function() {
         $(this).each(function(index, object) {
-            var relation = $(object).data('relation');
+            var relation = $(object).data('field');
 
             var visible = false;
 
@@ -177,7 +177,7 @@ $(document).ready(function() {
 
     $.fn.riSyncronizeData = function() {
         $(this).each(function(index, object) {
-            var relation = $(object).data('relation');
+            var relation = $(object).data('field');
 
             var selectedId = $('input[type=hidden][id=' + relation + ']').val();
             var index = RelationInputsManager.typeaheadList[relation].inArray(selectedId, 'id');
@@ -207,7 +207,7 @@ $(document).ready(function() {
     $.fn.riAddRelationEvents = function() {
         $(this).each(function(index, object) {
             $(object).change(function() {
-                var relation = $(object).data('relation');
+                var relation = $(object).data('field');
                 
                 var index = RelationInputsManager.typeaheadList[relation].inArray($(object).val(), 'name');
                 if(index !== -1) {
@@ -238,7 +238,7 @@ $(document).ready(function() {
             }
 
             if(relationItemId !== null && relationItemId !== '') {
-                var relation = $(object).data('relation');
+                var relation = $(object).data('field');
 
                 if(typeof RelationInputsManager.typeaheadListSelected[relation] !== 'undefined') {
                     if(RelationInputsManager.typeaheadListSelected[relation].inArray(relationItemId, 'id') !== -1) {
@@ -254,15 +254,16 @@ $(document).ready(function() {
                         itemId: relationItemId,
                         type: $(object).hasClass('tags-parenting-relation') ? 'tags_parenting' : '',
                         withCategory: 1,
-                        relation: $(object).data('relation'),
+                        relation: $(object).data('field'),
                         model: $(object).data('model'),
                         modelId: $(object).data('model-id'),
                         modelType: $(object).data('model-type'),
-                        fullData: $(object).data('full-data')
+                        fullData: $(object).data('full-data'),
+                        fieldPrefix: $(object).data('field-prefix')
                     },
                     success: function (data) {
-                        $('div[id=selected-' + relation + ']').append(data);
-                        $('a[data-id=' + relationItemId + ']', $('div[id=selected-' + relation + ']')).riAddRemoveSelectedEvents();
+                        $('div[id=selected-' + $(object).attr('id') + ']').append(data);
+                        $('a[data-id=' + relationItemId + ']', $('div[id=selected-' + $(object).attr('id') + ']')).riAddRemoveSelectedEvents();
                         if($(object).data('sortable')) {
                             $('div[id=relation-item-' + $(object).attr('id') + '-' + relationItemId + ']').setRelationItemsDraggableAndDroppable();
                         }
