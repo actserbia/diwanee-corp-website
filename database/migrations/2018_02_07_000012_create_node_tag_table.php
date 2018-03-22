@@ -17,7 +17,7 @@ class CreateNodeTagTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('node_id');
             $table->unsignedInteger('tag_id');
-            $table->unsignedTinyInteger('ordinal_number');
+            $table->unsignedTinyInteger('pivot_ordinal_number');
         });
 
         Schema::table('node_tag', function($table) {

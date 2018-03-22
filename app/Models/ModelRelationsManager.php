@@ -118,17 +118,18 @@ trait ModelRelationsManager {
             $pivotFields = $relationsSettings['pivotModel']::getPivotFields();
         }
 
-        $sortable = $this->sortableField($relation);
-        if(!empty($sortable)) {
-            $pivotFields[] = $sortable;
+        $sortablePivotField = $this->sortablePivotField($relation);
+        if(!empty($sortablePivotField)) {
+            $pivotFields[] = $sortablePivotField;
         }
         
         if(!empty($pivotFields)) {
             $query->withPivot($pivotFields);
         }
         
-        if(!empty($sortable)) {
-            $query->orderBy($sortable);
+        $sortableField = $this->sortableField($relation);
+        if(!empty($sortableField)) {
+            $query->orderBy($sortableField);
         }
     }
 
@@ -154,7 +155,21 @@ trait ModelRelationsManager {
 
     public function sortableField($relation) {
         $relationsSettings = $this->getRelationSettings($relation);
-        return isset($relationsSettings['sortBy']) ? $relationsSettings['sortBy'] : null;
+        
+        if(isset($relationsSettings['pivotSortBy'])) {
+            return $relationsSettings['pivotSortBy'];
+        }
+        
+        if(isset($relationsSettings['sortBy'])) {
+            return $relationsSettings['sortBy'];
+        }
+        
+        return null;
+    }
+    
+    public function sortablePivotField($relation) {
+        $relationsSettings = $this->getRelationSettings($relation);
+        return isset($relationsSettings['pivotSortBy']) ? $relationsSettings['pivotSortBy'] : null;
     }
     
     public function extraFields($relation) {
@@ -163,7 +178,7 @@ trait ModelRelationsManager {
     }
     
     public function isSortable($relation) {
-        return $this->hasMultipleValues($relation) && $this->sortableField($relation) !== null;
+        return $this->hasMultipleValues($relation) && $this->sortablePivotField($relation) !== null;
     }
 
     public function checkDependsOn($relation) {

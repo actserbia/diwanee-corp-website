@@ -9,7 +9,8 @@ trait ModelAttributesManager {
         'created_at' => Models::AttributeType_Date,
         'updated_at' => Models::AttributeType_Date,
         'deleted_at' => Models::AttributeType_Date,
-        'ordinal_number' => Models::AttributeType_Number
+        'ordinal_number' => Models::AttributeType_Number,
+        'pivot_ordinal_number' => Models::AttributeType_Number
     ];
     
     public function getFillableAttributes() {

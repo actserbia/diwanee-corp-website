@@ -96,8 +96,8 @@ class MultipleRelationManager extends RelationManager {
     }
 
     protected function attach($relation, $relationItemId, $relationItemData) {
-        if($this->object->sortableField($relation) !== null) {
-            $relationItemData[$this->object->sortableField($relation)] = $this->index++;
+        if($this->object->sortablePivotField($relation) !== null) {
+            $relationItemData[$this->object->sortablePivotField($relation)] = $this->index++;
         }
         
         if(!$this->object->$relation->contains($relationItemId)) {

@@ -17,7 +17,7 @@ class CreateNodeElementTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('node_id');
             $table->unsignedInteger('element_id');
-            $table->unsignedTinyInteger('ordinal_number');
+            $table->unsignedTinyInteger('pivot_ordinal_number');
 
             $table->foreign('node_id')->references('id')->on('nodes');
             $table->foreign('element_id')->references('id')->on('elements');

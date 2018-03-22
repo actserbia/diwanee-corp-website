@@ -81,14 +81,16 @@ class Tag extends AppModel {
             'pivot' => 'tag_parent',
             'foreignKey' => 'tag_id',
             'relationKey' => 'parent_id',
-            'automaticRender' => true
+            'automaticRender' => true,
+            'sortBy' => 'ordinal_number'
         ],
         'children' => [
             'relationType' => 'belongsToMany',
             'model' => 'App\\Tag',
             'pivot' => 'tag_parent',
             'foreignKey' => 'parent_id',
-            'relationKey' => 'tag_id'
+            'relationKey' => 'tag_id',
+            'sortBy' => 'ordinal_number'
         ],
         'nodes' => [
             'relationType' => 'belongsToMany',
@@ -113,6 +115,8 @@ class Tag extends AppModel {
     
     protected static $modelTypeField = 'tag_type_id';
     protected $modelTypeRelation = 'tag_type';
+    
+    protected static $currentIndex = 0;
     
     public function getMovingDisabledAttribute() {
         if(count($this->parents) > 1) {
@@ -148,6 +152,7 @@ class Tag extends AppModel {
             DB::table('tag_parent')->whereIn('tag_id', $tagIds)->delete();
             DB::table('tag_parent')->whereIn('parent_id', $tagIds)->delete();
 
+            self::$currentIndex = 0;
             self::insertTagChildrens(0, $tagsData);
 
             DB::commit();
@@ -172,6 +177,8 @@ class Tag extends AppModel {
 
     private static function insertTagChildrens($parentId, $childrenData) {
         foreach($childrenData as $tagData) {
+            DB::table('tags')->where('id', $tagData['id'])->update(['ordinal_number' => ++self::$currentIndex]);
+            
             if($parentId > 0) {
                 DB::table('tag_parent')->insert([
                     'tag_id' => $tagData['id'],

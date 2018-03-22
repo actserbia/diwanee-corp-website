@@ -27,7 +27,7 @@ class NodeTypeFieldTableSeeder extends Seeder
         $nodeTypeField->field_id = Database::Field_Attribute_MetaTitle_Id;
         $nodeTypeField->active = 1;
         $nodeTypeField->required = 0;
-        $nodeTypeField->ordinal_number = 0;
+        $nodeTypeField->pivot_ordinal_number = 0;
 
         $nodeTypeField->save();
 
@@ -38,7 +38,7 @@ class NodeTypeFieldTableSeeder extends Seeder
         $nodeTypeField->field_id = Database::Field_Attribute_MetaDescription_Id;
         $nodeTypeField->active = 1;
         $nodeTypeField->required = 0;
-        $nodeTypeField->ordinal_number = 1;
+        $nodeTypeField->pivot_ordinal_number = 1;
 
         $nodeTypeField->save();
         
@@ -67,7 +67,7 @@ class NodeTypeFieldTableSeeder extends Seeder
         $nodeTypeField->active = 1;
         $nodeTypeField->required = 1;
         $nodeTypeField->additional_settings = $additionalSettings;
-        $nodeTypeField->ordinal_number = 0;
+        $nodeTypeField->pivot_ordinal_number = 0;
 
         $nodeTypeField->save();
     }

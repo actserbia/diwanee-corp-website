@@ -131,7 +131,9 @@ class NodeList extends AppModel {
     }
     
     public function populateData($attributes = null) {
-        if(isset($this->id) || isset($attributes['model_type_id'])) {
+        parent::populateData($attributes);
+        
+        if(isset($this->modelType->id)) {
             $this->populateTagFieldsData();
         }
     }

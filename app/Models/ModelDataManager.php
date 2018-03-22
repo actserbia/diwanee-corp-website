@@ -29,16 +29,16 @@ trait ModelDataManager {
     public function __construct(array $attributes = array()) {
         parent::__construct($attributes);
         
+        $this->populateData($attributes);
+    }
+    
+    public function populateData($attributes = null) {
         if(static::hasModelTypes()) {
             if(isset($this->id) || isset($attributes['model_type_id'])) {
                 $modelTypeRelation = $this->modelTypeRelation;
                 $modelTypeRelationModel = $this->getRelationModel($modelTypeRelation);
                 $this->modelType = isset($this->id) ? $this->$modelTypeRelation : $modelTypeRelationModel::find($attributes['model_type_id']);
             }
-        }
-
-        if(method_exists($this, 'populateData')) {
-            $this->populateData($attributes);
         }
     }
 

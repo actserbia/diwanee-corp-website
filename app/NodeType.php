@@ -34,7 +34,7 @@ class NodeType extends AppModel {
             'model' => 'App\\Field',
             'pivot' => 'node_type_field',
             'pivotModel' => 'App\\NodeTypeField',
-            'sortBy' => 'ordinal_number',
+            'pivotSortBy' => 'pivot_ordinal_number',
             'extraFields' => ['active', 'required'],
             'automaticSave' => false
         ],

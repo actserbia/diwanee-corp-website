@@ -26,7 +26,7 @@ class AdminTagsController extends Controller {
 
         if(isset($data['tag_type_id'])) {
             $object = new Tag(['model_type_id' => $data['tag_type_id']]);
-            $tags = Tag::has('parents', '=', '0')->filterByModelType($data['tag_type_id'])->get();
+            $tags = Tag::has('parents', '=', '0')->filterByModelType($data['tag_type_id'])->get()->sortBy('ordinal_number');
         } else {
             $object = new Tag;
             $tags = [];

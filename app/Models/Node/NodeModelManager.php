@@ -3,7 +3,6 @@ namespace App\Models\Node;
 
 use Illuminate\Support\Str;
 use App\Constants\Settings;
-use App\NodeType;
 use Request;
 
 trait NodeModelManager {
@@ -22,7 +21,9 @@ trait NodeModelManager {
     }
     
     public function populateData($attributes = null) {
-        if(isset($this->id) || isset($attributes['model_type_id'])) {
+        parent::populateData($attributes);
+        
+        if(isset($this->modelType->id)) {
             $this->populateAttributesFieldsData();
             $this->populateTagFieldsData();
             $this->populateRelationFieldsData();

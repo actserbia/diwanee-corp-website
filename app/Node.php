@@ -86,7 +86,7 @@ class Node extends AppModel {
             'pivot' => 'node_tag',
             'foreignKey' => 'node_id',
             'relationKey' => 'tag_id',
-            'sortBy' => 'ordinal_number',
+            'pivotSortBy' => 'pivot_ordinal_number',
             'automaticSave' => false,
             'formHierarchy' => true
         ],
@@ -96,7 +96,7 @@ class Node extends AppModel {
             'pivot' => 'node_element',
             'foreignKey' => 'node_id',
             'relationKey' => 'element_id',
-            'sortBy' => 'ordinal_number',
+            'pivotSortBy' => 'pivot_ordinal_number',
             'automaticSave' => false
         ],
         'parent_elements' => [
@@ -173,11 +173,11 @@ class Node extends AppModel {
 
             $element->update($preparedElementData);
 
-            $this->elements()->updateExistingPivot($element->id, ['ordinal_number' => $index + 1]);
+            $this->elements()->updateExistingPivot($element->id, ['pivot_ordinal_number' => $index + 1]);
         } else {
             $element = Element::create($preparedElementData);
 
-            $this->elements()->attach($element->id, ['ordinal_number' => $index + 1]);
+            $this->elements()->attach($element->id, ['pivot_ordinal_number' => $index + 1]);
         }
 
         $element->saveItems($elementData);
