@@ -20,22 +20,21 @@ class AdminNodesController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $object = new Node;
-        return view('admin.nodes.list', compact('object'));
+    public function index(Request $request) {
+        $data = $request->all();
+        
+        if(isset($data['model_type_id'])) {
+            $object = new Node(['model_type_id' => $data['model_type_id']]);
+            $objects = Node::filterByModelType($data['model_type_id'])->get();
+        } else {
+            $object = new Node;
+            $objects = Node::get();
+        }
+        
+        //$object = new Node;
+        return view('admin.nodes.list', compact('object', 'objects'));
     }
     
-    public function nodesList(Request $request) {
-        $data = $request->all();
-
-        $objects = [];
-        if(isset($data['model_type_id'])) {
-            $objects = Node::filterByModelType($data['model_type_id'])->get();
-        }
-
-        return view('blocks.nodes-list', compact('objects'));
-    }
-
     /**
      * Display the specified resource.
      *
@@ -83,7 +82,7 @@ class AdminNodesController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('nodes.index')->with($successName, __('messages.store_' . $successName, ['type' => __('models_labels.Node.label_single'), 'name' => $object->name]));
+        return redirect()->route('nodes.index', ['model_type_id' => $object->model_type->id])->with($successName, __('messages.store_' . $successName, ['type' => __('models_labels.Node.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -116,7 +115,7 @@ class AdminNodesController extends Controller {
         
         $successName = $object->saveObject($data) ? 'success' : 'error';
         
-        return redirect()->route('nodes.index')->with($successName, __('messages.update_' . $successName, ['type' => __('models_labels.Node.label_single'), 'name' => $object->name]));
+        return redirect()->route('nodes.index', ['model_type_id' => $object->model_type->id])->with($successName, __('messages.update_' . $successName, ['type' => __('models_labels.Node.label_single'), 'name' => $object->name]));
     }
 
     /**
@@ -128,9 +127,11 @@ class AdminNodesController extends Controller {
     public function destroy($id) {
         $object = Node::findOrFail($id);
         
+        $modelTypeId = $object->model_type->id;
+        
         $successName = $object->deleteObject() ? 'success' : 'error';
         
-        return redirect()->route('nodes.index')->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.Node.label_single'), 'name' => $object->name]));
+        return redirect()->route('nodes.index', ['model_type_id' => $modelTypeId])->with($successName, __('messages.destroy_' . $successName, ['type' => __('models_labels.Node.label_single'), 'name' => $object->name]));
     }
 
 }

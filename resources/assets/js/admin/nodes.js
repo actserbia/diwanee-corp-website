@@ -1,16 +1,6 @@
 $(document).ready(function() {
     $('#nodes-list #model_type').change(function() {
-        $.ajax({
-            type: 'GET',
-            url: '/admin/nodes-list',
-            data: {
-                model_type_id: $(this).val()
-            },
-            success: function (data) {
-                $('#nodes-list-content').html(data);
-                TableManageButtons.init();
-            }
-        });
+        window.location = '/admin/nodes?model_type_id=' + $(this).val();
     });
 
     $('#node-create #model_type').change(function() {

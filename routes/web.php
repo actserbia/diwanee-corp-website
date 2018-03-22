@@ -75,8 +75,6 @@ use App\Search\NodesRepository;
           Route::get('/model/add-new-relation-item', 'ModelController@modelAddNewRelationItem')->name('model.add-new-relation-item');
           
           Route::resource('nodes', 'AdminNodesController');
-          Route::get('nodes-list', 'AdminNodesController@nodesList')->name('nodes.list');
-          Route::get('node-fields', 'AdminNodesController@nodeFields')->name('node.fields');
           
           Route::group(['prefix' => 'search'], function() {
               Route::match(['get', 'post'], 'users', 'AdminSearchController@users')->name('admin.search.users');
