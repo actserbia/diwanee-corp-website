@@ -88,6 +88,7 @@
                                             <li><a href="{{ route('admin.search.elements') }}">@lang('blade_templates.admin.sidebar.elements')</a></li>
                                             <li><a href="{{ route('admin.search.node-lists') }}">@lang('blade_templates.admin.sidebar.node_lists')</a></li>
                                             <li><a href="{{ route('admin.search.users') }}">@lang('blade_templates.admin.sidebar.users')</a></li>
+                                            <li><a href="/admin/search">ES</a></li>
                                         </ul>
                                     </li>
                                     <li><a ><i class="fa fa-bar-chart"></i> @lang('blade_templates.admin.sidebar.statistics')  <span class="fa fa-chevron-down"></span> </a>

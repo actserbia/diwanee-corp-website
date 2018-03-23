@@ -29,14 +29,6 @@ use App\Search\NodesRepository;
 
       Route::get('/', 'HomeController@index')->name('home');
 
-      Route::get('/searchx', function (NodesRepository $repository) {
-          $nodes = $repository->search((string) request('q'));
-
-          return view('search', [
-              'nodes' => $nodes,
-          ]);
-      });
-
       Route::post('sirtrevor/upload-image', 'ImagesController@uploadSirTrevorImage')->name('sirtrevor.upload.image');
 
       Route::group(['middleware' => 'auth'], function() {
@@ -51,6 +43,14 @@ use App\Search\NodesRepository;
       
       Route::group(['prefix' => 'admin', 'middleware' => 'editor', 'namespace' => 'Admin'], function() {
           Route::get('/', 'DashboardController@index')->name('admin.home');
+
+          Route::get('/search', function (NodesRepository $repository) {
+              $nodes = $repository->search((string) request('q'));
+
+              return view('search', [
+                  'nodes' => $nodes,
+              ]);
+          });
           
           Route::resource('tags', 'AdminTagsController');
           Route::match(['get', 'post'], 'tags-reorder-tags', 'AdminTagsController@tagsReorder')->name('tags-reorder-tags');

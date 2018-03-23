@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Search\NodesRepository;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,10 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::get('tags', 'ApiTagsController@index')->name('api.tags.index');
     Route::get('tags/{id}', 'ApiTagsController@show')->name('api.tags.show');
+
+    Route::get('/search', function (NodesRepository $repository) {
+        $nodes = $repository->search((string) request('q'));
+        return $nodes;
+    });
 
 });
