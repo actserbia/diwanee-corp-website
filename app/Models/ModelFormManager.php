@@ -221,7 +221,7 @@ trait ModelFormManager {
         $requestData = $this->formGetRequestData();
 
         if(empty($prefix)) {
-            return $requestData[$fieldName];
+            return isset($requestData[$fieldName]) ? $requestData[$fieldName] : null;
         }
 
         $pos = strpos($prefix, '[');
@@ -250,11 +250,19 @@ trait ModelFormManager {
     }
 
     public function formHasError($errors, $fieldName, $prefix = '') {
+        if(empty($prefix)) {
+            return $errors->has($fieldName);
+        }
+
         $errorField = str_replace(['[', ']'], ['.', ''], $prefix) . '.' . $fieldName;
         return $errors->has($errorField);
     }
 
     public function formErrorMessage($errors, $fieldName, $prefix = '') {
+        if(empty($prefix)) {
+            return $errors->first($fieldName);
+        }
+
         $errorField = str_replace(['[', ']'], ['.', ''], $prefix) . '.' . $fieldName;
         return $errors->has($errorField) ? str_replace('The ' . $errorField, __('validation.this_field'), $errors->first($errorField)) : '';
     }
